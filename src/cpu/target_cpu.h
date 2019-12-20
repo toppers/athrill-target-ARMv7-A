@@ -1,315 +1,149 @@
-#ifndef _CPU_REGISTER_H_
-#define _CPU_REGISTER_H_
+#ifndef _TARGET_CPU_H_
+#define _TARGET_CPU_H_
 
 #include "cpu_dec/op_dec.h"
 #include "std_types.h"
 #include "object_container.h"
 
-#define CPU_GREG_NUM			(32U)
-#define CPU_SYSREG_NUM			(28U)
-#define CPU_COMMON_SYSREG_NUM	(4U)
-#define CPU_SYSBNK_NUM			(3U)
-
-#define CPU_SYSREG_EIWR			(0U)
-#define CPU_SYSREG_FEWR			(1U)
-#define CPU_SYSREG_DBWR			(2U)
-#define CPU_SYSREG_BSEL			(3U)
-typedef enum {
-	SYS_GRP_CPU = 0,
-	SYS_GRP_PROSESSOR,
-	SYS_GRP_PMU,
-	SYS_GRP_FPU,
-	SYS_GRP_USER,
-	SYS_GRP_NUM,
-} SysGrpuType;
-
-typedef enum {
-	SYS_GRP_CPU_BNK_0 = 0,
-	SYS_GRP_CPU_BNK_1,
-	SYS_GRP_CPU_BNK_2,
-	SYS_GRP_CPU_BNK_NUM,
-} SysGrpCpuBnkType;
-
-typedef enum {
-	SYS_REG_EIPC = 0,
-	SYS_REG_EIPSW,
-	SYS_REG_FEPC,
-	SYS_REG_FEPSW,
-	SYS_REG_ECR,
-	SYS_REG_PSW,
-	/* RESERVE 6-10 */
-	SYS_REG_RESERVE_6,
-	SYS_REG_RESERVE_7,
-	SYS_REG_RESERVE_8,
-	SYS_REG_RESERVE_9,
-	SYS_REG_RESERVE_10,
-	SYS_REG_SCCFG,
-	SYS_REG_SCBP,
-	SYS_REG_EIIC,
-	SYS_REG_FEIC,
-	SYS_REG_DBIC,
-	SYS_REG_CTPC,
-	SYS_REG_CTPSW,
-	SYS_REG_DBPC,
-	SYS_REG_DBPSW,
-	SYS_REG_CTBP,
-	SYS_REG_DIR,
-	/* 22-27 デバッグ機能レジスタ － － － */
-} SysGrpCpuBnkBaseRegisterType;
-
-typedef enum {
-	SYS_REG_SW_CTL = 0,
-	SYS_REG_SW_CFG,
-	SYS_REG_SW_RESERVE_2,
-	SYS_REG_SW_BASE,
-	SYS_REG_SW_RESERVE_4,
-	SYS_REG_SW_RESERVE_5,
-	SYS_REG_SW_RESERVE_6,
-	SYS_REG_SW_RESERVE_7,
-	SYS_REG_SW_RESERVE_8,
-	SYS_REG_SW_RESERVE_9,
-	SYS_REG_SW_RESERVE_10,
-	SYS_REG_SW_RESERVE_11,
-	SYS_REG_SW_RESERVE_12,
-	SYS_REG_SW_RESERVE_13,
-	SYS_REG_SW_RESERVE_14,
-	SYS_REG_SW_RESERVE_15,
-	SYS_REG_SW_RESERVE_16,
-	SYS_REG_SW_RESERVE_17,
-	SYS_REG_SW_RESERVE_18,
-	SYS_REG_SW_RESERVE_19,
-	SYS_REG_SW_RESERVE_20,
-	SYS_REG_SW_RESERVE_21,
-	SYS_REG_SW_RESERVE_22,
-	SYS_REG_SW_RESERVE_23,
-	SYS_REG_SW_RESERVE_24,
-	SYS_REG_SW_RESERVE_25,
-	SYS_REG_SW_RESERVE_26,
-	SYS_REG_SW_RESERVE_27,
-} SysGrpCpuBnk0ExceptionRegisterType;
-
-typedef enum {
-	SYS_REG_EH_RESERVE0 = 0,
-	SYS_REG_EH_CFG,
-	SYS_REG_EH_RESET,
-	SYS_REG_EH_BASE,
-	SYS_REG_EH_RESERVE_4,
-	SYS_REG_EH_RESERVE_5,
-	SYS_REG_EH_RESERVE_6,
-	SYS_REG_EH_RESERVE_7,
-	SYS_REG_EH_RESERVE_8,
-	SYS_REG_EH_RESERVE_9,
-	SYS_REG_EH_RESERVE_10,
-	SYS_REG_EH_RESERVE_11,
-	SYS_REG_EH_RESERVE_12,
-	SYS_REG_EH_RESERVE_13,
-	SYS_REG_EH_RESERVE_14,
-	SYS_REG_EH_RESERVE_15,
-	SYS_REG_EH_RESERVE_16,
-	SYS_REG_EH_RESERVE_17,
-	SYS_REG_EH_RESERVE_18,
-	SYS_REG_EH_RESERVE_19,
-	SYS_REG_EH_RESERVE_20,
-	SYS_REG_EH_RESERVE_21,
-	SYS_REG_EH_RESERVE_22,
-	SYS_REG_EH_RESERVE_23,
-	SYS_REG_EH_RESERVE_24,
-	SYS_REG_EH_RESERVE_25,
-	SYS_REG_EH_RESERVE_26,
-	SYS_REG_EH_RESERVE_27,
-} SysGrpCpuBnk1ExceptionRegisterType;
-
-
-typedef enum {
-	SYS_REG_MPV_VSECR = 0,
-	SYS_REG_MPV_VSTID,
-	SYS_REG_MPV_VSADR,
-	SYS_REG_MPV_RESERVE_3,
-	SYS_REG_MPV_VMECR,
-	SYS_REG_MPV_VMTID,
-	SYS_REG_MPV_VMADR,
-	SYS_REG_MPV_RESERVE_7,
-	SYS_REG_MPV_RESERVE_8,
-	SYS_REG_MPV_RESERVE_9,
-	SYS_REG_MPV_RESERVE_10,
-	SYS_REG_MPV_RESERVE_11,
-	SYS_REG_MPV_RESERVE_12,
-	SYS_REG_MPV_RESERVE_13,
-	SYS_REG_MPV_RESERVE_14,
-	SYS_REG_MPV_RESERVE_15,
-	SYS_REG_MPV_RESERVE_16,
-	SYS_REG_MPV_RESERVE_17,
-	SYS_REG_MPV_RESERVE_18,
-	SYS_REG_MPV_RESERVE_19,
-	SYS_REG_MPV_RESERVE_20,
-	SYS_REG_MPV_RESERVE_21,
-	SYS_REG_MPV_RESERVE_22,
-	SYS_REG_MPV_RESERVE_23,
-	SYS_REG_MPV_MCA,
-	SYS_REG_MPV_MCS,
-	SYS_REG_MPV_MCC,
-	SYS_REG_MPV_MCR,
-} SysGrpProcessorProtectErrorBnkRegisterType;
-
-
-typedef enum {
-	SYS_REG_MPU_MPM = 0,
-	SYS_REG_MPU_MPC,
-	SYS_REG_MPU_TID,
-	SYS_REG_MPU_RESERVE_3,
-	SYS_REG_MPU_RESERVE_4,
-	SYS_REG_MPU_RESERVE_5,
-	SYS_REG_MPU_IPA0L,
-	SYS_REG_MPU_IPA0U,
-	SYS_REG_MPU_IPA1L,
-	SYS_REG_MPU_IPA1U,
-	SYS_REG_MPU_IPA2L,
-	SYS_REG_MPU_IPA2U,
-	SYS_REG_MPU_IPA3L,
-	SYS_REG_MPU_IPA3U,
-	SYS_REG_MPU_IPA4L,
-	SYS_REG_MPU_IPA4U,
-	SYS_REG_MPU_DPA0L,
-	SYS_REG_MPU_DPA0U,
-	SYS_REG_MPU_DPA1L,
-	SYS_REG_MPU_DPA1U,
-	SYS_REG_MPU_DPA2L,
-	SYS_REG_MPU_DPA2U,
-	SYS_REG_MPU_DPA3L,
-	SYS_REG_MPU_DPA3U,
-	SYS_REG_MPU_DPA4L,
-	SYS_REG_MPU_DPA4U,
-	SYS_REG_MPU_DPA5L,
-	SYS_REG_MPU_DPA5U,
-} SysGrpProcessorProtectSettingsBnkRegisterType;
-
-
-typedef enum {
-	SYS_REG_MPM = 0,
-	SYS_REG_MPC,
-	SYS_REG_TID,
-	SYS_REG_VMECR,
-	SYS_REG_VMTID,
-	SYS_REG_VMADR,
-	SYS_REG_IPA0L,
-	SYS_REG_IPA0U,
-	SYS_REG_IPA1L,
-	SYS_REG_IPA1U,
-	SYS_REG_IPA2L,
-	SYS_REG_IPA2U,
-	SYS_REG_IPA3L,
-	SYS_REG_IPA3U,
-	SYS_REG_IPA4L,
-	SYS_REG_IPA4U,
-	SYS_REG_DPA0L,
-	SYS_REG_DPA0U,
-	SYS_REG_DPA1L,
-	SYS_REG_DPA1U,
-	SYS_REG_DPA2L,
-	SYS_REG_DPA2U,
-	SYS_REG_DPA3L,
-	SYS_REG_DPA3U,
-	SYS_REG_DPA4L,
-	SYS_REG_DPA4U,
-	SYS_REG_DPA5L,
-	SYS_REG_DPA5U,
-} SysGrpProcessorProtectPagingBnkRegisterType;
-
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL
 #define CPU_REG_PLUS_MAX	2147483647LL
 #define CPU_REG_MINUS_MAX	-2147483648LL
 
-#define CPU_REG_SP		(3)
-#define CPU_REG_EP		(30)
-#define CPU_REG_LP		(31)
-
-
-typedef struct {
-	uint32 r[CPU_SYSREG_NUM];
-} CpuSystemRegisterDataType;
-
-typedef struct {
-	uint32						current_grp;
-	uint32						current_bnk;
-	CpuSystemRegisterDataType	grp[SYS_GRP_NUM][CPU_SYSBNK_NUM];
-	uint32						sysreg[CPU_COMMON_SYSREG_NUM];
-} CpuSystemRegisterType;
-
-typedef struct {
-	uint32 pc;
-	sint32 r[CPU_GREG_NUM];
-	CpuSystemRegisterType	sys;
-} CpuRegisterType;
-
-static inline uint32 *cpu_get_sysreg(CpuSystemRegisterType *sys, uint32 inx) {
-	if (inx < CPU_SYSREG_NUM) {
-		return &sys->grp[sys->current_grp][sys->current_bnk].r[inx];
-	}
-	else {
-		return &sys->sysreg[inx - CPU_SYSREG_NUM];
-	}
-}
-
-static inline uint32 cpu_get_psw(CpuSystemRegisterType *sys) {
-	return sys->grp[SYS_GRP_CPU][SYS_GRP_CPU_BNK_0].r[SYS_REG_PSW];
-}
-
-static inline uint32 *cpu_get_mpu_illegal_factor_sysreg(CpuSystemRegisterType *sys) {
-	return sys->grp[SYS_GRP_PROSESSOR][SYS_GRP_CPU_BNK_0].r;
-}
-
-static inline uint32 *cpu_get_mpu_settign_sysreg(CpuSystemRegisterType *sys) {
-	return sys->grp[SYS_GRP_PROSESSOR][SYS_GRP_CPU_BNK_1].r;
-}
-
-static inline CpuSystemRegisterDataType *sys_get_cpu_base(CpuRegisterType *reg) {
-	return &reg->sys.grp[SYS_GRP_CPU][SYS_GRP_CPU_BNK_0];
-}
+typedef enum {
+	CpuRegId_0 = 0,
+	CpuRegId_1,
+	CpuRegId_2,
+	CpuRegId_3,
+	CpuRegId_4,
+	CpuRegId_5,
+	CpuRegId_6,
+	CpuRegId_7,
+	CpuRegId_8,
+	CpuRegId_9,
+	CpuRegId_10,
+	CpuRegId_11,
+	CpuRegId_12,
+	CpuRegId_SP,
+	CpuRegId_LR,
+	CpuRegId_NUM,
+} CpuRegIdType;
 
 typedef enum {
-	CpuExceptionError_None = 0,
-	CpuExceptionError_MIP,
-	CpuExceptionError_MDP,
-	CpuExceptionError_PPI,
-} CpuExceptionErrorCodeType;
+	CpuSystemLevel_User = 0,
+	CpuSystemLevel_System,
+	CpuSystemLevel_Hyp,
+	CpuSystemLevel_Supervisor,
+	CpuSystemLevel_Abort,
+	CpuSystemLevel_Undefined,
+	CpuSystemLevel_Monitor,
+	CpuSystemLevel_IRQ,
+	CpuSystemLevel_FIQ,
+	CpuSystemLevel_NUM
+} CpuSystemLevelType;
 
-#define TARGET_CORE_MPU_CONFIG_EXEC_MAXNUM		5U
-#define TARGET_CORE_MPU_CONFIG_DATA_MAXNUM		6U
-
-typedef struct {
-	bool								enable_protection;
-	bool								is_mask_method;
-	/*
-	 * is_mask_method == FALSE
-	 *  => au: upper address
-	 *  => al: lower address
-	 *
-	 * is_mask_method == TRUE
-	 *  => au: mask
-	 *  => al: base address
-	 *
-	 *  マスク値を指定する場合は,必ず下位側から 1 を連続させた値を設定してください
-	 *  (000050FFHなどのように,1/0が交互に配置された場合の動作は保証しません)。
-	 */
-	uint32								au;
-	uint32								al;
-} TargetCoreMpuConfigType;
+#define CpuSystemLevelEncoding_User				0b10000
+#define CpuSystemLevelEncoding_FIQ				0b10001
+#define CpuSystemLevelEncoding_IRQ				0b10010
+#define CpuSystemLevelEncoding_Supervisor		0b10011
+#define CpuSystemLevelEncoding_Monitor			0b10110
+#define CpuSystemLevelEncoding_Abort			0b10111
+#define CpuSystemLevelEncoding_Hyp				0b11010
+#define CpuSystemLevelEncoding_Undefined		0b11011
+#define CpuSystemLevelEncoding_System			0b11111
+#define CpuSystemLevelEncoding_Mask				0x0000001F
 
 typedef struct {
-	TargetCoreMpuConfigType				common;
-	bool								enable_read;
-	bool								enable_exec;
-} TargetCoreMpuExecConfigType;
+	sint32	r[CpuRegId_NUM];
+	uint32	status;
+} CpuRegisterType;
 
 typedef struct {
-	TargetCoreMpuConfigType				common;
-	bool								enable_read;
-	bool								enable_write;
-} TargetCoreMpuDataConfigType;
+	CoreIdType					core_id;
+	uint32 						pc;
+	CpuRegisterType 			reg[CpuSystemLevel_NUM];
+	bool						is_halt;
+	uint16 						*current_code;
+	OpDecodedCodeType			*decoded_code;
+} TargetCoreType;
 
-typedef struct {
-	ObjectContainerType					*region_permissions;
-} TargetCoreMpuConfigContainerType;
+static inline uint32 cpu_get_pc(const TargetCoreType *core)
+{
+	return core->pc;
+}
+static inline uint32 *cpu_get_status(const TargetCoreType *core)
+{
+	return &(((TargetCoreType *)core)->reg[0].status);
+}
+
+static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
+{
+	if (regid <= CpuRegId_7) {
+		return core->reg[0].r[regid];
+	}
+	else if (regid <= CpuRegId_12) {
+		if (((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) != CpuSystemLevelEncoding_FIQ) {
+			return core->reg[0].r[regid];
+		}
+		else {
+			return core->reg[CpuSystemLevel_FIQ].r[regid];
+		}
+	}
+	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+		return core->reg[0].r[regid];
+	case CpuSystemLevelEncoding_FIQ:
+		return core->reg[CpuSystemLevel_FIQ].r[regid];
+	case CpuSystemLevelEncoding_IRQ:
+		return core->reg[CpuSystemLevel_IRQ].r[regid];
+	case CpuSystemLevelEncoding_Supervisor:
+		return core->reg[CpuSystemLevel_Supervisor].r[regid];
+	case CpuSystemLevelEncoding_Monitor:
+		return core->reg[CpuSystemLevel_Monitor].r[regid];
+	case CpuSystemLevelEncoding_Abort:
+		return core->reg[CpuSystemLevel_Abort].r[regid];
+	case CpuSystemLevelEncoding_Hyp:
+		return core->reg[CpuSystemLevel_Hyp].r[regid];
+	case CpuSystemLevelEncoding_Undefined:
+		return core->reg[CpuSystemLevel_Undefined].r[regid];
+	default:
+		//TODO ERROR
+		return -1;
+	}
+}
+
+static inline uint32 cpu_get_sp(const TargetCoreType *core)
+{
+	return cpu_get_reg(core, CpuRegId_SP);
+}
+static inline uint32 cpu_get_lr(const TargetCoreType *core)
+{
+	return cpu_get_reg(core, CpuRegId_LR);
+}
+static inline uint32 *cpu_get_saved_status(const TargetCoreType *core)
+{
+	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
+	case CpuSystemLevelEncoding_FIQ:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_FIQ].status);
+	case CpuSystemLevelEncoding_IRQ:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_IRQ].status);
+	case CpuSystemLevelEncoding_Supervisor:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Supervisor].status);
+	case CpuSystemLevelEncoding_Monitor:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Monitor].status);
+	case CpuSystemLevelEncoding_Abort:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Abort].status);
+	case CpuSystemLevelEncoding_Hyp:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Hyp].status);
+	case CpuSystemLevelEncoding_Undefined:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Undefined].status);
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+	default:
+		//TODO ERROR
+		return NULL;
+	}
+}
 
 typedef enum {
 	CpuMemoryAccess_NONE = 0,
@@ -318,32 +152,4 @@ typedef enum {
 	CpuMemoryAccess_EXEC,
 } CpuMemoryAccessType;
 
-typedef struct {
-	CpuExceptionErrorCodeType			exception_error_code;
-	uint32								error_address;
-	CpuMemoryAccessType					error_access;
-	TargetCoreMpuConfigContainerType	data_configs;
-	TargetCoreMpuConfigContainerType	exec_configs;
-} TargetCoreMpuType;
-
-typedef struct {
-	CoreIdType					core_id;
-	CpuRegisterType 			reg;
-	bool						is_halt;
-	uint16 						*current_code;
-	OpDecodedCodeType			*decoded_code;
-	TargetCoreMpuType			mpu;
-} TargetCoreType;
-
-static inline uint32 cpu_get_pc(const TargetCoreType *core)
-{
-	return core->reg.pc;
-}
-static inline uint32 cpu_get_sp(const TargetCoreType *core)
-{
-	return core->reg.r[3];
-}
-
-
-
-#endif /* _CPU_REGISTER_H_ */
+#endif /* _TARGET_CPU_H_ */

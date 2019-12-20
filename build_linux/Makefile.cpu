@@ -24,9 +24,9 @@ VPATH	+=	$(CORE_DIR)/lib
 CFLAGS	:= $(WFLAGS)
 CFLAGS	+= $(IFLAGS)
 
-#OBJS	:=	op_exec.o
-#OBJS	+=	op_dec.o
-#OBJS	+=	op_parse.o
+OBJS	:=	op_exec.o
+OBJS	+=	op_dec.o
+OBJS	+=	op_parse.o
 OBJS	+=	op_parse_private.o
 #OBJS	+=	op_exec_bit.o
 #OBJS	+=	op_exec_branch.o

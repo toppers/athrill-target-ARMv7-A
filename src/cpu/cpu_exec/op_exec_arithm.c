@@ -24,21 +24,19 @@ int arm_op_exec_add_1(struct TargetCore *core)
 		//TODO
 		return 0;
 	}
-	uint32 imm32 = ARMExpandImm(op->imm12, CPU_ISSET_CY(cpu_get_status(core)));
-	uint32 Rn = cpu_get_reg(core, op->Rn);
-	uint32 Rd = cpu_get_reg(core, op->Rd);
-	uint32 result = -1;
+	sint32 imm32 = ARMExpandImm(op->imm12, CPU_ISSET_CY(cpu_get_status(core)));
+	sint32 Rn = cpu_get_reg(core, op->Rn);
+	sint32 Rd = cpu_get_reg(core, op->Rd);
+	sint32 result = -1;
 	uint32 *status = cpu_get_status(core);
 	bool passed = ConditionPassed(op->cond, *status);
+	AddWithCarryOutArgType arg;
 	if (passed != FALSE) {
-		result = Rn + imm32;
+		result = AddWithCarry(32, Rn, imm32, FALSE, &arg);
 		 if (op->Rd != CpuRegId_PC) {
 			cpu_set_reg(core, op->Rd, result);
 			if (op->S != 0) {
-				op_chk_and_set_carry(status, Rn, imm32);
-				op_chk_and_set_overflow(status, Rn, imm32);
-				op_chk_and_set_zero(status, result);
-				op_chk_and_set_sign(status, result);
+				cpu_update_status_flag(status, result, arg.carry_out, arg.overflow);
 			}
 		 }
 		 else {

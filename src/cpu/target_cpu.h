@@ -76,6 +76,16 @@ do {	\
 	*(status) &= ~(1U << (bitpos));	\
 } while (0)
 
+#define CPU_STATUS_BIT_UPDATE(status, bitpos, flag)	\
+do {	\
+	if ((flag) != FALSE) {	\
+		CPU_STATUS_BIT_SET(status, bitpos);	\
+	}	\
+	else {	\
+		CPU_STATUS_BIT_CLR(status, bitpos);	\
+	}	\
+} while (0)
+
 typedef struct {
 	sint32	r[CpuRegId_NUM];
 	uint32	status;

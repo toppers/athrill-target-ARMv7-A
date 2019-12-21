@@ -374,8 +374,41 @@ static inline int ALUWritePC(TargetCoreType *core, uint32 address)
 		return BranchWritePC(core, address);
 	}
 }
-//ALUWritePC
-//BXWritePC
-//BranchWritePC
 
+#define UInt(x)		( (sint64)((uint64)((uint32)(x))) )
+#define SInt(x)		((sint64)((sint32)(x)))
+
+typedef struct {
+	bool carry_out;
+	bool overflow;
+} AddWithCarryOutArgType;
+static inline sint32 AddWithCarry(uint32 bits_N, sint32 x, sint32 y, sint32 carry_in, AddWithCarryOutArgType *out)
+{
+	sint64 unsigned_sum = UInt(x) + UInt(y) + UInt(carry_in);;
+	sint64 signed_sum = SInt(x) + SInt(y) + UInt(carry_in);
+	sint32 result = (sint32)unsigned_sum;
+	if (out != NULL) {
+		if (UInt(result) == unsigned_sum) {
+			out->carry_out = FALSE;
+		}
+		else {
+			out->carry_out = TRUE;
+		}
+		if (SInt(result) == signed_sum) {
+			out->overflow = FALSE;
+		}
+		else {
+			out->overflow = TRUE;
+		}
+	}
+	return result;
+}
+
+static inline void cpu_update_status_flag(uint32 *status, uint32 result, bool carry_out, bool overflow)
+{
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, carry_out);
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_V, overflow);
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+}
 #endif /* _CPU_OPS_H_ */

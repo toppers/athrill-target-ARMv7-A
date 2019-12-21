@@ -110,6 +110,7 @@ static inline char *addr2devregname(uint32 addr)
 	return "NULL";
 }
 #define OpSignExtend(size, data)	op_sign_extend(((size) - 1), (uint32)(data))
+#define OpZeroExtend(size, data)	op_zero_extend((size), (uint32)(data))
 
 static inline bool ConditionPassed(uint8 cond, uint32 status)
 {

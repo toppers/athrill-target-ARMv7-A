@@ -24,6 +24,7 @@ void cpu_init(void)
 static void private_cpu_reset(TargetCoreType *cpu)
 {
 	//TODO
+	*cpu_get_status(cpu) = CpuSystemLevelEncoding_System;
 	cpu->is_halt = FALSE;
 	return;
 }
@@ -80,7 +81,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 	 */
 	ret = arm_op_parse(virtual_cpu.cores[core_id].core.current_code,
 			p_decoded_code, &optype);
-	if (ret < 0) {
+	if (ret != 0) {
 		printf("Decode Error\n");
 		return STD_E_DECODE;
 	}

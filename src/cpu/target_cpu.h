@@ -108,6 +108,7 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 		return core->reg[CpuSystemLevel_Undefined].r[regid];
 	default:
 		//TODO ERROR
+		printf("ERROR: invalid status:0x%x\n", (*cpu_get_status(core)));
 		return -1;
 	}
 }

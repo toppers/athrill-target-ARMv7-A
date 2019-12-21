@@ -103,6 +103,109 @@ static inline uint32 op_zero_extend(uint32 bit, uint32 data)
 	}
 	return data;
 }
+typedef enum {
+	SRType_LSL = 0,
+	SRType_LSR,
+	SRType_ASR,
+	SRType_ROR,
+	SRType_RRX,
+} SRType;
+#include "assert.h"
+
+static inline uint32 LSL_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
+{
+	ASSERT(shift > 0);
+	uint32 result = x << shift;
+	if (carry_out != NULL) {
+		if ((x & (1U << (bits_N - 1))) != 0) {
+			*carry_out = TRUE;
+		}
+		else {
+			*carry_out = FALSE;
+		}
+	}
+	return result;
+}
+static inline uint32 LSL(uint32 bits_N, uint32 x, uint32 shift)
+{
+	ASSERT(shift >= 0);
+	if (shift == 0) {
+		return x;
+	}
+	else {
+		return LSL_C(bits_N, x, shift, NULL);
+	}
+}
+
+static inline uint32 LSR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
+{
+	ASSERT(shift > 0);
+	uint32 result = x >> shift;
+	if (carry_out != NULL) {
+		if ((x & 0x1) != 0) {
+			*carry_out = TRUE;
+		}
+		else {
+			*carry_out = FALSE;
+		}
+	}
+	return result;
+}
+static inline uint32 LSR(uint32 bits_N, uint32 x, uint32 shift)
+{
+	ASSERT(shift >= 0);
+	if (shift == 0) {
+		return x;
+	}
+	else {
+		return LSR_C(bits_N, x, shift, NULL);
+	}
+}
+
+static inline uint32 ROR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
+{
+	uint32 m;
+	uint32 result;
+
+	ASSERT(shift != 0);
+	m = shift % bits_N;
+	result = LSR(bits_N, x, m) | LSL(bits_N, x, bits_N - m);
+	if (carry_out != NULL) {
+		if ((result & (1U << (bits_N - 1))) != 0U) {
+			*carry_out = TRUE;
+		}
+		else {
+			*carry_out = FALSE;
+		}
+	}
+	return result;
+}
+static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 amount, bool carry_in, bool *carry_out)
+{
+	if (amount == 0) {
+		if (carry_out != NULL) {
+			*carry_out = carry_in;
+		}
+		return value;
+	}
+	switch (type) {
+	case SRType_ROR:
+		return ROR_C(bits_N, value, amount, carry_out);
+	default:
+		//TOOD ERROR
+		return -1;
+	}
+}
+static inline uint32 ARMExpandImm_C(uint32 imm12, bool carry_in, bool *carry_out)
+{
+	uint32 unrotated_value = (imm12 & 0xFF);
+	uint32 amount = ( 2U * ((imm12 & 0xF00) >> 8U) );
+	return Shift_C(32U, unrotated_value, SRType_ROR, amount, carry_in, carry_out);
+}
+static inline uint32 ARMExpandImm(uint32 imm12, bool carry_in)
+{
+	return ARMExpandImm_C(imm12, carry_in, NULL);
+}
 
 static inline char *addr2devregname(uint32 addr)
 {

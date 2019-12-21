@@ -7,7 +7,7 @@
 int arm_op_exec_add_1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_add_1 *op = &core->decoded_code->code.add_1;
-	uint32 imm32 = OpZeroExtend(12, op->imm12);
+	uint32 imm32 = ARMExpandImm(op->imm12, CPU_ISSET_CY(cpu_get_status(core)));
 	uint32 Rn = cpu_get_reg(core, op->Rn);
 	uint32 Rd = cpu_get_reg(core, op->Rd);
 	uint32 result = -1;

@@ -155,3 +155,11 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
 
     return 1;
 }
+
+OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
+    
+	{ 1, arm_op_exec_add_1 },		/* add_1 */
+    
+	{ 1, arm_op_exec_push_1 },		/* push_1 */
+    
+};

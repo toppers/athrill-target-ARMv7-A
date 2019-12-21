@@ -57,7 +57,7 @@ typedef struct {
 	uint32	status;
 } CpuRegisterType;
 
-typedef struct {
+typedef struct TargetCore {
 	CoreIdType					core_id;
 	uint32 						pc;
 	CpuRegisterType 			reg[CpuSystemLevel_NUM];

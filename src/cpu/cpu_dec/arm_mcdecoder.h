@@ -72,4 +72,17 @@ typedef struct {
 
 extern int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype);
 
+struct TargetCore;
+typedef struct {
+	int clocks;
+	int (*exec) (struct TargetCore *cpu);
+} OpExecType;
+extern OpExecType arm_op_exec_table[arm_OpCodeId_Num];
+
+
+extern int arm_op_exec_add_1(struct TargetCore *core);
+
+extern int arm_op_exec_push_1(struct TargetCore *core);
+
+
 #endif /* !_arm_MC_DECODER_H_ */

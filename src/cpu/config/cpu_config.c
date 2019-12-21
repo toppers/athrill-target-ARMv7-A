@@ -7,7 +7,6 @@
 #include "mpu_types.h"
 #include <sys/time.h>
 #include "std_device_ops.h"
-#include "op_exec.h"
 
 CpuType virtual_cpu;
 
@@ -95,7 +94,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 		return STD_E_SEGV;
 	}
 
-	if (op_exec_table[optype.code_id].exec == NULL) {
+	if (arm_op_exec_table[optype.code_id].exec == NULL) {
 		printf("Not supported code(%d fmt=%d) Error code[0]=0x%x code[1]=0x%x type_id=0x%x\n",
 				optype.code_id, optype.format_id,
 				virtual_cpu.cores[core_id].core.current_code[0],
@@ -107,7 +106,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 	/*
 	 * 命令実行
 	 */
-	ret = op_exec_table[optype.code_id].exec(&virtual_cpu.cores[core_id].core);
+	ret = arm_op_exec_table[optype.code_id].exec(&virtual_cpu.cores[core_id].core);
 	if (ret < 0) {
 		printf("Exec Error code[0]=0x%x code[1]=0x%x type_id=0x%x code_id=%u\n",
 				virtual_cpu.cores[core_id].core.current_code[0],
@@ -121,7 +120,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 #ifdef CONFIG_STAT_PERF
 		cached_code->codes[inx].code_id = optype.code_id;
 #endif /* CONFIG_STAT_PERF */
-		cached_code->codes[inx].op_exec = op_exec_table[optype.code_id].exec;
+		cached_code->codes[inx].op_exec = arm_op_exec_table[optype.code_id].exec;
 	}
 	return STD_E_OK;
 }

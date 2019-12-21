@@ -1,8 +1,8 @@
 #ifndef _TARGET_CPU_H_
 #define _TARGET_CPU_H_
 
-#include "cpu_dec/op_dec.h"
 #include "std_types.h"
+#include "cpu_dec/op_dec.h"
 #include "object_container.h"
 
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL

@@ -1,6 +1,7 @@
-#include "cpu_exec/op_exec.h"
+#include "op_exec.h"
 
-OpExecType op_exec_table[OP_EXEC_TABLE_NUM] = {
-	{ NULL },		/* ADD */
-
+OpExecType op_exec_table[arm_OpCodeId_Num] = {
+	{ 7, NULL },		/* add */
+	{ 1, NULL },		/* push */
 };
+

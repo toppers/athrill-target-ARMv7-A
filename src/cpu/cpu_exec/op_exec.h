@@ -2,16 +2,12 @@
 #define _OP_EXEC_H_
 
 #include "target_cpu.h"
-#include "cpu_dec/op_codeid.h"
-#include "cpu_common/cpu_ops.h"
-#include "cpu_exec/op_exec_ops.h"
-
-#define OP_EXEC_TABLE_NUM		1U /* TODO */
+#include "op_dec_types.h"
 
 typedef struct {
+	int clocks;
 	int (*exec) (TargetCoreType *cpu);
 } OpExecType;
-
-extern OpExecType op_exec_table[OP_EXEC_TABLE_NUM];
+extern OpExecType op_exec_table[arm_OpCodeId_Num];
 
 #endif /* _OP_EXEC_H_ */

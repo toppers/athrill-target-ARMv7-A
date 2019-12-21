@@ -3,11 +3,11 @@
 #include "std_cpu_ops.h"
 #include <stdio.h>
 #include "cpu_common/cpu_ops.h"
-#include "cpu_dec/op_parse.h"
-#include "cpu_exec/op_exec.h"
+#include "cpu_dec/arm_mcdecoder.h"
 #include "mpu_types.h"
 #include <sys/time.h>
 #include "std_device_ops.h"
+#include "op_exec.h"
 
 CpuType virtual_cpu;
 
@@ -53,9 +53,9 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 {
 	int ret;
 	Std_ReturnType err;
-	static OpDecodedCodeType	decoded_code;
-	OpDecodedCodeType		*p_decoded_code;
-	OperationCodeType optype;
+	static arm_OpDecodedCodeType	decoded_code;
+	arm_OpDecodedCodeType		*p_decoded_code;
+	arm_OperationCodeType optype;
 	bool permission;
 
 	if (cached_code != NULL) {
@@ -79,7 +79,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 	/*
 	 * デコード
 	 */
-	ret = op_parse(virtual_cpu.cores[core_id].core.current_code,
+	ret = arm_op_parse(virtual_cpu.cores[core_id].core.current_code,
 			p_decoded_code, &optype);
 	if (ret < 0) {
 		printf("Decode Error\n");

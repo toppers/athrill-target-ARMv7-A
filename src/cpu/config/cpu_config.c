@@ -24,7 +24,7 @@ void cpu_init(void)
 static void private_cpu_reset(TargetCoreType *cpu)
 {
 	//TODO
-	*cpu_get_status(cpu) = CpuSystemLevelEncoding_System;
+	*cpu_get_status(cpu) = CpuSystemLevelEncoding_Supervisor;
 	cpu->is_halt = FALSE;
 	return;
 }

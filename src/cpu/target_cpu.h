@@ -25,8 +25,9 @@ typedef enum {
 	CpuRegId_12,
 	CpuRegId_SP,
 	CpuRegId_LR,
-	CpuRegId_NUM,
+	CpuRegId_PC,
 } CpuRegIdType;
+#define CpuRegId_NUM	CpuRegId_PC
 
 typedef enum {
 	CpuSystemLevel_User = 0,
@@ -88,6 +89,9 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 			return core->reg[CpuSystemLevel_FIQ].r[regid];
 		}
 	}
+	else if (regid == CpuRegId_PC) {
+		return core->pc;
+	}
 	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
 	case CpuSystemLevelEncoding_User:
 	case CpuSystemLevelEncoding_System:
@@ -112,7 +116,54 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 		return -1;
 	}
 }
-
+static inline void cpu_set_reg(TargetCoreType *core, uint32 regid, uint32 data)
+{
+	if (regid <= CpuRegId_7) {
+		core->reg[0].r[regid] = data;
+	}
+	else if (regid <= CpuRegId_12) {
+		if (((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) != CpuSystemLevelEncoding_FIQ) {
+			core->reg[0].r[regid] = data;
+		}
+		else {
+			core->reg[CpuSystemLevel_FIQ].r[regid] = data;
+		}
+	}
+	else if (regid == CpuRegId_PC) {
+		core->pc = data;
+	}
+	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+		core->reg[0].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_FIQ:
+		core->reg[CpuSystemLevel_FIQ].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_IRQ:
+		core->reg[CpuSystemLevel_IRQ].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Supervisor:
+		core->reg[CpuSystemLevel_Supervisor].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Monitor:
+		core->reg[CpuSystemLevel_Monitor].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Abort:
+		core->reg[CpuSystemLevel_Abort].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Hyp:
+		core->reg[CpuSystemLevel_Hyp].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Undefined:
+		core->reg[CpuSystemLevel_Undefined].r[regid] = data;
+		break;
+	default:
+		//TODO ERROR
+		printf("ERROR: invalid status:0x%x\n", (*cpu_get_status(core)));
+		return;
+	}
+}
 static inline uint32 cpu_get_sp(const TargetCoreType *core)
 {
 	return cpu_get_reg(core, CpuRegId_SP);

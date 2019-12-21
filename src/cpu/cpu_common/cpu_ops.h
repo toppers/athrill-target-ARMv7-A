@@ -23,7 +23,6 @@
 #define CPU_CLR_Z(status)		(*status) &= ~CPU_PSW_Z
 #define CPU_ISSET_Z(status)	( ((*status) & CPU_PSW_Z) == CPU_PSW_Z)
 
-
 static inline void op_chk_and_set_carry(uint32 *status, uint32 a32, uint32 b32)
 {
 	uint64 tmp1 = a32;
@@ -264,5 +263,119 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	}
 	return result;
 }
+
+typedef enum {
+	InstrSet_ARM = 0,
+	InstrSet_Thumb,
+	InstrSet_Jazelle, /* not supported */
+	InstrSet_ThumbEE, /* not supported */
+} InstrSetType;
+
+static inline InstrSetType CurrentInstrSet(uint32 status)
+{
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_J)) {
+		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
+			return InstrSet_ThumbEE;
+		}
+		else {
+			return InstrSet_Jazelle;
+		}
+	}
+	else {
+		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
+			return InstrSet_Thumb;
+		}
+		else {
+			return InstrSet_ARM;
+		}
+	}
+}
+static inline int SelectInstrSet(uint32 *status, InstrSetType type)
+{
+	InstrSetType current_type = CurrentInstrSet(*status);
+	if (type == InstrSet_ARM) {
+		if (current_type == InstrSet_ThumbEE) {
+			//UNPREDICTABLE
+			return -1;
+		}
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_T);
+	}
+	else if (type == InstrSet_Thumb) {
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
+		CPU_STATUS_BIT_SET(status, CPU_STATUS_BITPOS_T);
+	}
+	else {
+		// not supported
+		return -1;
+	}
+	return 0;
+}
+
+static inline void BranchTo(TargetCoreType *core, uint32 address)
+{
+	core->pc = address;
+	return;
+}
+static inline int BXWritePC(TargetCoreType *core, uint32 address)
+{
+	uint32 *status = cpu_get_status(core);
+	InstrSetType type = CurrentInstrSet(*status);
+	if (type == InstrSet_ThumbEE) {
+		if ((address & 0x00000001) != 0) {
+			BranchTo(core, (address & ~0x00000001));
+		}
+		else {
+			//UNPREDICTABLE
+			return -1;
+		}
+	}
+	else {
+		if ((address & 0x00000001) != 0) {
+			SelectInstrSet(status, InstrSet_Thumb);
+			BranchTo(core, (address & ~0x00000001));
+		}
+		else if ((address & 0x00000002) == 0) {
+			SelectInstrSet(status, InstrSet_ARM);
+			BranchTo(core, address);
+		}
+		else {
+			//UNPREDICTABLE
+			return -1;
+		}
+	}
+	return 0;
+}
+static inline int BranchWritePC(TargetCoreType *core, uint32 address)
+{
+	uint32 *status = cpu_get_status(core);
+	InstrSetType type = CurrentInstrSet(*status);
+	if (type == InstrSet_ARM) {
+		BranchTo(core, (address & ~0x00000003));
+	}
+	else if (type != InstrSet_Jazelle) {
+		BranchTo(core, (address & ~0x00000001));
+	}
+	else {
+		//not supported
+		return -1;
+	}
+	return 0;
+}
+
+static inline int ALUWritePC(TargetCoreType *core, uint32 address)
+{
+	uint32 *status = cpu_get_status(core);
+	InstrSetType type = CurrentInstrSet(*status);
+	if (type == InstrSet_ARM) {
+		return BXWritePC(core, address);
+	}
+	else {
+		return BranchWritePC(core, address);
+	}
+}
+//ALUWritePC
+//BXWritePC
+//BranchWritePC
 
 #endif /* _CPU_OPS_H_ */

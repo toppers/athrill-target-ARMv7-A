@@ -53,6 +53,29 @@ typedef enum {
 #define CpuSystemLevelEncoding_System			0b11111
 #define CpuSystemLevelEncoding_Mask				0x0000001F
 
+#define CPU_STATUS_BITPOS_N		31U
+#define CPU_STATUS_BITPOS_Z		30U
+#define CPU_STATUS_BITPOS_C		29U
+#define CPU_STATUS_BITPOS_V		28U
+#define CPU_STATUS_BITPOS_Q		27U
+#define CPU_STATUS_BITPOS_J		24U
+#define CPU_STATUS_BITPOS_E		 9U
+#define CPU_STATUS_BITPOS_A		 8U
+#define CPU_STATUS_BITPOS_I		 7U
+#define CPU_STATUS_BITPOS_F		 6U
+#define CPU_STATUS_BITPOS_T		 5U
+
+#define CPU_STATUS_BIT_IS_SET(status, bitpos)	( ( (status) & (1U << (bitpos)) ) != 0 )
+#define CPU_STATUS_BIT_SET(status, bitpos)	\
+do {	\
+	*(status) |= (1U << (bitpos));	\
+} while (0)
+
+#define CPU_STATUS_BIT_CLR(status, bitpos)	\
+do {	\
+	*(status) &= ~(1U << (bitpos));	\
+} while (0)
+
 typedef struct {
 	sint32	r[CpuRegId_NUM];
 	uint32	status;

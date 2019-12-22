@@ -2,6 +2,7 @@
 #define _OP_EXEC_DEBUG_H_
 
 #include "dbg_log.h"
+#include "cpu_op_types.h"
 
 #define SKIP_RESULT(cond) ( ((cond) != FALSE) ? "FALSE" : "TRUE" )
 #define SIGN_FLAG(S)	( ((S) != FALSE) ? "S" : "" )
@@ -31,10 +32,17 @@ static inline const char *ConditionString(uint8 cond)
 static inline void DBG_ADD_1(arm_OpCodeFormatType_add_1 *op, uint32 Rd, uint32 Rn, uint32 imm32, uint32 result, bool passed)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
-		"ADD%s%s Rd(R%d(%u)), Rn(R%d(%u)), imm12(%u): %d (skip=%s)\n",
+		"ADD%s%s Rd(R%d(%d)), Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
 		SIGN_FLAG(op->S), ConditionString(op->cond), (op)->Rd, Rd, (op)->Rn, Rn,
 		imm32, result, SKIP_RESULT(passed)));
 }
 
+static inline void DBG_ARM_MOV_IMM(ArmMovImmArgType *arg, uint32 Rd, uint32 result, bool passed)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		"%s%s%s Rd(R%d(%d)), imm(%d): %d (skip=%s)\n",
+		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd,
+		arg->imm32, result, SKIP_RESULT(passed)));
+}
 
 #endif /* _OP_EXEC_DEBUG_H_ */

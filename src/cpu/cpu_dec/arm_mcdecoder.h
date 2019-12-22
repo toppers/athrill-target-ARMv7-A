@@ -13,6 +13,10 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_add_1,
 	
+		arm_OP_CODE_FORMAT_arm_mov_imm_a1,
+	
+		arm_OP_CODE_FORMAT_arm_mov_imm_a2,
+	
 		arm_OP_CODE_FORMAT_push_1,
 	
 	arm_OP_CODE_FORMAT_UNKNOWN,
@@ -21,6 +25,10 @@ typedef enum {
 typedef enum {
 	
 		arm_OpCodeId_add_1,
+	
+		arm_OpCodeId_arm_mov_imm_a1,
+	
+		arm_OpCodeId_arm_mov_imm_a2,
 	
 		arm_OpCodeId_push_1,
 	
@@ -52,6 +60,30 @@ typedef struct {
 	
 		arm_uint8 cond;	/* 31-28 */
 	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
+		arm_uint16 imm12;	/* 11-0 */
+	
+} arm_OpCodeFormatType_arm_mov_imm_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 imm4;	/* 19-16 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
+		arm_uint16 imm12;	/* 11-0 */
+	
+} arm_OpCodeFormatType_arm_mov_imm_a2;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
 		arm_uint16 register_list;	/* 15-0 */
 	
 } arm_OpCodeFormatType_push_1;
@@ -62,6 +94,10 @@ typedef struct {
     union {
 		
         	arm_OpCodeFormatType_add_1 add_1;
+		
+        	arm_OpCodeFormatType_arm_mov_imm_a1 arm_mov_imm_a1;
+		
+        	arm_OpCodeFormatType_arm_mov_imm_a2 arm_mov_imm_a2;
 		
         	arm_OpCodeFormatType_push_1 push_1;
 		
@@ -79,10 +115,8 @@ typedef struct {
 } OpExecType;
 extern OpExecType arm_op_exec_table[arm_OpCodeId_Num];
 
-
 extern int arm_op_exec_add_1(struct TargetCore *core);
-
+extern int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core);
 extern int arm_op_exec_push_1(struct TargetCore *core);
-
-
 #endif /* !_arm_MC_DECODER_H_ */

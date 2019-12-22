@@ -411,4 +411,21 @@ static inline void cpu_update_status_flag(uint32 *status, uint32 result, bool ca
 	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
 	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
 }
+
+typedef struct {
+	uint32 bitsize;
+	uint32 data;
+} ZeroExtendArgType;
+
+static inline uint32 ZeroExtendArray(uint32 array_num, ZeroExtendArgType *array)
+{
+	uint32 result = 0;
+	uint32 bits = 0;
+	int i;
+	for (i = 0; i < array_num; i++) {
+		result |= (array[i].data << bits);
+		bits += array[i].bitsize;
+	}
+	return result;
+}
 #endif /* _CPU_OPS_H_ */

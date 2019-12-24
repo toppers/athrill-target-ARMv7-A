@@ -32,8 +32,8 @@ static inline const char *ConditionString(uint8 cond)
 static inline void DBG_ARM_ADD_IMM(ArmAddImmArgType *arg, uint32 Rd, uint32 Rn, uint32 result, bool passed)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
-		"ADD%s%s Rd(R%d(%d)), Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
-		SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd, (arg)->Rn, Rn,
+		"%s%s%s Rd(R%d(%d)), Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
+		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd, (arg)->Rn, Rn,
 		arg->imm32, result, SKIP_RESULT(passed)));
 }
 
@@ -43,6 +43,13 @@ static inline void DBG_ARM_MOV_IMM(ArmMovImmArgType *arg, uint32 Rd, uint32 resu
 		"%s%s%s Rd(R%d(%d)), imm(%d): %d (skip=%s)\n",
 		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd,
 		arg->imm32, result, SKIP_RESULT(passed)));
+}
+static inline void DBG_ARM_BRANCH_IMM(ArmBranchImmArgType *arg, uint32 next_address, bool passed)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		"%s%s imm(%d): 0x%x (skip=%s)\n",
+		arg->instrName, ConditionString(arg->cond), (arg)->imm32,
+		next_address, SKIP_RESULT(passed)));
 }
 
 #endif /* _OP_EXEC_DEBUG_H_ */

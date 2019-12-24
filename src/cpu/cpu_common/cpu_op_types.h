@@ -2,6 +2,7 @@
 #define _CPU_OP_TYPES_H_
 
 #include "std_types.h"
+#include "target_cpu.h"
 
 typedef struct {
 	char* instrName;
@@ -20,5 +21,12 @@ typedef struct {
 	uint32 cond;
 	uint8 S;
 } ArmAddImmArgType;
+
+typedef struct {
+	char* instrName;
+	sint32 imm32;
+	uint32 cond;
+	InstrSetType type;
+} ArmBranchImmArgType;
 
 #endif /* _CPU_OP_TYPES_H_ */

@@ -213,7 +213,7 @@ static inline char *addr2devregname(uint32 addr)
 }
 #define OpSignExtend(size, data)	op_sign_extend(((size) - 1), (uint32)(data))
 #define OpZeroExtend(size, data)	op_zero_extend((size), (uint32)(data))
-
+#define ConditionAlways		0b111
 static inline bool ConditionPassed(uint8 cond, uint32 status)
 {
 	uint8 cond1_3 = (cond & 0xF) >> 1U;
@@ -248,7 +248,7 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 		//when ‘110’ result = (APSR.N == APSR.V) && (APSR.Z == ‘0’); // GT or LE
 		result = ((CPU_ISSET_S(&status) == CPU_ISSET_OV(&status)) && CPU_ISSET_Z(&status));
 		break;
-	case 0b111:
+	case ConditionAlways:
 		//when ‘111’ result = TRUE; // A
 		result = TRUE;
 		break;
@@ -264,12 +264,6 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	return result;
 }
 
-typedef enum {
-	InstrSet_ARM = 0,
-	InstrSet_Thumb,
-	InstrSet_Jazelle, /* not supported */
-	InstrSet_ThumbEE, /* not supported */
-} InstrSetType;
 
 static inline InstrSetType CurrentInstrSet(uint32 status)
 {
@@ -428,4 +422,17 @@ static inline uint32 ZeroExtendArray(uint32 array_num, ZeroExtendArgType *array)
 	}
 	return result;
 }
+static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
+{
+	uint32 result = 0;
+	uint32 bits = 0;
+	int i;
+	for (i = 0; i < array_num; i++) {
+		result |= (array[i].data << bits);
+		bits += array[i].bitsize;
+	}
+	return op_sign_extend(bits - 1, result);
+}
+#define Align(x, y)	(y) * ((x) / (y))
+
 #endif /* _CPU_OPS_H_ */

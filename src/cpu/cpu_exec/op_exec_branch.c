@@ -1,231 +1,83 @@
-#include "cpu_exec/op_exec_ops.h"
-#include "cpu.h"
+#include "cpu_dec/arm_mcdecoder.h"
+#include "target_cpu.h"
+#include "cpu_ops.h"
+#include "bus.h"
+#include "cpu_exec/op_exec_debug.h"
 
-bool op_exec_cond(TargetCoreType *cpu, uint16 cond)
+//if ConditionPassed() then 
+//EncodingSpecificOperations();
+//if CurrentInstrSet() == InstrSet_ARM then
+//LR = PC - 4; else
+//LR = PC<31:1> : ‘1’;
+//if targetInstrSet == InstrSet_ARM then
+//targetAddress = Align(PC,4) + imm32; else
+//targetAddress = PC + imm32; 
+//SelectInstrSet(targetInstrSet); 
+//BranchWritePC(targetAddress);
+
+static int arm_op_exec_arm_branch(struct TargetCore *core, ArmBranchImmArgType *arg)
 {
-	uint16 is_br = FALSE;
-	uint16 flg_s = CPU_ISSET_S(&cpu->reg);
-	uint16 flg_ov = CPU_ISSET_OV(&cpu->reg);
-	uint16 flg_z = CPU_ISSET_Z(&cpu->reg);
-	uint16 flg_cy = CPU_ISSET_CY(&cpu->reg);
-	uint16 flg_sat = CPU_ISSET_SAT(&cpu->reg);
-
-	switch (cond) {
-	case 0b1110:	//BGE
-		if ((flg_s ^ flg_ov) == FALSE) {
-			is_br = TRUE;
+	sint32 next_address = core->pc;
+	uint32 *status = cpu_get_status(core);
+	bool passed = ConditionPassed(arg->cond, *status);
+	if (passed != FALSE) {
+		InstrSetType type = CurrentInstrSet(*status);
+		if (type == InstrSet_ARM) {
+			cpu_set_reg(core, CpuRegId_LR, ((sint32)(((sint32)(core->pc)) - ((sint32)4))));
 		}
-		break;
-	case 0b1111:	//BGT
-		if (((flg_s ^ flg_ov) | flg_z ) == FALSE) {
-			is_br = TRUE;
+		else {
+			cpu_set_reg(core, CpuRegId_LR, core->pc | 0x1);
 		}
-		break;
-	case 0b0111:	//BLE
-		if (((flg_s ^ flg_ov) | flg_z ) == TRUE) {
-			is_br = TRUE;
+		if (arg->type == InstrSet_ARM) {
+			next_address = ((sint32)Align(core->pc, 4)) + arg->imm32;
 		}
-		break;
-	case 0b0110:	//BLT
-		if ((flg_s ^ flg_ov) == TRUE) {
-			is_br = TRUE;
+		else {
+			next_address = ((sint32)core->pc) + arg->imm32;
 		}
-		break;
-
-	case 0b1011:	//BH
-		if ((flg_cy | flg_z) == FALSE) {
-			is_br = TRUE;
+		if (SelectInstrSet(status, arg->type) != 0) {
+			return -1;
 		}
-		break;
-	case 0b0001:	//BL
-/*	case 0b0001: */	//BC
-		if ((flg_cy) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b0011:	//BNH
-		if ((flg_cy | flg_z) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b1001:	//BNL
-/*	case 0b1001: */	//BNC
-		if ((flg_cy) == FALSE) {
-			is_br = TRUE;
-		}
-		break;
-
-	case 0b0010:	//BE
-/*	case 0b0010: */	//BZ
-		if ((flg_z) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b1010:	//BNZ
-		if ((flg_z) == FALSE) {
-			is_br = TRUE;
-		}
-		break;
-
-	case 0b0100:	//BN
-		if ((flg_s) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b1000:	//BNV
-		if ((flg_ov) == FALSE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b1100:	//BP
-		if ((flg_s) == FALSE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b0101:	//BR
-		is_br = TRUE;
-		break;
-	case 0b1101:	//BSA
-		if ((flg_sat) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	case 0b0000:	//BV
-		if ((flg_ov) == TRUE) {
-			is_br = TRUE;
-		}
-		break;
-	default:
-		break;
+		DBG_ARM_BRANCH_IMM(arg, next_address, passed);
+		return BranchWritePC(core, next_address);
 	}
-	return is_br;
-}
-
-static void op_exec_bcond(TargetCoreType *cpu, uint16 cond, sint32 disp, sint32 code_size)
-{
-	uint16 is_br = op_exec_cond(cpu, cond);
-	if (is_br == TRUE) {
-		sint32 pc = cpu->reg.pc;
-		pc = pc + disp;
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: B cond(0x%x):0x%x\n", cpu->reg.pc, cond, pc));
-		cpu->reg.pc = pc;
-	}
-	else {
-		sint32 pc = cpu->reg.pc + code_size;
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: Bcond(0x%x):0x%x\n", cpu->reg.pc, cond, pc));
-		cpu->reg.pc = pc;
-	}
-}
-/*
- * Format1
- */
-int op_exec_jmp(TargetCoreType *cpu)
-{
-	uint32 reg1 = cpu->decoded_code->type1.reg1;
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JMP r%d(0x%x)\n", cpu->reg.pc, reg1, cpu->reg.r[reg1]));
-	cpu->reg.pc = cpu->reg.r[reg1];
+	DBG_ARM_BRANCH_IMM(arg, next_address, passed);
 	return 0;
 }
 
-
-/*
- * Format3
- */
-int op_exec_bcond_3(TargetCoreType *cpu)
+int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 {
-	uint16 cond = cpu->decoded_code->type3.cond;
-	uint32 disp_u;
-	sint32 disp;
+	arm_OpCodeFormatType_arm_bl_a1 *op = &core->decoded_code->code.arm_bl_a1;
+	ArmBranchImmArgType arg;
+	ZeroExtendArgType zarg[2];
+	zarg[0].bitsize = 2U;
+	zarg[0].data = 0;
+	zarg[1].bitsize = 24U;
+	zarg[1].data = op->imm24;
 
-	disp_u = cpu->decoded_code->type3.disp << 1;
-	disp = op_sign_extend(8, disp_u);
-
-	op_exec_bcond(cpu, cond, disp, 2);
-	return 0;
+	arg.instrName = "BL";
+	arg.cond = op->cond;
+	arg.imm32 = SignExtendArray(2, zarg);
+	arg.type = InstrSet_ARM;
+	printf("imm24=0x%x¥n", (sint32)op->imm24);
+	printf("imm32=%d¥n", (sint32)arg.imm32);
+	return arm_op_exec_arm_branch(core, &arg);
 }
-
-/*
- * Format5
- */
-int op_exec_jr(TargetCoreType *cpu)
+int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 {
-	uint32 reg2 = cpu->decoded_code->type5.reg2;
-	sint32 pc = (sint32)cpu->reg.pc;
-	sint32 disp;
+	arm_OpCodeFormatType_arm_blx_a2 *op = &core->decoded_code->code.arm_blx_a2;
+	ArmBranchImmArgType arg;
+	ZeroExtendArgType zarg[3];
+	zarg[0].bitsize = 1U;
+	zarg[0].data = 0;
+	zarg[1].bitsize = 1U;
+	zarg[1].data = op->H;
+	zarg[2].bitsize = 24U;
+	zarg[2].data = op->imm24;
 
-	if (reg2 > 0) {
-		cpu->reg.r[reg2] = cpu->reg.pc + 4;
-	}
-	disp = op_sign_extend(21, cpu->decoded_code->type5.disp);
-	pc += disp;
+	arg.instrName = "BLX";
+	arg.cond = ConditionAlways;
+	arg.imm32 = SignExtendArray(3, zarg);
+	arg.type = InstrSet_Thumb;
 
-	if (reg2 == 0) {
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JR disp22(%d):0x%x\n", cpu->reg.pc, disp, pc));
-	}
-	else {
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JARL disp22(%d):0x%x r%u(0x%x)\n", cpu->reg.pc, disp, pc, reg2, cpu->reg.r[reg2]));
-	}
-
-	cpu->reg.pc = pc;
-	return 0;
+	return arm_op_exec_arm_branch(core, &arg);
 }
-
-
-/*
- * Format6
- */
-int op_exec_jmp_6(TargetCoreType *cpu)
-{
-	uint32 reg1 = cpu->decoded_code->type6.reg1;
-	uint32 disp = cpu->decoded_code->type6.imm;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JMP disp32(%u) r%d(0x%x)\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1] + disp));
-	cpu->reg.pc = cpu->reg.r[reg1] + disp;
-
-	return 0;
-}
-
-int op_exec_jarl_6(TargetCoreType *cpu)
-{
-	sint32 reg1 = cpu->decoded_code->type6.reg1;
-	uint32 disp = cpu->decoded_code->type6.imm;
-	uint32 pc = (sint32)cpu->reg.pc;
-
-	pc += disp;
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JARL disp32(%u) r%u(0x%x):0x%x r%u(0x%x)\n",
-			cpu->reg.pc,
-			disp,
-			reg1, cpu->reg.r[reg1],
-			pc,
-			reg1, cpu->reg.pc + 6));
-
-	cpu->reg.r[reg1] = cpu->reg.pc + 6;
-
-	cpu->reg.pc = pc;
-	return 0;
-}
-
-int op_exec_jr_6(TargetCoreType *cpu)
-{
-	uint32 disp = cpu->decoded_code->type6.imm;
-	uint32 pc = (uint32)cpu->reg.pc;
-
-	pc += disp;
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: JR disp32(%u):0x%x\n",
-			cpu->reg.pc,
-			disp,
-			pc));
-
-	cpu->reg.pc = pc;
-	return 0;
-}
-

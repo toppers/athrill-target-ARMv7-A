@@ -22,3 +22,11 @@ instructions:
     format: xxxx:cond|0011|0000|xxxx:imm4|xxxx:Rd|xxxxxxxxxxxx:imm12
     extras:
       clocks: 10
+  - name: arm_bl_a1
+    format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
+    extras:
+      clocks: 10
+  - name: arm_blx_a2
+    format: 1111|101|x:H|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
+    extras:
+      clocks: 10

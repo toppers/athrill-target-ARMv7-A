@@ -231,6 +231,14 @@ static inline uint32 *cpu_get_saved_status(const TargetCoreType *core)
 }
 
 typedef enum {
+	InstrSet_ARM = 0,
+	InstrSet_Thumb,
+	InstrSet_Jazelle, /* not supported */
+	InstrSet_ThumbEE, /* not supported */
+} InstrSetType;
+
+
+typedef enum {
 	CpuMemoryAccess_NONE = 0,
 	CpuMemoryAccess_READ,
 	CpuMemoryAccess_WRITE,

@@ -29,12 +29,12 @@ static inline const char *ConditionString(uint8 cond)
 	};
 	return values[cond];
 }
-static inline void DBG_ADD_1(arm_OpCodeFormatType_add_1 *op, uint32 Rd, uint32 Rn, uint32 imm32, uint32 result, bool passed)
+static inline void DBG_ARM_ADD_IMM(ArmAddImmArgType *arg, uint32 Rd, uint32 Rn, uint32 result, bool passed)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		"ADD%s%s Rd(R%d(%d)), Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
-		SIGN_FLAG(op->S), ConditionString(op->cond), (op)->Rd, Rd, (op)->Rn, Rn,
-		imm32, result, SKIP_RESULT(passed)));
+		SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd, (arg)->Rn, Rn,
+		arg->imm32, result, SKIP_RESULT(passed)));
 }
 
 static inline void DBG_ARM_MOV_IMM(ArmMovImmArgType *arg, uint32 Rd, uint32 result, bool passed)

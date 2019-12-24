@@ -4,7 +4,7 @@ machine:
   extras:
     arch_type: arm
 instructions:
-  - name: add_1
+  - name: arm_add_imm_a1
     format: xxxx:cond|00|1|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
     condition:
       cond: '!= 15'
@@ -16,5 +16,9 @@ instructions:
       cond: in_range 0-14
   - name: arm_mov_imm_a1
     format: xxxx:cond|00|1|1101|x:S|0000|xxxx:Rd|xxxxxxxxxxxx:imm12
+    extras:
+      clocks: 10
   - name: arm_mov_imm_a2
     format: xxxx:cond|0011|0000|xxxx:imm4|xxxx:Rd|xxxxxxxxxxxx:imm12
+    extras:
+      clocks: 10

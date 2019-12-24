@@ -11,7 +11,7 @@ typedef uint32_t arm_uint32;
 
 typedef enum {
 	
-		arm_OP_CODE_FORMAT_add_1,
+		arm_OP_CODE_FORMAT_arm_add_imm_a1,
 	
 		arm_OP_CODE_FORMAT_push_1,
 	
@@ -24,7 +24,7 @@ typedef enum {
 
 typedef enum {
 	
-		arm_OpCodeId_add_1,
+		arm_OpCodeId_arm_add_imm_a1,
 	
 		arm_OpCodeId_push_1,
 	
@@ -54,7 +54,7 @@ typedef struct {
 	
 		arm_uint16 imm12;	/* 11-0 */
 	
-} arm_OpCodeFormatType_add_1;
+} arm_OpCodeFormatType_arm_add_imm_a1;
 
 typedef struct {
 	
@@ -93,7 +93,7 @@ typedef struct {
 	arm_OpCodeFormatId type_id;
     union {
 		
-        	arm_OpCodeFormatType_add_1 add_1;
+        	arm_OpCodeFormatType_arm_add_imm_a1 arm_add_imm_a1;
 		
         	arm_OpCodeFormatType_push_1 push_1;
 		
@@ -115,7 +115,7 @@ typedef struct {
 } arm_OpExecType;
 extern arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num];
 
-extern int arm_op_exec_add_1(struct TargetCore *core);
+extern int arm_op_exec_arm_add_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_push_1(struct TargetCore *core);
 extern int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core);

@@ -50,6 +50,25 @@ typedef struct {
         
     
 
+    /* push_1 */
+    #define OP_FB_MASK_push_1 (0x0fff0000l) /* fixed bits mask */
+    #define OP_FB_push_1 (0x092d0000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_push_1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_push_1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_push_1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'register_list' */
+            #define OP_SF_MASK_push_1_register_list_0 (0x0000ffffl) /* subfield mask */
+            #define OP_SF_EBII_push_1_register_list_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_push_1_register_list_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_mov_imm_a1 */
     #define OP_FB_MASK_arm_mov_imm_a1 (0x0fef0000l) /* fixed bits mask */
     #define OP_FB_arm_mov_imm_a1 (0x03a00000l) /* fixed bits */
@@ -116,25 +135,6 @@ typedef struct {
         
     
 
-    /* push_1 */
-    #define OP_FB_MASK_push_1 (0x0fff0000l) /* fixed bits mask */
-    #define OP_FB_push_1 (0x092d0000l) /* fixed bits */
-    
-        
-            /* 0th subfield of the field 'cond' */
-            #define OP_SF_MASK_push_1_cond_0 (0xf0000000l) /* subfield mask */
-            #define OP_SF_EBII_push_1_cond_0 (28) /* subfield end bit position in instruction */
-            #define OP_SF_EBIF_push_1_cond_0 (0) /* subfield end bit position in field */
-        
-    
-        
-            /* 0th subfield of the field 'register_list' */
-            #define OP_SF_MASK_push_1_register_list_0 (0x0000ffffl) /* subfield mask */
-            #define OP_SF_EBII_push_1_register_list_0 (0) /* subfield end bit position in instruction */
-            #define OP_SF_EBIF_push_1_register_list_0 (0) /* subfield end bit position in field */
-        
-    
-
 
 /* individual op parse functions */
 
@@ -173,6 +173,47 @@ typedef struct {
                 (((context->code32 & OP_SF_MASK_add_1_imm12_0) >> OP_SF_EBII_add_1_imm12_0) << OP_SF_EBIF_add_1_imm12_0);
             
         
+
+        
+            if (!(
+                context->decoded_code->code.add_1.cond != 15
+                
+            )) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* push_1 */
+    static int op_parse_push_1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_push_1) != OP_FB_push_1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_push_1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_push_1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_push_1;
+        
+            context->decoded_code->code.push_1.cond =
+            
+                (((context->code32 & OP_SF_MASK_push_1_cond_0) >> OP_SF_EBII_push_1_cond_0) << OP_SF_EBIF_push_1_cond_0);
+            
+        
+            context->decoded_code->code.push_1.register_list =
+            
+                (((context->code32 & OP_SF_MASK_push_1_register_list_0) >> OP_SF_EBII_push_1_register_list_0) << OP_SF_EBIF_push_1_register_list_0);
+            
+        
+
+        
+            if (!(
+                context->decoded_code->code.push_1.cond >= 0 && context->decoded_code->code.push_1.cond <= 14
+                
+            )) {
+                return 1;
+            }
+        
         return 0;
     }
 
@@ -205,6 +246,8 @@ typedef struct {
             
                 (((context->code32 & OP_SF_MASK_arm_mov_imm_a1_imm12_0) >> OP_SF_EBII_arm_mov_imm_a1_imm12_0) << OP_SF_EBIF_arm_mov_imm_a1_imm12_0);
             
+        
+
         
         return 0;
     }
@@ -239,28 +282,7 @@ typedef struct {
                 (((context->code32 & OP_SF_MASK_arm_mov_imm_a2_imm12_0) >> OP_SF_EBII_arm_mov_imm_a2_imm12_0) << OP_SF_EBIF_arm_mov_imm_a2_imm12_0);
             
         
-        return 0;
-    }
 
-    /* push_1 */
-    static int op_parse_push_1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_push_1) != OP_FB_push_1) {
-            return 1;
-        }
-
-        context->optype->code_id = arm_OpCodeId_push_1;
-        context->optype->format_id = arm_OP_CODE_FORMAT_push_1;
-        context->decoded_code->type_id = arm_OP_CODE_FORMAT_push_1;
-        
-            context->decoded_code->code.push_1.cond =
-            
-                (((context->code32 & OP_SF_MASK_push_1_cond_0) >> OP_SF_EBII_push_1_cond_0) << OP_SF_EBIF_push_1_cond_0);
-            
-        
-            context->decoded_code->code.push_1.register_list =
-            
-                (((context->code32 & OP_SF_MASK_push_1_register_list_0) >> OP_SF_EBII_push_1_register_list_0) << OP_SF_EBIF_push_1_register_list_0);
-            
         
         return 0;
     }
@@ -280,6 +302,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_push_1(&context) == 0) {
+            return 0;
+        }
+    
         if (op_parse_arm_mov_imm_a1(&context) == 0) {
             return 0;
         }
@@ -288,22 +314,18 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
-        if (op_parse_push_1(&context) == 0) {
-            return 0;
-        }
-    
 
     return 1;
 }
 
-OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
+arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
     
 	{ 1, arm_op_exec_add_1 },		/* add_1 */
+    
+	{ 1, arm_op_exec_push_1 },		/* push_1 */
     
 	{ 1, arm_op_exec_arm_mov_imm_a1 },		/* arm_mov_imm_a1 */
     
 	{ 1, arm_op_exec_arm_mov_imm_a2 },		/* arm_mov_imm_a2 */
-    
-	{ 1, arm_op_exec_push_1 },		/* push_1 */
     
 };

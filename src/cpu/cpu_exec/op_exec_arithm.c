@@ -31,6 +31,7 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 	arg.Rn = op->Rn;
 	arg.instrName = "ADD";
 	arg.S = op->S;
+	arg.cond = op->cond;
 	sint32 Rn = cpu_get_reg(core, op->Rn);
 	sint32 Rd = cpu_get_reg(core, op->Rd);
 	sint32 result = -1;

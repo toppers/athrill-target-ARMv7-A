@@ -53,6 +53,21 @@ typedef enum {
 #define CpuSystemLevelEncoding_System			0b11111
 #define CpuSystemLevelEncoding_Mask				0x0000001F
 
+typedef struct {
+	sint32	r[CpuRegId_NUM];
+	uint32	status;
+} CpuRegisterType;
+
+typedef struct TargetCore {
+	CoreIdType					core_id;
+	uint32 						pc;
+	CpuRegisterType 			reg[CpuSystemLevel_NUM];
+	bool						is_halt;
+	uint16 						*current_code;
+	OpDecodedCodeType			*decoded_code;
+} TargetCoreType;
+
+
 #define CPU_STATUS_BITPOS_N		31U
 #define CPU_STATUS_BITPOS_Z		30U
 #define CPU_STATUS_BITPOS_C		29U
@@ -86,24 +101,55 @@ do {	\
 	}	\
 } while (0)
 
-typedef struct {
-	sint32	r[CpuRegId_NUM];
-	uint32	status;
-} CpuRegisterType;
+typedef enum {
+	InstrSet_ARM = 0,
+	InstrSet_Thumb,
+	InstrSet_Jazelle, /* not supported */
+	InstrSet_ThumbEE, /* not supported */
+} InstrSetType;
 
-typedef struct TargetCore {
-	CoreIdType					core_id;
-	uint32 						pc;
-	CpuRegisterType 			reg[CpuSystemLevel_NUM];
-	bool						is_halt;
-	uint16 						*current_code;
-	OpDecodedCodeType			*decoded_code;
-} TargetCoreType;
 
-static inline uint32 cpu_get_pc(const TargetCoreType *core)
+static inline InstrSetType CurrentInstrSet(uint32 status)
 {
-	return core->pc;
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_J)) {
+		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
+			return InstrSet_ThumbEE;
+		}
+		else {
+			return InstrSet_Jazelle;
+		}
+	}
+	else {
+		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
+			return InstrSet_Thumb;
+		}
+		else {
+			return InstrSet_ARM;
+		}
+	}
 }
+static inline int SelectInstrSet(uint32 *status, InstrSetType type)
+{
+	InstrSetType current_type = CurrentInstrSet(*status);
+	if (type == InstrSet_ARM) {
+		if (current_type == InstrSet_ThumbEE) {
+			//UNPREDICTABLE
+			return -1;
+		}
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_T);
+	}
+	else if (type == InstrSet_Thumb) {
+		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
+		CPU_STATUS_BIT_SET(status, CPU_STATUS_BITPOS_T);
+	}
+	else {
+		// not supported
+		return -1;
+	}
+	return 0;
+}
+
 static inline uint32 *cpu_get_status(const TargetCoreType *core)
 {
 	return &(((TargetCoreType *)core)->reg[0].status);
@@ -111,11 +157,12 @@ static inline uint32 *cpu_get_status(const TargetCoreType *core)
 
 static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 {
+	uint32 *status = cpu_get_status(core);
 	if (regid <= CpuRegId_7) {
 		return core->reg[0].r[regid];
 	}
 	else if (regid <= CpuRegId_12) {
-		if (((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) != CpuSystemLevelEncoding_FIQ) {
+		if (((*status) & CpuSystemLevelEncoding_Mask) != CpuSystemLevelEncoding_FIQ) {
 			return core->reg[0].r[regid];
 		}
 		else {
@@ -123,7 +170,12 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 		}
 	}
 	else if (regid == CpuRegId_PC) {
-		return core->pc;
+		if (CurrentInstrSet(*status) == InstrSet_ARM) {
+			return (core->pc + 8);
+		}
+		else {
+			return (core->pc + 4);
+		}
 	}
 	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
 	case CpuSystemLevelEncoding_User:
@@ -149,6 +201,45 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 		return -1;
 	}
 }
+
+
+static inline uint32 cpu_get_sp(const TargetCoreType *core)
+{
+	return cpu_get_reg(core, CpuRegId_SP);
+}
+static inline uint32 cpu_get_lr(const TargetCoreType *core)
+{
+	return cpu_get_reg(core, CpuRegId_LR);
+}
+static inline uint32 *cpu_get_saved_status(const TargetCoreType *core)
+{
+	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
+	case CpuSystemLevelEncoding_FIQ:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_FIQ].status);
+	case CpuSystemLevelEncoding_IRQ:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_IRQ].status);
+	case CpuSystemLevelEncoding_Supervisor:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Supervisor].status);
+	case CpuSystemLevelEncoding_Monitor:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Monitor].status);
+	case CpuSystemLevelEncoding_Abort:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Abort].status);
+	case CpuSystemLevelEncoding_Hyp:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Hyp].status);
+	case CpuSystemLevelEncoding_Undefined:
+		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Undefined].status);
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+	default:
+		//TODO ERROR
+		return NULL;
+	}
+}
+static inline uint32 cpu_get_pc(const TargetCoreType *core)
+{
+	return core->pc;
+}
+
 static inline void cpu_set_reg(TargetCoreType *core, uint32 regid, uint32 data)
 {
 	if (regid <= CpuRegId_7) {
@@ -197,47 +288,6 @@ static inline void cpu_set_reg(TargetCoreType *core, uint32 regid, uint32 data)
 		return;
 	}
 }
-static inline uint32 cpu_get_sp(const TargetCoreType *core)
-{
-	return cpu_get_reg(core, CpuRegId_SP);
-}
-static inline uint32 cpu_get_lr(const TargetCoreType *core)
-{
-	return cpu_get_reg(core, CpuRegId_LR);
-}
-static inline uint32 *cpu_get_saved_status(const TargetCoreType *core)
-{
-	switch ((*cpu_get_status(core)) & CpuSystemLevelEncoding_Mask) {
-	case CpuSystemLevelEncoding_FIQ:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_FIQ].status);
-	case CpuSystemLevelEncoding_IRQ:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_IRQ].status);
-	case CpuSystemLevelEncoding_Supervisor:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Supervisor].status);
-	case CpuSystemLevelEncoding_Monitor:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Monitor].status);
-	case CpuSystemLevelEncoding_Abort:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Abort].status);
-	case CpuSystemLevelEncoding_Hyp:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Hyp].status);
-	case CpuSystemLevelEncoding_Undefined:
-		return &(((TargetCoreType *)core)->reg[CpuSystemLevel_Undefined].status);
-	case CpuSystemLevelEncoding_User:
-	case CpuSystemLevelEncoding_System:
-	default:
-		//TODO ERROR
-		return NULL;
-	}
-}
-
-typedef enum {
-	InstrSet_ARM = 0,
-	InstrSet_Thumb,
-	InstrSet_Jazelle, /* not supported */
-	InstrSet_ThumbEE, /* not supported */
-} InstrSetType;
-
-
 typedef enum {
 	CpuMemoryAccess_NONE = 0,
 	CpuMemoryAccess_READ,

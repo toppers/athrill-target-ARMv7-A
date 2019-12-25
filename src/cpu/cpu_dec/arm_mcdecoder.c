@@ -213,13 +213,6 @@ typedef struct {
         
 
         
-            if (!(
-                context->decoded_code->code.arm_add_imm_a1.cond != 15
-                
-            )) {
-                return 1;
-            }
-        
         return 0;
     }
 
@@ -244,13 +237,6 @@ typedef struct {
             
         
 
-        
-            if (!(
-                context->decoded_code->code.push_1.cond >= 0 && context->decoded_code->code.push_1.cond <= 14
-                
-            )) {
-                return 1;
-            }
         
         return 0;
     }

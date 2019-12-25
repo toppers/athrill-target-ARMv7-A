@@ -4,17 +4,6 @@
 #include "bus.h"
 #include "cpu_exec/op_exec_debug.h"
 
-//if ConditionPassed() then 
-//EncodingSpecificOperations();
-//if CurrentInstrSet() == InstrSet_ARM then
-//LR = PC - 4; else
-//LR = PC<31:1> : ‘1’;
-//if targetInstrSet == InstrSet_ARM then
-//targetAddress = Align(PC,4) + imm32; else
-//targetAddress = PC + imm32; 
-//SelectInstrSet(targetInstrSet); 
-//BranchWritePC(targetAddress);
-
 static int arm_op_exec_arm_branch(struct TargetCore *core, ArmBranchImmArgType *arg)
 {
 	sint32 next_address = core->pc;
@@ -22,17 +11,18 @@ static int arm_op_exec_arm_branch(struct TargetCore *core, ArmBranchImmArgType *
 	bool passed = ConditionPassed(arg->cond, *status);
 	if (passed != FALSE) {
 		InstrSetType type = CurrentInstrSet(*status);
+		uint32 pc = cpu_get_reg(core, CpuRegId_PC);
 		if (type == InstrSet_ARM) {
-			cpu_set_reg(core, CpuRegId_LR, ((sint32)(((sint32)(core->pc)) - ((sint32)4))));
+			cpu_set_reg(core, CpuRegId_LR, ((sint32)(((sint32)(pc)) - ((sint32)4))));
 		}
 		else {
-			cpu_set_reg(core, CpuRegId_LR, core->pc | 0x1);
+			cpu_set_reg(core, CpuRegId_LR, pc | 0x1);
 		}
 		if (arg->type == InstrSet_ARM) {
-			next_address = ((sint32)Align(core->pc, 4)) + arg->imm32;
+			next_address = ((sint32)Align(pc, 4)) + arg->imm32;
 		}
 		else {
-			next_address = ((sint32)core->pc) + arg->imm32;
+			next_address = ((sint32)pc) + arg->imm32;
 		}
 		if (SelectInstrSet(status, arg->type) != 0) {
 			return -1;
@@ -58,8 +48,6 @@ int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 	arg.cond = op->cond;
 	arg.imm32 = SignExtendArray(2, zarg);
 	arg.type = InstrSet_ARM;
-	printf("imm24=0x%x¥n", (sint32)op->imm24);
-	printf("imm32=%d¥n", (sint32)arg.imm32);
 	return arm_op_exec_arm_branch(core, &arg);
 }
 int arm_op_exec_arm_blx_a2(struct TargetCore *core)

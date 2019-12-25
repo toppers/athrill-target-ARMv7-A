@@ -264,48 +264,6 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	return result;
 }
 
-
-static inline InstrSetType CurrentInstrSet(uint32 status)
-{
-	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_J)) {
-		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
-			return InstrSet_ThumbEE;
-		}
-		else {
-			return InstrSet_Jazelle;
-		}
-	}
-	else {
-		if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_T)) {
-			return InstrSet_Thumb;
-		}
-		else {
-			return InstrSet_ARM;
-		}
-	}
-}
-static inline int SelectInstrSet(uint32 *status, InstrSetType type)
-{
-	InstrSetType current_type = CurrentInstrSet(*status);
-	if (type == InstrSet_ARM) {
-		if (current_type == InstrSet_ThumbEE) {
-			//UNPREDICTABLE
-			return -1;
-		}
-		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
-		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_T);
-	}
-	else if (type == InstrSet_Thumb) {
-		CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
-		CPU_STATUS_BIT_SET(status, CPU_STATUS_BITPOS_T);
-	}
-	else {
-		// not supported
-		return -1;
-	}
-	return 0;
-}
-
 static inline void BranchTo(TargetCoreType *core, uint32 address)
 {
 	core->pc = address;

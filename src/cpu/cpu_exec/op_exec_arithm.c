@@ -19,7 +19,7 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 		//TODO
 		return 0;
 	}
-	if ((op->Rn == 0b1111) && (op->S != 0)) {
+	else if ((op->Rn == 0b1111) && (op->S != 0)) {
 		//if Rd == ‘1111’ && S == ‘1’ then SEE SUBS PC, LR and related instructions;
 		//TODO
 		return 0;

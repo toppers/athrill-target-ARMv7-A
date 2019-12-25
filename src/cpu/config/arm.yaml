@@ -28,3 +28,8 @@ instructions:
     format: 1111|101|x:H|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     extras:
       clocks: 10
+  - name: arm_str_imm_a1
+    format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
+    extras:
+      clocks: 10
+

@@ -1,332 +1,76 @@
-#include <stdlib.h>
-
-#include "cpu_exec/op_exec_ops.h"
-#include "cpu.h"
+#include "cpu_dec/arm_mcdecoder.h"
+#include "target_cpu.h"
+#include "cpu_ops.h"
 #include "bus.h"
+#include "cpu_exec/op_exec_debug.h"
 
-#ifdef SUPRESS_DETECT_ERROR
-#define IS_STACK_OVER(cpu, reg, disp) (FALSE)
-#else
-#define IS_STACK_OVER(cpu, regN, disp) (cpu_may_store_on_stack_overflow((cpu)->reg.r[(regN)], (disp) == TRUE))
-#endif /* SUPRESS_DETECT_ERROR */
-
-/*
- * Format4
- */
-int op_exec_sstb(TargetCoreType *cpu)
+int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 {
-	uint32 addr;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	Std_ReturnType err;
+	uint32 next_address = core->pc + INST_ARM_SIZE;
+	arm_OpCodeFormatType_arm_str_imm_a1 *op = &core->decoded_code->code.arm_str_imm_a1;
 
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
+	if ((op->P == 0) && (op->W != 0)) {
+		//if P == ‘0’ && W == ‘1’ then SEE STRT;
+		//TODO
+		return 0;
 	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
+	else if ((op->Rn == 0b1101) && (op->P != 0) && (op->U == 0) && (op->W != 0) && (op->imm12 == 0b000000000100)) {
+		//if Rn == ‘1101’ && P == ‘1’ && U == ‘0’ && W == ‘1’ && imm12 == ‘000000000100’ then SEE PUSH;
+		//TODO
+		return 0;
 	}
+	//t = UInt(Rt); n = UInt(Rn); imm32 = ZeroExtend(imm12, 32);
+	//index = (P == ‘1’); add = (U == ‘1’); wback = (P == ‘0’) || (W == ‘1’);
+	ArmStoreImmArgType arg;
+	arg.index_flag = (op->P != 0);
+	arg.add_flag = (op->U != 0);
+	arg.wback_flag = ((op->P == 0) || (op->W != 0));
 
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = (disp << 1) | cpu->decoded_code->type4_1.gen;
-	disp = op_zero_extend(7, disp);
-	addr = cpu->reg.r[reg1] + disp;
-
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-	err = bus_put_data8(cpu->core_id, addr, (uint8)cpu->reg.r[reg2]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SST.B r%d(0x%x), disp7(0x%x) r%d(0x%x):0x%x\n", cpu->reg.pc, reg1, cpu->reg.r[reg1], disp, reg2, cpu->reg.r[reg2], (uint8)cpu->reg.r[reg2]));
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-int op_exec_ssth(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
+	if (arg.wback_flag && ((op->Rn == CpuRegId_PC) || (op->Rn == op->Rt))) {
+		//if wback && (n == 15 || n == t) then UNPREDICTABLE;
+		//TODO
 		return -1;
 	}
 
+	arg.imm32 = op->imm12;
+	arg.Rn = op->Rn;
+	arg.Rt = op->Rt;
+	arg.instrName = "STR";
+	arg.cond = op->cond;
+	uint32 Rn = cpu_get_reg(core, op->Rn);
+	uint32 Rt = cpu_get_reg(core, op->Rt);
 
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = (disp << 1) | cpu->decoded_code->type4_1.gen;
-	disp = op_zero_extend(7, disp);
-	disp = disp << 1;
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
+	uint32 *status = cpu_get_status(core);
+	bool passed = ConditionPassed(arg.cond, *status);
+	uint32 data = -1;
+	uint32 offset_addr = (arg.add_flag) ? (Rn + arg.imm32) : (Rn - arg.imm32);
+	uint32 address = (arg.index_flag) ? offset_addr : Rn;
+	if (passed != FALSE) {
+		Std_ReturnType err;
 
-	err = bus_put_data16(cpu->core_id, addr, (uint16)cpu->reg.r[reg2]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SST.H r%d(0x%x), disp8(0x%x) r%d(0x%x):0x%x\n", cpu->reg.pc, reg1, cpu->reg.r[reg1], disp, reg2, cpu->reg.r[reg2], (uint16)cpu->reg.r[reg2]));
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-
-int op_exec_sstw(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = op_zero_extend(6, disp);
-	disp = disp << 2;
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-	err = bus_put_data32(cpu->core_id, addr, (uint32)cpu->reg.r[reg2]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SST.W r%d(0x%x), disp7(0x%x) r%d(0x%x):0x%x\n", cpu->reg.pc, reg1, cpu->reg.r[reg1], disp, reg2, cpu->reg.r[reg2], (uint32)cpu->reg.r[reg2]));
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-
-/*
- * Format7
- */
-
-int op_exec_sthw(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-
-	if (cpu->decoded_code->type7.gen == 0x00) {
-		//ST.H
-		disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) );
-		addr = cpu->reg.r[reg1] + disp;
-		if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-			printf("ERROR: found stack overflow\n");
-			return -1;
+		if (op->Rt == CpuRegId_PC) {
+			data = PCStoreValue(core);
 		}
-
-		err = bus_put_data16(cpu->core_id, addr, (sint16)cpu->reg.r[reg2]);
+		else {
+			data = Rt;
+		}
+		err = bus_put_data32(core->core_id, address, data);
 		if (err != STD_E_OK) {
 			return -1;
 		}
-
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.H r%d(0x%x), disp16(%d) r%d(0x%x):0x%x\n", cpu->reg.pc, reg2, cpu->reg.r[reg2], disp, reg1, cpu->reg.r[reg1], (sint16)cpu->reg.r[reg2]));
-	}
-	else {
-		//ST.W
-		disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) );
-		addr = cpu->reg.r[reg1] + disp;
-		if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-			printf("ERROR: found stack overflow\n");
-			return -1;
+		if (arg.wback_flag) {
+			cpu_set_reg(core, op->Rn, offset_addr);
 		}
-
-		err = bus_put_data32(cpu->core_id, addr, (sint32)cpu->reg.r[reg2]);
-		if (err != STD_E_OK) {
-			return -1;
-		}
-
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.W r%d(0x%x), disp16(%d) r%d(0x%x):0x%x\n", cpu->reg.pc, reg2, cpu->reg.r[reg2], disp, reg1, cpu->reg.r[reg1], (sint32)cpu->reg.r[reg2]));
 	}
+	DBG_ARM_STR_IMM(&arg, Rt, Rn, address, data, passed);
 
-	cpu->reg.pc += 4;
+	core->pc = next_address;
 	return 0;
 }
 
-
-int op_exec_stb(TargetCoreType *cpu)
+int arm_op_exec_push_1(struct TargetCore *core)
 {
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) | cpu->decoded_code->type7.gen);
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-
-	err = bus_put_data8(cpu->core_id, addr, (uint8)cpu->reg.r[reg2]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.B r%d(0x%x), disp16(%d) r%d(0x%x):0x%x\n", cpu->reg.pc, reg2, cpu->reg.r[reg2], disp, reg1, cpu->reg.r[reg1], (uint8)cpu->reg.r[reg2]));
-
-	cpu->reg.pc += 4;
-	return 0;
-}
-
-int op_exec_st_b_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-	err = bus_put_data8(cpu->core_id, addr, (uint8)cpu->reg.r[reg3]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.B r%d(0x%x), disp23(%d) r%d(0x%x):0x%x\n",
-			cpu->reg.pc,
-			reg3, cpu->reg.r[reg3],
-			disp,
-			reg1, cpu->reg.r[reg1],
-			(uint8)cpu->reg.r[reg3]));
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-
-int op_exec_st_h_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-	err = bus_put_data16(cpu->core_id, addr, (sint16)cpu->reg.r[reg3]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.H r%d(0x%x), disp23(%d) r%d(0x%x):0x%x\n",
-			cpu->reg.pc,
-			reg3, cpu->reg.r[reg3],
-			disp,
-			reg1, cpu->reg.r[reg1],
-			(sint16)cpu->reg.r[reg3]));
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-int op_exec_st_w_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-	addr = cpu->reg.r[reg1] + disp;
-	if ((reg1 == CPU_REG_SP) && IS_STACK_OVER(cpu, reg1, disp)) {
-		printf("ERROR: found stack overflow\n");
-		return -1;
-	}
-
-	err = bus_put_data32(cpu->core_id, addr, (sint32)cpu->reg.r[reg3]);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: ST.W r%d(0x%x), disp23(%d) r%d(0x%x):0x%x\n",
-			cpu->reg.pc,
-			reg3, cpu->reg.r[reg3],
-			disp,
-			reg1, cpu->reg.r[reg1],
-			(sint32)cpu->reg.r[reg3]));
-
-	cpu->reg.pc += 6;
+	printf("enter push\n");
 	return 0;
 }
 

@@ -29,4 +29,15 @@ typedef struct {
 	InstrSetType type;
 } ArmBranchImmArgType;
 
+typedef struct {
+	char* instrName;
+	bool add_flag;
+	bool index_flag;
+	bool wback_flag;
+	uint32 imm32;
+	uint32 Rn;
+	uint32 Rt;
+	uint32 cond;
+} ArmStoreImmArgType;
+
 #endif /* _CPU_OP_TYPES_H_ */

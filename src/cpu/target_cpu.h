@@ -239,6 +239,10 @@ static inline uint32 cpu_get_pc(const TargetCoreType *core)
 {
 	return core->pc;
 }
+static inline uint32 PCStoreValue(const TargetCoreType *core)
+{
+	return cpu_get_pc(core);
+}
 
 static inline void cpu_set_reg(TargetCoreType *core, uint32 regid, uint32 data)
 {

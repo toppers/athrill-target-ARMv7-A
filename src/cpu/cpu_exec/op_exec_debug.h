@@ -60,5 +60,14 @@ static inline void DBG_ARM_STR_IMM(ArmStoreImmArgType *arg, uint32 Rt, uint32 Rn
 		arg->wback_flag ? "TRUE" : "FALSE",
 		data, address, SKIP_RESULT(passed)));
 }
+static inline void DBG_ARM_LDR_IMM(ArmLoadImmArgType *arg, uint32 Rt, uint32 Rn, uint32 address, uint32 data, uint32 result, bool passed)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		"%s%s Rt(R%d(%d)), Rn(R%d(0x%x)), imm12(%s%d) wback=%s %d@0x%x : %d (skip=%s)\n",
+		arg->instrName, ConditionString(arg->cond), (arg)->Rt, Rt, (arg)->Rn, Rn,
+		arg->add_flag ? "+" : "-", (arg)->imm32,
+		arg->wback_flag ? "TRUE" : "FALSE",
+		data, address, result, SKIP_RESULT(passed)));
+}
 
 #endif /* _OP_EXEC_DEBUG_H_ */

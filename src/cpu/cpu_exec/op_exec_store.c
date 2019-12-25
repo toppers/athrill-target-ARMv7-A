@@ -68,9 +68,3 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 	return 0;
 }
 
-int arm_op_exec_push_1(struct TargetCore *core)
-{
-	printf("enter push\n");
-	return 0;
-}
-

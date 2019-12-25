@@ -179,6 +179,20 @@ static inline uint32 ROR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_ou
 	}
 	return result;
 }
+
+static inline uint32 ROR(uint32 bits_N, uint32 x, uint32 shift)
+{
+	uint32 result;
+
+	if (shift == 0) {
+		result = x;
+	}
+	else {
+		result = ROR_C(bits_N, x, shift, NULL);
+	}
+	return result;
+}
+
 static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 amount, bool carry_in, bool *carry_out)
 {
 	if (amount == 0) {
@@ -314,6 +328,7 @@ static inline int BranchWritePC(TargetCoreType *core, uint32 address)
 	}
 	return 0;
 }
+#define LoadWritePC(core, addr)	BXWritePC(core, addr)
 
 static inline int ALUWritePC(TargetCoreType *core, uint32 address)
 {
@@ -392,5 +407,6 @@ static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 	return op_sign_extend(bits - 1, result);
 }
 #define Align(x, y)	(y) * ((x) / (y))
+#define UnalignedSupport()		TRUE
 
 #endif /* _CPU_OPS_H_ */

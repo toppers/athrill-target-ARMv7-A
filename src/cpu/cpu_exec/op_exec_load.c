@@ -1,513 +1,87 @@
-#include <stdlib.h>
-
-#include "cpu_exec/op_exec_ops.h"
-#include "cpu.h"
+#include "cpu_dec/arm_mcdecoder.h"
+#include "target_cpu.h"
+#include "cpu_ops.h"
 #include "bus.h"
+#include "cpu_exec/op_exec_debug.h"
 
-
-/*
- * Format4
- */
-int op_exec_sldb(TargetCoreType *cpu)
+int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 {
-	uint32 addr;
-	sint32 ret;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	sint8 data8;
-	Std_ReturnType err;
+	uint32 next_address = core->pc + INST_ARM_SIZE;
+	arm_OpCodeFormatType_arm_ldr_imm_a1 *op = &core->decoded_code->code.arm_ldr_imm_a1;
 
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
+	if (op->Rn == 0b1111) {
+		//if Rn == ‘1111’ then SEE LDR (literal);
+		return 0;
 	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
+	else if ((op->P == 0) && (op->W != 0)) {
+		//if P == ‘0’ && W == ‘1’ then SEE LDRT;
+		//TODO
+		return 0;
 	}
-
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = (disp << 1) | cpu->decoded_code->type4_1.gen;
-	disp = op_zero_extend(7, disp);
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data8(cpu->core_id, addr, (uint8*)&data8);
-	if (err != STD_E_OK) {
-		return -1;
+	else if ((op->Rn == 0b1101) && (op->P == 0) && (op->U != 0) && (op->W == 0) && (op->imm12 == 0b000000000100)) {
+		//if Rn == ‘1101’ && P == ‘0’ && U == ‘1’ && W == ‘0’ && imm12 == ‘000000000100’ then SEE POP;
+		//TODO
+		return 0;
 	}
-	ret = data8;
+	//t = UInt(Rt); n = UInt(Rn); imm32 = ZeroExtend(imm12, 32);
+	//index = (P == ‘1’); add = (U == ‘1’); wback = (P == ‘0’) || (W == ‘1’);
+	ArmLoadImmArgType arg;
+	arg.index_flag = (op->P != 0);
+	arg.add_flag = (op->U != 0);
+	arg.wback_flag = ((op->P == 0) || (op->W != 0));
 
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SLD.B disp7(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], ret));
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-int op_exec_sldbu(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 ret;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_2.reg2;
-	uint8 data8;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
+	if (arg.wback_flag && (op->Rn == op->Rt)) {
+		//if wback && n == t then UNPREDICTABLE;
+		//TODO
 		return -1;
 	}
 
-	disp = cpu->decoded_code->type4_2.disp;
-	disp = op_zero_extend(3, disp);
-	addr = cpu->reg.r[reg1] + disp;
+	arg.imm32 = op->imm12;
+	arg.Rn = op->Rn;
+	arg.Rt = op->Rt;
+	arg.instrName = "LDR";
+	arg.cond = op->cond;
+	uint32 Rn = cpu_get_reg(core, op->Rn);
+	uint32 Rt = cpu_get_reg(core, op->Rt);
 
-	err = bus_get_data8(cpu->core_id, addr, &data8);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	ret = data8;
+	uint32 *status = cpu_get_status(core);
+	bool passed = ConditionPassed(arg.cond, *status);
+	uint32 data = -1;
+	uint32 result = -1;
+	uint32 offset_addr = (arg.add_flag) ? (Rn + arg.imm32) : (Rn - arg.imm32);
+	uint32 address = (arg.index_flag) ? offset_addr : Rn;
+	if (passed != FALSE) {
+		Std_ReturnType err;
 
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SLD.BU disp4(%u),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], ret));
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-
-int op_exec_sldhu(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 ret;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_2.reg2;
-	uint16 data16;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = ( (cpu->decoded_code->type4_2.disp) << 1U );
-	disp = op_zero_extend(4, disp);
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data16(cpu->core_id, addr, &data16);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	ret = data16;
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SLD.HU disp4(%u),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], ret));
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-
-int op_exec_sldh(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 ret;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	sint16 data16;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = (disp << 1) | cpu->decoded_code->type4_1.gen;
-	disp = op_zero_extend(7, disp);
-	disp = disp << 1;
-
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data16(cpu->core_id, addr, (uint16*)&data16);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	ret = data16;
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SLD.H disp8(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], ret));
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-
-int op_exec_sldw(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 ret;
-	uint32 disp;
-	uint32 reg1 = CPU_REG_EP;
-	uint32 reg2 = cpu->decoded_code->type4_1.reg2;
-	uint32 data32;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = cpu->decoded_code->type4_1.disp;
-	disp = op_zero_extend(6, disp);
-	disp = disp << 2;
-	addr = cpu->reg.r[reg1] + disp;
-
-	//TODO:comm_hook_load_reg32(cpu, addr);
-
-	err = bus_get_data32(cpu->core_id, addr, &data32);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	ret = data32;
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: SLD.W disp8(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], ret));
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 2;
-	return 0;
-}
-/*
- * Format7
- */
-
-int op_exec_ldb(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	sint8 data8;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) | cpu->decoded_code->type7.gen);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data8(cpu->core_id, addr, (uint8*)&data8);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.B disp16(%d),r%d(0x%x), r%d(0x%x) addr=0x%x:0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], addr, data8));
-
-	cpu->reg.r[reg2] = data8;
-
-	cpu->reg.pc += 4;
-	return 0;
-}
-int op_exec_ld_b_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	sint8 data8;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data8(cpu->core_id, addr, (uint8*)&data8);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.B disp23(%d),r%d(0x%x), r%d(0x%x) addr=0x%x:0x%x\n",
-			cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg3, cpu->reg.r[reg3], addr, data8));
-
-	cpu->reg.r[reg3] = data8;
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-int op_exec_ldbu(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	sint32 disp_bit;
-	uint8 data8;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp_bit = (cpu->decoded_code->type7.opcode & 0x0001);
-	disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) | disp_bit);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data8(cpu->core_id, addr, &data8);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.BU disp16(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], data8));
-
-	cpu->reg.r[reg2] = data8;
-
-	cpu->reg.pc += 4;
-	return 0;
-}
-
-int op_exec_ld_bu_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	uint8 data8;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data8(cpu->core_id, addr, &data8);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.BU disp23(%d),r%d(0x%x), r%d(0x%x):0x%x\n",
-			cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg3, cpu->reg.r[reg3], data8));
-
-	cpu->reg.r[reg3] = data8;
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-int op_exec_ldhw(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 ret;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	sint16 data16;
-	sint32 data32;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-
-	if (cpu->decoded_code->type7.gen == 0x00) {
-		//LD.H
-		disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) );
-		addr = cpu->reg.r[reg1] + disp;
-
-		err = bus_get_data16(cpu->core_id, addr, (uint16*)&data16);
+		err = bus_get_data32(core->core_id, address, &data);
 		if (err != STD_E_OK) {
 			return -1;
 		}
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.H disp16(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], data16));
-		ret = data16;
-	}
-	else {
-		//LD.W
-		disp = op_sign_extend(15, (cpu->decoded_code->type7.disp << 1) );
-		addr = cpu->reg.r[reg1] + disp;
-
-		//TODO: comm_hook_load_reg32(cpu, addr);
-
-		err = bus_get_data32(cpu->core_id, addr, (uint32*)&data32);
-		if (err != STD_E_OK) {
-			return -1;
+		result = data;
+		if (arg.wback_flag) {
+			cpu_set_reg(core, op->Rn, offset_addr);
 		}
-
-		DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.W disp16(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], data32));
-		ret = data32;
-
+		if (op->Rt == CpuRegId_PC) {
+			if ((address & 0x3) == 0x0) {
+				DBG_ARM_LDR_IMM(&arg, Rt, Rn, address, data, result, passed);
+				return LoadWritePC(core, result);
+			}
+			else {
+				//UNPREDICTABLE
+				return -1;
+			}
+		}
+		else if (UnalignedSupport() || ((address & 0x3) == 0x00)) {
+			cpu_set_reg(core, arg.Rt, result);
+		}
+		else {
+			result = ROR(32, data, 8 * UInt((address & 0x3)) );
+			cpu_set_reg(core, arg.Rt, result);
+		}
 	}
-	cpu->reg.r[reg2] = ret;
+	DBG_ARM_LDR_IMM(&arg, Rt, Rn, address, data, result, passed);
 
-	cpu->reg.pc += 4;
+	core->pc = next_address;
 	return 0;
 }
 
-int op_exec_ld_h_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	sint16 data16;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data16(cpu->core_id, addr, (uint16*)&data16);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.H disp23(%d),r%d(0x%x), r%d(0x%x):0x%x\n",
-			cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg3, cpu->reg.r[reg3], data16));
-
-	cpu->reg.r[reg3] = data16;
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-int op_exec_ld_w_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	sint32 data32;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data32(cpu->core_id, addr, (uint32*)&data32);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.W disp23(%d),r%d(0x%x), r%d(0x%x):0x%x\n",
-			cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg3, cpu->reg.r[reg3], data32));
-
-	cpu->reg.r[reg3] = data32;
-
-	cpu->reg.pc += 6;
-	return 0;
-}
-
-
-int op_exec_ldhu(TargetCoreType *cpu)
-{
-	uint32 addr;
-	uint32 ret;
-	uint32 disp;
-	uint32 reg1 = cpu->decoded_code->type7.reg1;
-	uint32 reg2 = cpu->decoded_code->type7.reg2;
-	uint16 data16;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg2 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_zero_extend(15, (cpu->decoded_code->type7.disp << 1) );
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data16(cpu->core_id, addr, &data16);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.HU disp16(%d),r%d(0x%x), r%d(0x%x):0x%x\n", cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg2, cpu->reg.r[reg2], data16));
-	ret = data16;
-
-	cpu->reg.r[reg2] = ret;
-
-	cpu->reg.pc += 4;
-	return 0;
-}
-int op_exec_ld_hu_14(TargetCoreType *cpu)
-{
-	uint32 addr;
-	sint32 disp;
-	uint32 reg1 = cpu->decoded_code->type14.reg1;
-	uint32 reg3 = cpu->decoded_code->type14.reg3;
-	uint16 data16;
-	Std_ReturnType err;
-
-	if (reg1 >= CPU_GREG_NUM) {
-		return -1;
-	}
-	if (reg3 >= CPU_GREG_NUM) {
-		return -1;
-	}
-
-	disp = op_sign_extend(22, (cpu->decoded_code->type14.disp_high << 7U) | cpu->decoded_code->type14.disp_low);
-
-	addr = cpu->reg.r[reg1] + disp;
-
-	err = bus_get_data16(cpu->core_id, addr, (uint16*)&data16);
-	if (err != STD_E_OK) {
-		return -1;
-	}
-	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(), "0x%x: LD.HU disp23(%d),r%d(0x%x), r%d(0x%x):0x%x\n",
-			cpu->reg.pc, disp, reg1, cpu->reg.r[reg1], reg3, cpu->reg.r[reg3], data16));
-
-	cpu->reg.r[reg3] = data16;
-
-	cpu->reg.pc += 6;
-	return 0;
-}

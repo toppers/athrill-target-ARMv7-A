@@ -25,6 +25,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_str_imm_a1,
 	
+		arm_OP_CODE_FORMAT_arm_ldr_imm_a1,
+	
 	arm_OP_CODE_FORMAT_UNKNOWN,
 } arm_OpCodeFormatId;
 
@@ -43,6 +45,8 @@ typedef enum {
 		arm_OpCodeId_arm_blx_a2,
 	
 		arm_OpCodeId_arm_str_imm_a1,
+	
+		arm_OpCodeId_arm_ldr_imm_a1,
 	
 	arm_OpCodeId_Num,
 } arm_OpCodeId;
@@ -134,6 +138,24 @@ typedef struct {
 	
 } arm_OpCodeFormatType_arm_str_imm_a1;
 
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 P;	/* 24-24 */
+	
+		arm_uint8 U;	/* 23-23 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rt;	/* 15-12 */
+	
+		arm_uint16 imm12;	/* 11-0 */
+	
+} arm_OpCodeFormatType_arm_ldr_imm_a1;
+
 
 typedef struct {
 	arm_OpCodeFormatId type_id;
@@ -152,6 +174,8 @@ typedef struct {
         	arm_OpCodeFormatType_arm_blx_a2 arm_blx_a2;
 		
         	arm_OpCodeFormatType_arm_str_imm_a1 arm_str_imm_a1;
+		
+        	arm_OpCodeFormatType_arm_ldr_imm_a1 arm_ldr_imm_a1;
 		
     } code;
 } arm_OpDecodedCodeType;
@@ -174,4 +198,5 @@ extern int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_bl_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_blx_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_str_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core);
 #endif /* !_arm_MC_DECODER_H_ */

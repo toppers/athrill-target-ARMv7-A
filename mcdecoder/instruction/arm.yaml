@@ -1,8 +1,10 @@
 machine:
-  decoder:
-    namespace: arm
   extras:
     arch_type: arm
+
+decoder:
+  namespace: arm
+
 instructions:
   - name: arm_add_imm_a1
     format: xxxx:cond|00|1|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12

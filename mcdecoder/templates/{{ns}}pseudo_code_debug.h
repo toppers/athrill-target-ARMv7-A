@@ -1,5 +1,5 @@
-#ifndef _{{ ns }}PSEUDO_CODE_DEBUG_H_
-#define _{{ ns }}PSEUDO_CODE_DEBUG_H_
+#ifndef _{{ ns|upper }}PSEUDO_CODE_DEBUG_H_
+#define _{{ ns|upper }}PSEUDO_CODE_DEBUG_H_
 
 #include "dbg_log.h"
 #include "cpu_op_types.h"
@@ -9,25 +9,29 @@
 static inline void DBG_{{inst.name|upper}}(TargetCoreType *core, {{ inst.name }}_input_type *in, {{ inst.name }}_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
-	
+		DBG_FMT_STR
 {% for key, value in inst.inputs.items() %}
 		DBG_FMT_{{value}}
 {% endfor %}
+		": "
 {% for key, value in inst.outputs.items() %}
 		DBG_FMT_{{value}}
 {% endfor %}
-		DBG_FMT_PseudoCodeCondPassedType,
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
 {% for key, value in inst.inputs.items() %}
 		DBG_ARG_{{value}}(&in->{{key}}),
 {% endfor %}
 {% for key, value in inst.outputs.items() %}
 		DBG_ARG_{{value}}(&out->{{key}}),
 {% endfor %}
-		DBG_ARG_PseudoCodeStatusType(&out->passed)
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
 	));
 }
 
 {% endfor -%}
 
 
-#endif /* !_{{ ns }}PSEUDO_CODE_DEBUG_H_ */
+#endif /* !_{{ ns|upper }}PSEUDO_CODE_DEBUG_H_ */

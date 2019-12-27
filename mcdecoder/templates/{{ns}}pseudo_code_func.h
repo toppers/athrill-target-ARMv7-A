@@ -1,5 +1,5 @@
-#ifndef _{{ ns }}PSEUDO_CODE_TYPE_H_
-#define _{{ ns }}PSEUDO_CODE_TYPE_H_
+#ifndef _{{ ns|upper }}PSEUDO_CODE_FUNC_H_
+#define _{{ ns|upper }}PSEUDO_CODE_FUNC_H_
 
 #include "cpu_op_types.h"
 #include "arm_pseudo_code_type.h"
@@ -9,4 +9,4 @@ extern int arm_op_exec_{{inst.name}}(struct TargetCore *core,  {{ inst.name }}_i
 {% endfor -%}
 
 
-#endif /* !_{{ ns }}PSEUDO_CODE_TYPE_H_ */
+#endif /* !_{{ ns|upper }}PSEUDO_CODE_FUNC_H_ */

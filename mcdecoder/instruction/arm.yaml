@@ -4,14 +4,13 @@ machine:
     pseudo_codes:
       - name: arm_add_imm
         inputs:
-          imm32: PseudoCodeImmediateData32Type
-          Rd: PseudoCodeRegisterDataType
-          Rn: PseudoCodeRegisterDataType
           cond: PseudoCodeConditionDataType
           S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
         outputs:
           result: sint32
-          status: PseudoCodeStatusType
           status_flag: PseudoCodeStatusFlagType
 
 decoder:

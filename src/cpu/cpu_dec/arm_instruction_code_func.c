@@ -13,22 +13,30 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_ADD_IMM_A1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_add_imm_a1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -42,22 +50,30 @@ int arm_op_exec_push_1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "PUSH_1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_push_1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -71,22 +87,30 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_MOV_IMM_A1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_mov_imm_a1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -100,22 +124,30 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_MOV_IMM_A2";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_mov_imm_a2(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -129,22 +161,30 @@ int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_BL_A1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_bl_a1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -158,22 +198,30 @@ int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_BLX_A2";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_blx_a2(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -187,22 +235,30 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_STR_IMM_A1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_str_imm_a1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
@@ -216,22 +272,30 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 
 	arm_add_imm_input_type in;
 	arm_add_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
 	//TODO arguments setting..
-	
-
-	in.imm32 = op->imm32;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
+	in.instrName = "ARM_LDR_IMM_A1";
 
 	in.cond = op->cond;
 
 	in.S = op->S;
 
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
 	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
 	
-	int ret = arm_op_exec_arm_ldr_imm_a1(core, &in, &out);
+	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);
 
 	core->pc = out.next_address;

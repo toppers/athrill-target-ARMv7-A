@@ -1,5 +1,5 @@
-#ifndef _{{ ns }}PSEUDO_CODE_TYPE_H_
-#define _{{ ns }}PSEUDO_CODE_TYPE_H_
+#ifndef _{{ ns|upper }}PSEUDO_CODE_TYPE_H_
+#define _{{ ns|upper }}PSEUDO_CODE_TYPE_H_
 
 #include "cpu_op_types.h"
 
@@ -17,10 +17,11 @@ typedef struct {
 {% for key, value in inst.outputs.items() %}
 	{{value}}	{{key}};
 {% endfor -%}
-	PseudoCodeStatusType	passed;
+	PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
 } {{ inst.name }}_output_type;
 
 {% endfor -%}
 
 
-#endif /* !_{{ ns }}PSEUDO_CODE_TYPE_H_ */
+#endif /* !_{{ ns|upper }}PSEUDO_CODE_TYPE_H_ */

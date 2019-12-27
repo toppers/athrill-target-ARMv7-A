@@ -8,7 +8,7 @@
 #define SIGN_FLAG(S)	( ((S) != FALSE) ? "S" : "" )
 #define FMT_STR	"%s"
 
-
+#if 0
 static inline void DBG_ARM_ADD_IMM(ArmAddImmArgType *arg, uint32 Rd, uint32 Rn, uint32 result, bool passed)
 {
 	PseudoCodeRegisterDataType reg;
@@ -17,6 +17,7 @@ static inline void DBG_ARM_ADD_IMM(ArmAddImmArgType *arg, uint32 Rd, uint32 Rn, 
 		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), DBG_ARG_PseudoCodeRegisterDataType(&reg), (arg)->Rn, Rn,
 		arg->imm32, result, SKIP_RESULT(passed)));
 }
+#endif
 
 static inline void DBG_ARM_MOV_IMM(ArmMovImmArgType *arg, uint32 Rd, uint32 result, bool passed)
 {

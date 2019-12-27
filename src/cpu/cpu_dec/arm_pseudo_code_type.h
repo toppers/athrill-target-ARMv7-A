@@ -1,20 +1,20 @@
-#ifndef _arm_PSEUDO_CODE_TYPE_H_
-#define _arm_PSEUDO_CODE_TYPE_H_
+#ifndef _ARM_PSEUDO_CODE_TYPE_H_
+#define _ARM_PSEUDO_CODE_TYPE_H_
 
 #include "cpu_op_types.h"
 
 typedef struct {
 	char* instrName;
 
-	PseudoCodeImmediateData32Type	imm32;
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
 
 	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeRegisterDataType	Rn;
 
-	PseudoCodeConditionDataType	cond;
-
-	PseudoCodeUpdateStatusFlagType	S;
+	PseudoCodeImmediateData32Type	imm32;
 } arm_add_imm_input_type;
 
 typedef struct {
@@ -22,10 +22,9 @@ typedef struct {
 
 	sint32	result;
 
-	PseudoCodeStatusType	status;
-
 	PseudoCodeStatusFlagType	status_flag;
-PseudoCodeStatusType	passed;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
 } arm_add_imm_output_type;
 
-#endif /* !_arm_PSEUDO_CODE_TYPE_H_ */
+#endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

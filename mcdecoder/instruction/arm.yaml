@@ -21,6 +21,14 @@ machine:
         outputs:
           result: sint32
           status_flag: PseudoCodeStatusFlagType
+      - name: arm_bl_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          type: sint32
+        outputs:
+          LR: PseudoCodeRegisterDataType
+          result: sint32
 
 decoder:
   namespace: arm
@@ -50,12 +58,12 @@ instructions:
     format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     extras:
       clocks: 10
-      pseudo_code: arm_add_imm
+      pseudo_code: arm_bl_imm
   - name: arm_blx_a2
     format: 1111|101|x:H|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     extras:
       clocks: 10
-      pseudo_code: arm_add_imm
+      pseudo_code: arm_bl_imm
   - name: arm_str_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:

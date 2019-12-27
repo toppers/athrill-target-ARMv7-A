@@ -85,8 +85,8 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_mov_imm_a1 *op = &core->decoded_code->code.arm_mov_imm_a1;
 
-	arm_add_imm_input_type in;
-	arm_add_imm_output_type out;
+	arm_mov_imm_input_type in;
+	arm_mov_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	//TODO arguments setting..
@@ -98,8 +98,6 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 
 	in.Rd = op->Rd;
 
-	in.Rn = op->Rn;
-
 	in.imm32 = op->imm32;
 
 	out.next_address = core->pc;
@@ -110,8 +108,8 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 	out.status_flag = -1;
 
 	
-	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
-	DBG_ARM_ADD_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_mov_imm(core, &in, &out);
+	DBG_ARM_MOV_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -122,8 +120,8 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_mov_imm_a2 *op = &core->decoded_code->code.arm_mov_imm_a2;
 
-	arm_add_imm_input_type in;
-	arm_add_imm_output_type out;
+	arm_mov_imm_input_type in;
+	arm_mov_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	//TODO arguments setting..
@@ -135,8 +133,6 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 
 	in.Rd = op->Rd;
 
-	in.Rn = op->Rn;
-
 	in.imm32 = op->imm32;
 
 	out.next_address = core->pc;
@@ -147,8 +143,8 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 	out.status_flag = -1;
 
 	
-	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
-	DBG_ARM_ADD_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_mov_imm(core, &in, &out);
+	DBG_ARM_MOV_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

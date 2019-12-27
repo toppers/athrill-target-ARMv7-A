@@ -16,16 +16,16 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "ADD";
-	in.imm32 = ARMExpandImm(op->imm12, CPU_ISSET_CY(&out.status));
-	OP_SET_REG(core, &in, op, Rd);
-	OP_SET_REG(core, &in, op, Rn);
 	in.cond = op->cond;
 	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
+	in.imm32 = ARMExpandImm(op->imm12, CPU_ISSET_CY(&out.status));
 
 	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
 	DBG_ARM_ADD_IMM(core, &in, &out);

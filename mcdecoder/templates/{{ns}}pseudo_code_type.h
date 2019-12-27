@@ -14,9 +14,10 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-{% for key, value in inst.inputs.items() %}
+{% for key, value in inst.outputs.items() %}
 	{{value}}	{{key}};
 {% endfor -%}
+	PseudoCodeStatusType	passed;
 } {{ inst.name }}_output_type;
 
 {% endfor -%}

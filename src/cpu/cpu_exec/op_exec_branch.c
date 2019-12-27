@@ -2,7 +2,7 @@
 #include "target_cpu.h"
 #include "cpu_ops.h"
 #include "bus.h"
-#include "cpu_exec/op_exec_debug.h"
+#include "op_exec_debug.h"
 
 static int arm_op_exec_arm_branch(struct TargetCore *core, ArmBranchImmArgType *arg)
 {

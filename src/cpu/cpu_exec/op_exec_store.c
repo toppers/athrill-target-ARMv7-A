@@ -2,7 +2,7 @@
 #include "target_cpu.h"
 #include "cpu_ops.h"
 #include "bus.h"
-#include "cpu_exec/op_exec_debug.h"
+#include "op_exec_debug.h"
 
 int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 {

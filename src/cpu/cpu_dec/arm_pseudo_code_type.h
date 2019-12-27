@@ -20,15 +20,12 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	PseudoCodeImmediateData32Type	imm32;
+	sint32	result;
 
-	PseudoCodeRegisterDataType	Rd;
+	PseudoCodeStatusType	status;
 
-	PseudoCodeRegisterDataType	Rn;
-
-	PseudoCodeConditionDataType	cond;
-
-	PseudoCodeUpdateStatusFlagType	S;
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType	passed;
 } arm_add_imm_output_type;
 
 #endif /* !_arm_PSEUDO_CODE_TYPE_H_ */

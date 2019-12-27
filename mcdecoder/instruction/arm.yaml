@@ -10,10 +10,9 @@ machine:
           cond: PseudoCodeConditionDataType
           S: PseudoCodeUpdateStatusFlagType
         outputs:
-          passed: bool
           result: sint32
-          status: PsedoCodeStatusType
-          status_flag: PsedoCodeStatusFlagTypeType 
+          status: PseudoCodeStatusType
+          status_flag: PseudoCodeStatusFlagType
 
 decoder:
   namespace: arm

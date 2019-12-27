@@ -6,34 +6,15 @@
 
 #define SKIP_RESULT(cond) ( ((cond) != FALSE) ? "FALSE" : "TRUE" )
 #define SIGN_FLAG(S)	( ((S) != FALSE) ? "S" : "" )
+#define FMT_STR	"%s"
 
 
-static inline const char *ConditionString(uint8 cond)
-{
-	static const char *values[15] = {
-			"EQ", //0
-			"NE", //1
-			"CS", //2
-			"CC", //3
-			"MI", //4
-			"PL", //5
-			"VS", //6
-			"VC", //7
-			"HI", //8
-			"LS", //9
-			"GE", //10
-			"LT", //11
-			"GT", //12
-			"LE", //13
-			"", //14
-	};
-	return values[cond];
-}
 static inline void DBG_ARM_ADD_IMM(ArmAddImmArgType *arg, uint32 Rd, uint32 Rn, uint32 result, bool passed)
 {
+	PseudoCodeRegisterDataType reg;
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
-		"%s%s%s Rd(R%d(%d)), Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
-		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), (arg)->Rd, Rd, (arg)->Rn, Rn,
+		FMT_STR FMT_STR "%s" DBG_FMT_PseudoCodeRegisterDataType ", Rn(R%d(%d)), imm12(%d): %d (skip=%s)\n",
+		arg->instrName, SIGN_FLAG(arg->S), ConditionString(arg->cond), DBG_ARG_PseudoCodeRegisterDataType(&reg), (arg)->Rn, Rn,
 		arg->imm32, result, SKIP_RESULT(passed)));
 }
 

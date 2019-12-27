@@ -4,6 +4,27 @@
 #include "std_types.h"
 #include "target_cpu.h"
 
+/************************************************
+ * pseudo code common data types
+ ************************************************/
+typedef struct {
+	uint32 regId;
+	sint32 regData;
+} PseudoCodeRegisterDataType; 						/* Rn, Rd, Rt, etc */
+typedef sint32	PseudoCodeImmediateData32Type; 		/* imm32 */
+typedef uint32	PseudoCodeConditionDataType; 		/* cond */
+typedef uint8	PseudoCodeUpdateStatusFlagType; 	/* S */
+
+typedef uint32	PsedoCodeStatusType;
+typedef struct {
+	bool	overflow;
+	bool	carry;
+	bool	zero;
+	bool	negative;
+} PsedoCodeStatusFlagTypeType;
+
+/************************************************/
+
 typedef struct {
 	char* instrName;
 	sint32 imm32;

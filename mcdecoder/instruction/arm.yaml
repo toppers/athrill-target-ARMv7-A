@@ -1,6 +1,19 @@
 machine:
   extras:
     arch_type: arm
+    pseudo_codes:
+      - name: arm_add_imm
+        inputs:
+          imm32: PseudoCodeImmediateData32Type
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+        outputs:
+          passed: bool
+          result: sint32
+          status: PsedoCodeStatusType
+          status_flag: PsedoCodeStatusFlagTypeType 
 
 decoder:
   namespace: arm

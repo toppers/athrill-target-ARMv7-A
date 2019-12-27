@@ -13,6 +13,7 @@ typedef struct {
 } {{ inst.name }}_input_type;
 
 typedef struct {
+	uint32	next_address;
 {% for key, value in inst.inputs.items() %}
 	{{value}}	{{key}};
 {% endfor -%}

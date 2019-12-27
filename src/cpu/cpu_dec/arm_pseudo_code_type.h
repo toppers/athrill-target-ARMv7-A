@@ -18,6 +18,7 @@ typedef struct {
 } arm_add_imm_input_type;
 
 typedef struct {
+	uint32	next_address;
 
 	PseudoCodeImmediateData32Type	imm32;
 

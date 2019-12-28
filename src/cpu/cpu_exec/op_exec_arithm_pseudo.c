@@ -17,9 +17,10 @@ int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in
 			ret = 0;
 		 }
 		 else {
-			ret = ALUWritePC(core, out->result);
-            if (ret != 0) {
-                out->next_address = core->pc;
+			 uint32 pc;
+			ret = ALUWritePC(&pc, status, out->result);
+            if (ret == 0) {
+                out->next_address = pc;
             }
 		 }
 	}

@@ -279,18 +279,17 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	return result;
 }
 
-static inline void BranchTo(TargetCoreType *core, uint32 address)
+static inline void BranchTo(uint32 *pc, uint32 address)
 {
-	core->pc = address;
+	*pc = address;
 	return;
 }
-static inline int BXWritePC(TargetCoreType *core, uint32 address)
+static inline int BXWritePC(uint32 *pc, uint32 *status, uint32 address)
 {
-	uint32 *status = cpu_get_status(core);
 	InstrSetType type = CurrentInstrSet(*status);
 	if (type == InstrSet_ThumbEE) {
 		if ((address & 0x00000001) != 0) {
-			BranchTo(core, (address & ~0x00000001));
+			BranchTo(pc, (address & ~0x00000001));
 		}
 		else {
 			//UNPREDICTABLE
@@ -300,11 +299,11 @@ static inline int BXWritePC(TargetCoreType *core, uint32 address)
 	else {
 		if ((address & 0x00000001) != 0) {
 			SelectInstrSet(status, InstrSet_Thumb);
-			BranchTo(core, (address & ~0x00000001));
+			BranchTo(pc, (address & ~0x00000001));
 		}
 		else if ((address & 0x00000002) == 0) {
 			SelectInstrSet(status, InstrSet_ARM);
-			BranchTo(core, address);
+			BranchTo(pc, address);
 		}
 		else {
 			//UNPREDICTABLE
@@ -313,15 +312,14 @@ static inline int BXWritePC(TargetCoreType *core, uint32 address)
 	}
 	return 0;
 }
-static inline int BranchWritePC(TargetCoreType *core, uint32 address)
+static inline int BranchWritePC(uint32 *pc, uint32 *status, uint32 address)
 {
-	uint32 *status = cpu_get_status(core);
 	InstrSetType type = CurrentInstrSet(*status);
 	if (type == InstrSet_ARM) {
-		BranchTo(core, (address & ~0x00000003));
+		BranchTo(pc, (address & ~0x00000003));
 	}
 	else if (type != InstrSet_Jazelle) {
-		BranchTo(core, (address & ~0x00000001));
+		BranchTo(pc, (address & ~0x00000001));
 	}
 	else {
 		//not supported
@@ -329,17 +327,16 @@ static inline int BranchWritePC(TargetCoreType *core, uint32 address)
 	}
 	return 0;
 }
-#define LoadWritePC(core, addr)	BXWritePC(core, addr)
+#define LoadWritePC(pc, status, addr)	BXWritePC(pc, status, addr)
 
-static inline int ALUWritePC(TargetCoreType *core, uint32 address)
+static inline int ALUWritePC(uint32 *pc, uint32 *status, uint32 address)
 {
-	uint32 *status = cpu_get_status(core);
 	InstrSetType type = CurrentInstrSet(*status);
 	if (type == InstrSet_ARM) {
-		return BXWritePC(core, address);
+		return BXWritePC(pc, status, address);
 	}
 	else {
-		return BranchWritePC(core, address);
+		return BranchWritePC(pc, status, address);
 	}
 }
 

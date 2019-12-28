@@ -63,8 +63,9 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 		}
 		if (op->Rt == CpuRegId_PC) {
 			if ((address & 0x3) == 0x0) {
+				uint32 pc;
 				DBG_ARM_LDR_IMM(&arg, Rt, Rn, address, data, result, passed);
-				return LoadWritePC(core, result);
+				return LoadWritePC(&pc, status, result);
 			}
 			else {
 				//UNPREDICTABLE

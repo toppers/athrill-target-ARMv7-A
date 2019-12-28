@@ -81,6 +81,8 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_bl_imm
+      child_codes:
+        - arm_blx_a2
   - name: arm_blx_a2
     format: 1111|101|x:H|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     extras:

@@ -25,11 +25,20 @@ typedef struct {
 
 /* individual op parse functions */
 {% for inst in instruction_decoders %}
+static int op_parse_{{ inst.name }}(OpDecodeContext *context);
+{% endfor %}
+
+{% for inst in instruction_decoders %}
     /* {{ inst.name }} */
     static int op_parse_{{ inst.name }}(OpDecodeContext *context) {
         if ((context->code{{ inst.type_bit_size }} & OP_FB_MASK_{{ inst.name }}) != OP_FB_{{ inst.name }}) {
             return 1;
         }
+    {% for child in inst.extras.child_codes %}
+        if (op_parse_{{ child }}(context) == 0) {
+            return 0;
+        }
+    {% endfor %}
 
         context->optype->code_id = {{ ns }}OpCodeId_{{ inst.name }};
         context->optype->format_id = {{ ns }}OP_CODE_FORMAT_{{ inst.name }};

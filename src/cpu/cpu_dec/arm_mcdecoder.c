@@ -284,11 +284,30 @@ typedef struct {
 
 /* individual op parse functions */
 
+static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
+
+static int op_parse_push_1(OpDecodeContext *context);
+
+static int op_parse_arm_mov_imm_a1(OpDecodeContext *context);
+
+static int op_parse_arm_mov_imm_a2(OpDecodeContext *context);
+
+static int op_parse_arm_bl_a1(OpDecodeContext *context);
+
+static int op_parse_arm_blx_a2(OpDecodeContext *context);
+
+static int op_parse_arm_str_imm_a1(OpDecodeContext *context);
+
+static int op_parse_arm_ldr_imm_a1(OpDecodeContext *context);
+
+
+
     /* arm_add_imm_a1 */
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_add_imm_a1) != OP_FB_arm_add_imm_a1) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_add_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_add_imm_a1;
@@ -329,6 +348,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_push_1) != OP_FB_push_1) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_push_1;
         context->optype->format_id = arm_OP_CODE_FORMAT_push_1;
@@ -354,6 +374,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_mov_imm_a1) != OP_FB_arm_mov_imm_a1) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_mov_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mov_imm_a1;
@@ -389,6 +410,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_mov_imm_a2) != OP_FB_arm_mov_imm_a2) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_mov_imm_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mov_imm_a2;
@@ -424,6 +446,11 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_bl_a1) != OP_FB_arm_bl_a1) {
             return 1;
         }
+    
+        if (op_parse_arm_blx_a2(context) == 0) {
+            return 0;
+        }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_bl_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_bl_a1;
@@ -449,6 +476,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_blx_a2) != OP_FB_arm_blx_a2) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_blx_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_blx_a2;
@@ -474,6 +502,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_str_imm_a1) != OP_FB_arm_str_imm_a1) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_str_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_str_imm_a1;
@@ -524,6 +553,7 @@ typedef struct {
         if ((context->code32 & OP_FB_MASK_arm_ldr_imm_a1) != OP_FB_arm_ldr_imm_a1) {
             return 1;
         }
+    
 
         context->optype->code_id = arm_OpCodeId_arm_ldr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldr_imm_a1;

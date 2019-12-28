@@ -40,6 +40,17 @@ machine:
           Rt: PseudoCodeRegisterDataType
         outputs:
           result: sint32
+      - name: arm_str_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: bool
+          index: bool
+          wback: bool
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
   
 decoder:
   namespace: arm
@@ -79,7 +90,7 @@ instructions:
     format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:
       clocks: 10
-      pseudo_code: arm_add_imm
+      pseudo_code: arm_str_imm
   - name: arm_ldr_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:

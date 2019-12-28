@@ -37,10 +37,12 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
 		}
 		else if (UnalignedSupport() || ((address & 0x3) == 0x00)) {
 			cpu_set_reg(core, in->Rt.regId, out->result);
+    		out->next_address = core->pc + INST_ARM_SIZE;
 		}
 		else {
 			out->result = ROR(32, data, 8 * UInt((address & 0x3)) );
 			cpu_set_reg(core, in->Rt.regId, out->result);
+    		out->next_address = core->pc + INST_ARM_SIZE;
 		}
 	}
 done:

@@ -258,8 +258,8 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldr_imm_a1 *op = &core->decoded_code->code.arm_ldr_imm_a1;
 
-	arm_add_imm_input_type in;
-	arm_add_imm_output_type out;
+	arm_ldr_imm_input_type in;
+	arm_ldr_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	//TODO arguments setting..
@@ -267,24 +267,26 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 
 	in.cond = op->cond;
 
-	in.S = op->S;
+	in.imm32 = op->imm32;
 
-	in.Rd = op->Rd;
+	in.add = op->add;
+
+	in.index = op->index;
+
+	in.wback = op->wback;
 
 	in.Rn = op->Rn;
 
-	in.imm32 = op->imm32;
+	in.Rt = op->Rt;
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
 	out.result = -1;
 
-	out.status_flag = -1;
-
 	
-	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
-	DBG_ARM_ADD_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
+	DBG_ARM_LDR_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

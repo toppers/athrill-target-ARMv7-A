@@ -69,4 +69,30 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_bl_imm_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	bool	add;
+
+	bool	index;
+
+	bool	wback;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_ldr_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldr_imm_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

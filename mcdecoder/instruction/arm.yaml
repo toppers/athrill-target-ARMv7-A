@@ -12,6 +12,38 @@ machine:
         outputs:
           result: sint32
           status_flag: PseudoCodeStatusFlagType
+      - name: arm_adr_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: bool
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
+      - name: arm_add_spimm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          SP: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
+      - name: arm_subs_pclr
+        inputs:
+          cond: PseudoCodeConditionDataType
+          opcode: uint8
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          register_form: bool
+          shift_t: sint32
+          shift_n: sint32
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
       - name: arm_mov_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -58,9 +90,31 @@ decoder:
 instructions:
   - name: arm_add_imm_a1
     format: xxxx:cond|00|1|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
+    condition:
+      Rn: '!= 13'
     extras:
       clocks: 10
       pseudo_code: arm_add_imm
+      child_codes:
+        - arm_adr_a1
+        - arm_subs_pclr_a1
+  - name: arm_add_spimm_a1
+    format: xxxx:cond|00|1|0100|x:S|1101|xxxx:Rd|xxxx xxxx xxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_add_spimm
+      child_codes:
+        - arm_subs_pclr_a1
+  - name: arm_adr_a1
+    format: xxxx:cond|00|1|0100|0|1111|xxxx:Rd|xxxx xxxx xxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_adr_imm
+  - name: arm_subs_pclr_a1
+    format: xxxx:cond|00|1|xxxx:opcode|1|xxxx:Rn|1111|xxxx xxxx xxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_subs_pclr
   - name: push_1
     format: xxxx:cond|1001 00|1|0|1101|xxxx xxxx xxxx xxxx:register_list
     extras:
@@ -78,11 +132,11 @@ instructions:
       pseudo_code: arm_mov_imm
   - name: arm_bl_a1
     format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
+    condition:
+      cond: '!= 15'
     extras:
       clocks: 10
       pseudo_code: arm_bl_imm
-      child_codes:
-        - arm_blx_a2
   - name: arm_blx_a2
     format: 1111|101|x:H|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     extras:

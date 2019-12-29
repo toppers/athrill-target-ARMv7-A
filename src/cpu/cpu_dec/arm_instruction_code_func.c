@@ -44,6 +44,121 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_add_spimm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_add_spimm_a1 *op = &core->decoded_code->code.arm_add_spimm_a1;
+
+	arm_add_spimm_input_type in;
+	arm_add_spimm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_ADD_SPIMM_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.SP = op->SP;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
+	
+	int ret = arm_op_exec_arm_add_spimm(core, &in, &out);
+	DBG_ARM_ADD_SPIMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_adr_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_adr_a1 *op = &core->decoded_code->code.arm_adr_a1;
+
+	arm_adr_imm_input_type in;
+	arm_adr_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_ADR_A1";
+
+	in.cond = op->cond;
+
+	in.Rd = op->Rd;
+
+	in.imm32 = op->imm32;
+
+	in.add = op->add;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
+	
+	int ret = arm_op_exec_arm_adr_imm(core, &in, &out);
+	DBG_ARM_ADR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_subs_pclr_a1 *op = &core->decoded_code->code.arm_subs_pclr_a1;
+
+	arm_subs_pclr_input_type in;
+	arm_subs_pclr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_SUBS_PCLR_A1";
+
+	in.cond = op->cond;
+
+	in.opcode = op->opcode;
+
+	in.Rn = op->Rn;
+
+	in.Rm = op->Rm;
+
+	in.register_form = op->register_form;
+
+	in.shift_t = op->shift_t;
+
+	in.shift_n = op->shift_n;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
+	
+	int ret = arm_op_exec_arm_subs_pclr(core, &in, &out);
+	DBG_ARM_SUBS_PCLR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_push_1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_push_1 *op = &core->decoded_code->code.push_1;

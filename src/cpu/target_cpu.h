@@ -53,6 +53,32 @@ typedef enum {
 #define CpuSystemLevelEncoding_System			0b11111
 #define CpuSystemLevelEncoding_Mask				0x0000001F
 
+static inline bool CurrentModeIsHyp(uint32 status)
+{
+	if ((status & CpuSystemLevelEncoding_Mask) == CpuSystemLevelEncoding_Hyp) {
+		return TRUE;
+	}
+	return FALSE;
+}
+static inline bool CurrentModeIsUserOrSystem(uint32 status)
+{
+	if ((status & CpuSystemLevelEncoding_Mask) == CpuSystemLevelEncoding_User) {
+		return TRUE;
+	}
+	else if ((status & CpuSystemLevelEncoding_Mask) == CpuSystemLevelEncoding_System) {
+		return TRUE;
+	}
+	return FALSE;
+}
+static inline bool CurrentModeIsNotUser(uint32 status)
+{
+	//not supported: if BadMode(CPSR.M) then UNPREDICTABLE;
+	if ((status & CpuSystemLevelEncoding_Mask) != CpuSystemLevelEncoding_User) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
 typedef struct {
 	sint32	r[CpuRegId_NUM];
 	uint32	status;
@@ -67,7 +93,46 @@ typedef struct TargetCore {
 	OpDecodedCodeType			*decoded_code;
 } TargetCoreType;
 
-
+static inline bool IsSecure(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool HaveSecurityExt(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool HaveVirtExt(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool IsSCTLR_NMFI(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool IsSCR_AW(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool IsSCR_FW(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool IsNSACR_RFR(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
+static inline bool IsSCR_NS(TargetCoreType *core)
+{
+	//not supported
+	return TRUE;
+}
 #define CPU_STATUS_BITPOS_N		31U
 #define CPU_STATUS_BITPOS_Z		30U
 #define CPU_STATUS_BITPOS_C		29U

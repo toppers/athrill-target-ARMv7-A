@@ -210,6 +210,11 @@ static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 am
 		return -1;
 	}
 }
+
+static inline uint32 Shift(uint32 bits_N, uint32 value, SRType type, uint32 amount, bool carry_in)
+{
+	return Shift_C(bits_N, value, type, amount, carry_in, NULL);
+}
 static inline uint32 ARMExpandImm_C(uint32 imm12, bool carry_in, bool *carry_out)
 {
 	uint32 unrotated_value = (imm12 & 0xFF);
@@ -402,5 +407,99 @@ static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 }
 #define Align(x, y)	(y) * ((x) / (y))
 #define UnalignedSupport()		TRUE
+#define BYTEMASK_BIT_ISSET(bytemask, bitpos) 	( (bytemask) & ~(1U << (bitpos)) )
+
+static inline void user_cpsr_set(uint32 *status, uint32 mask, uint32 value)
+{
+	*status = ( ((*status) & ~mask) | (value & mask) );
+	return;
+}
+static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 bytemask, bool is_excpt_return)
+{
+	uint32 *status = cpu_get_status(core);
+	bool privileged = CurrentModeIsNotUser(*status);
+	bool nmfi = IsSCTLR_NMFI(core);
+
+	if (BYTEMASK_BIT_ISSET(bytemask, 3) != 0) {
+		//CPSR<31:27> = value<31:27>; // N,Z,C,V,Q flags
+		user_cpsr_set(status, 0xF8000000, value);
+	}
+	if (is_excpt_return) {
+		//CPSR<26:24> = value<26:24>; // IT<1:0>,J execution state bits
+		user_cpsr_set(status, 0x07000000, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 2) != 0) {
+		// bits <23:20> are reserved SBZP bits
+		//CPSR<19:16> = value<19:16>; // GE<3:0> flags
+		user_cpsr_set(status, 0x000F0000, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 1) != 0) {
+		if (is_excpt_return) {
+			//CPSR<15:10> = value<15:10>; // IT<7:2> execution state bits
+			//CPSR<9> = value<9>; // E bit is user-writable
+			user_cpsr_set(status, 0x0000FE00, value);
+		}
+		if (privileged && (IsSecure(core) || IsSCR_AW(core) || HaveVirtExt(core))) {
+			//CPSR<8> = value<8>; // A interrupt mask
+			user_cpsr_set(status, 0x00000100, value);
+		}
+		if (BYTEMASK_BIT_ISSET(bytemask, 0) != 0) {
+			if (privileged) {
+				//CPSR<7> = value<7>; // I interrupt mask
+				user_cpsr_set(status, 0x00000080, value);
+			}
+			if (privileged && (!nmfi || (BYTEMASK_BIT_ISSET(value, 6) == 0)) &&
+				( IsSecure(core) || IsSCR_FW(core) || HaveVirtExt(core)) ) {
+				//CPSR<6> = value<6>; // F interrupt mask
+				user_cpsr_set(status, 0x00000040, value);
+			}
+			if (is_excpt_return) {
+				//CPSR<5> = value<5>; // T execution state bit
+				user_cpsr_set(status, 0x00000020, value);
+			}
+			if (privileged) {
+				uint8 value4_0 = (value & 0x1F);
+				uint32 cpsr_m = ((*status) & 0x1F);
+				//value<4:0>
+				if (BadMode(value4_0, core)) {
+					//UNPREDICTABLE;
+					return -1;
+				}
+				else {
+					// Check for attempts to enter modes only permitted in Secure state from
+					// Non-secure state. These are Monitor mode ('10110'), and FIQ mode ('10001')
+					// if the Security Extensions have reserved it. The definition of UNPREDICTABLE
+					// does not permit the resulting behavior to be a security hole.
+					if (!IsSecure(core) && (value4_0 == 0b10110)) {
+						//then UNPREDICTABLE;
+						return -1;
+					} 
+					if (!IsSecure(core) && (value4_0 == 0b10001) && IsNSACR_RFR(core)) {
+						//then UNPREDICTABLE;
+						return -1;
+					}
+					// There is no Hyp mode ('11010') in Secure state, so that is UNPREDICTABLE
+					if ((IsSCR_NS(core) == FALSE) && (value4_0 == 0b11010)) {
+						 //then UNPREDICTABLE;
+						 return -1;
+					}
+					// Cannot move into Hyp mode directly from a Non-secure PL1 mode
+					if (!IsSecure(core) && (cpsr_m != 0b11010) && (value4_0 == 0b11010)) {
+						//UNPREDICTABLE;
+						return -1;
+					}
+					// Cannot move out of Hyp mode with this function except on an exception return
+					if ((cpsr_m == 0b11010) && (value4_0 != 0b11010) && !is_excpt_return) {
+						//UNPREDICTABLE;
+						return -1;
+					}
+					// CPSR<4:0>, mode bits
+					user_cpsr_set(status, 0x0000001F, value4_0);
+				}
+			}
+		}
+	}
+	return 0;
+}
 
 #endif /* _CPU_OPS_H_ */

@@ -10,6 +10,7 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 	uint32 *status = cpu_get_status(core);
 	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
 	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		Std_ReturnType err;
@@ -28,9 +29,6 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
         	out->Rn.regData = offset_addr;
 		}
-        if (ret == 0) {
-    		out->next_address = core->pc + INST_ARM_SIZE;
-        }
 	}
 	out->status = *status;
     return ret;

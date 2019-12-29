@@ -5,6 +5,7 @@ int arm_op_exec_arm_mov_imm(struct TargetCore *core,  arm_mov_imm_input_type *in
 {
 	int ret = -1;
 	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
         out->result = in->imm32;
@@ -15,7 +16,6 @@ int arm_op_exec_arm_mov_imm(struct TargetCore *core,  arm_mov_imm_input_type *in
 				CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (out->result == 0));
 				CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((out->result & (1U << 31U)) != 0));
 			}
-        	out->next_address = core->pc + INST_ARM_SIZE;
             ret = 0;
 		}
 		else {

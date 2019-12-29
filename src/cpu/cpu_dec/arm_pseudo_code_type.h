@@ -32,6 +32,82 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	bool	add;
+} arm_adr_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_adr_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	SP;
+
+	PseudoCodeImmediateData32Type	imm32;
+} arm_add_spimm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_add_spimm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	uint8	opcode;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	bool	register_form;
+
+	sint32	shift_t;
+
+	sint32	shift_n;
+
+	PseudoCodeImmediateData32Type	imm32;
+} arm_subs_pclr_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_subs_pclr_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeUpdateStatusFlagType	S;
 
 	PseudoCodeRegisterDataType	Rd;

@@ -50,6 +50,16 @@ int arm_op_exec_arm_mov_imm(struct TargetCore *core,  arm_mov_imm_input_type *in
 	}
 	out->status = *status;
 }
+int arm_op_exec_arm_mov_reg(struct TargetCore *core,  arm_mov_reg_input_type *in, arm_mov_reg_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//TODO
+	}
+	out->status = *status;
+}
 int arm_op_exec_arm_bl_imm(struct TargetCore *core,  arm_bl_imm_input_type *in, arm_bl_imm_output_type *out)
 {
 	int ret = -1;

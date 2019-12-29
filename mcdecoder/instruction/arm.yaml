@@ -53,6 +53,15 @@ machine:
         outputs:
           result: sint32
           status_flag: PseudoCodeStatusFlagType
+      - name: arm_mov_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
       - name: arm_bl_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -130,6 +139,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mov_imm
+  - name: arm_mov_reg_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|00000000|xxxx:Rm
+    extras:
+      clocks: 10
+      pseudo_code: arm_mov_reg
+      child_codes:
+        - arm_subs_pclr_a1
   - name: arm_bl_a1
     format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
     condition:

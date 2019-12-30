@@ -407,6 +407,8 @@ static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 }
 #define Align(x, y)	(y) * ((x) / (y))
 #define UnalignedSupport()		TRUE
+#define UnalignedAllowed(core)	TRUE
+
 #define BYTEMASK_BIT_ISSET(bytemask, bitpos) 	( (bytemask) & ~(1U << (bitpos)) )
 
 static inline void user_cpsr_set(uint32 *status, uint32 mask, uint32 value)
@@ -500,6 +502,138 @@ static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 byt
 		}
 	}
 	return 0;
+}
+
+//If x is a bitstring, and N = Len(x):
+//• LowestSetBit(x) is the minimum bit number of any of its bits that are ones. If all of its bits are zeros,
+//LowestSetBit(x) = N.
+//
+static inline uint32 LowestSetBit(uint32 bits_N, uint32 x)
+{
+	int i;
+	if (x == 0) {
+		return bits_N;
+	}
+	for (i = 0; i < bits_N; i++) {
+		if (((1U << i) & x) != 0) {
+			return i;
+		}
+	}
+	/* not reached */
+	return bits_N;
+}
+//If x is a bitstring, BitCount(x) produces an integer result equal to the number of bits of x that are ones.
+static inline uint32 BitCount(uint32 x)
+{
+	uint32 sum = 0;
+	int i;
+	if (x == 0) {
+		return 0;
+	}
+	for (i = 0; i < 32; i++) {
+		if (((1U << i) & x) != 0) {
+			sum++;
+		}
+	}
+	return sum;
+}
+//bits(8*N) BigEndianReverse (bits(8*N) value, integer N)
+static inline void BigEndianReverse(uint32 N, uint8 *value, uint8 *out)
+{
+	switch (N) {
+		case 1:
+			out[0] = value[0];
+			break;
+		case 2:
+			out[0] = value[1];
+			out[1] = value[0];
+			break;
+		case 4:
+			out[0] = value[3];
+			out[1] = value[2];
+			out[2] = value[1];
+			out[3] = value[0];
+			break;
+		case 8:
+			out[0] = value[7];
+			out[1] = value[6];
+			out[2] = value[5];
+			out[3] = value[4];
+			out[4] = value[3];
+			out[5] = value[2];
+			out[6] = value[1];
+			out[7] = value[0];
+			break;
+		default:
+			break;
+	}
+	return;
+}
+
+#include "bus.h"
+
+// Non-assignment form
+static inline int MemA_with_priv_W(uint32 status, uint32 address, uint32 size, bool privileged, bool wasaligned, uint8 *value)
+{
+	Std_ReturnType err;
+	uint8 *p;
+	if (address != Align(address, size)) {
+		return -1;
+	}
+	err = bus_get_pointer(0U, address, &p);
+	if (err != STD_E_OK) {
+		return -1;
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {
+		BigEndianReverse(size, value, p);
+	}
+	else {
+		int i;
+		for (i = 0; i < size; i++) {
+			p[i] = value[i];
+		}
+	}
+	return 0;
+}
+
+//bits(8*size) MemA_with_priv[bits(32) address, integer size, boolean privileged, boolean wasaligned]
+static inline int MemA_with_priv_R(uint32 status, uint32 address, uint32 size, bool privileged, bool wasaligned, uint8 *out)
+{
+	Std_ReturnType err;
+	uint8 *p;
+	if (address != Align(address, size)) {
+		return -1;
+	}
+	err = bus_get_pointer(0U, address, &p);
+	if (err != STD_E_OK) {
+		return -1;
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {
+		BigEndianReverse(size, p, out);
+	}
+	else {
+		int i;
+		for (i = 0; i < size; i++) {
+			out[i] = p[i];
+		}
+	}
+	return 0;
+}
+
+//MemA[bits(32) address, integer size] = bits(8*size) value
+static inline int MemA_W(TargetCoreType *core, uint32 address, uint32 size, uint8* value)
+{
+	uint32 *status = cpu_get_status(core);
+	//MemA_with_priv[address, size, CurrentModeIsNotUser(), TRUE] = value;
+	return MemA_with_priv_W(*status, address, size, CurrentModeIsNotUser(*status), TRUE, value);
+}
+
+//bits(8*size) MemA[bits(32) address, integer size]
+static inline int MemA_R(TargetCoreType *core, uint32 address, uint32 size, uint8* out)
+{
+	uint32 *status = cpu_get_status(core);
+	//return MemA_with_priv[address, size, CurrentModeIsNotUser(), TRUE];
+	return MemA_with_priv_R(*status, address, size, CurrentModeIsNotUser(*status), TRUE, out);
 }
 
 #endif /* _CPU_OPS_H_ */

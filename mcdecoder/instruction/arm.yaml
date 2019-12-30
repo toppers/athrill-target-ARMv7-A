@@ -94,6 +94,16 @@ machine:
           Rt: PseudoCodeRegisterDataType
         outputs:
           result: sint32
+      - name: arm_push
+        inputs:
+          cond: PseudoCodeConditionDataType
+          bitcount: uint8
+          UnalignedAllowed: bool
+          registers: uint32
+          SP: PseudoCodeRegisterDataType
+        outputs:
+          SP: PseudoCodeRegisterDataType
+
       - name: arm_str_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -137,11 +147,6 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_subs_pclr
-  - name: push_1
-    format: xxxx:cond|1001 00|1|0|1101|xxxx xxxx xxxx xxxx:register_list
-    extras:
-      clocks: 10
-      pseudo_code: arm_add_imm
   - name: arm_mov_imm_a1
     format: xxxx:cond|00|1|1101|x:S|0000|xxxx:Rd|xxxxxxxxxxxx:imm12
     extras:
@@ -191,9 +196,32 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_str_imm
+      child_codes:
+        - arm_push_a2
+
+  - name: arm_push_a1
+    format: xxxx:cond|1001 00|1|0|1101|xxxx xxxx xxxx xxxx:register_list
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_push
+
+  - name: arm_push_a2
+    format: xxxx:cond|010|1|0|0|1|0|1101|xxxx:Rt|0000 0000 0100
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_push
+
+
   - name: arm_ldr_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
+
+
+
 

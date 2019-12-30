@@ -232,6 +232,28 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	uint8	bitcount;
+
+	bool	UnalignedAllowed;
+
+	uint32	registers;
+
+	PseudoCodeRegisterDataType	SP;
+} arm_push_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	PseudoCodeRegisterDataType	SP;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_push_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeImmediateData32Type	imm32;
 
 	bool	add;

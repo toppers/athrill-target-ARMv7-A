@@ -103,6 +103,8 @@ typedef bool PseudoCodeCondPassedType;
 #define DBG_ARG_sint32(arg)	(*(arg))
 #define DBG_FMT_uint8		"0x%x "
 #define DBG_ARG_uint8(arg)	(*(arg))
+#define DBG_FMT_uint32		"0x%x "
+#define DBG_ARG_uint32(arg)	(*(arg))
 
 #define OP_SET_REG(core, arg, op, regName)	\
 do {	\

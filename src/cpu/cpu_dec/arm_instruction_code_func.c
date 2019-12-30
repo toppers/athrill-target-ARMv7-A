@@ -159,43 +159,6 @@ int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core)
 }
 
 
-int arm_op_exec_push_1(struct TargetCore *core)
-{
-	arm_OpCodeFormatType_push_1 *op = &core->decoded_code->code.push_1;
-
-	arm_add_imm_input_type in;
-	arm_add_imm_output_type out;
-	out.status = *cpu_get_status(core);
-
-	//TODO arguments setting..
-	in.instrName = "PUSH_1";
-
-	in.cond = op->cond;
-
-	in.S = op->S;
-
-	in.Rd = op->Rd;
-
-	in.Rn = op->Rn;
-
-	in.imm32 = op->imm32;
-
-	out.next_address = core->pc;
-	out.passed = FALSE;
-
-	out.result = -1;
-
-	out.status_flag = -1;
-
-	
-	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
-	DBG_ARM_ADD_IMM(core, &in, &out);
-
-	core->pc = out.next_address;
-	return ret;
-}
-
-
 int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_mov_imm_a1 *op = &core->decoded_code->code.arm_mov_imm_a1;
@@ -460,6 +423,76 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_str_imm(core, &in, &out);
 	DBG_ARM_STR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_push_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_push_a1 *op = &core->decoded_code->code.arm_push_a1;
+
+	arm_push_input_type in;
+	arm_push_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_PUSH_A1";
+
+	in.cond = op->cond;
+
+	in.bitcount = op->bitcount;
+
+	in.UnalignedAllowed = op->UnalignedAllowed;
+
+	in.registers = op->registers;
+
+	in.SP = op->SP;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.SP = -1;
+
+	
+	int ret = arm_op_exec_arm_push(core, &in, &out);
+	DBG_ARM_PUSH(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_push_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_push_a2 *op = &core->decoded_code->code.arm_push_a2;
+
+	arm_push_input_type in;
+	arm_push_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_PUSH_A2";
+
+	in.cond = op->cond;
+
+	in.bitcount = op->bitcount;
+
+	in.UnalignedAllowed = op->UnalignedAllowed;
+
+	in.registers = op->registers;
+
+	in.SP = op->SP;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.SP = -1;
+
+	
+	int ret = arm_op_exec_arm_push(core, &in, &out);
+	DBG_ARM_PUSH(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

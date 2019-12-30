@@ -33,3 +33,46 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 	out->status = *status;
     return ret;
 }
+
+
+int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_push_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		uint32 address = (uint32)in->SP.regData - (4 * (in->bitcount));
+		uint32 lowestbit = LowestSetBit(8, in->registers);
+		for (i = 0; i <= CpuRegId_PC; i++) {
+			uint32 data = cpu_get_reg(core, i);
+			if ( ((1U << i) & in->registers) != 0 ) {
+				if ((i == 13) && (i != lowestbit)) {
+					// Only possible for encoding A1
+					//MemA[address,4] = bits(32) UNKNOWN;
+					ret = MemA_W(core, address, 4, (uint8*)&data);
+				}
+				else {
+					if (in->UnalignedAllowed == TRUE) {
+						//MemU[address,4] = R[i]; TODO
+						printf("index=%d data=0x%x¥n", i, data);
+						ret = MemA_W(core, address, 4, (uint8*)&data);
+					}
+					else {
+						//MemA[address,4] = R[i];
+						ret = MemA_W(core, address, 4, (uint8*)&data);
+					}
+				}
+				if (ret < 0) {
+					goto done;
+				}
+				address = address + 4;
+			}
+		}
+		out->SP.regData = (in->SP.regData - (4 * (in->bitcount)));		
+	}
+done:
+	out->status = *status;
+    return ret;
+}

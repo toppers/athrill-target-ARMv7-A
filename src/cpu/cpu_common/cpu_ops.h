@@ -103,13 +103,7 @@ static inline uint32 op_zero_extend(uint32 bit, uint32 data)
 	}
 	return data;
 }
-typedef enum {
-	SRType_LSL = 0,
-	SRType_LSR,
-	SRType_ASR,
-	SRType_ROR,
-	SRType_RRX,
-} SRType;
+
 #include "assert.h"
 
 static inline uint32 LSL_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
@@ -636,4 +630,34 @@ static inline int MemA_R(TargetCoreType *core, uint32 address, uint32 size, uint
 	return MemA_with_priv_R(*status, address, size, CurrentModeIsNotUser(*status), TRUE, out);
 }
 
+static inline void DecodeImmShift(uint8 type, uint32 imm5, SRType *shift_t, uint32 *shift_n)
+{
+	switch (type) {
+		case 0b00:
+			*shift_t = SRType_LSL;
+			*shift_n = (uint32)UInt(imm5);
+			break;
+		case 0b01:
+			*shift_t = SRType_LSR;
+			*shift_n = (imm5 == 0b00000) ? 32 : (uint32)UInt(imm5);
+			break;
+		case 0b10:
+			*shift_t = SRType_ASR;
+			*shift_n = (imm5 == 0b00000) ? 32 : (uint32)UInt(imm5);
+			break;
+		case 0b11:
+			if (imm5 == 0b00000) {
+				*shift_t = SRType_RRX;
+				*shift_n = 1;
+			}
+			else {
+				*shift_t = SRType_ROR; 
+				*shift_n = (uint32)UInt(imm5);
+			}
+			break;
+		default:
+			break;
+	}
+	return;
+}
 #endif /* _CPU_OPS_H_ */

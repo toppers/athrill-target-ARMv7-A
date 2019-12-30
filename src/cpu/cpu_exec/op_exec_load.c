@@ -39,6 +39,48 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldrb_reg_a1 *op = &core->decoded_code->code.arm_ldrb_reg_a1;
+
+	arm_ldr_reg_input_type in;
+	arm_ldr_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "LDRB";
+	in.cond = op->cond;
+	in.index = (op->P != 0);
+	in.add = (op->U != 0);
+	in.wback = ((op->P == 0) || (op->W != 0));
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+
+	in.size = 1U;
+	in.sign = FALSE;
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REG(core, &in, op, Rm);
+	//if t == 15 || m == 15 then UNPREDICTABLE;
+	if ((op->Rt == CpuRegId_PC) || (op->Rm == CpuRegId_PC)) {
+		return -1;
+	}
+	//if wback && (n == 15 || n == t) then UNPREDICTABLE;
+	else if (in.wback && ((op->Rn == CpuRegId_PC) || (op->Rn == op->Rt))) {
+		return -1;
+	}
+	//not supported following condition
+	//if ArchVersion() < 6 && wback && m == n then UNPREDICTABLE;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
+	DBG_ARM_LDR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_pop_a1(struct TargetCore *core)
 {

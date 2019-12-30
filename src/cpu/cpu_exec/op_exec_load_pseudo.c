@@ -12,11 +12,8 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		Std_ReturnType err;
-
-		err = bus_get_data32(core->core_id, address, &data);
-		if (err != STD_E_OK) {
-			ret = -1;
+		ret = MemA_R(core, address, 4, (uint8*)&data);
+		if (ret != 0) {
             goto done;
 		}
 		out->result = data;
@@ -49,6 +46,49 @@ done:
     return ret;
 }
 
+
+int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out)
+{
+	int ret = 0;
+	uint8 data[4];
+	uint32 *status = cpu_get_status(core);
+	uint32 offset = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + offset) : (in->Rn.regData - offset);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		ret = MemA_R(core, address, in->size, data);
+		if (ret != 0) {
+            goto done;
+		}
+		switch (in->size) {
+			case 1:
+				out->result = 	(uint32)data[0];
+				break;
+			case 2:
+				out->result =	((uint32)data[0] << 0U) |
+								((uint32)data[1] << 8U) ;
+				break;
+			case 4:
+				out->result =	((uint32)data[0] << 0U)  |
+								((uint32)data[1] << 8U)  |
+								((uint32)data[2] << 16U) |
+								((uint32)data[3] << 24U) ;
+				break;
+			default:
+				ret = -1;
+				goto done;
+		}
+		cpu_set_reg(core, in->Rt.regId, out->result);
+		if (in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+		}
+	}
+done:
+	out->status = *status;
+    return ret;
+}
 
 int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out)
 {

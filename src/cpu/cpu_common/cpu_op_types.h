@@ -106,6 +106,28 @@ typedef bool PseudoCodeCondPassedType;
 #define DBG_FMT_uint32		"0x%x "
 #define DBG_ARG_uint32(arg)	(*(arg))
 
+typedef enum {
+	SRType_LSL = 0,
+	SRType_LSR,
+	SRType_ASR,
+	SRType_ROR,
+	SRType_RRX,
+} SRType;
+
+static inline const char *SRTypeString(SRType type)
+{
+	static const char *values[5] = {
+			"LSL", //0
+			"LSR", //1
+			"ASR", //2
+			"ROR", //3
+			"RRX", //4
+	};
+	return values[type];
+}
+#define DBG_FMT_SRType		"SRType(%s) "
+#define DBG_ARG_SRType(arg)	SRTypeString(*(arg))
+
 #define OP_SET_REG(core, arg, op, regName)	\
 do {	\
 	(arg)->regName.name = #regName;	\

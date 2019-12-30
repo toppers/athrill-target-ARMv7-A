@@ -96,7 +96,7 @@ int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core)
 	arm_subs_pclr_output_type out;
 	out.status = *cpu_get_status(core);
 
-	in.instrName = "ADD";
+	in.instrName = "SUBS";
 	in.cond = op->cond;
 	in.opcode = op->opcode;
 	in.register_form = FALSE;

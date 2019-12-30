@@ -395,7 +395,7 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+		DBG_FMT_uint32
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -416,7 +416,72 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
 
 
-		DBG_ARG_sint32(&out->result),
+		DBG_ARG_uint32(&out->result),
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_bool
+
+		DBG_FMT_bool
+
+		DBG_FMT_bool
+
+		DBG_FMT_SRType
+
+		DBG_FMT_uint32
+
+		DBG_FMT_uint32
+
+		DBG_FMT_bool
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+		DBG_FMT_uint32
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_bool(&in->add),
+
+		DBG_ARG_bool(&in->index),
+
+		DBG_ARG_bool(&in->wback),
+
+		DBG_ARG_SRType(&in->shift_t),
+
+		DBG_ARG_uint32(&in->shift_n),
+
+		DBG_ARG_uint32(&in->size),
+
+		DBG_ARG_bool(&in->sign),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+		DBG_ARG_uint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -548,6 +613,71 @@ static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type 
 
 
 		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type *in, arm_str_reg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_bool
+
+		DBG_FMT_bool
+
+		DBG_FMT_bool
+
+		DBG_FMT_SRType
+
+		DBG_FMT_uint32
+
+		DBG_FMT_uint32
+
+		DBG_FMT_bool
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+		DBG_FMT_uint32
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_bool(&in->add),
+
+		DBG_ARG_bool(&in->index),
+
+		DBG_ARG_bool(&in->wback),
+
+		DBG_ARG_SRType(&in->shift_t),
+
+		DBG_ARG_uint32(&in->shift_n),
+
+		DBG_ARG_uint32(&in->size),
+
+		DBG_ARG_bool(&in->sign),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+		DBG_ARG_uint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)

@@ -429,6 +429,53 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_strb_reg_a1 *op = &core->decoded_code->code.arm_strb_reg_a1;
+
+	arm_str_reg_input_type in;
+	arm_str_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_STRB_REG_A1";
+
+	in.cond = op->cond;
+
+	in.add = op->add;
+
+	in.index = op->index;
+
+	in.wback = op->wback;
+
+	in.shift_t = op->shift_t;
+
+	in.shift_n = op->shift_n;
+
+	in.size = op->size;
+
+	in.sign = op->sign;
+
+	in.Rn = op->Rn;
+
+	in.Rt = op->Rt;
+
+	in.Rm = op->Rm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	
+	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
+	DBG_ARM_STR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_push_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_push_a1 *op = &core->decoded_code->code.arm_push_a1;
@@ -532,6 +579,53 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
 	DBG_ARM_LDR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldrb_reg_a1 *op = &core->decoded_code->code.arm_ldrb_reg_a1;
+
+	arm_ldr_reg_input_type in;
+	arm_ldr_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_LDRB_REG_A1";
+
+	in.cond = op->cond;
+
+	in.add = op->add;
+
+	in.index = op->index;
+
+	in.wback = op->wback;
+
+	in.shift_t = op->shift_t;
+
+	in.shift_n = op->shift_n;
+
+	in.size = op->size;
+
+	in.sign = op->sign;
+
+	in.Rn = op->Rn;
+
+	in.Rt = op->Rt;
+
+	in.Rm = op->Rm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	
+	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
+	DBG_ARM_LDR_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

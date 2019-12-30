@@ -13,23 +13,63 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		Std_ReturnType err;
-
 		if (in->Rt.regId == CpuRegId_PC) {
 			data = PCStoreValue(core);
 		}
 		else {
 			data = in->Rt.regData;
 		}
-		err = bus_put_data32(core->core_id, address, data);
-		if (err != STD_E_OK) {
-			ret = -1;
-		}
-        else if (in->wback) {
+		ret = MemA_W(core, address, 4, (uint8*)&data);
+		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
         	out->Rn.regData = offset_addr;
 		}
 	}
+	out->status = *status;
+    return ret;
+}
+
+
+int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in, arm_str_reg_output_type *out)
+{
+	int ret = 0;
+	uint8 data[4];
+	uint32 regdata;
+	uint32 *status = cpu_get_status(core);
+	uint32 offset = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + offset) : (in->Rn.regData - offset);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		regdata = cpu_get_reg(core, in->Rt.regId);
+		switch (in->size) {
+			case 1:
+				data[0] = ((uint8)((regdata >> 0U) & 0xFF));
+				break;
+			case 2:
+				data[0] = ((uint8)((regdata >> 0U) & 0xFF));
+				data[1] = ((uint8)((regdata >> 8U) & 0xFF));
+				break;
+			case 4:
+				data[0] = ((uint8)((regdata >>  0U) & 0xFF));
+				data[1] = ((uint8)((regdata >>  8U) & 0xFF));
+				data[2] = ((uint8)((regdata >> 16U) & 0xFF));
+				data[3] = ((uint8)((regdata >> 24U) & 0xFF));
+				break;
+			default:
+				ret = -1;
+				goto done;
+		}
+		ret = MemA_W(core, address, in->size, data);
+		if (ret != 0) {
+            goto done;
+		}
+		if (in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+		}
+	}
+done:
 	out->status = *status;
     return ret;
 }

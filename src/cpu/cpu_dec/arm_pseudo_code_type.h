@@ -222,10 +222,44 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+	uint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	bool	add;
+
+	bool	index;
+
+	bool	wback;
+
+	SRType	shift_t;
+
+	uint32	shift_n;
+
+	uint32	size;
+
+	bool	sign;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_ldr_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	uint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldr_reg_output_type;
 
 typedef struct {
 	char* instrName;
@@ -296,5 +330,39 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_str_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	bool	add;
+
+	bool	index;
+
+	bool	wback;
+
+	SRType	shift_t;
+
+	uint32	shift_n;
+
+	uint32	size;
+
+	bool	sign;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_str_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	uint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_str_reg_output_type;
 
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

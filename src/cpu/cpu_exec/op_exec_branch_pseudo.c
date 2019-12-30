@@ -51,3 +51,18 @@ int arm_op_exec_arm_b_imm(struct TargetCore *core,  arm_b_imm_input_type *in, ar
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_bx_reg(struct TargetCore *core,  arm_bx_reg_input_type *in, arm_bx_reg_output_type *out)
+{
+    int ret = 0;
+	uint32 next_address = out->next_address;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, out->status);
+	if (out->passed != FALSE) {
+		next_address = ((sint32)in->Rm.regData);
+    	ret = BXWritePC(&out->next_address, status, next_address);
+		out->result = out->next_address;
+	}
+	out->status = *status;
+	return ret;
+}

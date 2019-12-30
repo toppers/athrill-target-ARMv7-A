@@ -190,6 +190,22 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeRegisterDataType	Rm;
+} arm_bx_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_bx_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeImmediateData32Type	imm32;
 
 	bool	add;

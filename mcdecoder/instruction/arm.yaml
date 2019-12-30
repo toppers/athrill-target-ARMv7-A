@@ -77,6 +77,12 @@ machine:
           PC: PseudoCodeRegisterDataType
         outputs:
           result: sint32
+      - name: arm_bx_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          result: sint32
       - name: arm_ldr_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -172,6 +178,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_b_imm
+  - name: arm_bx_a1
+    format: xxxx:cond|00010010|1111|1111|1111|0001|xxxx:Rm
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_bx_reg
+
   - name: arm_str_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:

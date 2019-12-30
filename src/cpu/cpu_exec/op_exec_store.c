@@ -57,6 +57,12 @@ int arm_op_exec_arm_push_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
+
+	if (in.bitcount < 2) {
+		// TODO SEE STMDB / STMFD;
+		printf("Unsupported code: STMDB / STMFD¥n");
+		return -1;
+	}
 	
 	int ret = arm_op_exec_arm_push(core, &in, &out);
 	DBG_ARM_PUSH(core, &in, &out);

@@ -56,7 +56,6 @@ int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_
 				else {
 					if (in->UnalignedAllowed == TRUE) {
 						//MemU[address,4] = R[i]; TODO
-						printf("index=%d data=0x%x¥n", i, data);
 						ret = MemA_W(core, address, 4, (uint8*)&data);
 					}
 					else {

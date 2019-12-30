@@ -367,6 +367,37 @@ int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_b_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_b_a1 *op = &core->decoded_code->code.arm_b_a1;
+
+	arm_b_imm_input_type in;
+	arm_b_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_B_A1";
+
+	in.cond = op->cond;
+
+	in.imm32 = op->imm32;
+
+	in.PC = op->PC;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	
+	int ret = arm_op_exec_arm_b_imm(core, &in, &out);
+	DBG_ARM_B_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_str_imm_a1 *op = &core->decoded_code->code.arm_str_imm_a1;

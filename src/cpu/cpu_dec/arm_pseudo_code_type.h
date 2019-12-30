@@ -174,6 +174,24 @@ typedef struct {
 
 	PseudoCodeImmediateData32Type	imm32;
 
+	PseudoCodeRegisterDataType	PC;
+} arm_b_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_b_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
 	bool	add;
 
 	bool	index;

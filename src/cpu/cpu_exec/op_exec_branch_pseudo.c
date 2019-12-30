@@ -36,3 +36,18 @@ int arm_op_exec_arm_bl_imm(struct TargetCore *core,  arm_bl_imm_input_type *in, 
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_b_imm(struct TargetCore *core,  arm_b_imm_input_type *in, arm_b_imm_output_type *out)
+{
+    int ret = 0;
+	uint32 next_address = out->next_address;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, out->status);
+	if (out->passed != FALSE) {
+		next_address = ((sint32)in->PC.regData) + in->imm32;
+    	ret = BranchWritePC(&out->next_address, status, next_address);
+		out->result = out->next_address;
+	}
+	out->status = *status;
+	return ret;
+}

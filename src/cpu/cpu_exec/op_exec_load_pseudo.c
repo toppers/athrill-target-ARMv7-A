@@ -48,3 +48,59 @@ done:
 	out->status = *status;
     return ret;
 }
+
+
+int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		uint32 address = (uint32)in->SP.regData;
+		for (i = 0; i <= CpuRegId_PC; i++) {
+			uint32 data;
+			if ( ((1U << i) & in->registers) != 0 ) {
+				//R[i] = if UnalignedAllowed then MemU[address,4] else MemA[address,4];
+				if (in->UnalignedAllowed == TRUE) {
+					ret = MemA_R(core, address, 4, (uint8*)&data);
+				}
+				else {
+					ret = MemA_R(core, address, 4, (uint8*)&data);
+				}
+				if (ret < 0) {
+					goto done;
+				}
+				if (i != CpuRegId_PC) {
+					cpu_set_reg(core, i, data);
+				}
+				else {
+					if (in->UnalignedAllowed == TRUE) {
+						if ((address & 0x3) == 0) {
+							LoadWritePC(&out->next_address, status, data);
+						}
+						else {
+							//UNPREDICTABLE;
+							ret = -1;
+						}
+					}
+					else {
+						LoadWritePC(&out->next_address, status, data);
+					}
+				}
+				address = address + 4;
+			}
+		}
+		if ( (in->registers & (1U << 13)) == 0 ) {
+			out->SP.regData = (in->SP.regData + (4 * (in->bitcount)));		
+		}
+		else {
+			//UNPREDICTABLE;
+			ret = -1;
+		}
+	}
+done:
+	out->status = *status;
+    return ret;
+}

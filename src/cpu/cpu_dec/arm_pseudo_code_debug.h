@@ -464,6 +464,47 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 	));
 }
 
+static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm_pop_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_uint8
+
+		DBG_FMT_bool
+
+		DBG_FMT_uint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_uint8(&in->bitcount),
+
+		DBG_ARG_bool(&in->UnalignedAllowed),
+
+		DBG_ARG_uint32(&in->registers),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->SP),
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->SP),
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type *in, arm_str_imm_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

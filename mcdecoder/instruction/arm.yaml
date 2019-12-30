@@ -94,7 +94,18 @@ machine:
           Rt: PseudoCodeRegisterDataType
         outputs:
           result: sint32
+
       - name: arm_push
+        inputs:
+          cond: PseudoCodeConditionDataType
+          bitcount: uint8
+          UnalignedAllowed: bool
+          registers: uint32
+          SP: PseudoCodeRegisterDataType
+        outputs:
+          SP: PseudoCodeRegisterDataType
+
+      - name: arm_pop
         inputs:
           cond: PseudoCodeConditionDataType
           bitcount: uint8
@@ -222,6 +233,21 @@ instructions:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
+  - name: arm_pop_a1
+    format: xxxx:cond|1000 10|1|1|1101|xxxx xxxx xxxx xxxx:register_list
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_pop
+
+  - name: arm_pop_a2
+    format: xxxx:cond|010|0|1|0|0|1|1101|xxxx:Rt|0000 0000 0100
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_pop
 
 
 

@@ -6,12 +6,6 @@
 #include "arm_pseudo_code_func.h"
 #include <string.h>
 
-
-int arm_op_exec_push_1(struct TargetCore *core)
-{
-	printf("enter push\n");
-	return 0;
-}
 int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_add_imm_a1 *op = &core->decoded_code->code.arm_add_imm_a1;

@@ -536,3 +536,73 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_pop_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_pop_a1 *op = &core->decoded_code->code.arm_pop_a1;
+
+	arm_pop_input_type in;
+	arm_pop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_POP_A1";
+
+	in.cond = op->cond;
+
+	in.bitcount = op->bitcount;
+
+	in.UnalignedAllowed = op->UnalignedAllowed;
+
+	in.registers = op->registers;
+
+	in.SP = op->SP;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.SP = -1;
+
+	
+	int ret = arm_op_exec_arm_pop(core, &in, &out);
+	DBG_ARM_POP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_pop_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_pop_a2 *op = &core->decoded_code->code.arm_pop_a2;
+
+	arm_pop_input_type in;
+	arm_pop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_POP_A2";
+
+	in.cond = op->cond;
+
+	in.bitcount = op->bitcount;
+
+	in.UnalignedAllowed = op->UnalignedAllowed;
+
+	in.registers = op->registers;
+
+	in.SP = op->SP;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.SP = -1;
+
+	
+	int ret = arm_op_exec_arm_pop(core, &in, &out);
+	DBG_ARM_POP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

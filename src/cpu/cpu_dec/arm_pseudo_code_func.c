@@ -110,6 +110,16 @@ int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_
 	}
 	out->status = *status;
 }
+int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//TODO
+	}
+	out->status = *status;
+}
 int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out)
 {
 	int ret = -1;

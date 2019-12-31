@@ -12,6 +12,27 @@ machine:
         outputs:
           result: sint32
           status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_cmp_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_cmp_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          shift_t: SRType
+          shift_n: uint32
+        outputs:
+          result: sint32
+          status_flag: PseudoCodeStatusFlagType
+
       - name: arm_adr_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -195,6 +216,19 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_subs_pclr
+
+  - name: arm_cmp_imm_a1
+    format: xxxx:cond|00|1|10101|xxxx:Rn|0000|xxxx xxxx xxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_cmp_imm
+
+  - name: arm_cmp_reg_a1
+    format: xxxx:cond|00|0|1010|1|xxxx:Rn|0000|xxxx x:imm5|xx:type|0|xxxx:Rm
+    extras:
+      clocks: 10
+      pseudo_code: arm_cmp_reg
+
   - name: arm_mov_imm_a1
     format: xxxx:cond|00|1|1101|x:S|0000|xxxx:Rd|xxxxxxxxxxxx:imm12
     extras:

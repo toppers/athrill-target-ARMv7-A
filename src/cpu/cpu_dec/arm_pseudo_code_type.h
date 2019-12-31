@@ -32,6 +32,50 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeImmediateData32Type	imm32;
+} arm_cmp_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_cmp_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	SRType	shift_t;
+
+	uint32	shift_n;
+} arm_cmp_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	sint32	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_cmp_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeImmediateData32Type	imm32;

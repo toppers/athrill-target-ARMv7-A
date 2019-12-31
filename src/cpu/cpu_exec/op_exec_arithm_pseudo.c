@@ -141,3 +141,35 @@ int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in, arm_cmp_imm_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		out->result = AddWithCarry(32, in->Rn.regData, ~(in->imm32), TRUE, &out->status_flag);
+		cpu_update_status_flag(status, out->result, &out->status_flag);
+	}
+	out->status = *status;
+	return ret;
+}
+
+int arm_op_exec_arm_cmp_reg(struct TargetCore *core,  arm_cmp_reg_input_type *in, arm_cmp_reg_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//shifted = Shift(R[m], shift_t, shift_n, APSR.C);
+		uint32 shifted = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+		//(result, carry, overflow) = AddWithCarry(R[n], NOT(shifted), ‘1’);
+		out->result = AddWithCarry(32, in->Rn.regData, ~(shifted), TRUE, &out->status_flag);
+		cpu_update_status_flag(status, out->result, &out->status_flag);
+	}
+	out->status = *status;
+	return ret;
+}

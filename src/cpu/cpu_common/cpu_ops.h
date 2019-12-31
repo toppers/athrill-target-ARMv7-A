@@ -566,16 +566,55 @@ static inline void BigEndianReverse(uint32 N, uint8 *value, uint8 *out)
 
 #include "bus.h"
 
+static inline int cpu_ops_bus_get_data(uint32 address, uint32 size, uint8 *out)
+{
+	Std_ReturnType err;
+	switch (size) {
+		case 1:
+			err = bus_get_data8(0U, address, out);
+			break;
+		case 2:
+			err = bus_get_data16(0U, address, (uint16*)out);
+			break;
+		case 4:
+			err = bus_get_data32(0U, address, (uint32*)out);
+			break;
+		default:
+			return -1;
+	}
+	if (err != STD_E_OK) {
+		return -1;
+	}
+	return 0;
+}
+static inline int cpu_ops_bus_put_data(uint32 address, uint32 size, uint8 *in)
+{
+	Std_ReturnType err;
+	switch (size) {
+		case 1:
+			err = bus_put_data8(0U, address, *((uint8*)in));
+			break;
+		case 2:
+			err = bus_put_data16(0U, address, *((uint16*)in));
+			break;
+		case 4:
+			err = bus_put_data32(0U, address, *((uint32*)in));
+			break;
+		default:
+			return -1;
+	}
+	if (err != STD_E_OK) {
+		return -1;
+	}
+	return 0;
+}
+
 // Non-assignment form
 static inline int MemA_with_priv_W(uint32 status, uint32 address, uint32 size, bool privileged, bool wasaligned, uint8 *value)
 {
-	Std_ReturnType err;
-	uint8 *p;
+	int ret;
+	uint8 p[4];
 	if (address != Align(address, size)) {
-		return -1;
-	}
-	err = bus_get_pointer(0U, address, &p);
-	if (err != STD_E_OK) {
 		return -1;
 	}
 	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {
@@ -587,19 +626,23 @@ static inline int MemA_with_priv_W(uint32 status, uint32 address, uint32 size, b
 			p[i] = value[i];
 		}
 	}
+	ret = cpu_ops_bus_put_data(address, size, &p[0]);
+	if (ret != 0) {
+		return -1;
+	}
 	return 0;
 }
 
 //bits(8*size) MemA_with_priv[bits(32) address, integer size, boolean privileged, boolean wasaligned]
 static inline int MemA_with_priv_R(uint32 status, uint32 address, uint32 size, bool privileged, bool wasaligned, uint8 *out)
 {
-	Std_ReturnType err;
-	uint8 *p;
+	int ret;
+	uint8 p[4];
 	if (address != Align(address, size)) {
 		return -1;
 	}
-	err = bus_get_pointer(0U, address, &p);
-	if (err != STD_E_OK) {
+	ret = cpu_ops_bus_get_data(address, size, &p[0]);
+	if (ret != 0) {
 		return -1;
 	}
 	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {

@@ -192,6 +192,43 @@ int arm_op_exec_arm_cmp_imm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_sub_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_sub_imm_a1 *op = &core->decoded_code->code.arm_sub_imm_a1;
+
+	arm_sub_imm_input_type in;
+	arm_sub_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_SUB_IMM_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.result = -1;
+
+	out.status_flag = -1;
+
+	
+	int ret = arm_op_exec_arm_sub_imm(core, &in, &out);
+	DBG_ARM_SUB_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_cmp_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_cmp_reg_a1 *op = &core->decoded_code->code.arm_cmp_reg_a1;

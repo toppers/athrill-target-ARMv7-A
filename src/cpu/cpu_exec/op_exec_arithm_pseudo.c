@@ -3,7 +3,7 @@
 
 int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in, arm_add_imm_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -14,7 +14,6 @@ int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in
 			if (in->S != 0) {
 				cpu_update_status_flag(status, out->result, &out->status_flag);
 			}
-			ret = 0;
 		}
 		else {
 			ret = ALUWritePC(&out->next_address, status, out->result);
@@ -26,7 +25,7 @@ int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in
 
 int arm_op_exec_arm_adr_imm(struct TargetCore *core,  arm_adr_imm_input_type *in, arm_adr_imm_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -35,7 +34,6 @@ int arm_op_exec_arm_adr_imm(struct TargetCore *core,  arm_adr_imm_input_type *in
 		out->result = (in->add != 0) ? Align(pc, 4) + in->imm32 : Align(pc, 4) - in->imm32;
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, out->result);
-			ret = 0;
 		}
 		else {
 			ret = ALUWritePC(&out->next_address, status, out->result);
@@ -46,7 +44,7 @@ int arm_op_exec_arm_adr_imm(struct TargetCore *core,  arm_adr_imm_input_type *in
 }
 int arm_op_exec_arm_add_spimm(struct TargetCore *core,  arm_add_spimm_input_type *in, arm_add_spimm_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -57,7 +55,6 @@ int arm_op_exec_arm_add_spimm(struct TargetCore *core,  arm_add_spimm_input_type
 			if (in->S != 0) {
 				cpu_update_status_flag(status, out->result, &out->status_flag);
 			}
-			ret = 0;
 		}
 		else {
 			ret = ALUWritePC(&out->next_address, status, out->result);
@@ -69,7 +66,7 @@ int arm_op_exec_arm_add_spimm(struct TargetCore *core,  arm_add_spimm_input_type
 
 int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type *in, arm_subs_pclr_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -145,7 +142,7 @@ int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type
 
 int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in, arm_cmp_imm_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -159,7 +156,7 @@ int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in
 
 int arm_op_exec_arm_cmp_reg(struct TargetCore *core,  arm_cmp_reg_input_type *in, arm_cmp_reg_output_type *out)
 {
-	int ret = -1;
+	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
@@ -169,6 +166,28 @@ int arm_op_exec_arm_cmp_reg(struct TargetCore *core,  arm_cmp_reg_input_type *in
 		//(result, carry, overflow) = AddWithCarry(R[n], NOT(shifted), ‘1’);
 		out->result = AddWithCarry(32, in->Rn.regData, ~(shifted), TRUE, &out->status_flag);
 		cpu_update_status_flag(status, out->result, &out->status_flag);
+	}
+	out->status = *status;
+	return ret;
+}
+
+int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_type *in, arm_sub_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		out->result = AddWithCarry(32, in->Rn.regData, ~(in->imm32), TRUE, &out->status_flag);
+		if (in->Rd.regId != CpuRegId_PC) {
+			cpu_set_reg(core, in->Rd.regId, out->result);
+			if (in->S != 0) {
+				cpu_update_status_flag(status, out->result, &out->status_flag);
+			}
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, out->result);
+		}
 	}
 	out->status = *status;
 	return ret;

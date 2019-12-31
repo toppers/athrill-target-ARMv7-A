@@ -180,3 +180,13 @@ int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in
 	}
 	out->status = *status;
 }
+int arm_op_exec_arm_nop(struct TargetCore *core,  arm_nop_input_type *in, arm_nop_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//TODO
+	}
+	out->status = *status;
+}

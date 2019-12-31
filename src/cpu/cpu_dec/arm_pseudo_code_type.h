@@ -433,4 +433,18 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_str_reg_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+} arm_nop_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+	uint32	result;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_nop_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

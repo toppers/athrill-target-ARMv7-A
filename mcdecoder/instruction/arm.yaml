@@ -192,6 +192,11 @@ machine:
         outputs:
           result: uint32
           
+      - name: arm_nop
+        inputs:
+          cond: PseudoCodeConditionDataType
+        outputs:
+          result: uint32
 
 
 
@@ -360,5 +365,13 @@ instructions:
       clocks: 10
       pseudo_code: arm_pop
 
+
+  - name: arm_nop_a1
+    format: xxxx:cond|0011|0010|0000|1111|0000|0000 0000
+    condition:
+      cond: '!= 15'
+    extras:
+      clocks: 10
+      pseudo_code: arm_nop
 
 

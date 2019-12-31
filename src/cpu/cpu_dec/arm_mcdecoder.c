@@ -743,6 +743,18 @@ typedef struct {
         
     
 
+    /* arm_nop_a1 */
+    #define OP_FB_MASK_arm_nop_a1 (0x0fffffffl) /* fixed bits mask */
+    #define OP_FB_arm_nop_a1 (0x0320f000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_nop_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_nop_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_nop_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* individual op parse functions */
 
@@ -789,6 +801,8 @@ static int op_parse_arm_ldrb_reg_a1(OpDecodeContext *context);
 static int op_parse_arm_pop_a1(OpDecodeContext *context);
 
 static int op_parse_arm_pop_a2(OpDecodeContext *context);
+
+static int op_parse_arm_nop_a1(OpDecodeContext *context);
 
 
 
@@ -1694,6 +1708,34 @@ static int op_parse_arm_pop_a2(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_nop_a1 */
+    static int op_parse_arm_nop_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_nop_a1) != OP_FB_arm_nop_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_nop_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_nop_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_nop_a1;
+        
+            context->decoded_code->code.arm_nop_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_nop_a1_cond_0) >> OP_SF_EBII_arm_nop_a1_cond_0) << OP_SF_EBIF_arm_nop_a1_cond_0);
+            
+        
+
+        
+            if (!(
+                context->decoded_code->code.arm_nop_a1.cond != 15
+                
+            )) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
@@ -1793,6 +1835,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_nop_a1(&context) == 0) {
+            return 0;
+        }
+    
 
     return 1;
 }
@@ -1842,5 +1888,7 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_pop_a1 },		/* arm_pop_a1 */
     
 	{ 1, arm_op_exec_arm_pop_a2 },		/* arm_pop_a2 */
+    
+	{ 1, arm_op_exec_arm_nop_a1 },		/* arm_nop_a1 */
     
 };

@@ -22,4 +22,5 @@ extern int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *i
 extern int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out);
 extern int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out);
 extern int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in, arm_str_reg_output_type *out);
+extern int arm_op_exec_arm_nop(struct TargetCore *core,  arm_nop_input_type *in, arm_nop_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

@@ -171,6 +171,7 @@ machine:
           add: bool
           index: bool
           wback: bool
+          size: uint32
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
         outputs:
@@ -305,12 +306,19 @@ instructions:
       pseudo_code: arm_bx_reg
 
   - name: arm_str_imm_a1
-    format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
+    format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxx xxxx xxxx:imm12
     extras:
       clocks: 10
       pseudo_code: arm_str_imm
       child_codes:
         - arm_push_a2
+
+  - name: arm_strb_imm_a1
+    format: xxxx:cond|0|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx xxxx xxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_str_imm
+
 
   - name: arm_strb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm

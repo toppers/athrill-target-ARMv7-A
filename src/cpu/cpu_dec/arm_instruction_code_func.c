@@ -518,6 +518,49 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 
 	in.wback = op->wback;
 
+	in.size = op->size;
+
+	in.Rn = op->Rn;
+
+	in.Rt = op->Rt;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	out.Rn = -1;
+
+	
+	int ret = arm_op_exec_arm_str_imm(core, &in, &out);
+	DBG_ARM_STR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_strb_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_strb_imm_a1 *op = &core->decoded_code->code.arm_strb_imm_a1;
+
+	arm_str_imm_input_type in;
+	arm_str_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_STRB_IMM_A1";
+
+	in.cond = op->cond;
+
+	in.imm32 = op->imm32;
+
+	in.add = op->add;
+
+	in.index = op->index;
+
+	in.wback = op->wback;
+
+	in.size = op->size;
+
 	in.Rn = op->Rn;
 
 	in.Rt = op->Rt;

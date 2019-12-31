@@ -386,6 +386,8 @@ typedef struct {
 
 	bool	wback;
 
+	uint32	size;
+
 	PseudoCodeRegisterDataType	Rn;
 
 	PseudoCodeRegisterDataType	Rt;

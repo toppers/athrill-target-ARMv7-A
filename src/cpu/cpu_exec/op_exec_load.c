@@ -31,7 +31,6 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
 	DBG_ARM_LDR_IMM(core, &in, &out);
@@ -67,7 +66,6 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
 	DBG_ARM_LDR_IMM(core, &in, &out);
@@ -109,8 +107,6 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-
-	out.result = -1;
 
 	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
 	DBG_ARM_LDR_REG(core, &in, &out);

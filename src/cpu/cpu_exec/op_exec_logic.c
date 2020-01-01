@@ -20,9 +20,9 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 	in.S = op->S;
 	OP_SET_REG(core, &in, op, Rd);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm_C(op->imm12, CPU_ISSET_CY(cpu_get_status(core)), &out.status_flag.carry);
 
@@ -47,9 +47,9 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 	in.S = FALSE;
 	OP_SET_REG(core, &in, op, Rd);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	ZeroExtendArgType zarg[2];
 	zarg[0].bitsize = 12U;
@@ -81,9 +81,9 @@ int arm_op_exec_arm_mov_reg_a1(struct TargetCore *core)
 	OP_SET_REG(core, &in, op, Rd);
 	OP_SET_REG(core, &in, op, Rm);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 
 	

@@ -22,9 +22,11 @@ static inline void DBG_ARM_ADD_IMM(TargetCoreType *core, arm_add_imm_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -41,9 +43,11 @@ static inline void DBG_ARM_ADD_IMM(TargetCoreType *core, arm_add_imm_input_type 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -71,9 +75,11 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -94,9 +100,11 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 		DBG_ARG_uint32(&in->shift_n),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -120,9 +128,11 @@ static inline void DBG_ARM_SUB_IMM(TargetCoreType *core, arm_sub_imm_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -139,9 +149,11 @@ static inline void DBG_ARM_SUB_IMM(TargetCoreType *core, arm_sub_imm_input_type 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -161,9 +173,11 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 
 		": "
 
+
 		DBG_FMT_sint32
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -176,9 +190,11 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
+
 		DBG_ARG_sint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -202,9 +218,11 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 
 		": "
 
+
 		DBG_FMT_sint32
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -221,9 +239,11 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 		DBG_ARG_uint32(&in->shift_n),
 
 
+
 		DBG_ARG_sint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -245,9 +265,11 @@ static inline void DBG_ARM_ADR_IMM(TargetCoreType *core, arm_adr_imm_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -262,9 +284,11 @@ static inline void DBG_ARM_ADR_IMM(TargetCoreType *core, arm_adr_imm_input_type 
 		DBG_ARG_bool(&in->add),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -288,9 +312,11 @@ static inline void DBG_ARM_ADD_SPIMM(TargetCoreType *core, arm_add_spimm_input_t
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -307,9 +333,11 @@ static inline void DBG_ARM_ADD_SPIMM(TargetCoreType *core, arm_add_spimm_input_t
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -339,9 +367,11 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -364,9 +394,11 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->PC),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -388,9 +420,11 @@ static inline void DBG_ARM_MOV_IMM(TargetCoreType *core, arm_mov_imm_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -405,9 +439,11 @@ static inline void DBG_ARM_MOV_IMM(TargetCoreType *core, arm_mov_imm_input_type 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -429,9 +465,11 @@ static inline void DBG_ARM_MOV_REG(TargetCoreType *core, arm_mov_reg_input_type 
 
 		": "
 
-		DBG_FMT_sint32
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeStatusFlagType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -446,9 +484,11 @@ static inline void DBG_ARM_MOV_REG(TargetCoreType *core, arm_mov_reg_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
 
-		DBG_ARG_sint32(&out->result),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -468,9 +508,9 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 
 		": "
 
+
 		DBG_FMT_PseudoCodeRegisterDataType
 
-		DBG_FMT_sint32
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -483,9 +523,9 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 		DBG_ARG_sint32(&in->type),
 
 
+
 		DBG_ARG_PseudoCodeRegisterDataType(&out->LR),
 
-		DBG_ARG_sint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -505,8 +545,6 @@ static inline void DBG_ARM_B_IMM(TargetCoreType *core, arm_b_imm_input_type *in,
 
 		": "
 
-		DBG_FMT_sint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -517,8 +555,6 @@ static inline void DBG_ARM_B_IMM(TargetCoreType *core, arm_b_imm_input_type *in,
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->PC),
 
-
-		DBG_ARG_sint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -536,8 +572,6 @@ static inline void DBG_ARM_BX_REG(TargetCoreType *core, arm_bx_reg_input_type *i
 
 		": "
 
-		DBG_FMT_sint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -546,8 +580,6 @@ static inline void DBG_ARM_BX_REG(TargetCoreType *core, arm_bx_reg_input_type *i
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
-
-		DBG_ARG_sint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -577,8 +609,6 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 
 		": "
 
-		DBG_FMT_uint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -599,8 +629,6 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
 
-
-		DBG_ARG_uint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -636,8 +664,6 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 
 		": "
 
-		DBG_FMT_uint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -665,8 +691,6 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
 
-		DBG_ARG_uint32(&out->result),
-
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
 	));
@@ -689,7 +713,9 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 
 		": "
 
+
 		DBG_FMT_PseudoCodeRegisterDataType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -706,7 +732,9 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 		DBG_ARG_PseudoCodeRegisterDataType(&in->SP),
 
 
+
 		DBG_ARG_PseudoCodeRegisterDataType(&out->SP),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -730,7 +758,9 @@ static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm
 
 		": "
 
+
 		DBG_FMT_PseudoCodeRegisterDataType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -747,7 +777,9 @@ static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm
 		DBG_ARG_PseudoCodeRegisterDataType(&in->SP),
 
 
+
 		DBG_ARG_PseudoCodeRegisterDataType(&out->SP),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -777,7 +809,9 @@ static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type 
 
 		": "
 
+
 		DBG_FMT_PseudoCodeRegisterDataType
+
 
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
@@ -800,7 +834,9 @@ static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
 
 
+
 		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
@@ -836,8 +872,6 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 
 		": "
 
-		DBG_FMT_uint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -865,8 +899,6 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
 
-		DBG_ARG_uint32(&out->result),
-
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
 	));
@@ -881,16 +913,12 @@ static inline void DBG_ARM_NOP(TargetCoreType *core, arm_nop_input_type *in, arm
 
 		": "
 
-		DBG_FMT_uint32
-
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-
-		DBG_ARG_uint32(&out->result),
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)

@@ -14,18 +14,22 @@ static inline void DBG_{{inst.name|upper}}(TargetCoreType *core, {{ inst.name }}
 		DBG_FMT_{{value}}
 {% endfor %}
 		": "
+{% if inst.outputs is defined %}
 {% for key, value in inst.outputs.items() %}
 		DBG_FMT_{{value}}
 {% endfor %}
+{% endif %}
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 {% for key, value in inst.inputs.items() %}
 		DBG_ARG_{{value}}(&in->{{key}}),
 {% endfor %}
+{% if inst.outputs is defined %}
 {% for key, value in inst.outputs.items() %}
 		DBG_ARG_{{value}}(&out->{{key}}),
 {% endfor %}
+{% endif %}
 		DBG_ARG_PseudoCodeStatusType(&out->status),
 		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
 	));

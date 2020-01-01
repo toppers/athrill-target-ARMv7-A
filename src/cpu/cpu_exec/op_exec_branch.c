@@ -26,7 +26,6 @@ int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	out.LR.name = "LR";
 	out.LR.regId = CpuRegId_LR;
 	out.LR.regData = -1;
@@ -62,7 +61,6 @@ int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	out.LR.name = "LR";
 	out.LR.regId = CpuRegId_LR;
 	out.LR.regData = -1;
@@ -95,7 +93,6 @@ int arm_op_exec_arm_b_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_b_imm(core, &in, &out);
 	DBG_ARM_B_IMM(core, &in, &out);
@@ -118,7 +115,6 @@ int arm_op_exec_arm_bx_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_bx_reg(core, &in, &out);
 	DBG_ARM_BX_REG(core, &in, &out);

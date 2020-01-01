@@ -122,7 +122,6 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
 	DBG_ARM_STR_REG(core, &in, &out);

@@ -19,7 +19,6 @@ int arm_op_exec_arm_nop_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 
 	int ret = arm_op_exec_arm_nop(core, &in, &out);
 	DBG_ARM_NOP(core, &in, &out);

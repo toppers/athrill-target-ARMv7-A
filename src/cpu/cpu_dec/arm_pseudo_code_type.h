@@ -20,7 +20,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -48,7 +49,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -72,7 +74,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -91,6 +94,7 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
 
 	sint32	result;
 
@@ -116,6 +120,7 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
+
 	sint32	result;
 
 	PseudoCodeStatusFlagType	status_flag;
@@ -138,7 +143,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -162,7 +168,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -192,7 +199,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	PC;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -214,7 +222,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -236,7 +245,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	sint32	result;
+
+	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -256,9 +266,8 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-	PseudoCodeRegisterDataType	LR;
 
-	sint32	result;
+	PseudoCodeRegisterDataType	LR;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_bl_imm_output_type;
@@ -275,8 +284,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	sint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_b_imm_output_type;
@@ -291,8 +298,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	sint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_bx_reg_output_type;
@@ -319,8 +324,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	uint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_imm_output_type;
@@ -353,8 +356,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	uint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_reg_output_type;
@@ -375,6 +376,7 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
 
 	PseudoCodeRegisterDataType	SP;
 PseudoCodeStatusType		status;
@@ -397,6 +399,7 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
 
 	PseudoCodeRegisterDataType	SP;
 PseudoCodeStatusType		status;
@@ -425,6 +428,7 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
 
 	PseudoCodeRegisterDataType	Rn;
 PseudoCodeStatusType		status;
@@ -459,8 +463,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	uint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_str_reg_output_type;
@@ -473,8 +475,6 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
-
-	uint32	result;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_nop_output_type;

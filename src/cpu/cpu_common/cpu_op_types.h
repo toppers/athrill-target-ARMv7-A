@@ -10,16 +10,16 @@
  ************************************************/
 static inline const char *DbgStatusUpdateFlag(bool flag)
 {
-	return ( (flag != FALSE) ? "S" : "" );
+	return ( (flag != FALSE) ? "S " : "" );
 }
 
 static inline const char *DbgBoolFlag(bool flag)
 {
-	return ( (flag != FALSE) ? "T" : "F" );
+	return ( (flag != FALSE) ? "1" : "0" );
 }
 static inline const char *DbgPassedFlag(bool flag)
 {
-	return ( (flag != FALSE) ? "Done" : "None" );
+	return ( (flag != FALSE) ? "" : "[Skip]" );
 }
 
 static inline const char *ConditionString(uint8 cond)
@@ -50,23 +50,23 @@ typedef struct {
 	uint32 regId;
 	sint32 regData;
 } PseudoCodeRegisterDataType; 						/* Rn, Rd, Rt, etc */
-#define DBG_FMT_PseudoCodeRegisterDataType			"%s(R%d(%d)) "
-#define DBG_ARG_PseudoCodeRegisterDataType(arg)		(arg)->name, (arg)->regId, (arg)->regData
+#define DBG_FMT_PseudoCodeRegisterDataType			"%s%d(%d 0x%x) "
+#define DBG_ARG_PseudoCodeRegisterDataType(arg)		(arg)->name, (arg)->regId, (arg)->regData, (arg)->regData
 
 typedef sint32	PseudoCodeImmediateData32Type; 		/* imm32 */
 #define DBG_FMT_PseudoCodeImmediateData32Type		"imm32(%d) "
 #define DBG_ARG_PseudoCodeImmediateData32Type(arg)	(*(arg))
 
 typedef uint32	PseudoCodeConditionDataType; 		/* cond */
-#define DBG_FMT_PseudoCodeConditionDataType			"%s "
+#define DBG_FMT_PseudoCodeConditionDataType			"%s"
 #define DBG_ARG_PseudoCodeConditionDataType(arg)	ConditionString(*(arg))
 
 typedef uint8	PseudoCodeUpdateStatusFlagType; 	/* S */
-#define DBG_FMT_PseudoCodeUpdateStatusFlagType		"%s "
+#define DBG_FMT_PseudoCodeUpdateStatusFlagType		"%s"
 #define DBG_ARG_PseudoCodeUpdateStatusFlagType(arg)	DbgStatusUpdateFlag(*(arg))
 
 typedef uint32	PseudoCodeStatusType;
-#define DBG_FMT_PseudoCodeStatusType			"status(0x%x) "
+#define DBG_FMT_PseudoCodeStatusType			"CPSR(0x%x) "
 #define DBG_ARG_PseudoCodeStatusType(arg)		(*(arg))
 
 typedef struct {
@@ -75,8 +75,8 @@ typedef struct {
 	bool	zero;
 	bool	negative;
 } PseudoCodeStatusFlagType;
-#define DBG_FMT_PseudoCodeStatusFlagType			"O(%s)|C(%s)|Z(%s)|N(%s) "
-#define DBG_ARG_PseudoCodeStatusFlagType(arg)	DbgBoolFlag((arg)->overflow), DbgBoolFlag((arg)->carry), DbgBoolFlag((arg)->zero), DbgBoolFlag((arg)->negative)
+#define DBG_FMT_PseudoCodeStatusFlagType			"CF[%s%s%s%s] "
+#define DBG_ARG_PseudoCodeStatusFlagType(arg)	DbgBoolFlag((arg)->negative), DbgBoolFlag((arg)->zero), DbgBoolFlag((arg)->carry), DbgBoolFlag((arg)->overflow)
 static inline void cpu_conv_status_flag(uint32 status, PseudoCodeStatusFlagType *out)
 {
 	memset(out, 0, sizeof(PseudoCodeStatusFlagType));
@@ -94,7 +94,7 @@ static inline void cpu_conv_status_flag(uint32 status, PseudoCodeStatusFlagType 
 	}
 }
 typedef bool PseudoCodeCondPassedType;
-#define DBG_FMT_PseudoCodeCondPassedType		"Passed(%s) "
+#define DBG_FMT_PseudoCodeCondPassedType		"%s "
 #define DBG_ARG_PseudoCodeCondPassedType(arg)	DbgPassedFlag(*(arg))
 
 #define DBG_FMT_bool		"%s "

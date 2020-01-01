@@ -31,9 +31,11 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_add_imm(core, &in, &out);
@@ -72,9 +74,11 @@ int arm_op_exec_arm_add_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_add_reg(core, &in, &out);
@@ -109,9 +113,11 @@ int arm_op_exec_arm_add_spimm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_add_spimm(core, &in, &out);
@@ -144,9 +150,11 @@ int arm_op_exec_arm_adr_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_adr_imm(core, &in, &out);
@@ -187,9 +195,11 @@ int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.PC = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_subs_pclr(core, &in, &out);
@@ -220,9 +230,11 @@ int arm_op_exec_arm_cmp_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.result = -1;
-
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_cmp_imm(core, &in, &out);
@@ -257,9 +269,11 @@ int arm_op_exec_arm_sub_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_sub_imm(core, &in, &out);
@@ -294,9 +308,11 @@ int arm_op_exec_arm_cmp_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.result = -1;
-
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_cmp_reg(core, &in, &out);
@@ -329,9 +345,11 @@ int arm_op_exec_arm_mov_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_mov_imm(core, &in, &out);
@@ -364,9 +382,11 @@ int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_mov_imm(core, &in, &out);
@@ -399,9 +419,11 @@ int arm_op_exec_arm_mov_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
+	
+	out.Rd = -1;
+	
 	out.status_flag = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_mov_reg(core, &in, &out);
@@ -432,9 +454,9 @@ int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.LR = -1;
-
-	out.result = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_bl_imm(core, &in, &out);
@@ -465,9 +487,9 @@ int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.LR = -1;
-
-	out.result = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_bl_imm(core, &in, &out);
@@ -498,8 +520,6 @@ int arm_op_exec_arm_b_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
 	
 	int ret = arm_op_exec_arm_b_imm(core, &in, &out);
 	DBG_ARM_B_IMM(core, &in, &out);
@@ -526,8 +546,6 @@ int arm_op_exec_arm_bx_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-
-	out.result = -1;
 
 	
 	int ret = arm_op_exec_arm_bx_reg(core, &in, &out);
@@ -568,7 +586,9 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.Rn = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_str_imm(core, &in, &out);
@@ -609,7 +629,9 @@ int arm_op_exec_arm_strb_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.Rn = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_str_imm(core, &in, &out);
@@ -656,8 +678,6 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
 	
 	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
 	DBG_ARM_STR_REG(core, &in, &out);
@@ -691,7 +711,9 @@ int arm_op_exec_arm_push_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.SP = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_push(core, &in, &out);
@@ -726,7 +748,9 @@ int arm_op_exec_arm_push_a2(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.SP = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_push(core, &in, &out);
@@ -767,8 +791,6 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
 	DBG_ARM_LDR_IMM(core, &in, &out);
@@ -807,8 +829,6 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-
-	out.result = -1;
 
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
@@ -855,8 +875,6 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	out.result = -1;
-
 	
 	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
 	DBG_ARM_LDR_REG(core, &in, &out);
@@ -890,7 +908,9 @@ int arm_op_exec_arm_pop_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.SP = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_pop(core, &in, &out);
@@ -925,7 +945,9 @@ int arm_op_exec_arm_pop_a2(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
+	
 	out.SP = -1;
+	
 
 	
 	int ret = arm_op_exec_arm_pop(core, &in, &out);
@@ -951,8 +973,6 @@ int arm_op_exec_arm_nop_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-
-	out.result = -1;
 
 	
 	int ret = arm_op_exec_arm_nop(core, &in, &out);

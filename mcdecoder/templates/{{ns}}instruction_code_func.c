@@ -24,9 +24,11 @@ int arm_op_exec_{{inst.name}}(struct TargetCore *core)
 {% endfor %}
 	out.next_address = core->pc;
 	out.passed = FALSE;
-{% for key, value in pseudo_code.outputs.items() %}
+{% if pseudo_code.outputs is defined %}
+	{% for key, value in pseudo_code.outputs.items() %}
 	out.{{key}} = -1;
-{% endfor %}
+	{% endfor %}
+{% endif %}
 	
 	int ret = arm_op_exec_{{pseudo_code.name}}(core, &in, &out);
 	DBG_{{inst.extras.pseudo_code|upper}}(core, &in, &out);

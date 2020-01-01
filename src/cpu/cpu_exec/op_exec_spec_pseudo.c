@@ -7,7 +7,6 @@ int arm_op_exec_arm_nop(struct TargetCore *core,  arm_nop_input_type *in, arm_no
 {
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
-    out->result = out->next_address;
 	out->status = *status;
     return 0;
 }

@@ -4,6 +4,7 @@
 int arm_op_exec_arm_bl_imm(struct TargetCore *core,  arm_bl_imm_input_type *in, arm_bl_imm_output_type *out)
 {
     int ret = 0;
+	uint32 result;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	uint32 *status = cpu_get_status(core);
 	out->passed = ConditionPassed(in->cond, out->status);
@@ -27,9 +28,9 @@ int arm_op_exec_arm_bl_imm(struct TargetCore *core,  arm_bl_imm_input_type *in, 
 			ret = -1;
 		}
         else {
-    		ret = BranchWritePC((uint32*)&out->result, status, out->next_address);
+    		ret = BranchWritePC(&result, status, out->next_address);
 			if (ret == 0) {
-				out->next_address = out->result;
+				out->next_address = result;
 			}
         }
 	}
@@ -46,7 +47,6 @@ int arm_op_exec_arm_b_imm(struct TargetCore *core,  arm_b_imm_input_type *in, ar
 	if (out->passed != FALSE) {
 		out->next_address = ((sint32)in->PC.regData) + in->imm32;
     	ret = BranchWritePC(&out->next_address, status, out->next_address);
-		out->result = out->next_address;
 	}
 	out->status = *status;
 	return ret;
@@ -61,7 +61,6 @@ int arm_op_exec_arm_bx_reg(struct TargetCore *core,  arm_bx_reg_input_type *in, 
 	if (out->passed != FALSE) {
 		out->next_address = ((sint32)in->Rm.regData);
     	ret = BXWritePC(&out->next_address, status, out->next_address);
-		out->result = out->next_address;
 	}
 	out->status = *status;
 	return ret;

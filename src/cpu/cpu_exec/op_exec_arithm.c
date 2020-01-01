@@ -20,9 +20,9 @@ int arm_op_exec_arm_add_imm_a1(struct TargetCore *core)
 	OP_SET_REG(core, &in, op, Rd);
 	OP_SET_REG(core, &in, op, Rn);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 
@@ -49,9 +49,9 @@ int arm_op_exec_arm_add_reg_a1(struct TargetCore *core)
 	OP_SET_REG(core, &in, op, Rm);
 	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	
 	int ret = arm_op_exec_arm_add_reg(core, &in, &out);
@@ -75,9 +75,9 @@ int arm_op_exec_arm_add_spimm_a1(struct TargetCore *core)
 	OP_SET_REG(core, &in, op, Rd);
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 	
@@ -102,9 +102,9 @@ int arm_op_exec_arm_adr_a1(struct TargetCore *core)
 	in.add = TRUE;
 	OP_SET_REG(core, &in, op, Rd);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 
@@ -135,13 +135,12 @@ int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 
+	OP_SET_REGID(core, &out, CpuRegId_PC, PC);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_subs_pclr(core, &in, &out);
 	DBG_ARM_SUBS_PCLR(core, &in, &out);
@@ -167,7 +166,6 @@ int arm_op_exec_arm_cmp_imm_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_cmp_imm(core, &in, &out);
 	DBG_ARM_CMP_IMM(core, &in, &out);
@@ -194,7 +192,6 @@ int arm_op_exec_arm_cmp_reg_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	
 	int ret = arm_op_exec_arm_cmp_reg(core, &in, &out);
@@ -220,9 +217,9 @@ int arm_op_exec_arm_sub_imm_a1(struct TargetCore *core)
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 
+	OP_SET_REG(core, &out, op, Rd);
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.result = -1;
 	
 	int ret = arm_op_exec_arm_sub_imm(core, &in, &out);
 	DBG_ARM_SUB_IMM(core, &in, &out);

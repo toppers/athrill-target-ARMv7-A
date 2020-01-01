@@ -10,7 +10,7 @@ machine:
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_add_reg
@@ -23,7 +23,7 @@ machine:
           shift_t: SRType
           shift_n: uint32
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
 
@@ -35,7 +35,7 @@ machine:
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_cmp_imm
@@ -65,7 +65,7 @@ machine:
           imm32: PseudoCodeImmediateData32Type
           add: bool
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
       - name: arm_add_spimm
         inputs:
@@ -75,8 +75,9 @@ machine:
           SP: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
       - name: arm_subs_pclr
         inputs:
           cond: PseudoCodeConditionDataType
@@ -88,8 +89,9 @@ machine:
           shift_n: sint32
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          PC: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
       - name: arm_mov_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -97,7 +99,7 @@ machine:
           Rd: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
       - name: arm_mov_reg
         inputs:
@@ -106,7 +108,7 @@ machine:
           Rd: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
         outputs:
-          result: sint32
+          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
       - name: arm_bl_imm
         inputs:
@@ -115,20 +117,18 @@ machine:
           type: sint32
         outputs:
           LR: PseudoCodeRegisterDataType
-          result: sint32
+
       - name: arm_b_imm
         inputs:
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
           PC: PseudoCodeRegisterDataType
-        outputs:
-          result: sint32
+
       - name: arm_bx_reg
         inputs:
           cond: PseudoCodeConditionDataType
           Rm: PseudoCodeRegisterDataType
-        outputs:
-          result: sint32
+
       - name: arm_ldr_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -139,8 +139,6 @@ machine:
           size: uint32
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
-        outputs:
-          result: uint32
 
       - name: arm_ldr_reg
         inputs:
@@ -155,8 +153,6 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
-        outputs:
-          result: uint32
 
 
       - name: arm_push
@@ -205,14 +201,10 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
-        outputs:
-          result: uint32
           
       - name: arm_nop
         inputs:
           cond: PseudoCodeConditionDataType
-        outputs:
-          result: uint32
 
 
 

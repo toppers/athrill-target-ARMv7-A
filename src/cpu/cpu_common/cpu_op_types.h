@@ -106,9 +106,9 @@ typedef bool PseudoCodeCondPassedType;
 #define DBG_FMT_uint32		"0x%x "
 #define DBG_ARG_uint32(arg)	(*(arg))
 
-typedef sint32 CmpResultType;
-#define DBG_FMT_CmpResultType		"compare(%d) "
-#define DBG_ARG_CmpResultType(arg)	(*(arg))
+typedef sint32 PseudoCodeCmpResultType;
+#define DBG_FMT_PseudoCodeCmpResultType		"compare(%d) "
+#define DBG_ARG_PseudoCodeCmpResultType(arg)	(*(arg))
 
 typedef bool PseudoCodeBoolAddType;
 #define DBG_FMT_PseudoCodeBoolAddType		"add(%s) "
@@ -132,8 +132,9 @@ static inline const char *InstrSetTypeString(uint8 cond)
 	};
 	return values[cond];
 }
-#define DBG_FMT_InstrSetType		"type(%s) "
-#define DBG_ARG_InstrSetType(arg)	InstrSetTypeString(*(arg))
+typedef InstrSetType PseudoCodeInstrSetType;
+#define DBG_FMT_PseudoCodeInstrSetType		"type(%s) "
+#define DBG_ARG_PseudoCodeInstrSetType(arg)	InstrSetTypeString(*(arg))
 
 
 static inline const char *PseudoCodeSizeTypeString(uint32 size)
@@ -189,6 +190,8 @@ typedef enum {
 	SRType_RRX,
 } SRType;
 
+typedef SRType PseudoCodeSRType;
+
 static inline const char *SRTypeString(SRType type)
 {
 	static const char *values[5] = {
@@ -200,11 +203,11 @@ static inline const char *SRTypeString(SRType type)
 	};
 	return values[type];
 }
-#define DBG_FMT_SRType		"SRType(%s) "
-#define DBG_ARG_SRType(arg)	SRTypeString(*(arg))
-typedef uint32 ShiftNType;
-#define DBG_FMT_ShiftNType		"shift_n(%d) "
-#define DBG_ARG_ShiftNType(arg)	(*(arg))
+#define DBG_FMT_PseudoCodeSRType		"SRType(%s) "
+#define DBG_ARG_PseudoCodeSRType(arg)	SRTypeString(*(arg))
+typedef uint32 PseudoCodeShiftNType;
+#define DBG_FMT_PseudoCodeShiftNType		"shift_n(%d) "
+#define DBG_ARG_PseudoCodeShiftNType(arg)	(*(arg))
 
 #define OP_SET_REG(core, arg, op, regName)	\
 do {	\

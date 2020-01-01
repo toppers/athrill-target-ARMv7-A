@@ -69,9 +69,9 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
-		DBG_FMT_SRType
+		DBG_FMT_PseudoCodeSRType
 
-		DBG_FMT_ShiftNType
+		DBG_FMT_PseudoCodeShiftNType
 
 		": "
 
@@ -95,9 +95,9 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
-		DBG_ARG_SRType(&in->shift_t),
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
 
-		DBG_ARG_ShiftNType(&in->shift_n),
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
 
 
 
@@ -174,7 +174,7 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 		": "
 
 
-		DBG_FMT_CmpResultType
+		DBG_FMT_PseudoCodeCmpResultType
 
 		DBG_FMT_PseudoCodeStatusFlagType
 
@@ -191,7 +191,7 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 
 
 
-		DBG_ARG_CmpResultType(&out->result),
+		DBG_ARG_PseudoCodeCmpResultType(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
 
@@ -212,14 +212,14 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
-		DBG_FMT_SRType
+		DBG_FMT_PseudoCodeSRType
 
-		DBG_FMT_ShiftNType
+		DBG_FMT_PseudoCodeShiftNType
 
 		": "
 
 
-		DBG_FMT_CmpResultType
+		DBG_FMT_PseudoCodeCmpResultType
 
 		DBG_FMT_PseudoCodeStatusFlagType
 
@@ -234,13 +234,13 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
-		DBG_ARG_SRType(&in->shift_t),
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
 
-		DBG_ARG_ShiftNType(&in->shift_n),
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
 
 
 
-		DBG_ARG_CmpResultType(&out->result),
+		DBG_ARG_PseudoCodeCmpResultType(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
 
@@ -359,9 +359,9 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 
 		DBG_FMT_PseudoCodeRegisterFormType
 
-		DBG_FMT_SRType
+		DBG_FMT_PseudoCodeSRType
 
-		DBG_FMT_ShiftNType
+		DBG_FMT_PseudoCodeShiftNType
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
@@ -387,9 +387,9 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 
 		DBG_ARG_PseudoCodeRegisterFormType(&in->register_form),
 
-		DBG_ARG_SRType(&in->shift_t),
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
 
-		DBG_ARG_ShiftNType(&in->shift_n),
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
@@ -504,7 +504,7 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
-		DBG_FMT_InstrSetType
+		DBG_FMT_PseudoCodeInstrSetType
 
 		": "
 
@@ -520,7 +520,7 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
-		DBG_ARG_InstrSetType(&in->type),
+		DBG_ARG_PseudoCodeInstrSetType(&in->type),
 
 
 
@@ -652,9 +652,9 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 
 		DBG_FMT_PseudoCodeBoolWbackType
 
-		DBG_FMT_SRType
+		DBG_FMT_PseudoCodeSRType
 
-		DBG_FMT_ShiftNType
+		DBG_FMT_PseudoCodeShiftNType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -680,9 +680,9 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 
 		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
-		DBG_ARG_SRType(&in->shift_t),
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
 
-		DBG_ARG_ShiftNType(&in->shift_n),
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
@@ -860,9 +860,9 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 
 		DBG_FMT_PseudoCodeBoolWbackType
 
-		DBG_FMT_SRType
+		DBG_FMT_PseudoCodeSRType
 
-		DBG_FMT_ShiftNType
+		DBG_FMT_PseudoCodeShiftNType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -888,9 +888,9 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 
 		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
-		DBG_ARG_SRType(&in->shift_t),
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
 
-		DBG_ARG_ShiftNType(&in->shift_n),
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 

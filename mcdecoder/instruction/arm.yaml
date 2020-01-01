@@ -20,8 +20,8 @@ machine:
           Rd: PseudoCodeRegisterDataType
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
-          shift_t: SRType
-          shift_n: ShiftNType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
@@ -44,7 +44,7 @@ machine:
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: CmpResultType
+          result: PseudoCodeCmpResultType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_cmp_reg
@@ -52,10 +52,10 @@ machine:
           cond: PseudoCodeConditionDataType
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
-          shift_t: SRType
-          shift_n: ShiftNType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
         outputs:
-          result: CmpResultType
+          result: PseudoCodeCmpResultType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_adr_imm
@@ -86,8 +86,8 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
           register_form: PseudoCodeRegisterFormType
-          shift_t: SRType
-          shift_n: ShiftNType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
           imm32: PseudoCodeImmediateData32Type
         outputs:
           PC: PseudoCodeRegisterDataType
@@ -117,7 +117,7 @@ machine:
         inputs:
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
-          type: InstrSetType
+          type: PseudoCodeInstrSetType
         outputs:
           LR: PseudoCodeRegisterDataType
 
@@ -151,8 +151,8 @@ machine:
           add: PseudoCodeBoolAddType
           index: PseudoCodeBoolIndexType
           wback: PseudoCodeBoolWbackType
-          shift_t: SRType
-          shift_n: ShiftNType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
@@ -199,8 +199,8 @@ machine:
           add: PseudoCodeBoolAddType
           index: PseudoCodeBoolIndexType
           wback: PseudoCodeBoolWbackType
-          shift_t: SRType
-          shift_n: ShiftNType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType

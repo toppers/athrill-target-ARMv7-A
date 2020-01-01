@@ -41,9 +41,9 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rm;
 
-	SRType	shift_t;
+	PseudoCodeSRType	shift_t;
 
-	ShiftNType	shift_n;
+	PseudoCodeShiftNType	shift_n;
 } arm_add_reg_input_type;
 
 typedef struct {
@@ -96,7 +96,7 @@ typedef struct {
 	uint32	next_address;
 
 
-	CmpResultType	result;
+	PseudoCodeCmpResultType	result;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -112,16 +112,16 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rm;
 
-	SRType	shift_t;
+	PseudoCodeSRType	shift_t;
 
-	ShiftNType	shift_n;
+	PseudoCodeShiftNType	shift_n;
 } arm_cmp_reg_input_type;
 
 typedef struct {
 	uint32	next_address;
 
 
-	CmpResultType	result;
+	PseudoCodeCmpResultType	result;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -189,9 +189,9 @@ typedef struct {
 
 	PseudoCodeRegisterFormType	register_form;
 
-	SRType	shift_t;
+	PseudoCodeSRType	shift_t;
 
-	ShiftNType	shift_n;
+	PseudoCodeShiftNType	shift_n;
 
 	PseudoCodeImmediateData32Type	imm32;
 } arm_subs_pclr_input_type;
@@ -260,7 +260,7 @@ typedef struct {
 
 	PseudoCodeImmediateData32Type	imm32;
 
-	InstrSetType	type;
+	PseudoCodeInstrSetType	type;
 } arm_bl_imm_input_type;
 
 typedef struct {
@@ -343,9 +343,9 @@ typedef struct {
 
 	PseudoCodeBoolWbackType	wback;
 
-	SRType	shift_t;
+	PseudoCodeSRType	shift_t;
 
-	ShiftNType	shift_n;
+	PseudoCodeShiftNType	shift_n;
 
 	PseudoCodeRegisterDataType	Rn;
 
@@ -450,9 +450,9 @@ typedef struct {
 
 	PseudoCodeBoolWbackType	wback;
 
-	SRType	shift_t;
+	PseudoCodeSRType	shift_t;
 
-	ShiftNType	shift_n;
+	PseudoCodeShiftNType	shift_n;
 
 	PseudoCodeRegisterDataType	Rn;
 

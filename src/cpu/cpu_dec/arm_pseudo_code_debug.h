@@ -569,6 +569,8 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 
 		DBG_FMT_bool
 
+		DBG_FMT_uint32
+
 		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeRegisterDataType
@@ -590,6 +592,8 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 		DBG_ARG_bool(&in->index),
 
 		DBG_ARG_bool(&in->wback),
+
+		DBG_ARG_uint32(&in->size),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 

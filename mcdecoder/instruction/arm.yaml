@@ -136,6 +136,7 @@ machine:
           add: bool
           index: bool
           wback: bool
+          size: uint32
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
         outputs:
@@ -369,6 +370,12 @@ instructions:
 
   - name: arm_ldr_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldr_imm
+
+  - name: arm_ldrb_imm_a1
+    format: xxxx:cond|010|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm

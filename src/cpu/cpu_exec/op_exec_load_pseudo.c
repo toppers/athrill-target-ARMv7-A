@@ -2,21 +2,48 @@
 #include "arm_pseudo_code_func.h"
 #include "cpu_ops.h"
 
+static inline int mem_to_reg(TargetCoreType *core, uint32 address, uint32 size, uint8 *data, uint32 *result)
+{
+	int ret = 0;
+	ret = MemA_R(core, address, size, data);
+	if (ret != 0) {
+		return -1;
+	}
+	switch (size) {
+		case 1:
+			*result = 	(uint32)data[0];
+			break;
+		case 2:
+			*result =	((uint32)data[0] << 0U) |
+						((uint32)data[1] << 8U) ;
+			break;
+		case 4:
+			*result =	((uint32)data[0] << 0U)  |
+						((uint32)data[1] << 8U)  |
+						((uint32)data[2] << 16U) |
+						((uint32)data[3] << 24U) ;
+			break;
+		default:
+			ret = -1;
+			break;
+	}
+	return ret;
+}
+
 int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in, arm_ldr_imm_output_type *out)
 {
 	int ret = 0;
-	uint32 data = -1;
+	uint8 data[4];
 	uint32 *status = cpu_get_status(core);
 	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
 	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		ret = MemA_R(core, address, 4, (uint8*)&data);
+		ret = mem_to_reg(core, address, in->size, data, &out->result);
 		if (ret != 0) {
             goto done;
 		}
-		out->result = data;
 		if (in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
 		}
@@ -37,7 +64,7 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
 			cpu_set_reg(core, in->Rt.regId, out->result);
 		}
 		else {
-			out->result = ROR(32, data, 8 * UInt((address & 0x3)) );
+			out->result = ROR(32, out->result, 8 * UInt((address & 0x3)) );
 			cpu_set_reg(core, in->Rt.regId, out->result);
 		}
 	}
@@ -58,27 +85,9 @@ int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		ret = MemA_R(core, address, in->size, data);
+		ret = mem_to_reg(core, address, in->size, data, &out->result);
 		if (ret != 0) {
             goto done;
-		}
-		switch (in->size) {
-			case 1:
-				out->result = 	(uint32)data[0];
-				break;
-			case 2:
-				out->result =	((uint32)data[0] << 0U) |
-								((uint32)data[1] << 8U) ;
-				break;
-			case 4:
-				out->result =	((uint32)data[0] << 0U)  |
-								((uint32)data[1] << 8U)  |
-								((uint32)data[2] << 16U) |
-								((uint32)data[3] << 24U) ;
-				break;
-			default:
-				ret = -1;
-				goto done;
 		}
 		cpu_set_reg(core, in->Rt.regId, out->result);
 		if (in->wback) {

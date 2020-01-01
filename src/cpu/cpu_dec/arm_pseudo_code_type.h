@@ -43,7 +43,7 @@ typedef struct {
 
 	SRType	shift_t;
 
-	uint32	shift_n;
+	ShiftNType	shift_n;
 } arm_add_reg_input_type;
 
 typedef struct {
@@ -96,7 +96,7 @@ typedef struct {
 	uint32	next_address;
 
 
-	sint32	result;
+	CmpResultType	result;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -114,14 +114,14 @@ typedef struct {
 
 	SRType	shift_t;
 
-	uint32	shift_n;
+	ShiftNType	shift_n;
 } arm_cmp_reg_input_type;
 
 typedef struct {
 	uint32	next_address;
 
 
-	sint32	result;
+	CmpResultType	result;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;
@@ -137,7 +137,7 @@ typedef struct {
 
 	PseudoCodeImmediateData32Type	imm32;
 
-	bool	add;
+	PseudoCodeBitCountType	add;
 } arm_adr_imm_input_type;
 
 typedef struct {
@@ -181,17 +181,17 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
-	uint8	opcode;
+	PseudoCodeOpcodeType	opcode;
 
 	PseudoCodeRegisterDataType	Rn;
 
 	PseudoCodeRegisterDataType	Rm;
 
-	bool	register_form;
+	PseudoCodeRegisterFormType	register_form;
 
-	sint32	shift_t;
+	SRType	shift_t;
 
-	sint32	shift_n;
+	ShiftNType	shift_n;
 
 	PseudoCodeImmediateData32Type	imm32;
 } arm_subs_pclr_input_type;
@@ -260,7 +260,7 @@ typedef struct {
 
 	PseudoCodeImmediateData32Type	imm32;
 
-	sint32	type;
+	InstrSetType	type;
 } arm_bl_imm_input_type;
 
 typedef struct {
@@ -305,17 +305,17 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeSizeType	size;
+
 	PseudoCodeConditionDataType	cond;
 
 	PseudoCodeImmediateData32Type	imm32;
 
-	bool	add;
+	PseudoCodeBoolAddType	add;
 
-	bool	index;
+	PseudoCodeBoolIndexType	index;
 
-	bool	wback;
-
-	uint32	size;
+	PseudoCodeBoolWbackType	wback;
 
 	PseudoCodeRegisterDataType	Rn;
 
@@ -331,21 +331,21 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeSizeType	size;
+
+	PseudoCodeSignType	sign;
+
 	PseudoCodeConditionDataType	cond;
 
-	bool	add;
+	PseudoCodeBoolAddType	add;
 
-	bool	index;
+	PseudoCodeBoolIndexType	index;
 
-	bool	wback;
+	PseudoCodeBoolWbackType	wback;
 
 	SRType	shift_t;
 
-	uint32	shift_n;
-
-	uint32	size;
-
-	bool	sign;
+	ShiftNType	shift_n;
 
 	PseudoCodeRegisterDataType	Rn;
 
@@ -365,11 +365,11 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
-	uint8	bitcount;
+	PseudoCodeBitCountType	bitcount;
 
-	bool	UnalignedAllowed;
+	PseudoCodeUnalignedAllowedType	UnalignedAllowed;
 
-	uint32	registers;
+	PseudoCodeRegisterListType	registers;
 
 	PseudoCodeRegisterDataType	SP;
 } arm_push_input_type;
@@ -388,11 +388,11 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
-	uint8	bitcount;
+	PseudoCodeBitCountType	bitcount;
 
-	bool	UnalignedAllowed;
+	PseudoCodeUnalignedAllowedType	UnalignedAllowed;
 
-	uint32	registers;
+	PseudoCodeRegisterListType	registers;
 
 	PseudoCodeRegisterDataType	SP;
 } arm_pop_input_type;
@@ -409,17 +409,17 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeSizeType	size;
+
 	PseudoCodeConditionDataType	cond;
 
 	PseudoCodeImmediateData32Type	imm32;
 
-	bool	add;
+	PseudoCodeBoolAddType	add;
 
-	bool	index;
+	PseudoCodeBoolIndexType	index;
 
-	bool	wback;
-
-	uint32	size;
+	PseudoCodeBoolWbackType	wback;
 
 	PseudoCodeRegisterDataType	Rn;
 
@@ -438,21 +438,21 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeSizeType	size;
+
+	PseudoCodeSignType	sign;
+
 	PseudoCodeConditionDataType	cond;
 
-	bool	add;
+	PseudoCodeBoolAddType	add;
 
-	bool	index;
+	PseudoCodeBoolIndexType	index;
 
-	bool	wback;
+	PseudoCodeBoolWbackType	wback;
 
 	SRType	shift_t;
 
-	uint32	shift_n;
-
-	uint32	size;
-
-	bool	sign;
+	ShiftNType	shift_n;
 
 	PseudoCodeRegisterDataType	Rn;
 

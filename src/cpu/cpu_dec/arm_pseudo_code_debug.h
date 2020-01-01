@@ -71,7 +71,7 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 
 		DBG_FMT_SRType
 
-		DBG_FMT_uint32
+		DBG_FMT_ShiftNType
 
 		": "
 
@@ -97,7 +97,7 @@ static inline void DBG_ARM_ADD_REG(TargetCoreType *core, arm_add_reg_input_type 
 
 		DBG_ARG_SRType(&in->shift_t),
 
-		DBG_ARG_uint32(&in->shift_n),
+		DBG_ARG_ShiftNType(&in->shift_n),
 
 
 
@@ -174,7 +174,7 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 		": "
 
 
-		DBG_FMT_sint32
+		DBG_FMT_CmpResultType
 
 		DBG_FMT_PseudoCodeStatusFlagType
 
@@ -191,7 +191,7 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 
 
 
-		DBG_ARG_sint32(&out->result),
+		DBG_ARG_CmpResultType(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
 
@@ -214,12 +214,12 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 
 		DBG_FMT_SRType
 
-		DBG_FMT_uint32
+		DBG_FMT_ShiftNType
 
 		": "
 
 
-		DBG_FMT_sint32
+		DBG_FMT_CmpResultType
 
 		DBG_FMT_PseudoCodeStatusFlagType
 
@@ -236,11 +236,11 @@ static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type 
 
 		DBG_ARG_SRType(&in->shift_t),
 
-		DBG_ARG_uint32(&in->shift_n),
+		DBG_ARG_ShiftNType(&in->shift_n),
 
 
 
-		DBG_ARG_sint32(&out->result),
+		DBG_ARG_CmpResultType(&out->result),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
 
@@ -261,7 +261,7 @@ static inline void DBG_ARM_ADR_IMM(TargetCoreType *core, arm_adr_imm_input_type 
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBitCountType
 
 		": "
 
@@ -281,7 +281,7 @@ static inline void DBG_ARM_ADR_IMM(TargetCoreType *core, arm_adr_imm_input_type 
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
-		DBG_ARG_bool(&in->add),
+		DBG_ARG_PseudoCodeBitCountType(&in->add),
 
 
 
@@ -351,17 +351,17 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 
 		DBG_FMT_PseudoCodeConditionDataType
 
-		DBG_FMT_uint8
+		DBG_FMT_PseudoCodeOpcodeType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeRegisterFormType
 
-		DBG_FMT_sint32
+		DBG_FMT_SRType
 
-		DBG_FMT_sint32
+		DBG_FMT_ShiftNType
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
@@ -379,17 +379,17 @@ static inline void DBG_ARM_SUBS_PCLR(TargetCoreType *core, arm_subs_pclr_input_t
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-		DBG_ARG_uint8(&in->opcode),
+		DBG_ARG_PseudoCodeOpcodeType(&in->opcode),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
 
-		DBG_ARG_bool(&in->register_form),
+		DBG_ARG_PseudoCodeRegisterFormType(&in->register_form),
 
-		DBG_ARG_sint32(&in->shift_t),
+		DBG_ARG_SRType(&in->shift_t),
 
-		DBG_ARG_sint32(&in->shift_n),
+		DBG_ARG_ShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
@@ -504,7 +504,7 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
-		DBG_FMT_sint32
+		DBG_FMT_InstrSetType
 
 		": "
 
@@ -520,7 +520,7 @@ static inline void DBG_ARM_BL_IMM(TargetCoreType *core, arm_bl_imm_input_type *i
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
-		DBG_ARG_sint32(&in->type),
+		DBG_ARG_InstrSetType(&in->type),
 
 
 
@@ -591,17 +591,17 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR
 
+		DBG_FMT_PseudoCodeSizeType
+
 		DBG_FMT_PseudoCodeConditionDataType
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolAddType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolIndexType
 
-		DBG_FMT_bool
-
-		DBG_FMT_uint32
+		DBG_FMT_PseudoCodeBoolWbackType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -613,17 +613,17 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 
+		DBG_ARG_PseudoCodeSizeType(&in->size),
+
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
-		DBG_ARG_bool(&in->add),
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
 
-		DBG_ARG_bool(&in->index),
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
 
-		DBG_ARG_bool(&in->wback),
-
-		DBG_ARG_uint32(&in->size),
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
@@ -640,21 +640,21 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR
 
+		DBG_FMT_PseudoCodeSizeType
+
+		DBG_FMT_PseudoCodeSignType
+
 		DBG_FMT_PseudoCodeConditionDataType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolAddType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolIndexType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolWbackType
 
 		DBG_FMT_SRType
 
-		DBG_FMT_uint32
-
-		DBG_FMT_uint32
-
-		DBG_FMT_bool
+		DBG_FMT_ShiftNType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -668,21 +668,21 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 
+		DBG_ARG_PseudoCodeSizeType(&in->size),
+
+		DBG_ARG_PseudoCodeSignType(&in->sign),
+
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-		DBG_ARG_bool(&in->add),
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
 
-		DBG_ARG_bool(&in->index),
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
 
-		DBG_ARG_bool(&in->wback),
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
 		DBG_ARG_SRType(&in->shift_t),
 
-		DBG_ARG_uint32(&in->shift_n),
-
-		DBG_ARG_uint32(&in->size),
-
-		DBG_ARG_bool(&in->sign),
+		DBG_ARG_ShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
@@ -703,11 +703,11 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 
 		DBG_FMT_PseudoCodeConditionDataType
 
-		DBG_FMT_uint8
+		DBG_FMT_PseudoCodeBitCountType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeUnalignedAllowedType
 
-		DBG_FMT_uint32
+		DBG_FMT_PseudoCodeRegisterListType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -723,11 +723,11 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-		DBG_ARG_uint8(&in->bitcount),
+		DBG_ARG_PseudoCodeBitCountType(&in->bitcount),
 
-		DBG_ARG_bool(&in->UnalignedAllowed),
+		DBG_ARG_PseudoCodeUnalignedAllowedType(&in->UnalignedAllowed),
 
-		DBG_ARG_uint32(&in->registers),
+		DBG_ARG_PseudoCodeRegisterListType(&in->registers),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->SP),
 
@@ -748,11 +748,11 @@ static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm
 
 		DBG_FMT_PseudoCodeConditionDataType
 
-		DBG_FMT_uint8
+		DBG_FMT_PseudoCodeBitCountType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeUnalignedAllowedType
 
-		DBG_FMT_uint32
+		DBG_FMT_PseudoCodeRegisterListType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -768,11 +768,11 @@ static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-		DBG_ARG_uint8(&in->bitcount),
+		DBG_ARG_PseudoCodeBitCountType(&in->bitcount),
 
-		DBG_ARG_bool(&in->UnalignedAllowed),
+		DBG_ARG_PseudoCodeUnalignedAllowedType(&in->UnalignedAllowed),
 
-		DBG_ARG_uint32(&in->registers),
+		DBG_ARG_PseudoCodeRegisterListType(&in->registers),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->SP),
 
@@ -791,17 +791,17 @@ static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type 
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR
 
+		DBG_FMT_PseudoCodeSizeType
+
 		DBG_FMT_PseudoCodeConditionDataType
 
 		DBG_FMT_PseudoCodeImmediateData32Type
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolAddType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolIndexType
 
-		DBG_FMT_bool
-
-		DBG_FMT_uint32
+		DBG_FMT_PseudoCodeBoolWbackType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -817,17 +817,17 @@ static inline void DBG_ARM_STR_IMM(TargetCoreType *core, arm_str_imm_input_type 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 
+		DBG_ARG_PseudoCodeSizeType(&in->size),
+
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
-		DBG_ARG_bool(&in->add),
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
 
-		DBG_ARG_bool(&in->index),
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
 
-		DBG_ARG_bool(&in->wback),
-
-		DBG_ARG_uint32(&in->size),
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
@@ -848,21 +848,21 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR
 
+		DBG_FMT_PseudoCodeSizeType
+
+		DBG_FMT_PseudoCodeSignType
+
 		DBG_FMT_PseudoCodeConditionDataType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolAddType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolIndexType
 
-		DBG_FMT_bool
+		DBG_FMT_PseudoCodeBoolWbackType
 
 		DBG_FMT_SRType
 
-		DBG_FMT_uint32
-
-		DBG_FMT_uint32
-
-		DBG_FMT_bool
+		DBG_FMT_ShiftNType
 
 		DBG_FMT_PseudoCodeRegisterDataType
 
@@ -876,21 +876,21 @@ static inline void DBG_ARM_STR_REG(TargetCoreType *core, arm_str_reg_input_type 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
 
+		DBG_ARG_PseudoCodeSizeType(&in->size),
+
+		DBG_ARG_PseudoCodeSignType(&in->sign),
+
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
-		DBG_ARG_bool(&in->add),
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
 
-		DBG_ARG_bool(&in->index),
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
 
-		DBG_ARG_bool(&in->wback),
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
 
 		DBG_ARG_SRType(&in->shift_t),
 
-		DBG_ARG_uint32(&in->shift_n),
-
-		DBG_ARG_uint32(&in->size),
-
-		DBG_ARG_bool(&in->sign),
+		DBG_ARG_ShiftNType(&in->shift_n),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 

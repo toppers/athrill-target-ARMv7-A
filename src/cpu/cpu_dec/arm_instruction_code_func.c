@@ -567,6 +567,8 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_STR_IMM_A1";
 
+	in.size = op->size;
+
 	in.cond = op->cond;
 
 	in.imm32 = op->imm32;
@@ -576,8 +578,6 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 	in.index = op->index;
 
 	in.wback = op->wback;
-
-	in.size = op->size;
 
 	in.Rn = op->Rn;
 
@@ -610,6 +610,8 @@ int arm_op_exec_arm_strb_imm_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_STRB_IMM_A1";
 
+	in.size = op->size;
+
 	in.cond = op->cond;
 
 	in.imm32 = op->imm32;
@@ -619,8 +621,6 @@ int arm_op_exec_arm_strb_imm_a1(struct TargetCore *core)
 	in.index = op->index;
 
 	in.wback = op->wback;
-
-	in.size = op->size;
 
 	in.Rn = op->Rn;
 
@@ -653,6 +653,10 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_STRB_REG_A1";
 
+	in.size = op->size;
+
+	in.sign = op->sign;
+
 	in.cond = op->cond;
 
 	in.add = op->add;
@@ -664,10 +668,6 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 	in.shift_t = op->shift_t;
 
 	in.shift_n = op->shift_n;
-
-	in.size = op->size;
-
-	in.sign = op->sign;
 
 	in.Rn = op->Rn;
 
@@ -772,6 +772,8 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_LDR_IMM_A1";
 
+	in.size = op->size;
+
 	in.cond = op->cond;
 
 	in.imm32 = op->imm32;
@@ -781,8 +783,6 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	in.index = op->index;
 
 	in.wback = op->wback;
-
-	in.size = op->size;
 
 	in.Rn = op->Rn;
 
@@ -811,6 +811,8 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_LDRB_IMM_A1";
 
+	in.size = op->size;
+
 	in.cond = op->cond;
 
 	in.imm32 = op->imm32;
@@ -820,8 +822,6 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 	in.index = op->index;
 
 	in.wback = op->wback;
-
-	in.size = op->size;
 
 	in.Rn = op->Rn;
 
@@ -850,6 +850,10 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	//TODO arguments setting..
 	in.instrName = "ARM_LDRB_REG_A1";
 
+	in.size = op->size;
+
+	in.sign = op->sign;
+
 	in.cond = op->cond;
 
 	in.add = op->add;
@@ -861,10 +865,6 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	in.shift_t = op->shift_t;
 
 	in.shift_n = op->shift_n;
-
-	in.size = op->size;
-
-	in.sign = op->sign;
 
 	in.Rn = op->Rn;
 

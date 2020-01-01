@@ -25,20 +25,20 @@ static inline const char *DbgPassedFlag(bool flag)
 static inline const char *ConditionString(uint8 cond)
 {
 	static const char *values[15] = {
-			"EQ", //0
-			"NE", //1
-			"CS", //2
-			"CC", //3
-			"MI", //4
-			"PL", //5
-			"VS", //6
-			"VC", //7
-			"HI", //8
-			"LS", //9
-			"GE", //10
-			"LT", //11
-			"GT", //12
-			"LE", //13
+			"EQ ", //0
+			"NE ", //1
+			"CS ", //2
+			"CC ", //3
+			"MI ", //4
+			"PL ", //5
+			"VS ", //6
+			"VC ", //7
+			"HI ", //8
+			"LS ", //9
+			"GE ", //10
+			"LT ", //11
+			"GT ", //12
+			"LE ", //13
 			"", //14
 	};
 	return values[cond];
@@ -106,6 +106,81 @@ typedef bool PseudoCodeCondPassedType;
 #define DBG_FMT_uint32		"0x%x "
 #define DBG_ARG_uint32(arg)	(*(arg))
 
+typedef sint32 CmpResultType;
+#define DBG_FMT_CmpResultType		"compare(%d) "
+#define DBG_ARG_CmpResultType(arg)	(*(arg))
+
+typedef bool PseudoCodeBoolAddType;
+#define DBG_FMT_PseudoCodeBoolAddType		"add(%s) "
+#define DBG_ARG_PseudoCodeBoolAddType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeBoolIndexType;
+#define DBG_FMT_PseudoCodeBoolIndexType			"index(%s) "
+#define DBG_ARG_PseudoCodeBoolIndexType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeBoolWbackType;
+#define DBG_FMT_PseudoCodeBoolWbackType			"wback(%s) "
+#define DBG_ARG_PseudoCodeBoolWbackType(arg)	DbgBoolFlag(*(arg))
+
+static inline const char *InstrSetTypeString(uint8 cond)
+{
+	static const char *values[15] = {
+			"ARM", //0
+			"Thumb", //1
+			"Jazelle", //2
+			"ThumbEE", //3
+	};
+	return values[cond];
+}
+#define DBG_FMT_InstrSetType		"type(%s) "
+#define DBG_ARG_InstrSetType(arg)	InstrSetTypeString(*(arg))
+
+
+static inline const char *PseudoCodeSizeTypeString(uint32 size)
+{
+	switch (size) {
+		case 1:
+			return "";
+		case 2:
+			return "";
+		case 4:
+			return "";
+		default:
+			return "?";
+	}
+}
+typedef uint32 PseudoCodeSizeType;
+#define DBG_FMT_PseudoCodeSizeType		"%s"
+#define DBG_ARG_PseudoCodeSizeType(arg)	PseudoCodeSizeTypeString(*(arg))
+
+static inline const char *PseudoCodeSignTypeString(bool sign)
+{
+	return "";
+}
+typedef bool PseudoCodeSignType;
+#define DBG_FMT_PseudoCodeSignType		"%s"
+#define DBG_ARG_PseudoCodeSignType(arg)	PseudoCodeSignTypeString(*(arg))
+
+typedef uint8 PseudoCodeBitCountType;
+#define DBG_FMT_PseudoCodeBitCountType		"bitcount(%u) "
+#define DBG_ARG_PseudoCodeBitCountType(arg)	(*(arg))
+
+typedef uint8 PseudoCodeUnalignedAllowedType;
+#define DBG_FMT_PseudoCodeUnalignedAllowedType		"UnalignedAllowd(%s) "
+#define DBG_ARG_PseudoCodeUnalignedAllowedType(arg)	DbgBoolFlag(*(arg))
+
+typedef uint32 PseudoCodeRegisterListType;
+#define DBG_FMT_PseudoCodeRegisterListType		"rlist(0x%x) "
+#define DBG_ARG_PseudoCodeRegisterListType(arg)	(*(arg))
+
+typedef bool PseudoCodeRegisterFormType;
+#define DBG_FMT_PseudoCodeRegisterFormType		"RegisterForm(%s) "
+#define DBG_ARG_PseudoCodeRegisterFormType(arg)	DbgBoolFlag(*(arg))
+
+typedef uint32 PseudoCodeOpcodeType;
+#define DBG_FMT_PseudoCodeOpcodeType		"opcode(0x%x) "
+#define DBG_ARG_PseudoCodeOpcodeType(arg)	(*(arg))
+
 typedef enum {
 	SRType_LSL = 0,
 	SRType_LSR,
@@ -127,6 +202,9 @@ static inline const char *SRTypeString(SRType type)
 }
 #define DBG_FMT_SRType		"SRType(%s) "
 #define DBG_ARG_SRType(arg)	SRTypeString(*(arg))
+typedef uint32 ShiftNType;
+#define DBG_FMT_ShiftNType		"shift_n(%d) "
+#define DBG_ARG_ShiftNType(arg)	(*(arg))
 
 #define OP_SET_REG(core, arg, op, regName)	\
 do {	\

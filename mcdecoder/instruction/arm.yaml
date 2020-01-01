@@ -21,7 +21,7 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
           shift_t: SRType
-          shift_n: uint32
+          shift_n: ShiftNType
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
@@ -44,7 +44,7 @@ machine:
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          result: sint32
+          result: CmpResultType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_cmp_reg
@@ -53,9 +53,9 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
           shift_t: SRType
-          shift_n: uint32
+          shift_n: ShiftNType
         outputs:
-          result: sint32
+          result: CmpResultType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_adr_imm
@@ -63,10 +63,11 @@ machine:
           cond: PseudoCodeConditionDataType
           Rd: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
-          add: bool
+          add: PseudoCodeBitCountType
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
       - name: arm_add_spimm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -81,12 +82,12 @@ machine:
       - name: arm_subs_pclr
         inputs:
           cond: PseudoCodeConditionDataType
-          opcode: uint8
+          opcode: PseudoCodeOpcodeType
           Rn: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
-          register_form: bool
-          shift_t: sint32
-          shift_n: sint32
+          register_form: PseudoCodeRegisterFormType
+          shift_t: SRType
+          shift_n: ShiftNType
           imm32: PseudoCodeImmediateData32Type
         outputs:
           PC: PseudoCodeRegisterDataType
@@ -101,6 +102,7 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
       - name: arm_mov_reg
         inputs:
           cond: PseudoCodeConditionDataType
@@ -110,11 +112,12 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
       - name: arm_bl_imm
         inputs:
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
-          type: sint32
+          type: InstrSetType
         outputs:
           LR: PseudoCodeRegisterDataType
 
@@ -131,25 +134,25 @@ machine:
 
       - name: arm_ldr_imm
         inputs:
+          size: PseudoCodeSizeType
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
-          add: bool
-          index: bool
-          wback: bool
-          size: uint32
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
       - name: arm_ldr_reg
         inputs:
+          size: PseudoCodeSizeType
+          sign: PseudoCodeSignType
           cond: PseudoCodeConditionDataType
-          add: bool
-          index: bool
-          wback: bool
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
           shift_t: SRType
-          shift_n: uint32
-          size: uint32
-          sign: bool
+          shift_n: ShiftNType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
@@ -158,9 +161,9 @@ machine:
       - name: arm_push
         inputs:
           cond: PseudoCodeConditionDataType
-          bitcount: uint8
-          UnalignedAllowed: bool
-          registers: uint32
+          bitcount: PseudoCodeBitCountType
+          UnalignedAllowed: PseudoCodeUnalignedAllowedType
+          registers: PseudoCodeRegisterListType
           SP: PseudoCodeRegisterDataType
         outputs:
           SP: PseudoCodeRegisterDataType
@@ -168,21 +171,21 @@ machine:
       - name: arm_pop
         inputs:
           cond: PseudoCodeConditionDataType
-          bitcount: uint8
-          UnalignedAllowed: bool
-          registers: uint32
+          bitcount: PseudoCodeBitCountType
+          UnalignedAllowed: PseudoCodeUnalignedAllowedType
+          registers: PseudoCodeRegisterListType
           SP: PseudoCodeRegisterDataType
         outputs:
           SP: PseudoCodeRegisterDataType
 
       - name: arm_str_imm
         inputs:
+          size: PseudoCodeSizeType
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
-          add: bool
-          index: bool
-          wback: bool
-          size: uint32
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
         outputs:
@@ -190,14 +193,14 @@ machine:
 
       - name: arm_str_reg
         inputs:
+          size: PseudoCodeSizeType
+          sign: PseudoCodeSignType
           cond: PseudoCodeConditionDataType
-          add: bool
-          index: bool
-          wback: bool
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
           shift_t: SRType
-          shift_n: uint32
-          size: uint32
-          sign: bool
+          shift_n: ShiftNType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType

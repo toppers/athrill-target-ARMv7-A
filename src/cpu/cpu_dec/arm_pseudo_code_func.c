@@ -10,6 +10,16 @@ int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in
 	}
 	out->status = *status;
 }
+int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in, arm_add_reg_output_type *out)
+{
+	int ret = -1;
+	uint32 *status = cpu_get_status(core);
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//TODO
+	}
+	out->status = *status;
+}
 int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_type *in, arm_sub_imm_output_type *out)
 {
 	int ret = -1;

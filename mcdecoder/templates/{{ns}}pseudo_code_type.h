@@ -1,7 +1,7 @@
 #ifndef _{{ ns|upper }}PSEUDO_CODE_TYPE_H_
 #define _{{ ns|upper }}PSEUDO_CODE_TYPE_H_
 
-#include "cpu_op_types.h"
+#include "arm_pseudo_code_common_type.h"
 
 {% for inst in machine_decoder.extras.pseudo_codes -%}
 

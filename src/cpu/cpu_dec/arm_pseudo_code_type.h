@@ -1,7 +1,7 @@
 #ifndef _ARM_PSEUDO_CODE_TYPE_H_
 #define _ARM_PSEUDO_CODE_TYPE_H_
 
-#include "cpu_op_types.h"
+#include "arm_pseudo_code_common_type.h"
 
 typedef struct {
 	char* instrName;

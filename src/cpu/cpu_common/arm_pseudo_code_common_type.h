@@ -1,9 +1,8 @@
-#ifndef _CPU_OP_TYPES_H_
-#define _CPU_OP_TYPES_H_
+#ifndef _ARM_PSEUDO_CODE_COMMON_TYPE_H_
+#define _ARM_PSEUDO_CODE_COMMON_TYPE_H_
 
 #include "std_types.h"
 #include "target_cpu.h"
-#include <string.h>
 
 /************************************************
  * pseudo code common data types
@@ -79,7 +78,10 @@ typedef struct {
 #define DBG_ARG_PseudoCodeStatusFlagType(arg)	DbgBoolFlag((arg)->negative), DbgBoolFlag((arg)->zero), DbgBoolFlag((arg)->carry), DbgBoolFlag((arg)->overflow)
 static inline void cpu_conv_status_flag(uint32 status, PseudoCodeStatusFlagType *out)
 {
-	memset(out, 0, sizeof(PseudoCodeStatusFlagType));
+	out->negative = FALSE;
+	out->overflow = FALSE;
+	out->carry = FALSE;
+	out->zero = FALSE;
 	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_N)) {
 		out->negative = TRUE;
 	}
@@ -209,64 +211,4 @@ typedef uint32 PseudoCodeShiftNType;
 #define DBG_FMT_PseudoCodeShiftNType		"shift_n(%d) "
 #define DBG_ARG_PseudoCodeShiftNType(arg)	(*(arg))
 
-#define OP_SET_REG(core, arg, op, regName)	\
-do {	\
-	(arg)->regName.name = #regName;	\
-	(arg)->regName.regId = (op)->regName;	\
-	(arg)->regName.regData = cpu_get_reg(core, (op)->regName);	\
-} while (0)
-
-#define OP_SET_REGID(core, arg, register_id, regName)	\
-do {	\
-	(arg)->regName.name = #regName;	\
-	(arg)->regName.regId = (register_id);	\
-	(arg)->regName.regData = cpu_get_reg(core, (register_id));	\
-} while (0)
-
-#define OP_INIT_REG(core, arg, regName)	\
-do {	\
-	(arg)->regName.name = #regName;	\
-	(arg)->regName.regId = -1;	\
-	(arg)->regName.regData = -1;	\
-} while (0)
-
-static inline bool BadMode(uint8 mode, TargetCoreType *core)
-{
-	bool result;
-	switch (mode) {
-		case 0b10000:
-			result = FALSE; // User mode
-			break;
-		case 0b10001:
-			result = FALSE; // FIQ mode
-			break;
-		case 0b10010:
-			result = FALSE; // IRQ mode
-			break;
-		case 0b10011:
-			result = FALSE; // Supervisor mode
-			break;
-		case 0b10110:
-			result = !HaveSecurityExt(core); // Monitor mode
-			break;
-		case 0b10111:
-			result = FALSE; // Abort mode
-			break;
-		case 0b11010:
-			result = !HaveVirtExt(core); // Hyp mode
-			break;
-		case 0b11011:
-			result = FALSE; // Undefined mode
-			break;
-		case 0b11111:
-			result = FALSE; // System mode
-			break;
-		default:
-		result = TRUE;
-	}
-	return result;
-}
-/************************************************/
-
-
-#endif /* _CPU_OP_TYPES_H_ */
+#endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

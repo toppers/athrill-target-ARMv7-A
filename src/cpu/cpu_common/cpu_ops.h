@@ -1,7 +1,9 @@
 #ifndef _CPU_OPS_H_
 #define _CPU_OPS_H_
 #include "target_cpu.h"
-#include "cpu_op_types.h"
+#include "arm_pseudo_code_type.h"
+#include "assert.h"
+
 
 #define CPU_PSW_S		(1 << 31)	/* N */
 #define CPU_PSW_Z		(1 << 30)	/* Z */
@@ -104,8 +106,42 @@ static inline uint32 op_zero_extend(uint32 bit, uint32 data)
 	return data;
 }
 
-#include "assert.h"
-
+static inline bool BadMode(uint8 mode, TargetCoreType *core)
+{
+	bool result;
+	switch (mode) {
+		case 0b10000:
+			result = FALSE; // User mode
+			break;
+		case 0b10001:
+			result = FALSE; // FIQ mode
+			break;
+		case 0b10010:
+			result = FALSE; // IRQ mode
+			break;
+		case 0b10011:
+			result = FALSE; // Supervisor mode
+			break;
+		case 0b10110:
+			result = !HaveSecurityExt(core); // Monitor mode
+			break;
+		case 0b10111:
+			result = FALSE; // Abort mode
+			break;
+		case 0b11010:
+			result = !HaveVirtExt(core); // Hyp mode
+			break;
+		case 0b11011:
+			result = FALSE; // Undefined mode
+			break;
+		case 0b11111:
+			result = FALSE; // System mode
+			break;
+		default:
+		result = TRUE;
+	}
+	return result;
+}
 static inline uint32 LSL_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
 {
 	ASSERT(shift > 0);
@@ -708,4 +744,26 @@ static inline void DecodeImmShift(uint8 type, uint32 imm5, SRType *shift_t, uint
 	}
 	return;
 }
+
+#define OP_SET_REG(core, arg, op, regName)	\
+do {	\
+	(arg)->regName.name = #regName;	\
+	(arg)->regName.regId = (op)->regName;	\
+	(arg)->regName.regData = cpu_get_reg(core, (op)->regName);	\
+} while (0)
+
+#define OP_SET_REGID(core, arg, register_id, regName)	\
+do {	\
+	(arg)->regName.name = #regName;	\
+	(arg)->regName.regId = (register_id);	\
+	(arg)->regName.regData = cpu_get_reg(core, (register_id));	\
+} while (0)
+
+#define OP_INIT_REG(core, arg, regName)	\
+do {	\
+	(arg)->regName.name = #regName;	\
+	(arg)->regName.regId = -1;	\
+	(arg)->regName.regData = -1;	\
+} while (0)
+
 #endif /* _CPU_OPS_H_ */

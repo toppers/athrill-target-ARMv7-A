@@ -209,10 +209,10 @@ static inline uint32 Shift(uint32 bits_N, uint32 value, SRType type, uint32 amou
 {
 	return Shift_C(bits_N, value, type, amount, carry_in, NULL);
 }
-static inline uint32 ARMExpandImm_C(uint32 imm12, bool carry_in, bool *carry_out)
+static inline uint32 ARMExpandImm_C(uint16 imm12, bool carry_in, bool *carry_out)
 {
-	uint32 unrotated_value = (imm12 & 0xFF);
-	uint32 amount = ( 2U * ((imm12 & 0xF00) >> 8U) );
+	uint32 unrotated_value = (uint32)(imm12 & 0xFF);
+	uint32 amount = ( 2U * (uint32)((imm12 & 0xF00) >> 8U) );
 	return Shift_C(32U, unrotated_value, SRType_ROR, amount, carry_in, carry_out);
 }
 static inline uint32 ARMExpandImm(uint32 imm12, bool carry_in)
@@ -252,7 +252,7 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 		break;
 	case 0b100:
 		//when ‘100’ result = (APSR.C == ‘1’) && (APSR.Z == ‘0’); // HI or LS
-		result = (CPU_ISSET_CY(&status) && CPU_ISSET_Z(&status));
+		result = (CPU_ISSET_CY(&status) && !CPU_ISSET_Z(&status));
 		break;
 	case 0b101:
 		//when ‘101’ result = (APSR.N == APSR.V); // GE or LT
@@ -260,7 +260,7 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 		break;
 	case 0b110:
 		//when ‘110’ result = (APSR.N == APSR.V) && (APSR.Z == ‘0’); // GT or LE
-		result = ((CPU_ISSET_S(&status) == CPU_ISSET_OV(&status)) && CPU_ISSET_Z(&status));
+		result = ((CPU_ISSET_S(&status) == CPU_ISSET_OV(&status)) && !CPU_ISSET_Z(&status));
 		break;
 	case ConditionAlways:
 		//when ‘111’ result = TRUE; // A
@@ -273,7 +273,12 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	//if cond<0> == ‘1’ && cond != ‘1111’ then
 	//result = !result
 	if (cond0 == 0x1 && (cond != 0xF)) {
-		result = ~result;
+		if (result != FALSE) {
+			result = FALSE;
+		}
+		else {
+			result = TRUE;
+		}
 	}
 	return result;
 }

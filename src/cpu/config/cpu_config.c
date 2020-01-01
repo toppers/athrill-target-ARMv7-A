@@ -90,7 +90,7 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 			READONLY_MEMORY,
 			CpuMemoryAccess_EXEC,
 			cpu_get_pc(&virtual_cpu.cores[core_id].core),
-			OpFormatSize[p_decoded_code->type_id]);
+			0);
 	if (permission == FALSE) {
 		return STD_E_SEGV;
 	}
@@ -159,7 +159,7 @@ Std_ReturnType cpu_supply_clock(CoreIdType core_id)
 				READONLY_MEMORY,
 				CpuMemoryAccess_EXEC,
 				cpu_get_pc(&virtual_cpu.cores[core_id].core),
-				OpFormatSize[cached_code->codes[inx].decoded_code.type_id]);
+				0);
 		if (permission == FALSE) {
 			return STD_E_SEGV;
 		}

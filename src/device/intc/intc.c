@@ -2,8 +2,6 @@
 
 #include "intc.h"
 #include "device.h"
-#include "std_cpu_ops.h"
-#include "cpu_common/cpu_ops.h"
 #include "mpu.h"
 
 IntcControlType intc_control;

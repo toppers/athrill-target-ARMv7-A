@@ -2,7 +2,6 @@
 #define _ARM_PSEUDO_CODE_DEBUG_H_
 
 #include "dbg_log.h"
-#include "cpu_op_types.h"
 #include "arm_pseudo_code_type.h"
 
 static inline void DBG_ARM_ADD_IMM(TargetCoreType *core, arm_add_imm_input_type *in, arm_add_imm_output_type *out)

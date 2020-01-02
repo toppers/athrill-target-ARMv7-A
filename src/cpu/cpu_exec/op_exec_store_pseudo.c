@@ -1,13 +1,34 @@
 #include "arm_pseudo_code_func.h"
 
+static inline int reg_to_mem(TargetCoreType *core, uint32 address, uint32 size, uint32 regdata)
+{
+	struct {
+		uint8 array[4];
+	} data;
+	switch (size) {
+		case 1:
+			data.array[0] = ((uint8)((regdata >> 0U) & 0xFF));
+			break;
+		case 2:
+			data.array[0] = ((uint8)((regdata >> 0U) & 0xFF));
+			data.array[1] = ((uint8)((regdata >> 8U) & 0xFF));
+			break;
+		case 4:
+			data.array[0] = ((uint8)((regdata >>  0U) & 0xFF));
+			data.array[1] = ((uint8)((regdata >>  8U) & 0xFF));
+			data.array[2] = ((uint8)((regdata >> 16U) & 0xFF));
+			data.array[3] = ((uint8)((regdata >> 24U) & 0xFF));
+			break;
+		default:
+			return -1;
+	}
+	return MemA_W(core, address, size, (uint8*)&data);
+}
 
 int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out)
 {
 	int ret = 0;
-	union {
-		uint8 array[4];
-		uint32 raw32;
-	} data;
+	uint32 regdata;
 	uint32 *status = cpu_get_status(core);
 	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
 	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
@@ -15,36 +36,17 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		if (in->Rt.regId == CpuRegId_PC) {
-			data.raw32 = PCStoreValue(core);
+			regdata = PCStoreValue(core);
 		}
 		else {
-			uint32 regdata = in->Rt.regData;
-			switch (in->size) {
-				case 1:
-					data.array[0] = ((uint8)((regdata >> 0U) & 0xFF));
-					break;
-				case 2:
-					data.array[0] = ((uint8)((regdata >> 0U) & 0xFF));
-					data.array[1] = ((uint8)((regdata >> 8U) & 0xFF));
-					break;
-				case 4:
-					data.array[0] = ((uint8)((regdata >>  0U) & 0xFF));
-					data.array[1] = ((uint8)((regdata >>  8U) & 0xFF));
-					data.array[2] = ((uint8)((regdata >> 16U) & 0xFF));
-					data.array[3] = ((uint8)((regdata >> 24U) & 0xFF));
-					break;
-				default:
-					ret = -1;
-					goto done;
-			}
+			regdata = in->Rt.regData;
 		}
-		ret = MemA_W(core, address, in->size, (uint8*)&data);
+		ret = reg_to_mem(core, address, in->size, regdata);
 		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
         	out->Rn.regData = offset_addr;
 		}
 	}
-done:
 	out->status = *status;
     return ret;
 }
@@ -53,7 +55,6 @@ done:
 int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in, arm_str_reg_output_type *out)
 {
 	int ret = 0;
-	uint8 data[4];
 	uint32 regdata;
 	uint32 *status = cpu_get_status(core);
 	uint32 offset = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
@@ -63,33 +64,11 @@ int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		regdata = cpu_get_reg(core, in->Rt.regId);
-		switch (in->size) {
-			case 1:
-				data[0] = ((uint8)((regdata >> 0U) & 0xFF));
-				break;
-			case 2:
-				data[0] = ((uint8)((regdata >> 0U) & 0xFF));
-				data[1] = ((uint8)((regdata >> 8U) & 0xFF));
-				break;
-			case 4:
-				data[0] = ((uint8)((regdata >>  0U) & 0xFF));
-				data[1] = ((uint8)((regdata >>  8U) & 0xFF));
-				data[2] = ((uint8)((regdata >> 16U) & 0xFF));
-				data[3] = ((uint8)((regdata >> 24U) & 0xFF));
-				break;
-			default:
-				ret = -1;
-				goto done;
-		}
-		ret = MemA_W(core, address, in->size, data);
-		if (ret != 0) {
-            goto done;
-		}
-		if (in->wback) {
+		ret = reg_to_mem(core, address, in->size, regdata);
+		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
 		}
 	}
-done:
 	out->status = *status;
     return ret;
 }

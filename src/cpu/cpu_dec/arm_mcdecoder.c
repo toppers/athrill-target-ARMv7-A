@@ -2324,12 +2324,12 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
-            if (!(
-                context->decoded_code->code.arm_pop_a1.cond != 15
-            )) {
+        
+            if (
+                context->decoded_code->code.arm_pop_a1.cond == 15
+            ) {
                 return 1;
             }
-        
         
         return 0;
     }

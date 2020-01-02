@@ -218,21 +218,30 @@ decoder:
 instructions:
   - name: arm_add_imm_a1
     format: xxxx:cond|00|1|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or (Rn == 0b1101) or ( (Rn == 0b1111) and (S == 0) ) or ( (Rd == 0b1111) and (S == 1) )
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1101) 
+                        or ( (Rn == 0b1111) and (S == 0) ) 
+                        or ( (Rd == 0b1111) and (S == 1) ) 
     extras:
       clocks: 10
       pseudo_code: arm_add_imm
 
   - name: arm_add_reg_a1
     format: xxxx:cond|00|0|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or ((Rd == 0b1111) and (S == 1)) or (Rn == 0b1101)
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) ) 
+                        or (Rn == 0b1101)
     extras:
       clocks: 10
       pseudo_code: arm_add_reg
 
   - name: arm_add_spimm_a1
     format: xxxx:cond|00|1|0100|x:S|1101|xxxx:Rd|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((Rd == 0b1111) and (S == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_add_spimm
@@ -259,14 +268,20 @@ instructions:
 
   - name: arm_sub_imm_a1
     format: xxxx:cond|00|1|0010|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((Rn == 0b1111) and (S == 0)) or ((Rd == 0b1111) and (S == 1)) or (Rn == 0b1101)
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rn == 0b1111) and (S == 0) ) 
+                        or ( (Rd == 0b1111) and (S == 1) ) 
+                        or (Rn == 0b1101)
     extras:
       clocks: 10
       pseudo_code: arm_sub_imm
 
   - name: arm_sub_spimm_a1
     format: xxxx:cond|00|1|0010|x:S|1101|xxxx:Rd|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((Rd == 0b1111) and (S == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_sub_imm
@@ -281,7 +296,9 @@ instructions:
 
   - name: arm_mov_imm_a1
     format: xxxx:cond|00|1|1101|x:S|0000|xxxx:Rd|xxxxxxxxxxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((Rd == 0b1111) and (S == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_mov_imm
@@ -295,7 +312,9 @@ instructions:
 
   - name: arm_mov_reg_a1
     format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|00000000|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or ((Rd == 0b1111) and (S == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_mov_reg
@@ -329,14 +348,21 @@ instructions:
 
   - name: arm_str_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((P == 0) and (W == 1)) or ( (Rn == 0b1101) and (P == 1) and (U == 0) and (W == 1) and (imm12 == 0b000000000100) )
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or ( (Rn == 0b1101) 
+                              and (P == 1) and (U == 0) and (W == 1) 
+                              and (imm12 == 0b000000000100) )
     extras:
       clocks: 10
       pseudo_code: arm_str_imm
 
   - name: arm_strb_imm_a1
     format: xxxx:cond|0|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx xxxx xxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((P == 0) and (W == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_str_imm
@@ -344,7 +370,9 @@ instructions:
 
   - name: arm_strb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or ((P == 0) and (W == 1))
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
     extras:
       clocks: 10
       pseudo_code: arm_str_reg
@@ -359,7 +387,9 @@ instructions:
 
   - name: arm_push_a2
     format: xxxx:cond|010|1|0|0|1|0|1101|xxxx:Rt|0000 0000 0100
-    unmatch_condition: (cond == 0b1111) or (Rt == 13)
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rt == 13)
     extras:
       clocks: 10
       pseudo_code: arm_push
@@ -367,28 +397,47 @@ instructions:
 
   - name: arm_ldr_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
-    unmatch_condition: (cond == 0b1111) or (Rn == 0b1111) or ((P == 0) and (W == 1)) or ( (Rn == 0b1101) and (P == 0) and (U == 1) and (W == 0) and (imm12 == 0b000000000100) )
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or ( (Rn == 0b1101) 
+                              and (P == 0) and (U == 1) and (W == 0) 
+                              and (imm12 == 0b000000000100) )
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
   - name: arm_ldr_literal_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|1111|xxxx:Rt|xxxxxxxxxxxx:imm12
-    unmatch_condition: (cond == 0b1111) or ((P == 0) and (W == 1)) 
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
   - name: arm_ldrb_imm_a1
     format: xxxx:cond|010|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
-    unmatch_condition: (cond == 0b1111) or (Rn == 0b1111) or ((P == 0) and (W == 1)) or (Rt == 15) or ( ((P == 0) or (W == 1))  )
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rt == 15) 
+                        or ( ((P == 0) or (W == 1)) )
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
   - name: arm_ldrb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or (Rn == 0b1111) or (Rt == 0b1111) or ((P == 0) and (W == 1)) or (Rt == 15) or ( ((P == 0) or (W == 1)) and (Rn == 15) )
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or (Rt == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rt == 15) 
+                        or ( ((P == 0) or (W == 1)) and (Rn == 15) )
     extras:
       clocks: 10
       pseudo_code: arm_ldr_reg
@@ -396,14 +445,16 @@ instructions:
 
   - name: arm_pop_a1
     format: xxxx:cond|1000 10|1|1|1101|xxxx xxxx xxxx xxxx:register_list
-    match_condition: cond != 15
+    unmatch_condition: (cond == 0b1111)
     extras:
       clocks: 10
       pseudo_code: arm_pop
 
   - name: arm_pop_a2
     format: xxxx:cond|010|0|1|0|0|1|1101|xxxx:Rt|0000 0000 0100
-    unmatch_condition: (cond == 0b1111) or (Rt == 13)
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rt == 13)
     extras:
       clocks: 10
       pseudo_code: arm_pop

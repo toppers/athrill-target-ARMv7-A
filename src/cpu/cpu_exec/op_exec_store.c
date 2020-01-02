@@ -1,7 +1,4 @@
 #include "cpu_dec/arm_mcdecoder.h"
-#include "target_cpu.h"
-#include "cpu_ops.h"
-#include "bus.h"
 #include "arm_pseudo_code_debug.h"
 #include "arm_pseudo_code_func.h"
 

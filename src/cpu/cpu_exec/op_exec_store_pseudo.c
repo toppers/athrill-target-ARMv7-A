@@ -1,6 +1,4 @@
-#include "bus.h"
 #include "arm_pseudo_code_func.h"
-#include "cpu_ops.h"
 
 
 int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out)

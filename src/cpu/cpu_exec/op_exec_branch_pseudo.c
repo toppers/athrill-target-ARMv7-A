@@ -1,5 +1,4 @@
 #include "arm_pseudo_code_func.h"
-#include "cpu_ops.h"
 
 int arm_op_exec_arm_bl_imm(struct TargetCore *core,  arm_bl_imm_input_type *in, arm_bl_imm_output_type *out)
 {

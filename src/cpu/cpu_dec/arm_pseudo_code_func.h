@@ -1,7 +1,7 @@
 #ifndef _ARM_PSEUDO_CODE_FUNC_H_
 #define _ARM_PSEUDO_CODE_FUNC_H_
 
-#include "arm_pseudo_code_type.h"
+#include "arm_pseudo_code.h"
 
 extern int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in, arm_add_imm_output_type *out);
 extern int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in, arm_add_reg_output_type *out);

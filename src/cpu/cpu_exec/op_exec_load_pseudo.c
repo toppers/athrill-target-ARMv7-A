@@ -1,6 +1,4 @@
-#include "bus.h"
 #include "arm_pseudo_code_func.h"
-#include "cpu_ops.h"
 
 static inline int mem_to_reg(TargetCoreType *core, uint32 address, uint32 size, uint8 *data, uint32 *result)
 {

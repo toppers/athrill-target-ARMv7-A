@@ -2,7 +2,6 @@
 #include "bus.h"
 #include "std_cpu_ops.h"
 #include <stdio.h>
-#include "cpu_common/cpu_ops.h"
 #include "cpu_dec/arm_mcdecoder.h"
 #include "mpu_types.h"
 #include <sys/time.h>

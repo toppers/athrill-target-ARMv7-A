@@ -225,3 +225,31 @@ int arm_op_exec_arm_sub_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_sub_spimm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_sub_spimm_a1 *op = &core->decoded_code->code.arm_sub_spimm_a1;
+
+	arm_sub_imm_input_type in;
+	arm_sub_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+
+	in.instrName = "SUB";
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REGID(core, &in, CpuRegId_SP, Rn);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
+
+	OP_SET_REG(core, &out, op, Rd);
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	
+	int ret = arm_op_exec_arm_sub_imm(core, &in, &out);
+	DBG_ARM_SUB_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

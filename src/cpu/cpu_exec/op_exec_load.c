@@ -37,6 +37,41 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_ldr_literal_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldr_literal_a1 *op = &core->decoded_code->code.arm_ldr_literal_a1;
+
+	arm_ldr_imm_input_type in;
+	arm_ldr_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "LDR";
+	in.cond = op->cond;
+	in.imm32 = (uint32)(op->imm12);
+	in.index = TRUE;
+	in.add = (op->U != 0);
+	in.wback = FALSE;
+	in.size = 4;
+
+	if (op->P == op->W) {
+		//if P == W then UNPREDICTABLE;
+		//TODO
+		return -1;
+	}
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REGID(core, &in, CpuRegId_PC, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	
+	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
+	DBG_ARM_LDR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldrb_imm_a1 *op = &core->decoded_code->code.arm_ldrb_imm_a1;

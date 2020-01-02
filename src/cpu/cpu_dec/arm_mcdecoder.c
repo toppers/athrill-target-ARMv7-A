@@ -1,3 +1,4 @@
+
 #include "arm_mcdecoder.h"
 
 typedef struct {
@@ -1022,10 +1023,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_add_imm_a1.Rn != 13
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1080,10 +1081,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_add_reg_a1.Rn != 13
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1125,6 +1126,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1155,6 +1157,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
             
         
 
+        
         
         return 0;
     }
@@ -1192,6 +1195,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1225,10 +1229,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_cmp_imm_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1281,10 +1285,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_sub_imm_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1329,10 +1333,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_cmp_reg_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1370,6 +1374,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1405,6 +1410,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
             
         
 
+        
         
         return 0;
     }
@@ -1446,6 +1452,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1474,10 +1481,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_bl_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1504,6 +1511,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
             
         
 
+        
         
         return 0;
     }
@@ -1533,10 +1541,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_b_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1566,10 +1574,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_bx_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1626,6 +1634,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1676,6 +1685,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
             
         
 
+        
         
         return 0;
     }
@@ -1738,6 +1748,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1766,10 +1777,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_push_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1799,10 +1810,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_push_a2.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -1855,6 +1866,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1905,6 +1917,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
             
         
 
+        
         
         return 0;
     }
@@ -1967,6 +1980,7 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
 
         
+        
         return 0;
     }
 
@@ -1995,10 +2009,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_pop_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -2028,10 +2042,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_pop_a2.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }
@@ -2056,10 +2070,10 @@ static int op_parse_arm_nop_a1(OpDecodeContext *context);
         
             if (!(
                 context->decoded_code->code.arm_nop_a1.cond != 15
-                
             )) {
                 return 1;
             }
+        
         
         return 0;
     }

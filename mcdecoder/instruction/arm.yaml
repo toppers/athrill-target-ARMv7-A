@@ -218,8 +218,7 @@ decoder:
 instructions:
   - name: arm_add_imm_a1
     format: xxxx:cond|00|1|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
-    condition:
-      Rn: '!= 13'
+    match_condition: Rn != 13
     extras:
       clocks: 10
       pseudo_code: arm_add_imm
@@ -229,8 +228,7 @@ instructions:
 
   - name: arm_add_reg_a1
     format: xxxx:cond|00|0|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
-    condition:
-      Rn: '!= 13'
+    match_condition: Rn != 13
     extras:
       clocks: 10
       pseudo_code: arm_add_reg
@@ -255,16 +253,14 @@ instructions:
 
   - name: arm_cmp_imm_a1
     format: xxxx:cond|00|1|10101|xxxx:Rn|0000|xxxx xxxx xxxx:imm12
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_cmp_imm
 
   - name: arm_sub_imm_a1
     format: xxxx:cond|00|1|0010|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_sub_imm
@@ -274,8 +270,7 @@ instructions:
 
   - name: arm_cmp_reg_a1
     format: xxxx:cond|00|0|1010|1|xxxx:Rn|0000|xxxx x:imm5|xx:type|0|xxxx:Rm
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_cmp_reg
@@ -299,8 +294,7 @@ instructions:
         - arm_subs_pclr_a1
   - name: arm_bl_a1
     format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_bl_imm
@@ -311,15 +305,13 @@ instructions:
       pseudo_code: arm_bl_imm
   - name: arm_b_a1
     format: xxxx:cond|1010|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_b_imm
   - name: arm_bx_a1
     format: xxxx:cond|00010010|1111|1111|1111|0001|xxxx:Rm
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_bx_reg
@@ -348,16 +340,14 @@ instructions:
 
   - name: arm_push_a1
     format: xxxx:cond|1001 00|1|0|1101|xxxx xxxx xxxx xxxx:register_list
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_push
 
   - name: arm_push_a2
     format: xxxx:cond|010|1|0|0|1|0|1101|xxxx:Rt|0000 0000 0100
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_push
@@ -384,16 +374,14 @@ instructions:
 
   - name: arm_pop_a1
     format: xxxx:cond|1000 10|1|1|1101|xxxx xxxx xxxx xxxx:register_list
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_pop
 
   - name: arm_pop_a2
     format: xxxx:cond|010|0|1|0|0|1|1101|xxxx:Rt|0000 0000 0100
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_pop
@@ -401,8 +389,7 @@ instructions:
 
   - name: arm_nop_a1
     format: xxxx:cond|0011|0010|0000|1111|0000|0000 0000
-    condition:
-      cond: '!= 15'
+    match_condition: cond != 15
     extras:
       clocks: 10
       pseudo_code: arm_nop

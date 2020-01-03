@@ -209,8 +209,26 @@ machine:
         inputs:
           cond: PseudoCodeConditionDataType
 
+      - name: arm_msr_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          write_nzcvq: PseudoCodeWriteNZCVQType
+          write_g: PseudoCodeWriteGType
+ 
+      - name: arm_msr2_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          mask: PseudoCodeMaskType
+          write_spsr: PseudoCodeWriteSpsrType
 
-
+      - name: arm_mrs
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
 
 decoder:
   namespace: arm
@@ -467,4 +485,25 @@ instructions:
       clocks: 10
       pseudo_code: arm_nop
 
+  - name: arm_msr_imm_a1
+    format: xxxx:cond|00110|0|10|xx:mask|00|1111|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111) or (mask == 0b00)
+    extras:
+      clocks: 10
+      pseudo_code: arm_msr_imm
 
+  - name: arm_msr2_imm_a1
+    format: xxxx:cond|00110|x:R|10|xxxx:mask|1111|xxxx xxxx xxxx:imm12
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (mask == 0b00) and (R == 0) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_msr2_imm
+
+  - name: arm_mrs_a1
+    format: xxxx:cond|00010|0|00|1111|xxxx:Rd|00|0|0|0000|0000
+    unmatch_condition: (cond == 0b1111) or (Rd == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mrs

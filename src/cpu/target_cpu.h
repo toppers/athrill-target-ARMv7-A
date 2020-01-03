@@ -111,7 +111,7 @@ static inline bool HaveVirtExt(TargetCoreType *core)
 static inline bool IsSCTLR_NMFI(TargetCoreType *core)
 {
 	//not supported
-	return TRUE;
+	return FALSE;
 }
 static inline bool IsSCR_AW(TargetCoreType *core)
 {

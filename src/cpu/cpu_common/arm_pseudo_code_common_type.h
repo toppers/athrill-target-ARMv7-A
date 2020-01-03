@@ -184,6 +184,22 @@ typedef uint32 PseudoCodeOpcodeType;
 #define DBG_FMT_PseudoCodeOpcodeType		"opcode(0x%x) "
 #define DBG_ARG_PseudoCodeOpcodeType(arg)	(*(arg))
 
+typedef bool PseudoCodeWriteNZCVQType;
+#define DBG_FMT_PseudoCodeWriteNZCVQType		"write_nzcvq(%s) "
+#define DBG_ARG_PseudoCodeWriteNZCVQType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeWriteGType;
+#define DBG_FMT_PseudoCodeWriteGType		"write_g(%s) "
+#define DBG_ARG_PseudoCodeWriteGType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeWriteSpsrType;
+#define DBG_FMT_PseudoCodeWriteSpsrType			"write_spsr(%s) "
+#define DBG_ARG_PseudoCodeWriteSpsrType(arg)	DbgBoolFlag(*(arg))
+
+typedef uint32 PseudoCodeMaskType;
+#define DBG_FMT_PseudoCodeMaskType			"mask(0x%x) "
+#define DBG_ARG_PseudoCodeMaskType(arg)		(*(arg))
+
 typedef enum {
 	SRType_LSL = 0,
 	SRType_LSR,

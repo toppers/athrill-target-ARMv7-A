@@ -444,13 +444,53 @@ static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 #define UnalignedSupport()		TRUE
 #define UnalignedAllowed(core)	TRUE
 
-#define BYTEMASK_BIT_ISSET(bytemask, bitpos) 	( (bytemask) & ~(1U << (bitpos)) )
+#define BYTEMASK_BIT_ISSET(bytemask, bitpos) 	( (bytemask) & (1U << (bitpos)) )
 
-static inline void user_cpsr_set(uint32 *status, uint32 mask, uint32 value)
+static inline void user_status_set(uint32 *status, uint32 mask, uint32 value)
 {
 	*status = ( ((*status) & ~mask) | (value & mask) );
 	return;
 }
+static inline int SPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 bytemask)
+{
+	uint32 *status = cpu_get_saved_status(core);
+	if (CurrentModeIsUserOrSystem(*status)) {
+		return -1;
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 3) != 0) {
+		//if bytemask<3> == '1' then
+		//SPSR[]<31:24> = value<31:24>; // N,Z,C,V,Q flags, IT<1:0>,J execution state bits
+		user_status_set(status, 0xFF000000, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 2) != 0) {
+		//if bytemask<2> == '1' then
+		// bits <23:20> are reserved SBZP bits
+		//SPSR[]<19:16> = value<19:16>; // GE<3:0> flags
+		user_status_set(status, 0x000F0000, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 1) != 0) {
+		//if bytemask<1> == '1' then
+		//SPSR[]<15:8> = value<15:8>; // IT<7:2> execution state bits, E bit, A interrupt mask
+		user_status_set(status, 0x0000FF00, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 0) != 0) {
+		//if bytemask<0> == '1' then
+		//SPSR[]<7:5> = value<7:5>; // I,F interrupt masks, T execution state bit
+		user_status_set(status, 0x000000e0, value);
+	}
+	uint8 value4_0 = (value & 0x1F);
+	if (BadMode(value4_0, core)) {
+		//if (BadMode(value<4:0>) then // Mode bits
+		//UNPREDICTABLE;
+		return -1;
+	}
+	else {
+		//SPSR[]<4:0> = value<4:0>;
+		user_status_set(status, 0x0000001F, value4_0);
+	}
+	return 0;
+}
+
 static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 bytemask, bool is_excpt_return)
 {
 	uint32 *status = cpu_get_status(core);
@@ -459,40 +499,40 @@ static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 byt
 
 	if (BYTEMASK_BIT_ISSET(bytemask, 3) != 0) {
 		//CPSR<31:27> = value<31:27>; // N,Z,C,V,Q flags
-		user_cpsr_set(status, 0xF8000000, value);
+		user_status_set(status, 0xF8000000, value);
 	}
 	if (is_excpt_return) {
 		//CPSR<26:24> = value<26:24>; // IT<1:0>,J execution state bits
-		user_cpsr_set(status, 0x07000000, value);
+		user_status_set(status, 0x07000000, value);
 	}
 	if (BYTEMASK_BIT_ISSET(bytemask, 2) != 0) {
 		// bits <23:20> are reserved SBZP bits
 		//CPSR<19:16> = value<19:16>; // GE<3:0> flags
-		user_cpsr_set(status, 0x000F0000, value);
+		user_status_set(status, 0x000F0000, value);
 	}
 	if (BYTEMASK_BIT_ISSET(bytemask, 1) != 0) {
 		if (is_excpt_return) {
 			//CPSR<15:10> = value<15:10>; // IT<7:2> execution state bits
 			//CPSR<9> = value<9>; // E bit is user-writable
-			user_cpsr_set(status, 0x0000FE00, value);
+			user_status_set(status, 0x0000FE00, value);
 		}
 		if (privileged && (IsSecure(core) || IsSCR_AW(core) || HaveVirtExt(core))) {
 			//CPSR<8> = value<8>; // A interrupt mask
-			user_cpsr_set(status, 0x00000100, value);
+			user_status_set(status, 0x00000100, value);
 		}
 		if (BYTEMASK_BIT_ISSET(bytemask, 0) != 0) {
 			if (privileged) {
 				//CPSR<7> = value<7>; // I interrupt mask
-				user_cpsr_set(status, 0x00000080, value);
+				user_status_set(status, 0x00000080, value);
 			}
 			if (privileged && (!nmfi || (BYTEMASK_BIT_ISSET(value, 6) == 0)) &&
 				( IsSecure(core) || IsSCR_FW(core) || HaveVirtExt(core)) ) {
 				//CPSR<6> = value<6>; // F interrupt mask
-				user_cpsr_set(status, 0x00000040, value);
+				user_status_set(status, 0x00000040, value);
 			}
 			if (is_excpt_return) {
 				//CPSR<5> = value<5>; // T execution state bit
-				user_cpsr_set(status, 0x00000020, value);
+				user_status_set(status, 0x00000020, value);
 			}
 			if (privileged) {
 				uint8 value4_0 = (value & 0x1F);
@@ -531,7 +571,7 @@ static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 byt
 						return -1;
 					}
 					// CPSR<4:0>, mode bits
-					user_cpsr_set(status, 0x0000001F, value4_0);
+					user_status_set(status, 0x0000001F, value4_0);
 				}
 			}
 		}

@@ -149,6 +149,7 @@ int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type
 					break;
 				case 0b1101:
 					result = operand2;
+					break;
 				case 0b1110:
 					result = in->Rn.regData & ~operand2; // BIC
 					break;
@@ -156,7 +157,8 @@ int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type
 					result = ~operand2; // MVN
 					break;
 				default:
-					break;
+					ret = -1;
+					goto done;
 			}
 			uint32 *saved_status = cpu_get_saved_status(core);
 			CPSRWriteByInstr(core, *saved_status, 0x0F, TRUE);
@@ -172,6 +174,7 @@ int arm_op_exec_arm_subs_pclr(struct TargetCore *core,  arm_subs_pclr_input_type
 			}
 		}
 	}
+done:
 	out->status = *status;
 	return ret;
 }

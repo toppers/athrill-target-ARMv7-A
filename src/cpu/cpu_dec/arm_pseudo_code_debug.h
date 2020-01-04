@@ -1023,4 +1023,94 @@ static inline void DBG_ARM_MRS(TargetCoreType *core, arm_mrs_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_MCR(TargetCoreType *core, arm_mcr_input_type *in, arm_mcr_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeCoprocType
+
+		DBG_FMT_PseudoCodeCoprocCRnType
+
+		DBG_FMT_PseudoCodeCoprocOp1Type
+
+		DBG_FMT_PseudoCodeCoprocCRmType
+
+		DBG_FMT_PseudoCodeCoprocOp2Type
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeCoprocType(&in->cp),
+
+		DBG_ARG_PseudoCodeCoprocCRnType(&in->CRn),
+
+		DBG_ARG_PseudoCodeCoprocOp1Type(&in->op1),
+
+		DBG_ARG_PseudoCodeCoprocCRmType(&in->CRm),
+
+		DBG_ARG_PseudoCodeCoprocOp2Type(&in->op2),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_MRC(TargetCoreType *core, arm_mrc_input_type *in, arm_mrc_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeCoprocType
+
+		DBG_FMT_PseudoCodeCoprocCRnType
+
+		DBG_FMT_PseudoCodeCoprocOp1Type
+
+		DBG_FMT_PseudoCodeCoprocCRmType
+
+		DBG_FMT_PseudoCodeCoprocOp2Type
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeCoprocType(&in->cp),
+
+		DBG_ARG_PseudoCodeCoprocCRnType(&in->CRn),
+
+		DBG_ARG_PseudoCodeCoprocOp1Type(&in->op1),
+
+		DBG_ARG_PseudoCodeCoprocCRmType(&in->CRm),
+
+		DBG_ARG_PseudoCodeCoprocOp2Type(&in->op2),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

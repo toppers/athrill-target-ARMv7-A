@@ -230,6 +230,27 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
 
+      - name: arm_mcr
+        inputs:
+          cond: PseudoCodeConditionDataType
+          cp: PseudoCodeCoprocType
+          CRn: PseudoCodeCoprocCRnType
+          op1: PseudoCodeCoprocOp1Type
+          CRm: PseudoCodeCoprocCRmType
+          op2: PseudoCodeCoprocOp2Type
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_mrc
+        inputs:
+          cond: PseudoCodeConditionDataType
+          cp: PseudoCodeCoprocType
+          CRn: PseudoCodeCoprocCRnType
+          op1: PseudoCodeCoprocOp1Type
+          CRm: PseudoCodeCoprocCRmType
+          op2: PseudoCodeCoprocOp2Type
+          Rt: PseudoCodeRegisterDataType
+
+
 decoder:
   namespace: arm
 
@@ -507,3 +528,32 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mrs
+
+  - name: arm_mcr_a1
+    format: xxxx:cond|1110|xxx:opc1|0|xxxx:CRn|xxxx:Rt|xxxx:coproc|xxx:opc2|1|xxxx:CRm
+    unmatch_condition: (cond == 0b1111) or (coproc == 0b1010) or (coproc == 0b1011) or (Rt == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mcr
+ 
+  - name: arm_mcr2_a2
+    format: 1111|1110|xxx:opc1|0|xxxx:CRn|xxxx:Rt|xxxx:coproc|xxx:opc2|1|xxxx:CRm
+    unmatch_condition: (coproc == 0b1010) or (coproc == 0b1011) or (Rt == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mcr
+ 
+  - name: arm_mrc_a1
+    format: xxxx:cond|1110|xxx:opc1|1|xxxx:CRn|xxxx:Rt|xxxx:coproc|xxx:opc2|1|xxxx:CRm
+    unmatch_condition: (cond == 0b1111) or (coproc == 0b1010) or (coproc == 0b1011) or (Rt == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mrc
+ 
+  - name: arm_mrc2_a2
+    format: 1111|1110|xxx:opc1|1|xxxx:CRn|xxxx:Rt|xxxx:coproc|xxx:opc2|1|xxxx:CRm
+    unmatch_condition: (coproc == 0b1010) or (coproc == 0b1011) or (Rt == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mrc
+ 

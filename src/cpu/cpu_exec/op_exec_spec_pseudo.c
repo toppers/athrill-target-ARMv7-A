@@ -68,3 +68,64 @@ int arm_op_exec_arm_mrs(struct TargetCore *core,  arm_mrs_input_type *in, arm_mr
 	return 0;
 }
 
+
+int arm_op_exec_arm_mcr(struct TargetCore *core,  arm_mcr_input_type *in, arm_mcr_output_type *out)
+{
+	CoprocOpType coproc_op;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		coproc_op.CRm = in->CRm;
+		coproc_op.CRn = in->CRn;
+		coproc_op.cp = in->cp;
+		coproc_op.op1 = in->op1;
+		coproc_op.op2 = in->op2;
+		if (!Coproc_Accepted(core, in->cp, &coproc_op)) {
+			GenerateCoprocessorException(core);
+			return -1;
+		}
+		else {
+			//Coproc_SendOneWord(R[t], cp, ThisInstr());
+
+		}
+	}
+	out->status = *status;
+	return 0;
+}
+int arm_op_exec_arm_mrc(struct TargetCore *core,  arm_mrc_input_type *in, arm_mrc_output_type *out)
+{
+	CoprocOpType coproc_op;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		coproc_op.CRm = in->CRm;
+		coproc_op.CRn = in->CRn;
+		coproc_op.cp = in->cp;
+		coproc_op.op1 = in->op1;
+		coproc_op.op2 = in->op2;
+		uint32 value;
+		if (!Coproc_Accepted(core, in->cp, &coproc_op)) {
+			GenerateCoprocessorException(core);
+			return -1;
+		}
+		else {
+			value = Coproc_GetOneWord(core, in->cp, &coproc_op);
+		}
+		if (in->Rt.regId != CpuRegId_PC) {
+			cpu_set_reg(core, in->Rt.regId, value);
+		}
+		else {
+			// Note: not all coprocessors support assignment to the APSR
+			//APSR.N = value<31>;
+			//APSR.Z = value<30>;
+			//APSR.C = value<29>;
+			//APSR.V = value<28>;
+			// value<27:0> are not used.
+			user_status_set(status, 0xF0000000, value);
+		}
+	}
+	out->status = *status;
+	return 0;
+}

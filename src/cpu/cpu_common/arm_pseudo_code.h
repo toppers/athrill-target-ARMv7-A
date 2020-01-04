@@ -2,6 +2,7 @@
 #define _ARM_PSEUDO_CODE_H_
 #include "target_cpu.h"
 #include "arm_pseudo_code_type.h"
+#include "coproc/arm_coproc.h"
 #include "assert.h"
 
 
@@ -784,6 +785,22 @@ static inline void DecodeImmShift(uint8 type, uint32 imm5, SRType *shift_t, uint
 	}
 	return;
 }
+
+
+static inline void GenerateCoprocessorException(TargetCoreType *core)
+{
+	//not supported..
+	//TODO
+	return;
+}
+static inline uint32 ThisInstr(TargetCoreType *core)
+{
+	uint32 code =  (core->current_code[0] << 0U)
+				 | (core->current_code[1] << 8U)
+				;
+	return code;
+}
+
 
 #define OP_SET_REG(core, arg, op, regName)	\
 do {	\

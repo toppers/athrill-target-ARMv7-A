@@ -1076,6 +1076,208 @@ typedef struct {
         
     
 
+    /* arm_mcr_a1 */
+    #define OP_FB_MASK_arm_mcr_a1 (0x0f100010l) /* fixed bits mask */
+    #define OP_FB_arm_mcr_a1 (0x0e000010l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_mcr_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc1' */
+            #define OP_SF_MASK_arm_mcr_a1_opc1_0 (0x00e00000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_opc1_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_opc1_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRn' */
+            #define OP_SF_MASK_arm_mcr_a1_CRn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_CRn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_CRn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_mcr_a1_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'coproc' */
+            #define OP_SF_MASK_arm_mcr_a1_coproc_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_coproc_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_coproc_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc2' */
+            #define OP_SF_MASK_arm_mcr_a1_opc2_0 (0x000000e0l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_opc2_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_opc2_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRm' */
+            #define OP_SF_MASK_arm_mcr_a1_CRm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr_a1_CRm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr_a1_CRm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_mcr2_a2 */
+    #define OP_FB_MASK_arm_mcr2_a2 (0xff100010l) /* fixed bits mask */
+    #define OP_FB_arm_mcr2_a2 (0xfe000010l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'opc1' */
+            #define OP_SF_MASK_arm_mcr2_a2_opc1_0 (0x00e00000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_opc1_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_opc1_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRn' */
+            #define OP_SF_MASK_arm_mcr2_a2_CRn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_CRn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_CRn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_mcr2_a2_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'coproc' */
+            #define OP_SF_MASK_arm_mcr2_a2_coproc_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_coproc_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_coproc_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc2' */
+            #define OP_SF_MASK_arm_mcr2_a2_opc2_0 (0x000000e0l) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_opc2_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_opc2_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRm' */
+            #define OP_SF_MASK_arm_mcr2_a2_CRm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_mcr2_a2_CRm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mcr2_a2_CRm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_mrc_a1 */
+    #define OP_FB_MASK_arm_mrc_a1 (0x0f100010l) /* fixed bits mask */
+    #define OP_FB_arm_mrc_a1 (0x0e100010l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_mrc_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc1' */
+            #define OP_SF_MASK_arm_mrc_a1_opc1_0 (0x00e00000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_opc1_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_opc1_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRn' */
+            #define OP_SF_MASK_arm_mrc_a1_CRn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_CRn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_CRn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_mrc_a1_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'coproc' */
+            #define OP_SF_MASK_arm_mrc_a1_coproc_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_coproc_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_coproc_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc2' */
+            #define OP_SF_MASK_arm_mrc_a1_opc2_0 (0x000000e0l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_opc2_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_opc2_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRm' */
+            #define OP_SF_MASK_arm_mrc_a1_CRm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc_a1_CRm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc_a1_CRm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_mrc2_a2 */
+    #define OP_FB_MASK_arm_mrc2_a2 (0xff100010l) /* fixed bits mask */
+    #define OP_FB_arm_mrc2_a2 (0xfe100010l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'opc1' */
+            #define OP_SF_MASK_arm_mrc2_a2_opc1_0 (0x00e00000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_opc1_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_opc1_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRn' */
+            #define OP_SF_MASK_arm_mrc2_a2_CRn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_CRn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_CRn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_mrc2_a2_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'coproc' */
+            #define OP_SF_MASK_arm_mrc2_a2_coproc_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_coproc_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_coproc_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'opc2' */
+            #define OP_SF_MASK_arm_mrc2_a2_opc2_0 (0x000000e0l) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_opc2_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_opc2_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'CRm' */
+            #define OP_SF_MASK_arm_mrc2_a2_CRm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_mrc2_a2_CRm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mrc2_a2_CRm_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* individual op parse functions */
 
@@ -1140,6 +1342,14 @@ static int op_parse_arm_msr_imm_a1(OpDecodeContext *context);
 static int op_parse_arm_msr2_imm_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mrs_a1(OpDecodeContext *context);
+
+static int op_parse_arm_mcr_a1(OpDecodeContext *context);
+
+static int op_parse_arm_mcr2_a2(OpDecodeContext *context);
+
+static int op_parse_arm_mrc_a1(OpDecodeContext *context);
+
+static int op_parse_arm_mrc2_a2(OpDecodeContext *context);
 
 
 
@@ -2603,6 +2813,242 @@ static int op_parse_arm_mrs_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_mcr_a1 */
+    static int op_parse_arm_mcr_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mcr_a1) != OP_FB_arm_mcr_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mcr_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mcr_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mcr_a1;
+        
+            context->decoded_code->code.arm_mcr_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_cond_0) >> OP_SF_EBII_arm_mcr_a1_cond_0) << OP_SF_EBIF_arm_mcr_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.opc1 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_opc1_0) >> OP_SF_EBII_arm_mcr_a1_opc1_0) << OP_SF_EBIF_arm_mcr_a1_opc1_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.CRn =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_CRn_0) >> OP_SF_EBII_arm_mcr_a1_CRn_0) << OP_SF_EBIF_arm_mcr_a1_CRn_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_Rt_0) >> OP_SF_EBII_arm_mcr_a1_Rt_0) << OP_SF_EBIF_arm_mcr_a1_Rt_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.coproc =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_coproc_0) >> OP_SF_EBII_arm_mcr_a1_coproc_0) << OP_SF_EBIF_arm_mcr_a1_coproc_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.opc2 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_opc2_0) >> OP_SF_EBII_arm_mcr_a1_opc2_0) << OP_SF_EBIF_arm_mcr_a1_opc2_0);
+            
+        
+            context->decoded_code->code.arm_mcr_a1.CRm =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr_a1_CRm_0) >> OP_SF_EBII_arm_mcr_a1_CRm_0) << OP_SF_EBIF_arm_mcr_a1_CRm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mcr_a1.cond == 15)
+         || (context->decoded_code->code.arm_mcr_a1.coproc == 10)
+         || (context->decoded_code->code.arm_mcr_a1.coproc == 11)
+         || (context->decoded_code->code.arm_mcr_a1.Rt == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_mcr2_a2 */
+    static int op_parse_arm_mcr2_a2(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mcr2_a2) != OP_FB_arm_mcr2_a2) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mcr2_a2;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mcr2_a2;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mcr2_a2;
+        
+            context->decoded_code->code.arm_mcr2_a2.opc1 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_opc1_0) >> OP_SF_EBII_arm_mcr2_a2_opc1_0) << OP_SF_EBIF_arm_mcr2_a2_opc1_0);
+            
+        
+            context->decoded_code->code.arm_mcr2_a2.CRn =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_CRn_0) >> OP_SF_EBII_arm_mcr2_a2_CRn_0) << OP_SF_EBIF_arm_mcr2_a2_CRn_0);
+            
+        
+            context->decoded_code->code.arm_mcr2_a2.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_Rt_0) >> OP_SF_EBII_arm_mcr2_a2_Rt_0) << OP_SF_EBIF_arm_mcr2_a2_Rt_0);
+            
+        
+            context->decoded_code->code.arm_mcr2_a2.coproc =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_coproc_0) >> OP_SF_EBII_arm_mcr2_a2_coproc_0) << OP_SF_EBIF_arm_mcr2_a2_coproc_0);
+            
+        
+            context->decoded_code->code.arm_mcr2_a2.opc2 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_opc2_0) >> OP_SF_EBII_arm_mcr2_a2_opc2_0) << OP_SF_EBIF_arm_mcr2_a2_opc2_0);
+            
+        
+            context->decoded_code->code.arm_mcr2_a2.CRm =
+            
+                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_CRm_0) >> OP_SF_EBII_arm_mcr2_a2_CRm_0) << OP_SF_EBIF_arm_mcr2_a2_CRm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mcr2_a2.coproc == 10)
+         || (context->decoded_code->code.arm_mcr2_a2.coproc == 11)
+         || (context->decoded_code->code.arm_mcr2_a2.Rt == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_mrc_a1 */
+    static int op_parse_arm_mrc_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mrc_a1) != OP_FB_arm_mrc_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mrc_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mrc_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mrc_a1;
+        
+            context->decoded_code->code.arm_mrc_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_cond_0) >> OP_SF_EBII_arm_mrc_a1_cond_0) << OP_SF_EBIF_arm_mrc_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.opc1 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_opc1_0) >> OP_SF_EBII_arm_mrc_a1_opc1_0) << OP_SF_EBIF_arm_mrc_a1_opc1_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.CRn =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_CRn_0) >> OP_SF_EBII_arm_mrc_a1_CRn_0) << OP_SF_EBIF_arm_mrc_a1_CRn_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_Rt_0) >> OP_SF_EBII_arm_mrc_a1_Rt_0) << OP_SF_EBIF_arm_mrc_a1_Rt_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.coproc =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_coproc_0) >> OP_SF_EBII_arm_mrc_a1_coproc_0) << OP_SF_EBIF_arm_mrc_a1_coproc_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.opc2 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_opc2_0) >> OP_SF_EBII_arm_mrc_a1_opc2_0) << OP_SF_EBIF_arm_mrc_a1_opc2_0);
+            
+        
+            context->decoded_code->code.arm_mrc_a1.CRm =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc_a1_CRm_0) >> OP_SF_EBII_arm_mrc_a1_CRm_0) << OP_SF_EBIF_arm_mrc_a1_CRm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mrc_a1.cond == 15)
+         || (context->decoded_code->code.arm_mrc_a1.coproc == 10)
+         || (context->decoded_code->code.arm_mrc_a1.coproc == 11)
+         || (context->decoded_code->code.arm_mrc_a1.Rt == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_mrc2_a2 */
+    static int op_parse_arm_mrc2_a2(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mrc2_a2) != OP_FB_arm_mrc2_a2) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mrc2_a2;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mrc2_a2;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mrc2_a2;
+        
+            context->decoded_code->code.arm_mrc2_a2.opc1 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_opc1_0) >> OP_SF_EBII_arm_mrc2_a2_opc1_0) << OP_SF_EBIF_arm_mrc2_a2_opc1_0);
+            
+        
+            context->decoded_code->code.arm_mrc2_a2.CRn =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_CRn_0) >> OP_SF_EBII_arm_mrc2_a2_CRn_0) << OP_SF_EBIF_arm_mrc2_a2_CRn_0);
+            
+        
+            context->decoded_code->code.arm_mrc2_a2.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_Rt_0) >> OP_SF_EBII_arm_mrc2_a2_Rt_0) << OP_SF_EBIF_arm_mrc2_a2_Rt_0);
+            
+        
+            context->decoded_code->code.arm_mrc2_a2.coproc =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_coproc_0) >> OP_SF_EBII_arm_mrc2_a2_coproc_0) << OP_SF_EBIF_arm_mrc2_a2_coproc_0);
+            
+        
+            context->decoded_code->code.arm_mrc2_a2.opc2 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_opc2_0) >> OP_SF_EBII_arm_mrc2_a2_opc2_0) << OP_SF_EBIF_arm_mrc2_a2_opc2_0);
+            
+        
+            context->decoded_code->code.arm_mrc2_a2.CRm =
+            
+                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_CRm_0) >> OP_SF_EBII_arm_mrc2_a2_CRm_0) << OP_SF_EBIF_arm_mrc2_a2_CRm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mrc2_a2.coproc == 10)
+         || (context->decoded_code->code.arm_mrc2_a2.coproc == 11)
+         || (context->decoded_code->code.arm_mrc2_a2.Rt == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
@@ -2738,6 +3184,22 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_mcr_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_mcr2_a2(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_mrc_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_mrc2_a2(&context) == 0) {
+            return 0;
+        }
+    
 
     return 1;
 }
@@ -2805,5 +3267,13 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_msr2_imm_a1 },		/* arm_msr2_imm_a1 */
     
 	{ 1, arm_op_exec_arm_mrs_a1 },		/* arm_mrs_a1 */
+    
+	{ 1, arm_op_exec_arm_mcr_a1 },		/* arm_mcr_a1 */
+    
+	{ 1, arm_op_exec_arm_mcr2_a2 },		/* arm_mcr2_a2 */
+    
+	{ 1, arm_op_exec_arm_mrc_a1 },		/* arm_mrc_a1 */
+    
+	{ 1, arm_op_exec_arm_mrc2_a2 },		/* arm_mrc2_a2 */
     
 };

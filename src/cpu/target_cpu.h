@@ -4,6 +4,7 @@
 #include "std_types.h"
 #include "cpu_dec/op_dec.h"
 #include "object_container.h"
+#include "coproc/arm_coproc.h"
 
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL
 #define CPU_REG_PLUS_MAX	2147483647LL
@@ -91,6 +92,7 @@ typedef struct TargetCore {
 	bool						is_halt;
 	uint16 						*current_code;
 	OpDecodedCodeType			*decoded_code;
+	CoprocRegisterType			coproc;
 } TargetCoreType;
 
 static inline bool IsSecure(TargetCoreType *core)

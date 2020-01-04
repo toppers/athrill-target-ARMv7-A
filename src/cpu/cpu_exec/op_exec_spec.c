@@ -100,3 +100,116 @@ int arm_op_exec_arm_mrs_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+
+int arm_op_exec_arm_mcr_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mcr_a1 *op = &core->decoded_code->code.arm_mcr_a1;
+
+	arm_mcr_input_type in;
+	arm_mcr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MCR";
+	in.cond = op->cond;
+	in.cp = op->coproc;
+	in.CRn = op->CRn;
+	in.op1 = op->opc1;
+	in.CRm = op->CRm;
+	in.op2 = op->opc2;
+	OP_SET_REG(core, &in, op, Rt);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_mcr(core, &in, &out);
+	DBG_ARM_MCR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_mcr2_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mcr2_a2 *op = &core->decoded_code->code.arm_mcr2_a2;
+
+	arm_mcr_input_type in;
+	arm_mcr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MCR2";
+	in.cond = ConditionAlways;
+	in.cp = op->coproc;
+	in.CRn = op->CRn;
+	in.op1 = op->opc1;
+	in.CRm = op->CRm;
+	in.op2 = op->opc2;
+	OP_SET_REG(core, &in, op, Rt);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_mcr(core, &in, &out);
+	DBG_ARM_MCR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_mrc_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mrc_a1 *op = &core->decoded_code->code.arm_mrc_a1;
+
+	arm_mrc_input_type in;
+	arm_mrc_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MRC";
+	in.cond = op->cond;
+	in.cp = op->coproc;
+	in.CRn = op->CRn;
+	in.op1 = op->opc1;
+	in.CRm = op->CRm;
+	in.op2 = op->opc2;
+	OP_SET_REG(core, &in, op, Rt);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_mrc(core, &in, &out);
+	DBG_ARM_MRC(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_mrc2_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mrc2_a2 *op = &core->decoded_code->code.arm_mrc2_a2;
+
+	arm_mrc_input_type in;
+	arm_mrc_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MRC2";
+	in.cond = ConditionAlways;
+	in.cp = op->coproc;
+	in.CRn = op->CRn;
+	in.op1 = op->opc1;
+	in.CRm = op->CRm;
+	in.op2 = op->opc2;
+	OP_SET_REG(core, &in, op, Rt);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_mrc(core, &in, &out);
+	DBG_ARM_MRC(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

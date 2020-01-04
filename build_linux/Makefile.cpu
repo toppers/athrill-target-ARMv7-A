@@ -15,6 +15,7 @@ IFLAGS	+= -I$(TARGET_DIR)/cpu/cpu_dec
 IFLAGS	+= -I$(TARGET_DIR)/cpu/cpu_common
 
 VPATH	:=	$(TARGET_DIR)/cpu/cpu_common
+VPATH	+=	$(TARGET_DIR)/cpu/coproc/cp15
 VPATH	+=	$(TARGET_DIR)/cpu/cpu_dec
 VPATH	+=	$(TARGET_DIR)/cpu/cpu_exec
 VPATH	+=	$(TARGET_DIR)/cpu/config
@@ -25,6 +26,7 @@ CFLAGS	:= $(WFLAGS)
 CFLAGS	+= $(IFLAGS)
 
 OBJS	:= arm_mcdecoder.o
+OBJS	+= arm_coproc_cp15.o
 #OBJS	+=	op_exec_bit.o
 OBJS	+=	op_exec_branch.o
 OBJS	+=	op_exec_branch_pseudo.o

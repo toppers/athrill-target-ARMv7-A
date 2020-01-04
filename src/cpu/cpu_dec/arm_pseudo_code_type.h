@@ -532,4 +532,52 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_mrs_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeCoprocType	cp;
+
+	PseudoCodeCoprocCRnType	CRn;
+
+	PseudoCodeCoprocOp1Type	op1;
+
+	PseudoCodeCoprocCRmType	CRm;
+
+	PseudoCodeCoprocOp2Type	op2;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_mcr_input_type;
+
+typedef struct {
+	uint32	next_address;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_mcr_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeCoprocType	cp;
+
+	PseudoCodeCoprocCRnType	CRn;
+
+	PseudoCodeCoprocOp1Type	op1;
+
+	PseudoCodeCoprocCRmType	CRm;
+
+	PseudoCodeCoprocOp2Type	op2;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_mrc_input_type;
+
+typedef struct {
+	uint32	next_address;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_mrc_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

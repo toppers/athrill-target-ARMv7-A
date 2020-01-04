@@ -200,6 +200,26 @@ typedef uint32 PseudoCodeMaskType;
 #define DBG_FMT_PseudoCodeMaskType			"mask(0x%x) "
 #define DBG_ARG_PseudoCodeMaskType(arg)		(*(arg))
 
+typedef uint32 PseudoCodeCoprocType;
+#define DBG_FMT_PseudoCodeCoprocType			"CP%u "
+#define DBG_ARG_PseudoCodeCoprocType(arg)		(*(arg))
+
+typedef uint32 PseudoCodeCoprocCRnType;
+#define DBG_FMT_PseudoCodeCoprocCRnType			"CRn%u "
+#define DBG_ARG_PseudoCodeCoprocCRnType(arg)		(*(arg))
+
+typedef uint32 PseudoCodeCoprocCRmType;
+#define DBG_FMT_PseudoCodeCoprocCRmType			"CRm%u "
+#define DBG_ARG_PseudoCodeCoprocCRmType(arg)		(*(arg))
+
+typedef uint32 PseudoCodeCoprocOp1Type;
+#define DBG_FMT_PseudoCodeCoprocOp1Type			"op1(%u) "
+#define DBG_ARG_PseudoCodeCoprocOp1Type(arg)		(*(arg))
+
+typedef uint32 PseudoCodeCoprocOp2Type;
+#define DBG_FMT_PseudoCodeCoprocOp2Type			"op2(%u) "
+#define DBG_ARG_PseudoCodeCoprocOp2Type(arg)		(*(arg))
+
 typedef enum {
 	SRType_LSL = 0,
 	SRType_LSR,

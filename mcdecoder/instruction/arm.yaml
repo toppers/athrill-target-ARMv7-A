@@ -250,6 +250,28 @@ machine:
           op2: PseudoCodeCoprocOp2Type
           Rt: PseudoCodeRegisterDataType
 
+      - name: arm_bic_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_orr_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
 
 decoder:
   namespace: arm
@@ -556,4 +578,18 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mrc
+ 
+  - name: arm_bic_imm_a1
+    format: xxxx:cond|00|1|1110|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 0b1111) or (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_bic_imm
+ 
+  - name: arm_orr_imm_a1
+    format: xxxx:cond|00|1|1100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 0b1111) or (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_orr_imm
  

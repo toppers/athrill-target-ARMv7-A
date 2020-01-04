@@ -28,4 +28,6 @@ extern int arm_op_exec_arm_msr2_imm(struct TargetCore *core,  arm_msr2_imm_input
 extern int arm_op_exec_arm_mrs(struct TargetCore *core,  arm_mrs_input_type *in, arm_mrs_output_type *out);
 extern int arm_op_exec_arm_mcr(struct TargetCore *core,  arm_mcr_input_type *in, arm_mcr_output_type *out);
 extern int arm_op_exec_arm_mrc(struct TargetCore *core,  arm_mrc_input_type *in, arm_mrc_output_type *out);
+extern int arm_op_exec_arm_bic_imm(struct TargetCore *core,  arm_bic_imm_input_type *in, arm_bic_imm_output_type *out);
+extern int arm_op_exec_arm_orr_imm(struct TargetCore *core,  arm_orr_imm_input_type *in, arm_orr_imm_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

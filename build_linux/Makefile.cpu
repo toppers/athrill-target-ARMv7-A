@@ -27,7 +27,8 @@ CFLAGS	+= $(IFLAGS)
 
 OBJS	:= arm_mcdecoder.o
 OBJS	+= arm_coproc_cp15.o
-#OBJS	+=	op_exec_bit.o
+OBJS	+=	op_exec_bit_pseudo.o
+OBJS	+=	op_exec_bit.o
 OBJS	+=	op_exec_branch.o
 OBJS	+=	op_exec_branch_pseudo.o
 #OBJS	+=	op_exec_dbg.o

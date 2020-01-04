@@ -272,6 +272,14 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_movt
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+          imm16: PseudoCodeImmediateData16Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
 decoder:
   namespace: arm
@@ -592,4 +600,11 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_orr_imm
+
+  - name: arm_movt_a1
+    format: xxxx:cond|0011|0100|xxxx:imm16[15:12]|xxxx:Rd|xxxx xxxx xxxx:imm16[11:0]
+    unmatch_condition: (cond == 0b1111) or (Rd == 0b1111) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_movt
  

@@ -447,6 +447,14 @@ static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 
 #define BYTEMASK_BIT_ISSET(bytemask, bitpos) 	( (bytemask) & (1U << (bitpos)) )
 
+static inline uint32 data32_upper_set(uint32 data, uint16 value16)
+{
+	return  (
+				(data & 0x0000FFFF) |
+				(((uint32)value16) << 16U)
+			);
+}
+
 static inline void user_status_set(uint32 *status, uint32 mask, uint32 value)
 {
 	*status = ( ((*status) & ~mask) | (value & mask) );

@@ -51,3 +51,19 @@ int arm_op_exec_arm_mov_reg(struct TargetCore *core,  arm_mov_reg_input_type *in
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *in, arm_movt_output_type *out)
+{
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//R[d]<31:16> = imm16;
+		// R[d]<15:0> unchanged
+		out->Rd.regData = data32_upper_set(in->Rd.regData, in->imm16);
+		cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
+	}
+	out->status = *status;
+	return 0;
+}

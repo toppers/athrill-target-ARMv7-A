@@ -1211,4 +1211,45 @@ static inline void DBG_ARM_ORR_IMM(TargetCoreType *core, arm_orr_imm_input_type 
 	));
 }
 
+static inline void DBG_ARM_MOVT(TargetCoreType *core, arm_movt_input_type *in, arm_movt_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeImmediateData16Type
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rd),
+
+		DBG_ARG_PseudoCodeImmediateData16Type(&in->imm16),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
+
+		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

@@ -56,6 +56,10 @@ typedef sint32	PseudoCodeImmediateData32Type; 		/* imm32 */
 #define DBG_FMT_PseudoCodeImmediateData32Type		"imm32(%d) "
 #define DBG_ARG_PseudoCodeImmediateData32Type(arg)	(*(arg))
 
+typedef sint16	PseudoCodeImmediateData16Type; 		/* imm16 */
+#define DBG_FMT_PseudoCodeImmediateData16Type		"imm16(%d) "
+#define DBG_ARG_PseudoCodeImmediateData16Type(arg)	(*(arg))
+
 typedef uint32	PseudoCodeConditionDataType; 		/* cond */
 #define DBG_FMT_PseudoCodeConditionDataType			"%s"
 #define DBG_ARG_PseudoCodeConditionDataType(arg)	ConditionString(*(arg))

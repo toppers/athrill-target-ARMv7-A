@@ -67,3 +67,35 @@ int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *in, arm_
 	out->status = *status;
 	return 0;
 }
+
+
+int arm_op_exec_arm_lsl_imm(struct TargetCore *core,  arm_lsl_imm_input_type *in, arm_lsl_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		result = Shift_C(32, in->Rm.regData, SRType_LSL, in->shift_n, out->status_flag.carry, &out->status_flag.carry);
+		if (in->Rd.regId != CpuRegId_PC) {
+			cpu_set_reg(core, in->Rd.regId, result);
+			if (in->S != 0) {
+				//APSR.N = result<31>;
+				//APSR.Z = IsZeroBit(result);
+				//APSR.C = carry;
+				// APSR.V unchanged
+				CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, out->status_flag.carry);
+				CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+				CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+			}
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
+

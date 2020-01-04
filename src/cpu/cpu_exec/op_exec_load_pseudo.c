@@ -89,7 +89,27 @@ int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in
 		if (ret != 0) {
             goto done;
 		}
-		cpu_set_reg(core, in->Rt.regId, result);
+		if (in->size < 4) {
+			cpu_set_reg(core, in->Rt.regId, result);
+		}
+		else {
+			if (in->Rt.regId == CpuRegId_PC) {
+				if ((address & 0x3) == 0x0) {
+					ret = LoadWritePC(&out->next_address, status, result);
+				}
+				else {
+					ret = -1;
+				}
+			}
+			else if (UnalignedSupport() || ((address & 0x3) == 0x0)) {
+				cpu_set_reg(core, in->Rt.regId, result);
+			}
+			else {
+				// Can only apply before ARMv7
+				result = ROR(32, result, 8 * UInt((address & 0x3)) );
+				cpu_set_reg(core, in->Rt.regId, result);
+			}
+		}
 		if (in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
 		}
@@ -142,7 +162,8 @@ int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_po
 			}
 		}
 		if ( (in->registers & (1U << 13)) == 0 ) {
-			out->SP.regData = (in->SP.regData + (4 * (in->bitcount)));		
+			out->SP.regData = (in->SP.regData + (4 * (in->bitcount)));
+			cpu_set_reg(core, out->SP.regId, out->SP.regData);
 		}
 		else {
 			//UNPREDICTABLE;

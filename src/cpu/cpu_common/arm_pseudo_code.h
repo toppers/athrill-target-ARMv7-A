@@ -236,6 +236,8 @@ static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 am
 	switch (type) {
 	case SRType_ROR:
 		return ROR_C(bits_N, value, amount, carry_out);
+	case SRType_LSL:
+		return LSL_C(bits_N, value, amount, carry_out);
 	default:
 		//TOOD ERROR
 		return -1;

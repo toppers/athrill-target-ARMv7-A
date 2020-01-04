@@ -281,6 +281,39 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_lsl_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_bfc
+        inputs:
+          cond: PseudoCodeConditionDataType
+          msbit: PseudoCodeMsbitType
+          lsbit: PseudoCodeLsbitType
+          Rd: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+
+      - name: arm_and_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
 decoder:
   namespace: arm
 
@@ -498,6 +531,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
+  - name: arm_ldr_reg_a1
+    format: xxxx:cond|011|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rm == 15) 
+                        or ( ((P == 0) or (W == 1)) and (Rn == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldr_reg
+
   - name: arm_ldrb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
     unmatch_condition: >
@@ -607,4 +651,25 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_movt
+ 
+  - name: arm_lsl_imm_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|xxxx x:imm5|000|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (imm5 == 0b00000) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_lsl_imm
+ 
+  - name: arm_bfc_a1
+    format: xxxx:cond|0111110|xxxx x:msb|xxxx:Rd|xxxx x:lsb|001|1111
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_bfc
+ 
+  - name: arm_and_imm_a1
+    format: xxxx:cond|00|1|0000|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 0b1111) and (S == 1) ) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_and_imm
  

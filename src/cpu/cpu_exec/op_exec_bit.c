@@ -56,3 +56,29 @@ int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_bfc_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_bfc_a1 *op = &core->decoded_code->code.arm_bfc_a1;
+
+	arm_bfc_input_type in;
+	arm_bfc_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "BFC";
+	in.cond = op->cond;
+	in.msbit = op->msb;
+	in.lsbit = op->lsb;
+	OP_SET_REG(core, &in, op, Rd);
+
+	OP_SET_REG(core, &out, op, Rd);
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_bfc(core, &in, &out);
+	DBG_ARM_BFC(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

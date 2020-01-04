@@ -224,6 +224,14 @@ typedef uint32 PseudoCodeCoprocOp2Type;
 #define DBG_FMT_PseudoCodeCoprocOp2Type			"op2(%u) "
 #define DBG_ARG_PseudoCodeCoprocOp2Type(arg)		(*(arg))
 
+typedef uint32 PseudoCodeMsbitType;
+#define DBG_FMT_PseudoCodeMsbitType			"msbit(%u) "
+#define DBG_ARG_PseudoCodeMsbitType(arg)		(*(arg))
+
+typedef uint32 PseudoCodeLsbitType;
+#define DBG_FMT_PseudoCodeLsbitType			"lsbit(%u) "
+#define DBG_ARG_PseudoCodeLsbitType(arg)		(*(arg))
+
 typedef enum {
 	SRType_LSL = 0,
 	SRType_LSR,

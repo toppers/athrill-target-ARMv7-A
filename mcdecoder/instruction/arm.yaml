@@ -41,6 +41,7 @@ machine:
       - name: arm_cmp_imm
         inputs:
           cond: PseudoCodeConditionDataType
+          sign: PseudoCodeSignType
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
@@ -412,6 +413,13 @@ instructions:
 
   - name: arm_cmp_imm_a1
     format: xxxx:cond|00|1|10101|xxxx:Rn|0000|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_cmp_imm
+
+  - name: arm_cmn_imm_a1
+    format: xxxx:cond|00|1|1011|1|xxxx:Rn|0000|xxxx xxxx xxxx:imm12
     unmatch_condition: (cond == 0b1111)
     extras:
       clocks: 10

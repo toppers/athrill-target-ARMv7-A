@@ -186,7 +186,14 @@ int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		out->result = AddWithCarry(32, in->Rn.regData, ~(in->imm32), TRUE, &out->status_flag);
+		uint32 value;
+		if (in->sign == FALSE) {
+			value = ~(in->imm32);
+		}
+		else {
+			value = in->imm32;
+		}
+		out->result = AddWithCarry(32, in->Rn.regData, value, TRUE, &out->status_flag);
 		cpu_update_status_flag(status, out->result, &out->status_flag);
 	}
 	out->status = *status;

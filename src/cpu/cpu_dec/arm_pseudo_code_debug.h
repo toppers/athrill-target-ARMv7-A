@@ -166,6 +166,8 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 
 		DBG_FMT_PseudoCodeConditionDataType
 
+		DBG_FMT_PseudoCodeSignType
+
 		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeImmediateData32Type
@@ -183,6 +185,8 @@ static inline void DBG_ARM_CMP_IMM(TargetCoreType *core, arm_cmp_imm_input_type 
 		in->instrName,
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeSignType(&in->sign),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 

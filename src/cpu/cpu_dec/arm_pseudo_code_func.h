@@ -30,6 +30,7 @@ extern int arm_op_exec_arm_mcr(struct TargetCore *core,  arm_mcr_input_type *in,
 extern int arm_op_exec_arm_mrc(struct TargetCore *core,  arm_mrc_input_type *in, arm_mrc_output_type *out);
 extern int arm_op_exec_arm_bic_imm(struct TargetCore *core,  arm_bic_imm_input_type *in, arm_bic_imm_output_type *out);
 extern int arm_op_exec_arm_orr_imm(struct TargetCore *core,  arm_orr_imm_input_type *in, arm_orr_imm_output_type *out);
+extern int arm_op_exec_arm_orr_reg(struct TargetCore *core,  arm_orr_reg_input_type *in, arm_orr_reg_output_type *out);
 extern int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *in, arm_movt_output_type *out);
 extern int arm_op_exec_arm_lsl_imm(struct TargetCore *core,  arm_lsl_imm_input_type *in, arm_lsl_imm_output_type *out);
 extern int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_type *in, arm_lsl_reg_output_type *out);

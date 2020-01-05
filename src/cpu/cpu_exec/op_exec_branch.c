@@ -24,12 +24,34 @@ int arm_op_exec_arm_bl_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.LR.name = "LR";
-	out.LR.regId = CpuRegId_LR;
-	out.LR.regData = -1;
+	OP_SET_REGID(core, &out, CpuRegId_LR, LR);
 	
 	int ret = arm_op_exec_arm_bl_imm(core, &in, &out);
 	DBG_ARM_BL_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_blx_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_blx_reg_a1 *op = &core->decoded_code->code.arm_blx_reg_a1;
+
+	arm_bl_reg_input_type in;
+	arm_bl_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "BLX";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REGID(core, &out, CpuRegId_LR, LR);
+
+	int ret = arm_op_exec_arm_bl_reg(core, &in, &out);
+	DBG_ARM_BL_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -59,9 +81,7 @@ int arm_op_exec_arm_blx_a2(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	out.LR.name = "LR";
-	out.LR.regId = CpuRegId_LR;
-	out.LR.regData = -1;
+	OP_SET_REGID(core, &out, CpuRegId_LR, LR);
 
 	int ret = arm_op_exec_arm_bl_imm(core, &in, &out);
 	DBG_ARM_BL_IMM(core, &in, &out);

@@ -241,6 +241,29 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rd;
 
+	PseudoCodeImmediateData32Type	imm32;
+} arm_mvn_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_mvn_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
 	PseudoCodeRegisterDataType	Rm;
 } arm_mov_reg_input_type;
 
@@ -330,6 +353,23 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_bx_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_bl_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	LR;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_bl_reg_output_type;
 
 typedef struct {
 	char* instrName;
@@ -601,6 +641,24 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_msr2_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeMaskType	mask;
+
+	PseudoCodeWriteSpsrType	write_spsr;
+} arm_msr2_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_msr2_reg_output_type;
 
 typedef struct {
 	char* instrName;

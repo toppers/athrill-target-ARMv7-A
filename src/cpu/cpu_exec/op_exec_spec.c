@@ -77,6 +77,30 @@ int arm_op_exec_arm_msr2_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_msr2_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_msr2_reg_a1 *op = &core->decoded_code->code.arm_msr2_reg_a1;
+
+	arm_msr2_reg_input_type in;
+	arm_msr2_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MSR2";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rn);
+	in.mask = op->mask;
+	in.write_spsr = (op->R == 1);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_msr2_reg(core, &in, &out);
+	DBG_ARM_MSR2_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_mrs_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_mrs_a1 *op = &core->decoded_code->code.arm_mrs_a1;

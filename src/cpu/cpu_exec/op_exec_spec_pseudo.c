@@ -54,6 +54,31 @@ int arm_op_exec_arm_msr2_imm(struct TargetCore *core,  arm_msr2_imm_input_type *
 	return 0;
 }
 
+int arm_op_exec_arm_msr2_reg(struct TargetCore *core,  arm_msr2_reg_input_type *in, arm_msr2_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->write_spsr) {
+			//SPSRWriteByInstr(R[n], mask);
+			SPSRWriteByInstr(core, in->Rn.regData, in->mask);
+		}
+		else {
+			//CPSRWriteByInstr(R[n], mask, FALSE);
+			CPSRWriteByInstr(core, in->Rn.regData, in->mask, FALSE);
+			uint32 cpsr4_0 = (*status) & 0x1F;
+			//if CPSR<4:0> == '11010' && CPSR.J == '1' && CPSR.T == '1' then UNPREDICTABLE;
+			if ((cpsr4_0 == 0b11010) && (CurrentInstrSet(*status) == InstrSet_ThumbEE)) {
+				//then UNPREDICTABLE;
+				return -1;
+			}
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_mrs(struct TargetCore *core,  arm_mrs_input_type *in, arm_mrs_output_type *out)
 {
 	uint32 *status = cpu_get_status(core);

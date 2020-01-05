@@ -64,3 +64,31 @@ int arm_op_exec_arm_bx_reg(struct TargetCore *core,  arm_bx_reg_input_type *in, 
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_bl_reg(struct TargetCore *core,  arm_bl_reg_input_type *in, arm_bl_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		uint32 target = in->Rm.regData;
+		uint32 pc = cpu_get_reg(core, CpuRegId_PC);
+		if (CurrentInstrSet(*status) == InstrSet_ARM) {
+			//next_instr_addr = PC - 4;
+			//LR = next_instr_addr;
+			out->LR.regData = pc - 4;
+			cpu_set_reg(core, CpuRegId_LR, out->LR.regData);
+		}
+		else {
+			//next_instr_addr = PC - 2;
+			//LR = next_instr_addr<31:1> : ‘1’;
+			out->LR.regData = pc - 2;
+			cpu_set_reg(core, CpuRegId_LR, out->LR.regData);
+		}
+		//BXWritePC(target);
+    	ret = BXWritePC(&out->next_address, status, target);
+	}
+	out->status = *status;
+	return ret;
+}

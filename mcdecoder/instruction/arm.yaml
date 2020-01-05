@@ -104,6 +104,17 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_mvn_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_mov_reg
         inputs:
           cond: PseudoCodeConditionDataType
@@ -146,6 +157,14 @@ machine:
         inputs:
           cond: PseudoCodeConditionDataType
           Rm: PseudoCodeRegisterDataType
+
+      - name: arm_bl_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          LR: PseudoCodeRegisterDataType
+
 
       - name: arm_ldr_imm
         inputs:
@@ -264,6 +283,13 @@ machine:
         inputs:
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
+          mask: PseudoCodeMaskType
+          write_spsr: PseudoCodeWriteSpsrType
+
+      - name: arm_msr2_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
           mask: PseudoCodeMaskType
           write_spsr: PseudoCodeWriteSpsrType
 
@@ -551,6 +577,14 @@ instructions:
       clocks: 10
       pseudo_code: arm_mov_imm
 
+  - name: arm_mvn_imm_a1
+    format: xxxx:cond|00|1|1111|x:S|0000|xxxx:Rd|xxxxxxxxxxxx:imm12
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 0b1111) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_mvn_imm
+
+
   - name: arm_mov_reg_a1
     format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|00000000|xxxx:Rm
     unmatch_condition: >
@@ -582,6 +616,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_bl_imm
+
+  - name: arm_blx_reg_a1
+    format: xxxx:cond|00010010|1111|1111|1111|0011|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (Rm == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_bl_reg
 
   - name: arm_b_a1
     format: xxxx:cond|1010|xxxxxxxxxxxxxxxxxxxxxxxx:imm24
@@ -806,6 +847,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mrs
+
+  - name: arm_msr2_reg_a1
+    format: xxxx:cond|00010|x:R|10|xxxx:mask|1111|00|0|0|0000|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (mask == 0b0000) or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_msr2_reg
+
 
   - name: arm_mcr_a1
     format: xxxx:cond|1110|xxx:opc1|0|xxxx:CRn|xxxx:Rt|xxxx:coproc|xxx:opc2|1|xxxx:CRm

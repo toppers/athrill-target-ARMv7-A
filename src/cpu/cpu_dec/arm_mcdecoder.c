@@ -428,6 +428,39 @@ typedef struct {
         
     
 
+    /* arm_mvn_imm_a1 */
+    #define OP_FB_MASK_arm_mvn_imm_a1 (0x0fef0000l) /* fixed bits mask */
+    #define OP_FB_arm_mvn_imm_a1 (0x03e00000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_mvn_imm_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mvn_imm_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mvn_imm_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'S' */
+            #define OP_SF_MASK_arm_mvn_imm_a1_S_0 (0x00100000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mvn_imm_a1_S_0 (20) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mvn_imm_a1_S_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rd' */
+            #define OP_SF_MASK_arm_mvn_imm_a1_Rd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mvn_imm_a1_Rd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mvn_imm_a1_Rd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'imm12' */
+            #define OP_SF_MASK_arm_mvn_imm_a1_imm12_0 (0x00000fffl) /* subfield mask */
+            #define OP_SF_EBII_arm_mvn_imm_a1_imm12_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mvn_imm_a1_imm12_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_mov_reg_a1 */
     #define OP_FB_MASK_arm_mov_reg_a1 (0x0fef0ff0l) /* fixed bits mask */
     #define OP_FB_arm_mov_reg_a1 (0x01a00000l) /* fixed bits */
@@ -543,6 +576,25 @@ typedef struct {
             #define OP_SF_MASK_arm_blx_a2_imm24_0 (0x00ffffffl) /* subfield mask */
             #define OP_SF_EBII_arm_blx_a2_imm24_0 (0) /* subfield end bit position in instruction */
             #define OP_SF_EBIF_arm_blx_a2_imm24_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_blx_reg_a1 */
+    #define OP_FB_MASK_arm_blx_reg_a1 (0x0ffffff0l) /* fixed bits mask */
+    #define OP_FB_arm_blx_reg_a1 (0x012fff30l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_blx_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_blx_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_blx_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_blx_reg_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_blx_reg_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_blx_reg_a1_Rm_0 (0) /* subfield end bit position in field */
         
     
 
@@ -1507,6 +1559,39 @@ typedef struct {
         
     
 
+    /* arm_msr2_reg_a1 */
+    #define OP_FB_MASK_arm_msr2_reg_a1 (0x0fb0fff0l) /* fixed bits mask */
+    #define OP_FB_arm_msr2_reg_a1 (0x0120f000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_msr2_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_msr2_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_msr2_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'R' */
+            #define OP_SF_MASK_arm_msr2_reg_a1_R_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_msr2_reg_a1_R_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_msr2_reg_a1_R_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'mask' */
+            #define OP_SF_MASK_arm_msr2_reg_a1_mask_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_msr2_reg_a1_mask_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_msr2_reg_a1_mask_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_msr2_reg_a1_Rn_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_msr2_reg_a1_Rn_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_msr2_reg_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_mcr_a1 */
     #define OP_FB_MASK_arm_mcr_a1 (0x0f100010l) /* fixed bits mask */
     #define OP_FB_arm_mcr_a1 (0x0e000010l) /* fixed bits */
@@ -2322,6 +2407,8 @@ static int op_parse_arm_mov_imm_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mov_imm_a2(OpDecodeContext *context);
 
+static int op_parse_arm_mvn_imm_a1(OpDecodeContext *context);
+
 static int op_parse_arm_mov_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mvn_reg_a1(OpDecodeContext *context);
@@ -2329,6 +2416,8 @@ static int op_parse_arm_mvn_reg_a1(OpDecodeContext *context);
 static int op_parse_arm_bl_a1(OpDecodeContext *context);
 
 static int op_parse_arm_blx_a2(OpDecodeContext *context);
+
+static int op_parse_arm_blx_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_b_a1(OpDecodeContext *context);
 
@@ -2375,6 +2464,8 @@ static int op_parse_arm_msr_imm_a1(OpDecodeContext *context);
 static int op_parse_arm_msr2_imm_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mrs_a1(OpDecodeContext *context);
+
+static int op_parse_arm_msr2_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mcr_a1(OpDecodeContext *context);
 
@@ -2978,6 +3069,53 @@ static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_mvn_imm_a1 */
+    static int op_parse_arm_mvn_imm_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mvn_imm_a1) != OP_FB_arm_mvn_imm_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mvn_imm_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mvn_imm_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mvn_imm_a1;
+        
+            context->decoded_code->code.arm_mvn_imm_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_cond_0) >> OP_SF_EBII_arm_mvn_imm_a1_cond_0) << OP_SF_EBIF_arm_mvn_imm_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_mvn_imm_a1.S =
+            
+                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_S_0) >> OP_SF_EBII_arm_mvn_imm_a1_S_0) << OP_SF_EBIF_arm_mvn_imm_a1_S_0);
+            
+        
+            context->decoded_code->code.arm_mvn_imm_a1.Rd =
+            
+                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_Rd_0) >> OP_SF_EBII_arm_mvn_imm_a1_Rd_0) << OP_SF_EBIF_arm_mvn_imm_a1_Rd_0);
+            
+        
+            context->decoded_code->code.arm_mvn_imm_a1.imm12 =
+            
+                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_imm12_0) >> OP_SF_EBII_arm_mvn_imm_a1_imm12_0) << OP_SF_EBIF_arm_mvn_imm_a1_imm12_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mvn_imm_a1.cond == 15)
+         || ((context->decoded_code->code.arm_mvn_imm_a1.Rd == 15)
+         && (context->decoded_code->code.arm_mvn_imm_a1.S == 1)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_mov_reg_a1 */
     static int op_parse_arm_mov_reg_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_mov_reg_a1) != OP_FB_arm_mov_reg_a1) {
@@ -3138,6 +3276,41 @@ static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
         
 
         
+        
+        return 0;
+    }
+
+    /* arm_blx_reg_a1 */
+    static int op_parse_arm_blx_reg_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_blx_reg_a1) != OP_FB_arm_blx_reg_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_blx_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_blx_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_blx_reg_a1;
+        
+            context->decoded_code->code.arm_blx_reg_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_blx_reg_a1_cond_0) >> OP_SF_EBII_arm_blx_reg_a1_cond_0) << OP_SF_EBIF_arm_blx_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_blx_reg_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_blx_reg_a1_Rm_0) >> OP_SF_EBII_arm_blx_reg_a1_Rm_0) << OP_SF_EBIF_arm_blx_reg_a1_Rm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_blx_reg_a1.cond == 15)
+         || (context->decoded_code->code.arm_blx_reg_a1.Rm == 15)
+        
+            ) {
+                return 1;
+            }
         
         return 0;
     }
@@ -4378,6 +4551,52 @@ static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_msr2_reg_a1 */
+    static int op_parse_arm_msr2_reg_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_msr2_reg_a1) != OP_FB_arm_msr2_reg_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_msr2_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_msr2_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_msr2_reg_a1;
+        
+            context->decoded_code->code.arm_msr2_reg_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_cond_0) >> OP_SF_EBII_arm_msr2_reg_a1_cond_0) << OP_SF_EBIF_arm_msr2_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_msr2_reg_a1.R =
+            
+                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_R_0) >> OP_SF_EBII_arm_msr2_reg_a1_R_0) << OP_SF_EBIF_arm_msr2_reg_a1_R_0);
+            
+        
+            context->decoded_code->code.arm_msr2_reg_a1.mask =
+            
+                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_mask_0) >> OP_SF_EBII_arm_msr2_reg_a1_mask_0) << OP_SF_EBIF_arm_msr2_reg_a1_mask_0);
+            
+        
+            context->decoded_code->code.arm_msr2_reg_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_Rn_0) >> OP_SF_EBII_arm_msr2_reg_a1_Rn_0) << OP_SF_EBIF_arm_msr2_reg_a1_Rn_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_msr2_reg_a1.cond == 15)
+         || (context->decoded_code->code.arm_msr2_reg_a1.mask == 0)
+         || (context->decoded_code->code.arm_msr2_reg_a1.Rn == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_mcr_a1 */
     static int op_parse_arm_mcr_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_mcr_a1) != OP_FB_arm_mcr_a1) {
@@ -5410,6 +5629,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_mvn_imm_a1(&context) == 0) {
+            return 0;
+        }
+    
         if (op_parse_arm_mov_reg_a1(&context) == 0) {
             return 0;
         }
@@ -5423,6 +5646,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
         }
     
         if (op_parse_arm_blx_a2(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_blx_reg_a1(&context) == 0) {
             return 0;
         }
     
@@ -5515,6 +5742,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
         }
     
         if (op_parse_arm_mrs_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_msr2_reg_a1(&context) == 0) {
             return 0;
         }
     
@@ -5620,6 +5851,8 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
     
 	{ 1, arm_op_exec_arm_mov_imm_a2 },		/* arm_mov_imm_a2 */
     
+	{ 1, arm_op_exec_arm_mvn_imm_a1 },		/* arm_mvn_imm_a1 */
+    
 	{ 1, arm_op_exec_arm_mov_reg_a1 },		/* arm_mov_reg_a1 */
     
 	{ 1, arm_op_exec_arm_mvn_reg_a1 },		/* arm_mvn_reg_a1 */
@@ -5627,6 +5860,8 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_bl_a1 },		/* arm_bl_a1 */
     
 	{ 1, arm_op_exec_arm_blx_a2 },		/* arm_blx_a2 */
+    
+	{ 1, arm_op_exec_arm_blx_reg_a1 },		/* arm_blx_reg_a1 */
     
 	{ 1, arm_op_exec_arm_b_a1 },		/* arm_b_a1 */
     
@@ -5673,6 +5908,8 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_msr2_imm_a1 },		/* arm_msr2_imm_a1 */
     
 	{ 1, arm_op_exec_arm_mrs_a1 },		/* arm_mrs_a1 */
+    
+	{ 1, arm_op_exec_arm_msr2_reg_a1 },		/* arm_msr2_reg_a1 */
     
 	{ 1, arm_op_exec_arm_mcr_a1 },		/* arm_mcr_a1 */
     

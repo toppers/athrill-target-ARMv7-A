@@ -38,15 +38,6 @@ static DeviceExSerialOpType device_ex_serial_file_op = {
 
 static void device_init_clock(MpuAddressRegionType *region)
 {
-	/*
-	 * OSTC
-	 */
-	(void)device_io_write8(region, 0xFFFFF6C2, 0x01);
-
-	/*
-	 * ロック・レジスタ（ LOCKR）
-	 */
-	(void)device_io_write8(region, 0xFFFFF824, 0x00);
 
 	return;
 }

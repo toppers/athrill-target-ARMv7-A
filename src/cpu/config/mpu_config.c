@@ -1,10 +1,10 @@
 #include "mpu.h"
 #include "cpu_config.h"
 
-#define MPU_ADDRESS_REGION_MASK_PH		0x03FFFFFF
+#define MPU_ADDRESS_REGION_MASK_PH		0xFFFFFFFF
 #define MPU_ADDRESS_REGION_MASK_CPU		0x06FFFFFF
 
-#define MPU_ADDRESS_REGION_SIZE_INX_INTC	(0xFFFFF1FB - 0xFFFFF100)
+#define MPU_ADDRESS_REGION_SIZE_INX_INTC	(0xE8210000 - 0xE8201000)
 #define MPU_ADDRESS_REGION_SIZE_INX_SERIAL	(0xFFFFFA78 - 0xFFFFFA00)
 #define MPU_ADDRESS_REGION_SIZE_INX_TIMER	(0xFFFFF700 - 0xFFFFF590)
 #define MPU_ADDRESS_REGION_SIZE_INX_CPU		(1024U * 1024U)
@@ -34,7 +34,7 @@ MpuAddressMapType mpu_address_map = {
 						.type		= DEVICE,
 						.is_malloc	= FALSE,
 						.permission	= MPU_ADDRESS_REGION_PERM_ALL,
-						.start		= 0x03FFF100,
+						.start		= 0xE8201000,
 						.size		= MPU_ADDRESS_REGION_SIZE_INX_INTC,
 						.mask		= MPU_ADDRESS_REGION_MASK_PH,
 						.data		= memory_data_INTC,

@@ -46,6 +46,10 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
         	out->Rn.regData = offset_addr;
 		}
+		else if (ret != 0) {
+			printf("ERROR:arm_op_exec_arm_str_imm():ret=%d size=%d addr=0x%x data=0x%x\n",
+					ret, in->size, address, regdata);
+		}
 	}
 	out->status = *status;
     return ret;

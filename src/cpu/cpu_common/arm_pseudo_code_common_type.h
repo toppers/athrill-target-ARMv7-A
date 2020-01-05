@@ -49,7 +49,7 @@ typedef struct {
 	uint32 regId;
 	sint32 regData;
 } PseudoCodeRegisterDataType; 						/* Rn, Rd, Rt, etc */
-#define DBG_FMT_PseudoCodeRegisterDataType			"%s%d(%d 0x%x) "
+#define DBG_FMT_PseudoCodeRegisterDataType			"%s(R%d[%d 0x%x]) "
 #define DBG_ARG_PseudoCodeRegisterDataType(arg)		(arg)->name, (arg)->regId, (arg)->regData, (arg)->regData
 
 typedef sint32	PseudoCodeImmediateData32Type; 		/* imm32 */

@@ -114,6 +114,20 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_mvn_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
+
       - name: arm_bl_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -504,6 +518,16 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mov_reg
+
+  - name: arm_mvn_reg_a1
+    format: xxxx:cond|00|0|1111|x:S|0000|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_mvn_reg
+
 
   - name: arm_bl_a1
     format: xxxx:cond|1011|xxxxxxxxxxxxxxxxxxxxxxxx:imm24

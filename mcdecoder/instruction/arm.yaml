@@ -158,6 +158,20 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
+      - name: arm_ldrd_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt1: PseudoCodeRegisterDataType
+          Rt2: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
       - name: arm_ldr_reg
         inputs:
           size: PseudoCodeSizeType
@@ -205,6 +219,21 @@ machine:
           Rt: PseudoCodeRegisterDataType
         outputs:
           Rn: PseudoCodeRegisterDataType
+
+      - name: arm_strd_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt1: PseudoCodeRegisterDataType
+          Rt2: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
 
       - name: arm_str_reg
         inputs:
@@ -403,6 +432,18 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_sbc_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rn: PseudoCodeRegisterDataType
+          Rd: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
 
 decoder:
@@ -587,6 +628,16 @@ instructions:
       pseudo_code: arm_str_imm
 
 
+  - name: arm_strd_imm_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1111|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_strd_imm
+
+
 
   - name: arm_strb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
@@ -660,6 +711,17 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
+
+  - name: arm_ldrd_imm_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1101|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrd_imm
+
 
   - name: arm_ldr_reg_a1
     format: xxxx:cond|011|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
@@ -864,4 +926,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_rsb_reg
+
+  - name: arm_sbc_reg_a1
+    format: xxxx:cond|00|0|0110|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_sbc_reg
+
+
+
       

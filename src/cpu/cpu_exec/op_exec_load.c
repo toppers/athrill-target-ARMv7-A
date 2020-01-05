@@ -142,6 +142,57 @@ int arm_op_exec_arm_ldrh_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_ldrd_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldrd_imm_a1 *op = &core->decoded_code->code.arm_ldrd_imm_a1;
+
+	arm_ldrd_imm_input_type in;
+	arm_ldrd_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "LDRD";
+
+	in.cond = op->cond;
+	in.imm32 = op->imm8;
+	in.index = (op->P != 0);
+	in.add = (op->U != 0);
+	in.wback = ((op->P == 0) || (op->W != 0));
+
+	//if Rt<0> == ‘1’ then UNPREDICTABLE;
+	if ((op->Rt & 0x1) != 0) {
+		//UNPREDICTABLE
+		return -1;
+	}
+	//if P == ‘0’ && W == ‘1’ then UNPREDICTABLE;
+	if ((op->P == 0) && (op->W != 0)) {
+		//TODO
+		return -1;
+	}
+	//if wback && (n == t || n == t2) then UNPREDICTABLE;
+	if (in.wback && ((op->Rn == op->Rt) || (op->Rn == (op->Rt + 1)))) {
+		//TODO
+		return -1;
+	}
+	//if t2 == 15 then UNPREDICTABLE;
+	if ((op->Rt + 1)== CpuRegId_PC) {
+		//UNPREDICTABLE
+		return -1;
+	}
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REGID(core, &in, op->Rt, Rt1);
+	OP_SET_REGID(core, &in, op->Rt + 1, Rt2);
+
+	OP_SET_REG(core, &out, op, Rn);
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_ldrd_imm(core, &in, &out);
+	DBG_ARM_LDRD_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 
 int arm_op_exec_arm_ldr_reg_a1(struct TargetCore *core)
 {

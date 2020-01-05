@@ -360,6 +360,35 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeBoolIndexType	index;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt1;
+
+	PseudoCodeRegisterDataType	Rt2;
+} arm_ldrd_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldrd_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
 	PseudoCodeSizeType	size;
 
 	PseudoCodeSignType	sign;
@@ -463,6 +492,35 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_str_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeBoolIndexType	index;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt1;
+
+	PseudoCodeRegisterDataType	Rt2;
+} arm_strd_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_strd_imm_output_type;
 
 typedef struct {
 	char* instrName;
@@ -914,5 +972,34 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_rsb_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_sbc_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_sbc_reg_output_type;
 
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

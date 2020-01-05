@@ -55,6 +55,36 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
     return ret;
 }
 
+int arm_op_exec_arm_strd_imm(struct TargetCore *core,  arm_strd_imm_input_type *in, arm_strd_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		ret = reg_to_mem(core, address, 4, in->Rt1.regData);
+		if (ret != 0) {
+			goto done;
+		}
+		ret = reg_to_mem(core, address + 4, 4, in->Rt2.regData);
+		if (ret != 0) {
+			goto done;
+		}
+		if ((ret == 0) && in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+        	out->Rn.regData = offset_addr;
+		}
+	}
+done:
+	if (ret != 0) {
+		printf("ERROR:arm_op_exec_arm_strd_imm():ret=%d addr=0x%x\n",
+				ret, address);
+	}
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in, arm_str_reg_output_type *out)
 {

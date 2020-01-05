@@ -801,4 +801,33 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_utx_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_rsb_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_rsb_reg_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

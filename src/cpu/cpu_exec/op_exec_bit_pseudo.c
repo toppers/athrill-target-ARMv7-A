@@ -169,3 +169,4 @@ int arm_op_exec_arm_utx(struct TargetCore *core,  arm_utx_input_type *in, arm_ut
 	out->status = *status;
 	return 0;
 }
+

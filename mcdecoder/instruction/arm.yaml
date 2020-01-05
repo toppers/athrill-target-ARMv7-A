@@ -348,6 +348,21 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
 
+      - name: arm_rsb_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rn: PseudoCodeRegisterDataType
+          Rd: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
+
 decoder:
   namespace: arm
 
@@ -747,16 +762,22 @@ instructions:
  
   - name: arm_utxb_a1
     format: xxxx:cond|01101110|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or (Rd == 15) and (Rm == 15) 
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) 
     extras:
       clocks: 10
       pseudo_code: arm_utx
       
   - name: arm_utxh_a1
     format: xxxx:cond|01101111|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
-    unmatch_condition: (cond == 0b1111) or (Rd == 15) and (Rm == 15) 
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) 
     extras:
       clocks: 10
       pseudo_code: arm_utx
 
+  - name: arm_rsb_reg_a1
+    format: xxxx:cond|00|0|0011|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_rsb_reg
       

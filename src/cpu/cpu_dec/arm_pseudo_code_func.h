@@ -32,6 +32,8 @@ extern int arm_op_exec_arm_bic_imm(struct TargetCore *core,  arm_bic_imm_input_t
 extern int arm_op_exec_arm_orr_imm(struct TargetCore *core,  arm_orr_imm_input_type *in, arm_orr_imm_output_type *out);
 extern int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *in, arm_movt_output_type *out);
 extern int arm_op_exec_arm_lsl_imm(struct TargetCore *core,  arm_lsl_imm_input_type *in, arm_lsl_imm_output_type *out);
+extern int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_type *in, arm_lsl_reg_output_type *out);
 extern int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bfc_output_type *out);
 extern int arm_op_exec_arm_and_imm(struct TargetCore *core,  arm_and_imm_input_type *in, arm_and_imm_output_type *out);
+extern int arm_op_exec_arm_utx(struct TargetCore *core,  arm_utx_input_type *in, arm_utx_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

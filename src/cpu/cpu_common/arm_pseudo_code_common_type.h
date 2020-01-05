@@ -232,6 +232,10 @@ typedef uint32 PseudoCodeLsbitType;
 #define DBG_FMT_PseudoCodeLsbitType			"lsbit(%u) "
 #define DBG_ARG_PseudoCodeLsbitType(arg)		(*(arg))
 
+typedef uint32 PseudoCodeRotationType;
+#define DBG_FMT_PseudoCodeRotationType			"rotation(%u) "
+#define DBG_ARG_PseudoCodeRotationType(arg)		(*(arg))
+
 typedef enum {
 	SRType_LSL = 0,
 	SRType_LSR,

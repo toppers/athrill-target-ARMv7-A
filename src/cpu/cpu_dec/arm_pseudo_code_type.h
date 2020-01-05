@@ -683,6 +683,31 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	PseudoCodeRegisterDataType	Rn;
+} arm_lsl_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_lsl_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeMsbitType	msbit;
 
 	PseudoCodeLsbitType	lsbit;
@@ -723,5 +748,28 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_and_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeSizeType	size;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRotationType	rotate;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_utx_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_utx_output_type;
 
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

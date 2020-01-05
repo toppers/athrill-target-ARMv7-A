@@ -58,6 +58,33 @@ int arm_op_exec_arm_lsl_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_lsl_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_lsl_reg_a1 *op = &core->decoded_code->code.arm_lsl_reg_a1;
+
+	arm_lsl_reg_input_type in;
+	arm_lsl_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "LSL";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rm);
+	OP_SET_REG(core, &in, op, Rn);
+
+	OP_SET_REG(core, &out, op, Rd);
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_lsl_reg(core, &in, &out);
+	DBG_ARM_LSL_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_mov_imm_a2 *op = &core->decoded_code->code.arm_mov_imm_a2;

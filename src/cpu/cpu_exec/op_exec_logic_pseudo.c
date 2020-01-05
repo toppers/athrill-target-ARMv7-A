@@ -99,3 +99,27 @@ int arm_op_exec_arm_lsl_imm(struct TargetCore *core,  arm_lsl_imm_input_type *in
 	return ret;
 }
 
+int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_type *in, arm_lsl_reg_output_type *out)
+{
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		uint32 shift_n = in->Rd.regData & 0xFF;
+		result = Shift_C(32, in->Rm.regData, SRType_LSL, shift_n, out->status_flag.carry, &out->status_flag.carry);
+		out->Rd.regData = result;
+		cpu_set_reg(core, in->Rd.regId, out->Rd.regData);
+		if (in->S != 0) {
+			//APSR.N = result<31>;
+			//APSR.Z = IsZeroBit(result);
+			//APSR.C = carry;
+			// APSR.V unchanged
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, out->status_flag.carry);
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+		}
+	}
+	out->status = *status;
+	return 0;
+}

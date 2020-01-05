@@ -880,6 +880,65 @@ typedef struct {
         
     
 
+    /* arm_ldrh_imm_a1 */
+    #define OP_FB_MASK_arm_ldrh_imm_a1 (0x0e5000f0l) /* fixed bits mask */
+    #define OP_FB_arm_ldrh_imm_a1 (0x005000b0l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'P' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_P_0 (0x01000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_P_0 (24) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_P_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'U' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_U_0 (0x00800000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_U_0 (23) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_U_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'W' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_W_0 (0x00200000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_W_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_W_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'imm8' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_imm8_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_imm8_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_imm8_0 (4) /* subfield end bit position in field */
+        
+            /* 1th subfield of the field 'imm8' */
+            #define OP_SF_MASK_arm_ldrh_imm_a1_imm8_1 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_imm_a1_imm8_1 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_imm_a1_imm8_1 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_ldr_reg_a1 */
     #define OP_FB_MASK_arm_ldr_reg_a1 (0x0e500010l) /* fixed bits mask */
     #define OP_FB_arm_ldr_reg_a1 (0x06100000l) /* fixed bits */
@@ -1013,6 +1072,60 @@ typedef struct {
             #define OP_SF_MASK_arm_ldrb_reg_a1_Rm_0 (0x0000000fl) /* subfield mask */
             #define OP_SF_EBII_arm_ldrb_reg_a1_Rm_0 (0) /* subfield end bit position in instruction */
             #define OP_SF_EBIF_arm_ldrb_reg_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_ldrh_reg_a1 */
+    #define OP_FB_MASK_arm_ldrh_reg_a1 (0x0e500ff0l) /* fixed bits mask */
+    #define OP_FB_arm_ldrh_reg_a1 (0x001000b0l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'P' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_P_0 (0x01000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_P_0 (24) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_P_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'U' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_U_0 (0x00800000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_U_0 (23) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_U_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'W' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_W_0 (0x00200000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_W_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_W_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_ldrh_reg_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_ldrh_reg_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_ldrh_reg_a1_Rm_0 (0) /* subfield end bit position in field */
         
     
 
@@ -1497,6 +1610,46 @@ typedef struct {
         
     
 
+    /* arm_lsl_reg_a1 */
+    #define OP_FB_MASK_arm_lsl_reg_a1 (0x0fef00f0l) /* fixed bits mask */
+    #define OP_FB_arm_lsl_reg_a1 (0x01a00010l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_lsl_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_lsl_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_lsl_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'S' */
+            #define OP_SF_MASK_arm_lsl_reg_a1_S_0 (0x00100000l) /* subfield mask */
+            #define OP_SF_EBII_arm_lsl_reg_a1_S_0 (20) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_lsl_reg_a1_S_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rd' */
+            #define OP_SF_MASK_arm_lsl_reg_a1_Rd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_lsl_reg_a1_Rd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_lsl_reg_a1_Rd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_lsl_reg_a1_Rm_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_lsl_reg_a1_Rm_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_lsl_reg_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_lsl_reg_a1_Rn_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_lsl_reg_a1_Rn_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_lsl_reg_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_bfc_a1 */
     #define OP_FB_MASK_arm_bfc_a1 (0x0fe0007fl) /* fixed bits mask */
     #define OP_FB_arm_bfc_a1 (0x07c0001fl) /* fixed bits */
@@ -1570,6 +1723,72 @@ typedef struct {
         
     
 
+    /* arm_utxb_a1 */
+    #define OP_FB_MASK_arm_utxb_a1 (0x0fff03f0l) /* fixed bits mask */
+    #define OP_FB_arm_utxb_a1 (0x06ef0070l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_utxb_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxb_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxb_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rd' */
+            #define OP_SF_MASK_arm_utxb_a1_Rd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxb_a1_Rd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxb_a1_Rd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'rotate' */
+            #define OP_SF_MASK_arm_utxb_a1_rotate_0 (0x00000c00l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxb_a1_rotate_0 (10) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxb_a1_rotate_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_utxb_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_utxb_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxb_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_utxh_a1 */
+    #define OP_FB_MASK_arm_utxh_a1 (0x0fff03f0l) /* fixed bits mask */
+    #define OP_FB_arm_utxh_a1 (0x06ff0070l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_utxh_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxh_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxh_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rd' */
+            #define OP_SF_MASK_arm_utxh_a1_Rd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxh_a1_Rd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxh_a1_Rd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'rotate' */
+            #define OP_SF_MASK_arm_utxh_a1_rotate_0 (0x00000c00l) /* subfield mask */
+            #define OP_SF_EBII_arm_utxh_a1_rotate_0 (10) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxh_a1_rotate_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_utxh_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_utxh_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_utxh_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* individual op parse functions */
 
@@ -1621,9 +1840,13 @@ static int op_parse_arm_ldr_literal_a1(OpDecodeContext *context);
 
 static int op_parse_arm_ldrb_imm_a1(OpDecodeContext *context);
 
+static int op_parse_arm_ldrh_imm_a1(OpDecodeContext *context);
+
 static int op_parse_arm_ldr_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_ldrb_reg_a1(OpDecodeContext *context);
+
+static int op_parse_arm_ldrh_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_pop_a1(OpDecodeContext *context);
 
@@ -1653,9 +1876,15 @@ static int op_parse_arm_movt_a1(OpDecodeContext *context);
 
 static int op_parse_arm_lsl_imm_a1(OpDecodeContext *context);
 
+static int op_parse_arm_lsl_reg_a1(OpDecodeContext *context);
+
 static int op_parse_arm_bfc_a1(OpDecodeContext *context);
 
 static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
+
+static int op_parse_arm_utxb_a1(OpDecodeContext *context);
+
+static int op_parse_arm_utxh_a1(OpDecodeContext *context);
 
 
 
@@ -2821,6 +3050,75 @@ static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_ldrh_imm_a1 */
+    static int op_parse_arm_ldrh_imm_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_ldrh_imm_a1) != OP_FB_arm_ldrh_imm_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_ldrh_imm_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrh_imm_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_ldrh_imm_a1;
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrh_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrh_imm_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.P =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_P_0) >> OP_SF_EBII_arm_ldrh_imm_a1_P_0) << OP_SF_EBIF_arm_ldrh_imm_a1_P_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.U =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_U_0) >> OP_SF_EBII_arm_ldrh_imm_a1_U_0) << OP_SF_EBIF_arm_ldrh_imm_a1_U_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.W =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_W_0) >> OP_SF_EBII_arm_ldrh_imm_a1_W_0) << OP_SF_EBIF_arm_ldrh_imm_a1_W_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rt_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_imm_a1.imm8 =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_0) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_0) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_0)
+            
+                | (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_1) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_1) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_1);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_ldrh_imm_a1.cond == 15)
+         || (context->decoded_code->code.arm_ldrh_imm_a1.Rn == 15)
+         || ((context->decoded_code->code.arm_ldrh_imm_a1.P == 0)
+         && (context->decoded_code->code.arm_ldrh_imm_a1.W == 1)
+        )
+         || (context->decoded_code->code.arm_ldrh_imm_a1.Rt == 15)
+         || ((context->decoded_code->code.arm_ldrh_imm_a1.P == 0)
+         || (context->decoded_code->code.arm_ldrh_imm_a1.W == 1)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_ldr_reg_a1 */
     static int op_parse_arm_ldr_reg_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_ldr_reg_a1) != OP_FB_arm_ldr_reg_a1) {
@@ -2970,6 +3268,75 @@ static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
          || (context->decoded_code->code.arm_ldrb_reg_a1.W == 1)
         )
          && (context->decoded_code->code.arm_ldrb_reg_a1.Rn == 15)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_ldrh_reg_a1 */
+    static int op_parse_arm_ldrh_reg_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_ldrh_reg_a1) != OP_FB_arm_ldrh_reg_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_ldrh_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrh_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_ldrh_reg_a1;
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_cond_0) >> OP_SF_EBII_arm_ldrh_reg_a1_cond_0) << OP_SF_EBIF_arm_ldrh_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.P =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_P_0) >> OP_SF_EBII_arm_ldrh_reg_a1_P_0) << OP_SF_EBIF_arm_ldrh_reg_a1_P_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.U =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_U_0) >> OP_SF_EBII_arm_ldrh_reg_a1_U_0) << OP_SF_EBIF_arm_ldrh_reg_a1_U_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.W =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_W_0) >> OP_SF_EBII_arm_ldrh_reg_a1_W_0) << OP_SF_EBIF_arm_ldrh_reg_a1_W_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.Rt =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rt_0);
+            
+        
+            context->decoded_code->code.arm_ldrh_reg_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_ldrh_reg_a1.cond == 15)
+         || ((context->decoded_code->code.arm_ldrh_reg_a1.P == 0)
+         && (context->decoded_code->code.arm_ldrh_reg_a1.W == 1)
+        )
+         || (context->decoded_code->code.arm_ldrh_reg_a1.Rm == 15)
+         || (context->decoded_code->code.arm_ldrh_reg_a1.Rt == 15)
+         || (((context->decoded_code->code.arm_ldrh_reg_a1.P == 0)
+         || (context->decoded_code->code.arm_ldrh_reg_a1.W == 1)
+        )
+         && (context->decoded_code->code.arm_ldrh_reg_a1.Rn == 15)
         )
         
             ) {
@@ -3629,6 +3996,58 @@ static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_lsl_reg_a1 */
+    static int op_parse_arm_lsl_reg_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_lsl_reg_a1) != OP_FB_arm_lsl_reg_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_lsl_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_lsl_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_lsl_reg_a1;
+        
+            context->decoded_code->code.arm_lsl_reg_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_cond_0) >> OP_SF_EBII_arm_lsl_reg_a1_cond_0) << OP_SF_EBIF_arm_lsl_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_lsl_reg_a1.S =
+            
+                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_S_0) >> OP_SF_EBII_arm_lsl_reg_a1_S_0) << OP_SF_EBIF_arm_lsl_reg_a1_S_0);
+            
+        
+            context->decoded_code->code.arm_lsl_reg_a1.Rd =
+            
+                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rd_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rd_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rd_0);
+            
+        
+            context->decoded_code->code.arm_lsl_reg_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rm_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rm_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rm_0);
+            
+        
+            context->decoded_code->code.arm_lsl_reg_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rn_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rn_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rn_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_lsl_reg_a1.cond == 15)
+         || (context->decoded_code->code.arm_lsl_reg_a1.Rd == 15)
+         || (context->decoded_code->code.arm_lsl_reg_a1.Rm == 15)
+         || (context->decoded_code->code.arm_lsl_reg_a1.Rn == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_bfc_a1 */
     static int op_parse_arm_bfc_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_bfc_a1) != OP_FB_arm_bfc_a1) {
@@ -3717,6 +4136,100 @@ static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
                 (context->decoded_code->code.arm_and_imm_a1.cond == 15)
          || ((context->decoded_code->code.arm_and_imm_a1.Rd == 15)
          && (context->decoded_code->code.arm_and_imm_a1.S == 1)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_utxb_a1 */
+    static int op_parse_arm_utxb_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_utxb_a1) != OP_FB_arm_utxb_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_utxb_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_utxb_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_utxb_a1;
+        
+            context->decoded_code->code.arm_utxb_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxb_a1_cond_0) >> OP_SF_EBII_arm_utxb_a1_cond_0) << OP_SF_EBIF_arm_utxb_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_utxb_a1.Rd =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxb_a1_Rd_0) >> OP_SF_EBII_arm_utxb_a1_Rd_0) << OP_SF_EBIF_arm_utxb_a1_Rd_0);
+            
+        
+            context->decoded_code->code.arm_utxb_a1.rotate =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxb_a1_rotate_0) >> OP_SF_EBII_arm_utxb_a1_rotate_0) << OP_SF_EBIF_arm_utxb_a1_rotate_0);
+            
+        
+            context->decoded_code->code.arm_utxb_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxb_a1_Rm_0) >> OP_SF_EBII_arm_utxb_a1_Rm_0) << OP_SF_EBIF_arm_utxb_a1_Rm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_utxb_a1.cond == 15)
+         || ((context->decoded_code->code.arm_utxb_a1.Rd == 15)
+         && (context->decoded_code->code.arm_utxb_a1.Rm == 15)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_utxh_a1 */
+    static int op_parse_arm_utxh_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_utxh_a1) != OP_FB_arm_utxh_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_utxh_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_utxh_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_utxh_a1;
+        
+            context->decoded_code->code.arm_utxh_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxh_a1_cond_0) >> OP_SF_EBII_arm_utxh_a1_cond_0) << OP_SF_EBIF_arm_utxh_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_utxh_a1.Rd =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxh_a1_Rd_0) >> OP_SF_EBII_arm_utxh_a1_Rd_0) << OP_SF_EBIF_arm_utxh_a1_Rd_0);
+            
+        
+            context->decoded_code->code.arm_utxh_a1.rotate =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxh_a1_rotate_0) >> OP_SF_EBII_arm_utxh_a1_rotate_0) << OP_SF_EBIF_arm_utxh_a1_rotate_0);
+            
+        
+            context->decoded_code->code.arm_utxh_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_utxh_a1_Rm_0) >> OP_SF_EBII_arm_utxh_a1_Rm_0) << OP_SF_EBIF_arm_utxh_a1_Rm_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_utxh_a1.cond == 15)
+         || ((context->decoded_code->code.arm_utxh_a1.Rd == 15)
+         && (context->decoded_code->code.arm_utxh_a1.Rm == 15)
         )
         
             ) {
@@ -3833,11 +4346,19 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_ldrh_imm_a1(&context) == 0) {
+            return 0;
+        }
+    
         if (op_parse_arm_ldr_reg_a1(&context) == 0) {
             return 0;
         }
     
         if (op_parse_arm_ldrb_reg_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_ldrh_reg_a1(&context) == 0) {
             return 0;
         }
     
@@ -3897,11 +4418,23 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_lsl_reg_a1(&context) == 0) {
+            return 0;
+        }
+    
         if (op_parse_arm_bfc_a1(&context) == 0) {
             return 0;
         }
     
         if (op_parse_arm_and_imm_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_utxb_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_utxh_a1(&context) == 0) {
             return 0;
         }
     
@@ -3959,9 +4492,13 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
     
 	{ 1, arm_op_exec_arm_ldrb_imm_a1 },		/* arm_ldrb_imm_a1 */
     
+	{ 1, arm_op_exec_arm_ldrh_imm_a1 },		/* arm_ldrh_imm_a1 */
+    
 	{ 1, arm_op_exec_arm_ldr_reg_a1 },		/* arm_ldr_reg_a1 */
     
 	{ 1, arm_op_exec_arm_ldrb_reg_a1 },		/* arm_ldrb_reg_a1 */
+    
+	{ 1, arm_op_exec_arm_ldrh_reg_a1 },		/* arm_ldrh_reg_a1 */
     
 	{ 1, arm_op_exec_arm_pop_a1 },		/* arm_pop_a1 */
     
@@ -3991,8 +4528,14 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
     
 	{ 1, arm_op_exec_arm_lsl_imm_a1 },		/* arm_lsl_imm_a1 */
     
+	{ 1, arm_op_exec_arm_lsl_reg_a1 },		/* arm_lsl_reg_a1 */
+    
 	{ 1, arm_op_exec_arm_bfc_a1 },		/* arm_bfc_a1 */
     
 	{ 1, arm_op_exec_arm_and_imm_a1 },		/* arm_and_imm_a1 */
+    
+	{ 1, arm_op_exec_arm_utxb_a1 },		/* arm_utxb_a1 */
+    
+	{ 1, arm_op_exec_arm_utxh_a1 },		/* arm_utxh_a1 */
     
 };

@@ -293,6 +293,18 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_lsl_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_bfc
         inputs:
           cond: PseudoCodeConditionDataType
@@ -313,6 +325,15 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_utx
+        inputs:
+          cond: PseudoCodeConditionDataType
+          size: PseudoCodeSizeType
+          Rd: PseudoCodeRegisterDataType
+          rotate: PseudoCodeRotationType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
 
 decoder:
   namespace: arm
@@ -531,6 +552,18 @@ instructions:
       clocks: 10
       pseudo_code: arm_ldr_imm
 
+  - name: arm_ldrh_imm_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1011|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rt == 15) 
+                        or ( ((P == 0) or (W == 1)) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldr_imm
+
   - name: arm_ldr_reg_a1
     format: xxxx:cond|011|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
     unmatch_condition: >
@@ -550,6 +583,18 @@ instructions:
                         or (Rt == 0b1111) 
                         or ( (P == 0) and (W == 1) ) 
                         or (Rt == 15) 
+                        or ( ((P == 0) or (W == 1)) and (Rn == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldr_reg
+
+  - name: arm_ldrh_reg_a1
+    format: xxxx:cond|000|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|0000|1011|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rm == 0b1111) 
+                        or (Rt == 0b1111) 
                         or ( ((P == 0) or (W == 1)) and (Rn == 15) )
     extras:
       clocks: 10
@@ -658,6 +703,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_lsl_imm
+
+  - name: arm_lsl_reg_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|xxxx:Rm|0001|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_lsl_reg
  
   - name: arm_bfc_a1
     format: xxxx:cond|0111110|xxxx x:msb|xxxx:Rd|xxxx x:lsb|001|1111
@@ -673,3 +725,18 @@ instructions:
       clocks: 10
       pseudo_code: arm_and_imm
  
+  - name: arm_utxb_a1
+    format: xxxx:cond|01101110|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) and (Rm == 15) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_utx
+      
+  - name: arm_utxh_a1
+    format: xxxx:cond|01101111|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) and (Rm == 15) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_utx
+
+      

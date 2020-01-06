@@ -190,6 +190,19 @@ machine:
           wback: PseudoCodeBoolWbackType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_ldr_literal
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          PC: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rt: PseudoCodeRegisterDataType
+
 
       - name: arm_ldrd_imm
         inputs:
@@ -218,6 +231,8 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rt: PseudoCodeRegisterDataType
 
 
       - name: arm_push
@@ -822,7 +837,7 @@ instructions:
                         or ( (P == 0) and (W == 1) ) 
     extras:
       clocks: 10
-      pseudo_code: arm_ldr_imm
+      pseudo_code: arm_ldr_literal
 
   - name: arm_ldrb_imm_a1
     format: xxxx:cond|010|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12

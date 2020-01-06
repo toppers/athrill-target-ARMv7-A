@@ -1,8 +1,9 @@
 #include "arm_pseudo_code_func.h"
 
-static inline int mem_to_reg(TargetCoreType *core, uint32 address, uint32 size, uint8 *data, uint32 *result)
+static inline int mem_to_reg(TargetCoreType *core, uint32 address, uint32 size, uint32 *result)
 {
 	int ret = 0;
+	uint8 data[4];
 	ret = MemA_R(core, address, size, data);
 	if (ret != 0) {
 		return -1;
@@ -35,15 +36,15 @@ typedef struct {
 	uint32 address;
 	uint32 offset_addr;
 	PseudoCodeRegisterDataType *Rn;
-	PseudoCodeRegisterDataType *Rt;
+	PseudoCodeRegisterDataType *Rt_in;
+	PseudoCodeRegisterDataType *Rt_out;
 	uint32 *next_address;
 } ArmOpExecArmLdrArgType;
 static int arm_op_exec_arm_ldr(TargetCoreType *core, ArmOpExecArmLdrArgType *arg)
 {
 	int ret;
-	uint8 data[4];
-	uint32 result;
-	ret = mem_to_reg(core, arg->address, arg->size, data, &result);
+	uint32 result = -1;
+	ret = mem_to_reg(core, arg->address, arg->size, &result);
 	if (ret != 0) {
         return ret;
 	}
@@ -60,7 +61,7 @@ static int arm_op_exec_arm_ldr(TargetCoreType *core, ArmOpExecArmLdrArgType *arg
 	else {
 		align_mask = 0x0;
 	}
-	if (arg->Rt->regId == CpuRegId_PC) {
+	if (arg->Rt_in->regId == CpuRegId_PC) {
 		if ((arg->address & 0x3) == 0x0) {
 			ret = LoadWritePC(arg->next_address, arg->status, result);
 		}
@@ -70,14 +71,15 @@ static int arm_op_exec_arm_ldr(TargetCoreType *core, ArmOpExecArmLdrArgType *arg
 		}
 	}
 	else if (UnalignedSupport() || ((arg->address & align_mask) == 0x00)) {
-		cpu_set_reg(core, arg->Rt->regId, result);
+		cpu_set_reg(core, arg->Rt_in->regId, result);
 	}
 	else {
 		if (arg->size == 4) {
 			result = ROR(32, result, 8 * UInt((arg->address & 0x3)) );
 		}
-		cpu_set_reg(core, arg->Rt->regId, result);
+		cpu_set_reg(core, arg->Rt_in->regId, result);
 	}
+	arg->Rt_out->regData = result;
 	return ret;
 }
 
@@ -86,7 +88,8 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
 	int ret = 0;
 	ArmOpExecArmLdrArgType arg;
 	arg.Rn = &in->Rn;
-	arg.Rt = &in->Rt;
+	arg.Rt_in = &in->Rt;
+	arg.Rt_out = &out->Rt;
 	arg.wback = in->wback;
 	arg.size = in->size;
 	arg.status = cpu_get_status(core);
@@ -102,22 +105,57 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
     return ret;
 }
 
+int arm_op_exec_arm_ldr_literal(struct TargetCore *core,  arm_ldr_literal_input_type *in, arm_ldr_literal_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		uint32 base = Align(in->PC.regData, 4);
+		uint32 address = (in->add) ? (base + in->imm32) : (base - in->imm32);
+		ret = mem_to_reg(core, address, 4, &result);
+		if (ret != 0) {
+			goto done;
+		}
+		if (in->Rt.regId == CpuRegId_PC) {
+			if ((address & 0x3) == 0x0) {
+				ret = LoadWritePC(&out->next_address, status, result);
+			}
+			else {
+				//UNPREDICTABLE
+				ret = -1;
+			}
+		}
+		else if (UnalignedSupport() || ((address & 0x3) == 0x00)) {
+			cpu_set_reg(core, in->Rt.regId, result);
+		}
+		else {
+			result = ROR(32, result, 8 * UInt((address & 0x3)) );
+			cpu_set_reg(core, in->Rt.regId, result);
+		}
+		out->Rt.regData = result;
+	}
+done:
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_ldrd_imm(struct TargetCore *core,  arm_ldrd_imm_input_type *in, arm_ldrd_imm_output_type *out)
 {
 	int ret = 0;
 	uint32 result;
-	uint8 data[4];
 	uint32 *status = cpu_get_status(core);
 	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
 	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		ret = mem_to_reg(core, address, 4, data, &result);
+		ret = mem_to_reg(core, address, 4, &result);
 		if (ret != 0) {
 			goto done;
 		}
-		ret = mem_to_reg(core, address + 4, 4, data, &result);
+		ret = mem_to_reg(core, address + 4, 4, &result);
 		if (ret != 0) {
 			goto done;
 		}
@@ -136,7 +174,8 @@ int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in
 	int ret = 0;
 	ArmOpExecArmLdrArgType arg;
 	arg.Rn = &in->Rn;
-	arg.Rt = &in->Rt;
+	arg.Rt_in = &in->Rt;
+	arg.Rt_out = &out->Rt;
 	arg.wback = in->wback;
 	arg.size = in->size;
 	arg.status = cpu_get_status(core);

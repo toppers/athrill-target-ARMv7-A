@@ -800,6 +800,10 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 
 		": "
 
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -819,6 +823,55 @@ static inline void DBG_ARM_LDR_IMM(TargetCoreType *core, arm_ldr_imm_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_LDR_LITERAL(TargetCoreType *core, arm_ldr_literal_input_type *in, arm_ldr_literal_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeImmediateData32Type
+
+		DBG_FMT_PseudoCodeBoolAddType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
+
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->PC),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
 
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
@@ -912,6 +965,10 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 
 		": "
 
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
 		DBG_FMT_PseudoCodeStatusType 
 		DBG_FMT_PseudoCodeCondPassedType "\n",
 		in->instrName,
@@ -937,6 +994,10 @@ static inline void DBG_ARM_LDR_REG(TargetCoreType *core, arm_ldr_reg_input_type 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
 
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
 
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),

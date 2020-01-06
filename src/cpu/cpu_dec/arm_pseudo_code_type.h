@@ -422,9 +422,35 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rt;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeRegisterDataType	PC;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_ldr_literal_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldr_literal_output_type;
 
 typedef struct {
 	char* instrName;
@@ -483,6 +509,9 @@ typedef struct {
 
 typedef struct {
 	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rt;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_reg_output_type;

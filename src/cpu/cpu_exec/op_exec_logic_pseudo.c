@@ -187,8 +187,8 @@ int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		uint32 shift_n = in->Rd.regData & 0xFF;
-		result = Shift_C(32, in->Rm.regData, SRType_LSL, shift_n, out->status_flag.carry, &out->status_flag.carry);
+		uint32 shift_n = in->Rm.regData & 0xFF;
+		result = Shift_C(32, in->Rn.regData, SRType_LSL, shift_n, out->status_flag.carry, &out->status_flag.carry);
 		out->Rd.regData = result;
 		cpu_set_reg(core, in->Rd.regId, out->Rd.regData);
 		if (in->S != 0) {

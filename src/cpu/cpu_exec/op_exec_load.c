@@ -60,7 +60,7 @@ int arm_op_exec_arm_ldr_literal_a1(struct TargetCore *core)
 		return -1;
 	}
 	OP_SET_REG(core, &in, op, Rt);
-	OP_SET_REGID(core, &in, CpuRegId_PC, Rn);
+	OP_SET_REGID(core, &in, op->Rt, Rn);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;

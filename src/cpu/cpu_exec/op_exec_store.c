@@ -182,6 +182,37 @@ int arm_op_exec_arm_strd_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_str_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_str_reg_a1 *op = &core->decoded_code->code.arm_str_reg_a1;
+
+	arm_str_reg_input_type in;
+	arm_str_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "STR";
+	in.size = 4U;
+	in.sign = FALSE;
+	in.cond = op->cond;
+
+	in.index = (op->P != 0);
+	in.add = (op->U != 0);
+	in.wback = ((op->P == 0) || (op->W != 0));
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
+	DBG_ARM_STR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_strb_reg_a1 *op = &core->decoded_code->code.arm_strb_reg_a1;
@@ -290,5 +321,31 @@ int arm_op_exec_arm_push_a2(struct TargetCore *core)
 		core->pc = out.next_address;
 		cpu_set_reg(core, CpuRegId_SP, out.SP.regData);
 	}
+	return ret;
+}
+
+int arm_op_exec_arm_stm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_stm_a1 *op = &core->decoded_code->code.arm_stm_a1;
+
+	arm_stm_input_type in;
+	arm_stm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "STM";
+	in.cond = op->cond;
+	in.wback = (op->W != 0);
+	in.bitcount = BitCount(op->register_list);
+	in.registers = op->register_list;
+	OP_SET_REG(core, &in, op, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rn);
+
+	int ret = arm_op_exec_arm_stm(core, &in, &out);
+	DBG_ARM_STM(core, &in, &out);
+
+	core->pc = out.next_address;
 	return ret;
 }

@@ -989,6 +989,51 @@ static inline void DBG_ARM_PUSH(TargetCoreType *core, arm_push_input_type *in, a
 	));
 }
 
+static inline void DBG_ARM_STM(TargetCoreType *core, arm_stm_input_type *in, arm_stm_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeBitCountType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterListType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
+
+		DBG_ARG_PseudoCodeBitCountType(&in->bitcount),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterListType(&in->registers),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm_pop_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
@@ -1027,6 +1072,51 @@ static inline void DBG_ARM_POP(TargetCoreType *core, arm_pop_input_type *in, arm
 
 
 		DBG_ARG_PseudoCodeRegisterDataType(&out->SP),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_LDM(TargetCoreType *core, arm_ldm_input_type *in, arm_ldm_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeBitCountType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterListType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
+
+		DBG_ARG_PseudoCodeBitCountType(&in->bitcount),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterListType(&in->registers),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
 
 
 		DBG_ARG_PseudoCodeStatusType(&out->status),
@@ -2172,8 +2262,6 @@ static inline void DBG_ARM_TST_IMM(TargetCoreType *core, arm_tst_imm_input_type 
 		": "
 
 
-		DBG_FMT_PseudoCodeRegisterDataType
-
 		DBG_FMT_PseudoCodeStatusFlagType
 
 
@@ -2188,8 +2276,6 @@ static inline void DBG_ARM_TST_IMM(TargetCoreType *core, arm_tst_imm_input_type 
 		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
 
 
-
-		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
 
 		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
 

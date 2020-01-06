@@ -515,6 +515,29 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeBitCountType	bitcount;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterListType	registers;
+} arm_stm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_stm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeBitCountType	bitcount;
 
 	PseudoCodeUnalignedAllowedType	UnalignedAllowed;
@@ -532,6 +555,29 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_pop_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeBitCountType	bitcount;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterListType	registers;
+} arm_ldm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldm_output_type;
 
 typedef struct {
 	char* instrName;
@@ -1127,8 +1173,6 @@ typedef struct {
 typedef struct {
 	uint32	next_address;
 
-
-	PseudoCodeRegisterDataType	Rd;
 
 	PseudoCodeStatusFlagType	status_flag;
 PseudoCodeStatusType		status;

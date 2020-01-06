@@ -97,7 +97,12 @@ int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		regdata = cpu_get_reg(core, in->Rt.regId);
+		if ((in->size == 4) && (in->Rt.regId == CpuRegId_PC)) {
+			regdata = PCStoreValue(core);
+		}
+		else {
+			regdata = cpu_get_reg(core, in->Rt.regId);
+		}
 		ret = reg_to_mem(core, address, in->size, regdata);
 		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
@@ -143,6 +148,48 @@ int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_
 			}
 		}
 		out->SP.regData = (in->SP.regData - (4 * (in->bitcount)));		
+	}
+done:
+	out->status = *status;
+    return ret;
+}
+
+
+int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_stm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		uint32 address = (uint32)in->Rn.regData;
+		uint32 data;
+		for (i = 0; i < CpuRegId_PC; i++) {
+			data = cpu_get_reg(core, i);
+			if ( ((1U << i) & in->registers) != 0 ) {
+				//MemA[address,4] = R[i];
+				ret = MemA_W(core, address, 4, (uint8*)&data);
+				if (ret < 0) {
+					goto done;
+				}
+				address = address + 4;
+			}
+		}
+		if ( (in->registers & (1U << CpuRegId_PC)) != 0 ) {
+			//MemA[address,4] = PCStoreValue();
+			data = PCStoreValue(core);
+			ret = MemA_W(core, address, 4, (uint8*)&data);
+			if (ret < 0) {
+				goto done;
+			}
+		}
+		//if wback then R[n] = R[n] + 4*BitCount(registers);
+		if (in->wback && ((in->registers & (1U << in->Rn.regId)) != 0 )) {
+			//R[n] = R[n] + 4*BitCount(registers);
+			out->Rn.regData += 4 * in->bitcount;
+			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);
+		}
 	}
 done:
 	out->status = *status;

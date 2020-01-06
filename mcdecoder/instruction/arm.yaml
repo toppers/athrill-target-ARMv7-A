@@ -230,6 +230,17 @@ machine:
         outputs:
           SP: PseudoCodeRegisterDataType
 
+      - name: arm_stm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          wback: PseudoCodeBoolWbackType
+          bitcount: PseudoCodeBitCountType
+          Rn: PseudoCodeRegisterDataType
+          registers: PseudoCodeRegisterListType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
       - name: arm_pop
         inputs:
           cond: PseudoCodeConditionDataType
@@ -239,6 +250,18 @@ machine:
           SP: PseudoCodeRegisterDataType
         outputs:
           SP: PseudoCodeRegisterDataType
+
+      - name: arm_ldm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          wback: PseudoCodeBoolWbackType
+          bitcount: PseudoCodeBitCountType
+          Rn: PseudoCodeRegisterDataType
+          registers: PseudoCodeRegisterListType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
 
       - name: arm_str_imm
         inputs:
@@ -503,7 +526,6 @@ machine:
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:
-          Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
       - name: arm_tst_reg
@@ -735,6 +757,16 @@ instructions:
       pseudo_code: arm_strd_imm
 
 
+  - name: arm_str_reg_a1
+    format: xxxx:cond|011|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( Rm == 15 )
+                        or ( (P == 0) and (W == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_str_reg
+
 
   - name: arm_strb_reg_a1
     format: xxxx:cond|011|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx x:imm5|xx:type|0|xxxx:Rm
@@ -762,6 +794,13 @@ instructions:
       clocks: 10
       pseudo_code: arm_push
 
+  - name: arm_stm_a1
+    format: xxxx:cond|1000 10|x:W|0|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
+    unmatch_condition: (cond == 0b1111) 
+                        or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_stm
 
   - name: arm_ldr_imm_a1
     format: xxxx:cond|010|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|xxxxxxxxxxxx:imm12
@@ -872,6 +911,15 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_pop
+
+
+  - name: arm_ldm_a1
+    format: xxxx:cond|1000 10|x:W|1|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
+    unmatch_condition: (cond == 0b1111)
+                        or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldm
 
 
   - name: arm_nop_a1

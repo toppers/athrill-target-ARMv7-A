@@ -61,11 +61,15 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_strd_imm_a1,
 	
+		arm_OP_CODE_FORMAT_arm_str_reg_a1,
+	
 		arm_OP_CODE_FORMAT_arm_strb_reg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_push_a1,
 	
 		arm_OP_CODE_FORMAT_arm_push_a2,
+	
+		arm_OP_CODE_FORMAT_arm_stm_a1,
 	
 		arm_OP_CODE_FORMAT_arm_ldr_imm_a1,
 	
@@ -86,6 +90,8 @@ typedef enum {
 		arm_OP_CODE_FORMAT_arm_pop_a1,
 	
 		arm_OP_CODE_FORMAT_arm_pop_a2,
+	
+		arm_OP_CODE_FORMAT_arm_ldm_a1,
 	
 		arm_OP_CODE_FORMAT_arm_nop_a1,
 	
@@ -194,11 +200,15 @@ typedef enum {
 	
 		arm_OpCodeId_arm_strd_imm_a1,
 	
+		arm_OpCodeId_arm_str_reg_a1,
+	
 		arm_OpCodeId_arm_strb_reg_a1,
 	
 		arm_OpCodeId_arm_push_a1,
 	
 		arm_OpCodeId_arm_push_a2,
+	
+		arm_OpCodeId_arm_stm_a1,
 	
 		arm_OpCodeId_arm_ldr_imm_a1,
 	
@@ -219,6 +229,8 @@ typedef enum {
 		arm_OpCodeId_arm_pop_a1,
 	
 		arm_OpCodeId_arm_pop_a2,
+	
+		arm_OpCodeId_arm_ldm_a1,
 	
 		arm_OpCodeId_arm_nop_a1,
 	
@@ -622,6 +634,28 @@ typedef struct {
 	
 		arm_uint8 Rm;	/* 3-0 */
 	
+} arm_OpCodeFormatType_arm_str_reg_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 P;	/* 24-24 */
+	
+		arm_uint8 U;	/* 23-23 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rt;	/* 15-12 */
+	
+		arm_uint8 imm5;	/* 11-7 */
+	
+		arm_uint8 type;	/* 6-5 */
+	
+		arm_uint8 Rm;	/* 3-0 */
+	
 } arm_OpCodeFormatType_arm_strb_reg_a1;
 
 typedef struct {
@@ -639,6 +673,18 @@ typedef struct {
 		arm_uint8 Rt;	/* 15-12 */
 	
 } arm_OpCodeFormatType_arm_push_a2;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint16 register_list;	/* 15-0 */
+	
+} arm_OpCodeFormatType_arm_stm_a1;
 
 typedef struct {
 	
@@ -805,6 +851,18 @@ typedef struct {
 		arm_uint8 Rt;	/* 15-12 */
 	
 } arm_OpCodeFormatType_arm_pop_a2;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint16 register_list;	/* 15-0 */
+	
+} arm_OpCodeFormatType_arm_ldm_a1;
 
 typedef struct {
 	
@@ -1217,11 +1275,15 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_strd_imm_a1 arm_strd_imm_a1;
 		
+        	arm_OpCodeFormatType_arm_str_reg_a1 arm_str_reg_a1;
+		
         	arm_OpCodeFormatType_arm_strb_reg_a1 arm_strb_reg_a1;
 		
         	arm_OpCodeFormatType_arm_push_a1 arm_push_a1;
 		
         	arm_OpCodeFormatType_arm_push_a2 arm_push_a2;
+		
+        	arm_OpCodeFormatType_arm_stm_a1 arm_stm_a1;
 		
         	arm_OpCodeFormatType_arm_ldr_imm_a1 arm_ldr_imm_a1;
 		
@@ -1242,6 +1304,8 @@ typedef struct {
         	arm_OpCodeFormatType_arm_pop_a1 arm_pop_a1;
 		
         	arm_OpCodeFormatType_arm_pop_a2 arm_pop_a2;
+		
+        	arm_OpCodeFormatType_arm_ldm_a1 arm_ldm_a1;
 		
         	arm_OpCodeFormatType_arm_nop_a1 arm_nop_a1;
 		
@@ -1334,9 +1398,11 @@ extern int arm_op_exec_arm_str_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_strb_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_strh_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_strd_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_str_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_push_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_push_a2(struct TargetCore *core);
+extern int arm_op_exec_arm_stm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldr_literal_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core);
@@ -1347,6 +1413,7 @@ extern int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_pop_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_pop_a2(struct TargetCore *core);
+extern int arm_op_exec_arm_ldm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_nop_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_msr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_msr2_imm_a1(struct TargetCore *core);

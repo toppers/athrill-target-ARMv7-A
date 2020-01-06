@@ -207,3 +207,46 @@ done:
 	out->status = *status;
     return ret;
 }
+
+
+int arm_op_exec_arm_ldm(struct TargetCore *core,  arm_ldm_input_type *in, arm_ldm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		uint32 data;
+		uint32 address = (uint32)in->Rn.regData;
+		for (i = 0; i < CpuRegId_PC; i++) {
+			if ( ((1U << i) & in->registers) != 0 ) {
+				ret = MemA_R(core, address, 4, (uint8*)&data);
+				if (ret < 0) {
+					goto done;
+				}
+				//R[i] = MemA[address,4]; address = address + 4;
+				cpu_set_reg(core, i, data);
+				address = address + 4;
+			}
+		}
+		if ( (in->registers & (1U << CpuRegId_PC)) != 0 ) {
+			//LoadWritePC(MemA[address,4]);
+			ret = MemA_R(core, address, 4, (uint8*)&data);
+			if (ret < 0) {
+				goto done;
+			}
+			LoadWritePC(&out->next_address, status, data);
+		}
+		//if wback && registers<n> == ‘0’ then R[n] = R[n] + 4*BitCount(registers);
+		//if wback && registers<n> == ‘1’ then R[n] = bits(32) UNKNOWN
+		if (in->wback && ((in->registers & (1U << in->Rn.regId)) != 0 )) {
+			//R[n] = R[n] + 4*BitCount(registers);
+			out->Rn.regData += 4 * in->bitcount;
+			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);
+		}
+	}
+done:
+	out->status = *status;
+    return ret;
+}

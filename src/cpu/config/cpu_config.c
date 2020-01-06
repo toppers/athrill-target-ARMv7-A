@@ -78,8 +78,20 @@ static Std_ReturnType cpu_supply_clock_not_cached(CoreIdType core_id, CachedOper
 	/*
 	 * デコード
 	 */
-	ret = arm_op_parse(virtual_cpu.cores[core_id].core.current_code,
-			p_decoded_code, &optype);
+	InstrSetType type = CurrentInstrSet(*cpu_get_status(&virtual_cpu.cores[core_id].core));
+	if (type == InstrSet_ARM) {
+		ret = arm_op_parse(virtual_cpu.cores[core_id].core.current_code,
+				p_decoded_code, &optype);
+	} else if (type == InstrSet_Thumb) {
+		printf("ERROR: thumb mode is not supported yet..\n");
+		printf("Decode Error\n");
+		return STD_E_DECODE;
+	}
+	else {
+		printf("ERROR: %d mode is not supported yet..\n", type);
+		printf("Decode Error\n");
+		return STD_E_DECODE;
+	}
 	if (ret != 0) {
 		printf("Decode Error\n");
 		return STD_E_DECODE;
@@ -129,7 +141,7 @@ Std_ReturnType cpu_supply_clock(CoreIdType core_id)
 {
 	int ret;
 	Std_ReturnType err;
-	uint32 inx;
+	uint32 inx = -1;
 	CachedOperationCodeType *cached_code;
 
 	if (virtual_cpu.cores[core_id].core.is_halt == TRUE) {
@@ -139,6 +151,9 @@ Std_ReturnType cpu_supply_clock(CoreIdType core_id)
 	cached_code = virtual_cpu_get_cached_code(cpu_get_pc(&virtual_cpu.cores[core_id].core));
 	if (cached_code != NULL) {
 		inx = cpu_get_pc(&virtual_cpu.cores[core_id].core) - cached_code->code_start_addr;
+	}
+	if (inx == -1) {
+		return STD_E_SEGV;
 	}
 	if ((cached_code == NULL) || (cached_code->codes[inx].op_exec == NULL)) {
 		err = cpu_supply_clock_not_cached(core_id, cached_code, inx);

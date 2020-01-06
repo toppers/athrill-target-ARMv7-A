@@ -497,6 +497,26 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_tst_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_tst_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          status_flag: PseudoCodeStatusFlagType
+
+
 decoder:
   namespace: arm
 
@@ -1027,5 +1047,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_mul
 
+  - name: arm_tst_imm_a1
+    format: xxxx:cond|00|1|1000|1|xxxx:Rn|0000|xxxx xxxx xxxx:imm12
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_tst_imm
 
+  - name: arm_tst_reg_a1
+    format: xxxx:cond|00|0|1000|1|xxxx:Rn|0000|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_tst_reg
       

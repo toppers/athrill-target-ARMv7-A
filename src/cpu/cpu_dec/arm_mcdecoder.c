@@ -2474,6 +2474,72 @@ typedef struct {
         
     
 
+    /* arm_tst_imm_a1 */
+    #define OP_FB_MASK_arm_tst_imm_a1 (0x0ff0f000l) /* fixed bits mask */
+    #define OP_FB_arm_tst_imm_a1 (0x03100000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_tst_imm_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_imm_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_imm_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_tst_imm_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_imm_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_imm_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'imm12' */
+            #define OP_SF_MASK_arm_tst_imm_a1_imm12_0 (0x00000fffl) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_imm_a1_imm12_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_imm_a1_imm12_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_tst_reg_a1 */
+    #define OP_FB_MASK_arm_tst_reg_a1 (0x0ff0f010l) /* fixed bits mask */
+    #define OP_FB_arm_tst_reg_a1 (0x01100000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_tst_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_tst_reg_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_reg_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_reg_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'imm5' */
+            #define OP_SF_MASK_arm_tst_reg_a1_imm5_0 (0x00000f80l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_reg_a1_imm5_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_reg_a1_imm5_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'type' */
+            #define OP_SF_MASK_arm_tst_reg_a1_type_0 (0x00000060l) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_reg_a1_type_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_reg_a1_type_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_tst_reg_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_tst_reg_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_tst_reg_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* individual op parse functions */
 
@@ -2600,6 +2666,10 @@ static int op_parse_arm_rsb_reg_a1(OpDecodeContext *context);
 static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_mul_a1(OpDecodeContext *context);
+
+static int op_parse_arm_tst_imm_a1(OpDecodeContext *context);
+
+static int op_parse_arm_tst_reg_a1(OpDecodeContext *context);
 
 
 
@@ -5783,6 +5853,92 @@ static int op_parse_arm_mul_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_tst_imm_a1 */
+    static int op_parse_arm_tst_imm_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_tst_imm_a1) != OP_FB_arm_tst_imm_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_tst_imm_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_tst_imm_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_tst_imm_a1;
+        
+            context->decoded_code->code.arm_tst_imm_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_cond_0) >> OP_SF_EBII_arm_tst_imm_a1_cond_0) << OP_SF_EBIF_arm_tst_imm_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_tst_imm_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_Rn_0) >> OP_SF_EBII_arm_tst_imm_a1_Rn_0) << OP_SF_EBIF_arm_tst_imm_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_tst_imm_a1.imm12 =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_imm12_0) >> OP_SF_EBII_arm_tst_imm_a1_imm12_0) << OP_SF_EBIF_arm_tst_imm_a1_imm12_0);
+            
+        
+
+        
+        
+            if (
+                context->decoded_code->code.arm_tst_imm_a1.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_tst_reg_a1 */
+    static int op_parse_arm_tst_reg_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_tst_reg_a1) != OP_FB_arm_tst_reg_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_tst_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_tst_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_tst_reg_a1;
+        
+            context->decoded_code->code.arm_tst_reg_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_cond_0) >> OP_SF_EBII_arm_tst_reg_a1_cond_0) << OP_SF_EBIF_arm_tst_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_tst_reg_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_Rn_0) >> OP_SF_EBII_arm_tst_reg_a1_Rn_0) << OP_SF_EBIF_arm_tst_reg_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_tst_reg_a1.imm5 =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_imm5_0) >> OP_SF_EBII_arm_tst_reg_a1_imm5_0) << OP_SF_EBIF_arm_tst_reg_a1_imm5_0);
+            
+        
+            context->decoded_code->code.arm_tst_reg_a1.type =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_type_0) >> OP_SF_EBII_arm_tst_reg_a1_type_0) << OP_SF_EBIF_arm_tst_reg_a1_type_0);
+            
+        
+            context->decoded_code->code.arm_tst_reg_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_Rm_0) >> OP_SF_EBII_arm_tst_reg_a1_Rm_0) << OP_SF_EBIF_arm_tst_reg_a1_Rm_0);
+            
+        
+
+        
+        
+            if (
+                context->decoded_code->code.arm_tst_reg_a1.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
@@ -6042,6 +6198,14 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_tst_imm_a1(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_tst_reg_a1(&context) == 0) {
+            return 0;
+        }
+    
 
     return 1;
 }
@@ -6171,5 +6335,9 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_sbc_reg_a1 },		/* arm_sbc_reg_a1 */
     
 	{ 1, arm_op_exec_arm_mul_a1 },		/* arm_mul_a1 */
+    
+	{ 1, arm_op_exec_arm_tst_imm_a1 },		/* arm_tst_imm_a1 */
+    
+	{ 1, arm_op_exec_arm_tst_reg_a1 },		/* arm_tst_reg_a1 */
     
 };

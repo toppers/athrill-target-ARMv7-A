@@ -225,3 +225,55 @@ int arm_op_exec_arm_and_reg_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_tst_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_tst_imm_a1 *op = &core->decoded_code->code.arm_tst_imm_a1;
+
+	arm_tst_imm_input_type in;
+	arm_tst_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "TST";
+
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rn);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+	in.imm32 = ARMExpandImm_C(op->imm12, CPU_ISSET_CY(cpu_get_status(core)), &out.status_flag.carry);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_tst_imm(core, &in, &out);
+	DBG_ARM_TST_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_tst_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_tst_reg_a1 *op = &core->decoded_code->code.arm_tst_reg_a1;
+
+	arm_tst_reg_input_type in;
+	arm_tst_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "TST";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rn);
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_tst_reg(core, &in, &out);
+	DBG_ARM_TST_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

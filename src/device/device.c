@@ -30,11 +30,7 @@ static DeviceExSerialOpType device_ex_serial_op = {
 		.getchar = dbg_serial_getchar,
 		.flush = NULL,
 };
-static DeviceExSerialOpType device_ex_serial_file_op = {
-		.putchar = dbg_serial_putchar_file,
-		.getchar = dbg_serial_getchar_file,
-		.flush = dbg_serial_flush_file,
-};
+
 
 static void device_init_clock(MpuAddressRegionType *region)
 {
@@ -45,7 +41,6 @@ static void device_init_clock(MpuAddressRegionType *region)
 
 void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 {
-	char *path;
 	dev_clock->clock = 0;
 	dev_clock->intclock = 0;
 	dev_clock->min_intr_interval = DEVICE_CLOCK_MAX_INTERVAL;
@@ -56,13 +51,7 @@ void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 	device_init_timer(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_PH0]);
 
 	device_init_serial(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_SERIAL]);
-	device_ex_serial_register_ops(0U, &device_ex_serial_op);
-	if (cpuemu_get_devcfg_string("SERIAL_FILE_PATH", &path) == STD_E_OK) {
-		device_ex_serial_register_ops(1U, &device_ex_serial_file_op);
-	}
-	else {
-		device_ex_serial_register_ops(1U, &device_ex_serial_op);
-	}
+	device_ex_serial_register_ops(2U, &device_ex_serial_op);
 
 	return;
 }

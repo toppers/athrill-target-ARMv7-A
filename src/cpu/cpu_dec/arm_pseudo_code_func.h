@@ -47,4 +47,5 @@ extern int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_t
 extern int arm_op_exec_arm_utx(struct TargetCore *core,  arm_utx_input_type *in, arm_utx_output_type *out);
 extern int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_type *in, arm_rsb_reg_output_type *out);
 extern int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in, arm_sbc_reg_output_type *out);
+extern int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mul_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

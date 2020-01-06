@@ -1060,4 +1060,29 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_sbc_reg_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_mul_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_mul_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

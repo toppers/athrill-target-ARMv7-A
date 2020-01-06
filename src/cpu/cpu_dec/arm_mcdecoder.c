@@ -2380,6 +2380,46 @@ typedef struct {
         
     
 
+    /* arm_mul_a1 */
+    #define OP_FB_MASK_arm_mul_a1 (0x0fe0f0f0l) /* fixed bits mask */
+    #define OP_FB_arm_mul_a1 (0x00000090l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_mul_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mul_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mul_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'S' */
+            #define OP_SF_MASK_arm_mul_a1_S_0 (0x00100000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mul_a1_S_0 (20) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mul_a1_S_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rd' */
+            #define OP_SF_MASK_arm_mul_a1_Rd_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_mul_a1_Rd_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mul_a1_Rd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_mul_a1_Rm_0 (0x00000f00l) /* subfield mask */
+            #define OP_SF_EBII_arm_mul_a1_Rm_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mul_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_mul_a1_Rn_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_mul_a1_Rn_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_mul_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* individual op parse functions */
 
@@ -2502,6 +2542,8 @@ static int op_parse_arm_utxh_a1(OpDecodeContext *context);
 static int op_parse_arm_rsb_reg_a1(OpDecodeContext *context);
 
 static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
+
+static int op_parse_arm_mul_a1(OpDecodeContext *context);
 
 
 
@@ -5570,6 +5612,58 @@ static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_mul_a1 */
+    static int op_parse_arm_mul_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_mul_a1) != OP_FB_arm_mul_a1) {
+            return 1;
+        }
+    
+
+        context->optype->code_id = arm_OpCodeId_arm_mul_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_mul_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_mul_a1;
+        
+            context->decoded_code->code.arm_mul_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_mul_a1_cond_0) >> OP_SF_EBII_arm_mul_a1_cond_0) << OP_SF_EBIF_arm_mul_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_mul_a1.S =
+            
+                (((context->code32 & OP_SF_MASK_arm_mul_a1_S_0) >> OP_SF_EBII_arm_mul_a1_S_0) << OP_SF_EBIF_arm_mul_a1_S_0);
+            
+        
+            context->decoded_code->code.arm_mul_a1.Rd =
+            
+                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rd_0) >> OP_SF_EBII_arm_mul_a1_Rd_0) << OP_SF_EBIF_arm_mul_a1_Rd_0);
+            
+        
+            context->decoded_code->code.arm_mul_a1.Rm =
+            
+                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rm_0) >> OP_SF_EBII_arm_mul_a1_Rm_0) << OP_SF_EBIF_arm_mul_a1_Rm_0);
+            
+        
+            context->decoded_code->code.arm_mul_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rn_0) >> OP_SF_EBII_arm_mul_a1_Rn_0) << OP_SF_EBIF_arm_mul_a1_Rn_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_mul_a1.cond == 15)
+         || (context->decoded_code->code.arm_mul_a1.Rd == 15)
+         || (context->decoded_code->code.arm_mul_a1.Rm == 15)
+         || (context->decoded_code->code.arm_mul_a1.Rn == 15)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
@@ -5821,6 +5915,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_mul_a1(&context) == 0) {
+            return 0;
+        }
+    
 
     return 1;
 }
@@ -5946,5 +6044,7 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_rsb_reg_a1 },		/* arm_rsb_reg_a1 */
     
 	{ 1, arm_op_exec_arm_sbc_reg_a1 },		/* arm_sbc_reg_a1 */
+    
+	{ 1, arm_op_exec_arm_mul_a1 },		/* arm_mul_a1 */
     
 };

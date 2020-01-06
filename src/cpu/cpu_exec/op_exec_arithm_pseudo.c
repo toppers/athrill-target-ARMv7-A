@@ -296,3 +296,26 @@ int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mul_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		sint32 operand1 = SInt(in->Rn.regData); // operand1 = UInt(R[n]) produces the same final results
+		sint32 operand2 = SInt(in->Rm.regData); // operand2 = UInt(R[m]) produces the same final results
+		sint32 result = operand1 * operand2;
+		out->Rd.regData = result;
+		cpu_set_reg(core, out->Rd.regId, result);
+		if (in->S != 0) {
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+		}
+	}
+	out->status = *status;
+	return ret;
+}

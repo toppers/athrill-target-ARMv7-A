@@ -242,6 +242,32 @@ int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_type *in
 	return ret;
 }
 
+int arm_op_exec_arm_sub_reg(struct TargetCore *core,  arm_sub_reg_input_type *in, arm_sub_reg_output_type *out)
+{
+	int ret = 0;
+	sint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//shifted = Shift(R[m], shift_t, shift_n, APSR.C);
+		uint32 shifted = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+		//(result, carry, overflow) = AddWithCarry(R[n], NOT(shifted), ‘1’);
+		result = AddWithCarry(32, in->Rn.regData, ~shifted, TRUE, &out->status_flag);
+		if (in->Rd.regId != CpuRegId_PC) {
+			cpu_set_reg(core, in->Rd.regId, result);
+			cpu_update_status_flag(status, result, &out->status_flag);
+			out->Rd.regData = result;
+		}
+		else {
+			//ALUWritePC(result); // setflags is always FALSE here
+			ret = ALUWritePC(&out->next_address, status, result);
+			out->Rd.regData = out->next_address;
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_type *in, arm_rsb_reg_output_type *out)
 {
 	int ret = 0;
@@ -301,7 +327,6 @@ int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in
 int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mul_output_type *out)
 {
 	int ret = 0;
-	uint32 result;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);

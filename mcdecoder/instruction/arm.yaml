@@ -553,6 +553,26 @@ machine:
         outputs:
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_sxtb
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+          rotate: PseudoCodeRotationType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+
+      - name: arm_asr_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
 decoder:
   namespace: arm
@@ -1123,4 +1143,18 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_tst_reg
-      
+
+  - name: arm_sxtb_a1
+    format: xxxx:cond|0110 1010|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_sxtb
+
+  - name: arm_asr_imm_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|xxxx x:imm5|100|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_asr_imm
+

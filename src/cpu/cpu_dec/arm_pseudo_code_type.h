@@ -1231,4 +1231,52 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_tst_reg_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRotationType	rotate;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_sxtb_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_sxtb_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_asr_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_asr_imm_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

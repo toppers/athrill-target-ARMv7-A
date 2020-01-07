@@ -83,17 +83,29 @@ static inline void op_chk_and_set_zero(uint32 *status, sint32 result)
 /*
  * 指定されたbitに符号ビットがある場合は31bitまで1埋めする(符号拡張)
  */
-static inline sint32 op_sign_extend(uint32 bit, uint32 data)
+static inline uint32 OpSignExtend(uint32 bits_N, uint32 x, uint32 i)
 {
-	int i;
-	if (data & (1 << bit)) {
-		for (i = bit; i < 32; i++) {
-			data = ( data | (1 << i) );
+	if ((i <= bits_N) || (i > 32)) {
+		return x;
+	}
+	/* extend to i bits(unit=length)
+	 *
+	 * i-1           bits_N-1:TopBit(x)
+	 *  v              v
+	 *  xxxx xxxx xxxx 1xxx
+	 *         ||
+	 *         vv
+	 *  1111 1111 1111 1xxx
+	 */
+	int k;
+	uint32 result = x;
+	if (x & (1 << (bits_N -1))) {
+		for (k = bits_N; k < 32; k++) {
+			result = ( result | (1 << i) );
 		}
 	}
-	return data;
+	return result;
 }
-#define OP_FORMAT2_IMM_SIGN_EXTEND(data)	op_sign_extend(4, (data))
 
 /*
  * 指定されたbitから31bitまで０埋めする
@@ -182,6 +194,25 @@ static inline uint32 LSR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_ou
 	}
 	return result;
 }
+static inline uint32 ASR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
+{
+	ASSERT(shift > 0);
+	sint32 extended_x = OpSignExtend(bits_N, x, shift + bits_N);
+	//result = extended_x<shift+N-1:shift>;
+	sint32 result = extended_x >> shift;
+	if (carry_out != NULL) {
+		//carry_out = extended_x<shift-1>;
+		if ((extended_x & (1U << (shift -1))) != 0) {
+			*carry_out = TRUE;
+		}
+		else {
+			*carry_out = FALSE;
+		}
+	}
+	return result;
+}
+
+
 static inline uint32 LSR(uint32 bits_N, uint32 x, uint32 shift)
 {
 	ASSERT(shift >= 0);
@@ -240,6 +271,8 @@ static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 am
 		return LSL_C(bits_N, value, amount, carry_out);
 	case SRType_LSR:
 		return LSR_C(bits_N, value, amount, carry_out);
+	case SRType_ASR:
+		return ASR_C(bits_N, value, amount, carry_out);
 	default:
 		//TOOD ERROR
 		return -1;
@@ -266,7 +299,7 @@ static inline char *addr2devregname(uint32 addr)
 	//TODO
 	return "NULL";
 }
-#define OpSignExtend(size, data)	op_sign_extend(((size) - 1), (uint32)(data))
+
 #define OpZeroExtend(size, data)	op_zero_extend((size), (uint32)(data))
 #define ConditionAlways		0b111
 static inline bool ConditionPassed(uint8 cond, uint32 status)
@@ -433,6 +466,16 @@ static inline uint32 ZeroExtendArray(uint32 array_num, ZeroExtendArgType *array)
 		bits += array[i].bitsize;
 	}
 	return result;
+}
+static inline sint32 op_sign_extend(uint32 bit, uint32 data)
+{
+	int i;
+	if (data & (1 << bit)) {
+		for (i = bit; i < 32; i++) {
+			data = ( data | (1 << i) );
+		}
+	}
+	return data;
 }
 static inline sint32 SignExtendArray(uint32 array_num, ZeroExtendArgType *array)
 {

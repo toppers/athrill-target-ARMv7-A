@@ -86,6 +86,34 @@ int arm_op_exec_arm_lsl_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_asr_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_asr_imm_a1 *op = &core->decoded_code->code.arm_asr_imm_a1;
+
+	arm_asr_imm_input_type in;
+	arm_asr_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "ASR";
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	DecodeImmShift(0b10, op->imm5, &in.shift_t, &in.shift_n);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_asr_imm(core, &in, &out);
+	DBG_ARM_ASR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 
 int arm_op_exec_arm_lsr_imm_a1(struct TargetCore *core)
 {

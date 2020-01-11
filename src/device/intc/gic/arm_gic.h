@@ -2,6 +2,7 @@
 #define _ARM_GIC_H_
 
 #include "std_types.h"
+#include "assert.h"
 #include "arm_gic_config.h"
 
 typedef enum {
@@ -32,10 +33,11 @@ typedef struct {
 
 extern GicInterruptType	arm_gic_interrupt_table[GIC_INTR_NUM];
 
+struct GicIntrCpuConnector;
 typedef struct {
 	uint32						id;
 	bool						enable;
-	uint32						current_priority;
+	struct GicIntrCpuConnector	*current;
 	uint32						priority_threshold;
 	uint32						priority_mask;
 } GicCpuInterfaceType;
@@ -49,13 +51,27 @@ typedef enum {
 	GicIntrHandlingStateType_ActivePending,
 } GicIntrHandlingStateType;
 
-typedef struct {
+typedef struct GicIntrCpuConnector {
 	bool						assertion;
 	GicIntrHandlingStateType	state;
 	GicInterruptType 			*intr;
 	GicCpuInterfaceType			*cpu_inf;
 } GicIntrCpuConnectorType;
+static inline uint32 CpuInterfaceCurrentPriority(GicCpuInterfaceType *cpu_inf)
+{
+	ASSERT(cpu_inf->current != NULL);
+	return cpu_inf->current->intr->priority;
+}
 
 extern GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM];
 
+typedef struct {
+	bool						enable;
+	uint32						num;
+	GicIntrCpuConnectorType		*connector;
+} GicDistributorType;
+
+extern GicDistributorType arm_gic_distributor;
+
+extern void GIC_GenerateException(void);
 #endif /* _ARM_GIC_H_ */

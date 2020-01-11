@@ -46,6 +46,7 @@ OBJS	+=	serial.o
 OBJS	+=	dbg_target_serial.o
 OBJS	+=	dbg_target_cpu.o
 OBJS	+=	intc.o
+OBJS	+=	arm_gic.o
 OBJS	+=	arm_gic_config.o
 OBJS	+=	arm_gic_register_mapping_io.o
 OBJS	+=	arm_gic_register_mapping_io_table.o

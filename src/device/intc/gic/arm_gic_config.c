@@ -26,7 +26,7 @@ GicCpuInterfaceType	arm_gic_cpu_interface_table[GIC_CPU_NUM] = {
 		{
 				.id = 0,
 				.enable = FALSE,
-				.current_priority = 0,
+				.current = NULL,
 				.priority_mask = 0,				//TODO
 				.priority_threshold = 0,		//TODO
 		}
@@ -45,4 +45,10 @@ GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM] = {
 				.cpu_inf = &arm_gic_cpu_interface_table[0],
 				.intr = &arm_gic_interrupt_table[ARM_GIC_INTR_TABLE_INX_SERIAL_RX0],
 		}
+};
+
+GicDistributorType arm_gic_distributor = {
+		.enable = TRUE,
+		.num = GIC_CONNECTOR_NUM,
+		.connector = arm_gic_intr_cpu_connector_table,
 };

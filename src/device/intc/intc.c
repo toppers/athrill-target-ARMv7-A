@@ -3,6 +3,7 @@
 #include "intc.h"
 #include "device.h"
 #include "mpu.h"
+#include "arm_gic.h"
 #include "arm_gic_register_mapping_io.h"
 
 IntcControlType intc_control;
@@ -47,35 +48,21 @@ void device_supply_clock_intc(DeviceClockType *dev_clock)
 		}
 	}
 
-	for (coreId = 0; coreId < core_id_num; coreId++) {
-		//TODO intc_raise_pending_intr(&intc_control.cpu->cores[coreId].core);
-	}
-
-	return;
-}
-
-static void common_raise_intr(uint32 intno, uint32 coreId)
-{
-	//TODO
-	return;
-}
-
-void intc_cpu_trigger_interrupt(CoreIdType core_id, int intno)
-{
-	uint32 triggered_coreId;
-
-	triggered_coreId = (core_id == 0) ? 1 : 0;
-
-	common_raise_intr(intno, triggered_coreId);
+	GIC_GenerateException();
 	return;
 }
 
 int intc_raise_intr(uint32 intno)
 {
-	uint32 coreId;
-
-	for (coreId = 0; coreId < CPU_CONFIG_GET_CORE_ID_NUM(); coreId++) {
-		common_raise_intr(intno, coreId);
+	int i;
+	for (i = 0; i < arm_gic_distributor.num; i++) {
+		if (arm_gic_distributor.connector[i].intr->intrno != intno) {
+			continue;
+		}
+		if (arm_gic_distributor.connector[i].intr->enable == FALSE) {
+			continue;
+		}
+		arm_gic_distributor.connector[i].assertion = TRUE;
 	}
 	return 0;
 }

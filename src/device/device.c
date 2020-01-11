@@ -111,3 +111,54 @@ void device_raise_int(uint16 intno)
 }
 
 
+static DevRegisterMappingType *search_map(uint32 table_num, DevRegisterMappingType *table, uint32 address, uint32 size)
+{
+	DevRegisterMappingType *map;
+	int i;
+	uint32 end_addr;
+
+
+	for (i = 0; i < table_num; i++) {
+		map = &table[i];
+		end_addr = map->start_address + map->size;
+		if (address < map->start_address) {
+			continue;
+		}
+		else if (address >= end_addr) {
+			continue;
+		}
+		return map;
+	}
+
+	return NULL;
+}
+
+void dev_register_mapping_write_data(uint32 coreId, uint32 table_num, DevRegisterMappingType *table, uint32 address, uint32 size)
+{
+	DevRegisterIoArgType arg;
+	DevRegisterMappingType *map = search_map(table_num, table, address, size);
+	if (map == NULL) {
+		printf("ERROR:Device can not WRITE HIT address:0x%x %u\n", address, size);
+		return;
+	}
+	arg.coreId = coreId;
+	arg.address = address;
+	arg.size = size;
+	map->io(DevRegisterIo_Write, &arg);
+	return;
+}
+
+void dev_register_mapping_read_data(uint32 coreId, uint32 table_num, DevRegisterMappingType *table, uint32 address, uint32 size)
+{
+	DevRegisterIoArgType arg;
+	DevRegisterMappingType *map = search_map(table_num, table, address, size);
+	if (map == NULL) {
+		printf("ERROR:Device can not READ HIT address:0x%x %u\n", address, size);
+		return;
+	}
+	arg.coreId = coreId;
+	arg.address = address;
+	arg.size = size;
+	map->io(DevRegisterIo_Read, &arg);
+	return;
+}

@@ -37,10 +37,23 @@ extern int device_io_read8(MpuAddressRegionType *region, uint32 addr, uint8 *dat
 extern int device_io_read16(MpuAddressRegionType *region, uint32 addr, uint16 *data);
 extern int device_io_read32(MpuAddressRegionType *region, uint32 addr, uint32 *data);
 
-/*
- * 割込みコントローラAPI
- */
-extern void intc_clr_nmi(TargetCoreType *cpu);
-extern void intc_clr_currlvl_ispr(CoreIdType core_id);
+typedef enum {
+	DevRegisterIo_Read = 0,
+	DevRegisterIo_Write,
+} DevRegisterIoType;
+
+typedef struct {
+	uint32 coreId;
+	uint32 address;
+	uint32 size;
+} DevRegisterIoArgType;
+
+typedef struct {
+	uint32	start_address;			//byte
+	uint32	size;					//byte
+	void (*io) (DevRegisterIoType io_type, DevRegisterIoArgType *arg);
+} DevRegisterMappingType;
+extern void dev_register_mapping_write_data(uint32 coreId, uint32 table_num, DevRegisterMappingType *table, uint32 address, uint32 size);
+extern void dev_register_mapping_read_data(uint32 coreId, uint32 table_num, DevRegisterMappingType *table, uint32 address, uint32 size);
 
 #endif /* _DEVICE_H_ */

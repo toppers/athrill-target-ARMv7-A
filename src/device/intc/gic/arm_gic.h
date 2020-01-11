@@ -37,7 +37,8 @@ struct GicIntrCpuConnector;
 typedef struct {
 	uint32						id;
 	bool						enable;
-	struct GicIntrCpuConnector	*current;
+	struct GicIntrCpuConnector	*current_irq;
+	struct GicIntrCpuConnector	*next_irq;
 	uint32						priority_threshold;
 	uint32						priority_mask;
 } GicCpuInterfaceType;
@@ -45,25 +46,27 @@ typedef struct {
 extern GicCpuInterfaceType	arm_gic_cpu_interface_table[GIC_CPU_NUM];
 
 typedef enum {
-	GicIntrHandlingStateType_Inactive = 0,
-	GicIntrHandlingStateType_Pending,
-	GicIntrHandlingStateType_Active,
-	GicIntrHandlingStateType_ActivePending,
+	GicIntrHandlingStateType_Inactive 		= 0x00,
+	GicIntrHandlingStateType_Pending		= 0x01,
+	GicIntrHandlingStateType_Active			= 0x02,
+	GicIntrHandlingStateType_ActivePending	= 0x03,
 } GicIntrHandlingStateType;
 
 typedef struct GicIntrCpuConnector {
-	bool						assertion;
 	GicIntrHandlingStateType	state;
 	GicInterruptType 			*intr;
 	GicCpuInterfaceType			*cpu_inf;
 } GicIntrCpuConnectorType;
 static inline uint32 CpuInterfaceCurrentPriority(GicCpuInterfaceType *cpu_inf)
 {
-	ASSERT(cpu_inf->current != NULL);
-	return cpu_inf->current->intr->priority;
+	ASSERT(cpu_inf->current_irq != NULL);
+	return cpu_inf->current_irq->intr->priority;
 }
 
 extern GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM];
+extern void CpuInterfaceIntrAck(GicCpuInterfaceType *cpu_inf);
+extern void CpuInterfaceIntrEoi(GicCpuInterfaceType *cpu_inf);
+extern void GicInterruptAssertion(uint32 intno);
 
 typedef struct {
 	bool						enable;

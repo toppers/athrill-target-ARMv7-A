@@ -6,8 +6,6 @@
 #include "arm_gic.h"
 #include "arm_gic_register_mapping_io.h"
 
-IntcControlType intc_control;
-
 static Std_ReturnType intc_get_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 *data);
 static Std_ReturnType intc_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data);
 static Std_ReturnType intc_get_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 *data);
@@ -42,7 +40,7 @@ void device_supply_clock_intc(DeviceClockType *dev_clock)
 
 	dev_clock->clock++;
 	for (coreId = 0; coreId < core_id_num; coreId++) {
-		if (intc_control.work[coreId].current_intno != -1) {
+		if (arm_gic_cpu_interface_table[coreId].current_irq != NULL) {
 			dev_clock->intclock++;
 			break;
 		}
@@ -54,16 +52,7 @@ void device_supply_clock_intc(DeviceClockType *dev_clock)
 
 int intc_raise_intr(uint32 intno)
 {
-	int i;
-	for (i = 0; i < arm_gic_distributor.num; i++) {
-		if (arm_gic_distributor.connector[i].intr->intrno != intno) {
-			continue;
-		}
-		if (arm_gic_distributor.connector[i].intr->enable == FALSE) {
-			continue;
-		}
-		arm_gic_distributor.connector[i].assertion = TRUE;
-	}
+	GicInterruptAssertion(intno);
 	return 0;
 }
 

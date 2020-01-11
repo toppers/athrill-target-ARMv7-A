@@ -357,11 +357,6 @@ static inline bool ConditionPassed(uint8 cond, uint32 status)
 	return result;
 }
 
-static inline void BranchTo(uint32 *pc, uint32 address)
-{
-	*pc = address;
-	return;
-}
 static inline int BXWritePC(uint32 *pc, uint32 *status, uint32 address)
 {
 	InstrSetType type = CurrentInstrSet(*status);

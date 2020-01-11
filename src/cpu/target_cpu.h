@@ -359,6 +359,18 @@ static inline void cpu_set_reg(TargetCoreType *core, uint32 regid, uint32 data)
 		return;
 	}
 }
+static inline void BranchTo(uint32 *pc, uint32 address)
+{
+	*pc = address;
+	return;
+}
+static inline uint32 ExcVectorBase(void)
+{
+	return 0x18004400;//TODO
+}
+extern void TakePhysicalIRQException(uint32 coreId);
+
+
 typedef enum {
 	CpuMemoryAccess_NONE = 0,
 	CpuMemoryAccess_READ,

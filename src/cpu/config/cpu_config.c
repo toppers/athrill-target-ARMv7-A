@@ -243,3 +243,43 @@ MpuAddressRegionOperationType cpu_register_operation = {
 		.put_data16 = NULL,
 		.put_data32 = NULL,
 };
+
+
+void TakePhysicalIRQException(uint32 coreId)
+{
+	//TODO
+	TargetCoreType *core = &virtual_cpu.cores[coreId].core;
+	uint32 *status = cpu_get_status(core);
+
+	if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_I)) {
+		return;
+	}
+	uint32 new_lr_value = cpu_get_reg(core, CpuRegId_PC);
+	if (!CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_T)) {
+		new_lr_value -= 4U;
+	}
+	uint32 new_spsr_value = *status;
+	uint32 vect_offset = 24U;
+
+	*status = ((*status) & 0x1F) | CpuSystemLevelEncoding_IRQ;
+	uint32 *saved_status = cpu_get_saved_status(core);
+	*saved_status = new_spsr_value;
+	cpu_set_reg(core, CpuRegId_LR, new_lr_value);
+	CPU_STATUS_BIT_SET(status, CPU_STATUS_BITPOS_I);
+
+	//CPSR.IT = '00000000';
+	//bits[15:10, 26:25]
+	*status &= 0xF9FF03FF;
+
+	//CPSR.J = '0'; CPSR.T = SCTLR.TE; // TE=0: ARM, TE=1: Thumb
+	CPU_STATUS_BIT_CLR(status, CPU_STATUS_BITPOS_J);
+
+	//CPSR.E = SCTLR.EE; // EE=0: little-endian, EE=1: big-endian
+	// Branch to correct IRQ vector.
+	//if SCTLR.VE == '1' then
+	//IMPLEMENTATION_DEFINED branch to an IRQ vector;
+	//else
+	//BranchTo(ExcVectorBase() + vect_offset);
+	BranchTo(&core->pc, ExcVectorBase() + vect_offset);
+	return;
+}

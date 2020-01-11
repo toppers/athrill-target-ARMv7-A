@@ -3,6 +3,7 @@
 #include "intc.h"
 #include "device.h"
 #include "mpu.h"
+#include "arm_gic_register_mapping_io.h"
 
 IntcControlType intc_control;
 
@@ -83,6 +84,7 @@ int intc_raise_intr(uint32 intno)
 static Std_ReturnType intc_get_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 *data)
 {
 	uint32 off = (addr - region->start);
+	dev_register_mapping_read_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 1U);
 	uint8 *datap = &region->data[off + (core_id * (region->size))];
 	*data = *((uint8*)(datap));
 	return STD_E_OK;
@@ -90,6 +92,7 @@ static Std_ReturnType intc_get_data8(MpuAddressRegionType *region, CoreIdType co
 static Std_ReturnType intc_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data)
 {
 	uint32 off = (addr - region->start);
+	dev_register_mapping_read_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 2U);
 	uint8 *datap = &region->data[off + (core_id * (region->size))];
 	*data = *((uint16*)(datap));
 
@@ -98,6 +101,7 @@ static Std_ReturnType intc_get_data16(MpuAddressRegionType *region, CoreIdType c
 static Std_ReturnType intc_get_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 *data)
 {
 	uint32 off = (addr - region->start);
+	dev_register_mapping_read_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 4U);
 	uint8 *datap = &region->data[off + (core_id * (region->size))];
 
 	*data = *((uint32*)(datap));
@@ -109,6 +113,7 @@ static Std_ReturnType intc_put_data8(MpuAddressRegionType *region, CoreIdType co
 	uint8 *datap = &region->data[off + (core_id * (region->size))];
 
 	*((uint8*)(datap)) = data;
+	dev_register_mapping_write_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 1U);
 
 	return STD_E_OK;
 }
@@ -119,6 +124,7 @@ static Std_ReturnType intc_put_data16(MpuAddressRegionType *region, CoreIdType c
 
 
 	*((uint16*)(datap)) = data;
+	dev_register_mapping_write_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 2U);
 	return STD_E_OK;
 }
 static Std_ReturnType intc_put_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 data)
@@ -127,6 +133,7 @@ static Std_ReturnType intc_put_data32(MpuAddressRegionType *region, CoreIdType c
 	uint8 *datap = &region->data[off + (core_id * (region->size))];
 
 	*((uint32*)(datap)) = data;
+	dev_register_mapping_write_data(core_id, ARM_GIC_REGISTER_MAPPING_TABLE_NUM, arm_gic_reigster_mapping_table, addr, 4U);
 	return STD_E_OK;
 }
 static Std_ReturnType intc_get_pointer(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 **data)

@@ -237,3 +237,33 @@ int arm_op_exec_arm_mrc2_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_rfe_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_rfe_a1 *op = &core->decoded_code->code.arm_rfe_a1;
+
+	arm_rfe_input_type in;
+	arm_rfe_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "RFE";
+	//wback = (W == '1'); increment = (U == '1'); wordhigher = (P == U);
+	in.wback = (op->W == 1);
+	in.increment = (op->U == 1);
+	in.wordhigher = (op->P == op->U);
+	OP_SET_REG(core, &in, op, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rn);
+
+	int ret = arm_op_exec_arm_rfe(core, &in, &out);
+	DBG_ARM_RFE(core, &in, &out);
+	if (ret == 0) {
+		cpu_set_reg(core, out.Rn.regId, out.Rn.regData);
+	}
+
+	core->pc = out.next_address;
+	return ret;
+}

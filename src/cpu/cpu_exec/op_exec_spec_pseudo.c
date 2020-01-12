@@ -154,3 +154,51 @@ int arm_op_exec_arm_mrc(struct TargetCore *core,  arm_mrc_input_type *in, arm_mr
 	out->status = *status;
 	return 0;
 }
+
+
+int arm_op_exec_arm_rfe(struct TargetCore *core,  arm_rfe_input_type *in, arm_rfe_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = TRUE;
+	if (out->passed != FALSE) {
+		//address = if increment then R[n] else R[n]-8;
+		uint32 address = (in->increment) ? in->Rn.regData : in->Rn.regData - 8;
+
+		//if wordhigher then address = address+4;
+		if (in->wordhigher) {
+			address += 4;
+		}
+		//new_pc_value = MemA[address,4];
+		uint32 new_pc_value;
+		ret = MemA_R(core, address, 4, (uint8*)&new_pc_value);
+		if (ret != 0) {
+			goto done;
+		}
+		//spsr_value = MemA[address+4,4];
+		uint32 spsr_value;
+		ret = MemA_R(core, address + 4, 4, (uint8*)&spsr_value);
+		if (ret != 0) {
+			goto done;
+		}
+		//if wback then R[n] = if increment then R[n]+8 else R[n]-8;
+		if (in->wback) {
+			out->Rn.regData = (in->increment) ? in->Rn.regData + 8 : in->Rn.regData - 8;
+		}
+		//CPSRWriteByInstr(spsr_value, '1111', TRUE);
+		ret = CPSRWriteByInstr(core, spsr_value, 0b1111, TRUE);
+		if (ret != 0) {
+			goto done;
+		}
+		//BranchWritePC(new_pc_value);
+		ret = BranchWritePC(&out->next_address, status, new_pc_value);
+		if (ret != 0) {
+			goto done;
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+

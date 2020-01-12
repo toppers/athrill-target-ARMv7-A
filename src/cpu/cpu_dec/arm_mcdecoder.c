@@ -2816,6 +2816,39 @@ typedef struct {
         
     
 
+    /* arm_rfe_a1 */
+    #define OP_FB_MASK_arm_rfe_a1 (0xfe50ffffl) /* fixed bits mask */
+    #define OP_FB_arm_rfe_a1 (0xf8100a00l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'P' */
+            #define OP_SF_MASK_arm_rfe_a1_P_0 (0x01000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_rfe_a1_P_0 (24) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_rfe_a1_P_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'U' */
+            #define OP_SF_MASK_arm_rfe_a1_U_0 (0x00800000l) /* subfield mask */
+            #define OP_SF_EBII_arm_rfe_a1_U_0 (23) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_rfe_a1_U_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'W' */
+            #define OP_SF_MASK_arm_rfe_a1_W_0 (0x00200000l) /* subfield mask */
+            #define OP_SF_EBII_arm_rfe_a1_W_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_rfe_a1_W_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_rfe_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_rfe_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_rfe_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* macros */
 #define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
@@ -6384,6 +6417,48 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         return 0;
     }
 
+    /* arm_rfe_a1 */
+    static int op_parse_arm_rfe_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_rfe_a1) != OP_FB_arm_rfe_a1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_rfe_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_rfe_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_rfe_a1;
+        
+            context->decoded_code->code.arm_rfe_a1.P =
+            
+                (((context->code32 & OP_SF_MASK_arm_rfe_a1_P_0) >> OP_SF_EBII_arm_rfe_a1_P_0) << OP_SF_EBIF_arm_rfe_a1_P_0);
+            
+        
+            context->decoded_code->code.arm_rfe_a1.U =
+            
+                (((context->code32 & OP_SF_MASK_arm_rfe_a1_U_0) >> OP_SF_EBII_arm_rfe_a1_U_0) << OP_SF_EBIF_arm_rfe_a1_U_0);
+            
+        
+            context->decoded_code->code.arm_rfe_a1.W =
+            
+                (((context->code32 & OP_SF_MASK_arm_rfe_a1_W_0) >> OP_SF_EBII_arm_rfe_a1_W_0) << OP_SF_EBIF_arm_rfe_a1_W_0);
+            
+        
+            context->decoded_code->code.arm_rfe_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_rfe_a1_Rn_0) >> OP_SF_EBII_arm_rfe_a1_Rn_0) << OP_SF_EBIF_arm_rfe_a1_Rn_0);
+            
+        
+
+        
+        
+            if (
+                context->decoded_code->code.arm_rfe_a1.Rn == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
@@ -6679,6 +6754,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
             return 0;
         }
     
+        if (op_parse_arm_rfe_a1(&context) == 0) {
+            return 0;
+        }
+    
 
     return 1;
 }
@@ -6826,5 +6905,7 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_asr_imm_a1 },		/* arm_asr_imm_a1 */
     
 	{ 1, arm_op_exec_arm_srs_a1 },		/* arm_srs_a1 */
+    
+	{ 1, arm_op_exec_arm_rfe_a1 },		/* arm_rfe_a1 */
     
 };

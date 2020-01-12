@@ -2583,4 +2583,45 @@ static inline void DBG_ARM_SRS(TargetCoreType *core, arm_srs_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_RFE(TargetCoreType *core, arm_rfe_input_type *in, arm_rfe_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeBoolIncrementType
+
+		DBG_FMT_PseudoCodeBoolWordHigherType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
+
+		DBG_ARG_PseudoCodeBoolIncrementType(&in->increment),
+
+		DBG_ARG_PseudoCodeBoolWordHigherType(&in->wordhigher),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

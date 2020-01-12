@@ -597,6 +597,17 @@ machine:
         outputs:
           SP: PseudoCodeRegisterDataType
 
+      - name: arm_rfe
+        inputs:
+          wback: PseudoCodeBoolWbackType
+          increment: PseudoCodeBoolIncrementType
+          wordhigher: PseudoCodeBoolWordHigherType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
+
 decoder:
   namespace: arm
 
@@ -1202,4 +1213,10 @@ instructions:
       clocks: 10
       pseudo_code: arm_srs
 
+  - name: arm_rfe_a1
+    format: 1111|100|x:P|x:U|0|x:W|1|xxxx:Rn|0000|1010|0000 0000
+    unmatch_condition: (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_rfe
       

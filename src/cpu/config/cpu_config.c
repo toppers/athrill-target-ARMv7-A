@@ -261,7 +261,7 @@ bool TakePhysicalIRQException(uint32 coreId)
 	uint32 new_spsr_value = *status;
 	uint32 vect_offset = 24U;
 
-	*status = ((*status) & 0x1F) | CpuSystemLevelEncoding_IRQ;
+	*status = ((*status) & ~0x1F) | CpuSystemLevelEncoding_IRQ;
 	uint32 *saved_status = cpu_get_saved_status(core);
 	*saved_status = new_spsr_value;
 	cpu_set_reg(core, CpuRegId_LR, new_lr_value);

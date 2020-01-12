@@ -1329,4 +1329,25 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_srs_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeBoolIncrementType	increment;
+
+	PseudoCodeBoolWordHigherType	wordhigher;
+
+	PseudoCodeRegisterDataType	Rn;
+} arm_rfe_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_rfe_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

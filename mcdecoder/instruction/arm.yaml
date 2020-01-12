@@ -574,6 +574,18 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_srs
+        inputs:
+          mode: PseudoCodeModeType
+          wback: PseudoCodeBoolWbackType
+          increment: PseudoCodeBoolIncrementType
+          wordhigher: PseudoCodeBoolWordHigherType
+          SP: PseudoCodeRegisterDataType
+          LR: PseudoCodeRegisterDataType
+          SPSR: PseudoCodeSPSRType
+        outputs:
+          SP: PseudoCodeRegisterDataType
+
 decoder:
   namespace: arm
 
@@ -1158,3 +1170,10 @@ instructions:
       clocks: 10
       pseudo_code: arm_asr_imm
 
+  - name: arm_srs_a1
+    format: 1111|100|x:P|x:U|1|x:W|0|1101|0000|0101|000|xxxx x:mode
+    extras:
+      clocks: 10
+      pseudo_code: arm_srs
+
+      

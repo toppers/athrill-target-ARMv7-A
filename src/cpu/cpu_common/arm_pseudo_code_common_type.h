@@ -128,6 +128,14 @@ typedef bool PseudoCodeBoolWbackType;
 #define DBG_FMT_PseudoCodeBoolWbackType			"wback(%s) "
 #define DBG_ARG_PseudoCodeBoolWbackType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeBoolIncrementType;
+#define DBG_FMT_PseudoCodeBoolIncrementType			"increment(%s) "
+#define DBG_ARG_PseudoCodeBoolIncrementType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeBoolWordHigherType;
+#define DBG_FMT_PseudoCodeBoolWordHigherType		"wordhigher(%s) "
+#define DBG_ARG_PseudoCodeBoolWordHigherType(arg)	DbgBoolFlag(*(arg))
+
 static inline const char *InstrSetTypeString(uint8 cond)
 {
 	static const char *values[15] = {
@@ -262,5 +270,38 @@ static inline const char *SRTypeString(SRType type)
 typedef uint32 PseudoCodeShiftNType;
 #define DBG_FMT_PseudoCodeShiftNType		"shift_n(%d) "
 #define DBG_ARG_PseudoCodeShiftNType(arg)	(*(arg))
+
+static inline const char *CpuModeString(uint32 mode)
+{
+	switch (mode) {
+	case CpuSystemLevelEncoding_User:
+		return "User";
+	case CpuSystemLevelEncoding_System:
+		return "System";
+	case CpuSystemLevelEncoding_FIQ:
+		return "FIQ";
+	case CpuSystemLevelEncoding_IRQ:
+		return "IRQ";
+	case CpuSystemLevelEncoding_Supervisor:
+		return "Supervisor";
+	case CpuSystemLevelEncoding_Monitor:
+		return "Monitor";
+	case CpuSystemLevelEncoding_Abort:
+		return "Abort";
+	case CpuSystemLevelEncoding_Hyp:
+		return "Hyp";
+	case CpuSystemLevelEncoding_Undefined:
+		return "Undefined";
+	default:
+		return "??";
+	}
+}
+typedef uint32 PseudoCodeModeType;
+#define DBG_FMT_PseudoCodeModeType		"mode(%s) "
+#define DBG_ARG_PseudoCodeModeType(arg)	CpuModeString(*(arg))
+
+typedef uint32 PseudoCodeSPSRType;
+#define DBG_FMT_PseudoCodeSPSRType		"SPSR(0x%x) "
+#define DBG_ARG_PseudoCodeSPSRType(arg)	(*(arg))
 
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

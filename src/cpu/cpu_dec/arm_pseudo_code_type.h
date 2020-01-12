@@ -1279,4 +1279,31 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_asr_imm_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeModeType	mode;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeBoolIncrementType	increment;
+
+	PseudoCodeBoolWordHigherType	wordhigher;
+
+	PseudoCodeRegisterDataType	SP;
+
+	PseudoCodeRegisterDataType	LR;
+
+	PseudoCodeSPSRType	SPSR;
+} arm_srs_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	SP;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_srs_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

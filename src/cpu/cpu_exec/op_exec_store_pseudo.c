@@ -195,3 +195,47 @@ done:
 	out->status = *status;
     return ret;
 }
+
+int arm_op_exec_arm_srs(struct TargetCore *core,  arm_srs_input_type *in, arm_srs_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = TRUE;
+	if (out->passed != FALSE) {
+		//base = Rmode[13,mode];
+		uint32 base = in->SP.regData;
+		//address = if increment then base else base-8;
+		uint32 address = (in->increment) ? base : base - 8;
+		//if wordhigher then address = address+4;
+		if (in->wordhigher) {
+			address += 4;
+		}
+		//MemA[address,4] = LR;
+		ret = MemA_W(core, address, 4, (uint8*)&in->LR.regData);
+		if (ret != 0) {
+			goto done;
+		}
+
+		//MemA[address+4,4] = SPSR[];
+		ret = MemA_W(core, address + 4, 4, (uint8*)&in->SPSR);
+		if (ret != 0) {
+			goto done;
+		}
+		//if wback then Rmode[13,mode] = if increment then base+8 else base-8;
+		if (in->wback) {
+			uint32 data;
+			if (in->increment) {
+				data = base + 8;
+			}
+			else {
+				data = base - 8;
+			}
+			cpu_set_reg_mode(core, CpuRegId_SP, in->mode, data);
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+

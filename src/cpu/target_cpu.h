@@ -269,7 +269,106 @@ static inline uint32 cpu_get_reg(const TargetCoreType *core, uint32 regid)
 	}
 }
 
+static inline uint32 cpu_get_reg_mode(const TargetCoreType *core, uint32 regid, uint32 mode)
+{
+	uint32 *status = cpu_get_status(core);
+	if (regid <= CpuRegId_7) {
+		return core->reg[0].r[regid];
+	}
+	else if (regid <= CpuRegId_12) {
+		if (mode != CpuSystemLevelEncoding_FIQ) {
+			return core->reg[0].r[regid];
+		}
+		else {
+			return core->reg[CpuSystemLevel_FIQ].r[regid];
+		}
+	}
+	else if (regid == CpuRegId_PC) {
+		if (CurrentInstrSet(*status) == InstrSet_ARM) {
+			return (core->pc + 8);
+		}
+		else {
+			return (core->pc + 4);
+		}
+	}
+	switch (mode) {
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+		return core->reg[0].r[regid];
+	case CpuSystemLevelEncoding_FIQ:
+		return core->reg[CpuSystemLevel_FIQ].r[regid];
+	case CpuSystemLevelEncoding_IRQ:
+		return core->reg[CpuSystemLevel_IRQ].r[regid];
+	case CpuSystemLevelEncoding_Supervisor:
+		return core->reg[CpuSystemLevel_Supervisor].r[regid];
+	case CpuSystemLevelEncoding_Monitor:
+		return core->reg[CpuSystemLevel_Monitor].r[regid];
+	case CpuSystemLevelEncoding_Abort:
+		return core->reg[CpuSystemLevel_Abort].r[regid];
+	case CpuSystemLevelEncoding_Hyp:
+		return core->reg[CpuSystemLevel_Hyp].r[regid];
+	case CpuSystemLevelEncoding_Undefined:
+		return core->reg[CpuSystemLevel_Undefined].r[regid];
+	default:
+		//TODO ERROR
+		printf("ERROR: invalid mode:0x%x\n", mode);
+		return -1;
+	}
+}
 
+static inline void cpu_set_reg_mode(TargetCoreType *core, uint32 regid, uint32 mode, uint32 data)
+{
+	if (regid <= CpuRegId_7) {
+		core->reg[0].r[regid] = data;
+		return;
+	}
+	else if (regid <= CpuRegId_12) {
+		if (mode != CpuSystemLevelEncoding_FIQ) {
+			core->reg[0].r[regid] = data;
+			return;
+		}
+		else {
+			core->reg[CpuSystemLevel_FIQ].r[regid] = data;
+			return;
+		}
+	}
+	else if (regid == CpuRegId_PC) {
+		core->pc = data;
+		return;
+	}
+	switch (mode) {
+	case CpuSystemLevelEncoding_User:
+	case CpuSystemLevelEncoding_System:
+		core->reg[0].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_FIQ:
+		core->reg[CpuSystemLevel_FIQ].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_IRQ:
+		core->reg[CpuSystemLevel_IRQ].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Supervisor:
+		core->reg[CpuSystemLevel_Supervisor].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Monitor:
+		core->reg[CpuSystemLevel_Monitor].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Abort:
+		core->reg[CpuSystemLevel_Abort].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Hyp:
+		core->reg[CpuSystemLevel_Hyp].r[regid] = data;
+		break;
+	case CpuSystemLevelEncoding_Undefined:
+		core->reg[CpuSystemLevel_Undefined].r[regid] = data;
+		break;
+	default:
+		//TODO ERROR
+		printf("ERROR: invalid mode:0x%x\n", mode);
+		break;
+	}
+	return;
+}
 static inline uint32 cpu_get_sp(const TargetCoreType *core)
 {
 	return cpu_get_reg(core, CpuRegId_SP);

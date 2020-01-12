@@ -349,3 +349,32 @@ int arm_op_exec_arm_stm_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+int arm_op_exec_arm_srs_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_srs_a1 *op = &core->decoded_code->code.arm_srs_a1;
+
+	arm_srs_input_type in;
+	arm_srs_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "SRS";
+	in.wback = (op->W != 0);
+	in.increment = (op->U == 1);
+	in.wordhigher = (op->P == op->U);
+	in.mode = op->mode;
+	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
+	in.SP.regData = cpu_get_reg_mode(core, CpuRegId_SP, in.mode);
+	OP_SET_REGID(core, &in, CpuRegId_LR, LR);
+	in.SPSR = *cpu_get_saved_status(core);
+
+	out.SP = in.SP;
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_srs(core, &in, &out);
+	DBG_ARM_SRS(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

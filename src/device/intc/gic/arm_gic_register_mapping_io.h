@@ -40,6 +40,6 @@ extern void arm_gicd_register_mapping_io_ICCIIDR(DevRegisterIoType io_type, DevR
 #define ARM_GIC_REGISTER_MAPPING_TABLE_NUM		22U
 extern DevRegisterMappingType arm_gic_reigster_mapping_table[ARM_GIC_REGISTER_MAPPING_TABLE_NUM];
 
-
+extern MpuAddressRegionType *arm_gic_region;
 
 #endif /* _ARM_GIC_REGISTER_MAPPING_IO_H_ */

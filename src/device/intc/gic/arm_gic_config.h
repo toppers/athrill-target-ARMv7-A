@@ -1,7 +1,7 @@
 #ifndef _ARM_GIC_CONFIG_H_
 #define _ARM_GIC_CONFIG_H_
 
-#define GIC_INTR_NUM		2U
+#define GIC_INTR_NUM		3U
 #define GIC_CPU_NUM			1U
 #define GIC_CONNECTOR_NUM	2U
 

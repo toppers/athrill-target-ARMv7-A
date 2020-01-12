@@ -26,11 +26,11 @@ MpuAddressRegionOperationType	intc_memory_operation = {
 		.get_pointer	= 	intc_get_pointer,
 };
 
+MpuAddressRegionType *arm_gic_region = NULL;
 
 void device_init_intc(CpuType *cpu, MpuAddressRegionType *region)
 {
-	//TODO
-
+	arm_gic_region = region;
 	return;
 }
 void device_supply_clock_intc(DeviceClockType *dev_clock)

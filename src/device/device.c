@@ -76,33 +76,51 @@ void device_supply_clock(DeviceClockType *dev_clock)
 }
 
 
-int device_io_write8(MpuAddressRegionType *region,  uint32 addr, uint8 data)
+void device_io_write8(MpuAddressRegionType *region, uint32 coreId,  uint32 addr, uint8 data)
 {
-	return region->ops->put_data8(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*((uint8*)(datap)) = data;
+	return;
 }
-int device_io_write16(MpuAddressRegionType *region, uint32 addr, uint16 data)
+void device_io_write16(MpuAddressRegionType *region, uint32 coreId, uint32 addr, uint16 data)
 {
-	return region->ops->put_data16(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
-}
-
-int device_io_write32(MpuAddressRegionType *region, uint32 addr, uint32 data)
-{
-	return region->ops->put_data32(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
-}
-
-int device_io_read8(MpuAddressRegionType *region, uint32 addr, uint8 *data)
-{
-	return region->ops->get_data8(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*((uint16*)(datap)) = data;
+	return;
 }
 
-int device_io_read16(MpuAddressRegionType *region, uint32 addr, uint16 *data)
+void device_io_write32(MpuAddressRegionType *region, uint32 coreId, uint32 addr, uint32 data)
 {
-	return region->ops->get_data16(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*((uint32*)(datap)) = data;
+	return;
 }
 
-int device_io_read32(MpuAddressRegionType *region, uint32 addr, uint32 *data)
+void device_io_read8(MpuAddressRegionType *region, uint32 coreId, uint32 addr, uint8 *data)
 {
-	return region->ops->get_data32(region, CPU_CONFIG_CORE_ID_0, (addr & region->mask), data);
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*data = *((uint8*)(datap));
+	return;
+}
+
+void device_io_read16(MpuAddressRegionType *region, uint32 coreId, uint32 addr, uint16 *data)
+{
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*data = *((uint16*)(datap));
+	return;
+}
+
+void device_io_read32(MpuAddressRegionType *region, uint32 coreId, uint32 addr, uint32 *data)
+{
+	uint32 off = (addr - region->start);
+	uint8 *datap = &region->data[off + (coreId * (region->size))];
+	*data = *((uint32*)(datap));
+	return;
 }
 
 void device_raise_int(uint16 intno)

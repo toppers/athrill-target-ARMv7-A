@@ -32,11 +32,22 @@ typedef struct {
 } GicInterruptType;
 
 extern GicInterruptType	arm_gic_interrupt_table[GIC_INTR_NUM];
+static inline GicInterruptType *arm_gic_get_intr(uint32 intno)
+{
+	int i;
+	for (i = 0; i < GIC_INTR_NUM; i++) {
+		if (arm_gic_interrupt_table[i].intrno == intno) {
+			return &arm_gic_interrupt_table[i];
+		}
+	}
+	return NULL;
+}
+
 
 struct GicIntrCpuConnector;
 typedef struct {
 	uint32						id;
-	bool						enable;
+	bool						enable;				//TRACE_REG_MAP: ICDISERn, ICDICERn
 	struct GicIntrCpuConnector	*current_irq;
 	struct GicIntrCpuConnector	*next_irq;
 	uint32						priority_threshold;
@@ -69,7 +80,7 @@ extern void CpuInterfaceIntrEoi(GicCpuInterfaceType *cpu_inf);
 extern void GicInterruptAssertion(uint32 intno);
 
 typedef struct {
-	bool						enable;
+	bool						enable;	//TRACE_REG_MAP: ICDDCR-Enable
 	uint32						num;
 	GicIntrCpuConnectorType		*connector;
 } GicDistributorType;

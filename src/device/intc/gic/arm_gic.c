@@ -8,16 +8,11 @@
  */
 void CpuInterfaceIntrAck(GicCpuInterfaceType *cpu_inf)
 {
-	if (cpu_inf->next_irq == NULL) {
-		return;
-	}
-	if (cpu_inf->next_irq->state == GicIntrHandlingStateType_Pending) {
+	if (cpu_inf->current_irq->state == GicIntrHandlingStateType_Pending) {
 		/*
 		 * Transition C
 		 */
-		cpu_inf->next_irq->state = GicIntrHandlingStateType_Active;
-		cpu_inf->current_irq = cpu_inf->next_irq;
-		cpu_inf->next_irq = NULL;
+		cpu_inf->current_irq->state = GicIntrHandlingStateType_Active;
 	}
 	return;
 }
@@ -127,12 +122,14 @@ void GIC_GenerateException(void)
 			continue;
 		}
 		if (cpu_inf->current_irq == NULL) {
-			cpu_inf->next_irq = asserted_intr_line;
-			TakePhysicalIRQException(coreId);
+			if (TakePhysicalIRQException(coreId)) {
+				cpu_inf->current_irq = asserted_intr_line;
+			}
 		}
 		else if (PriorityIsHigher(asserted_intr->priority, (CpuInterfaceCurrentPriority(cpu_inf) & cpu_inf->priority_mask))) {
-			cpu_inf->next_irq = asserted_intr_line;
-			TakePhysicalIRQException(coreId);
+			if (TakePhysicalIRQException(coreId)) {
+				cpu_inf->current_irq = asserted_intr_line;
+			}
 		}
 	}
 

@@ -245,14 +245,14 @@ MpuAddressRegionOperationType cpu_register_operation = {
 };
 
 
-void TakePhysicalIRQException(uint32 coreId)
+bool TakePhysicalIRQException(uint32 coreId)
 {
 	//TODO
 	TargetCoreType *core = &virtual_cpu.cores[coreId].core;
 	uint32 *status = cpu_get_status(core);
 
 	if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_I)) {
-		return;
+		return FALSE;
 	}
 	uint32 new_lr_value = cpu_get_reg(core, CpuRegId_PC);
 	if (!CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_T)) {
@@ -281,5 +281,5 @@ void TakePhysicalIRQException(uint32 coreId)
 	//else
 	//BranchTo(ExcVectorBase() + vect_offset);
 	BranchTo(&core->pc, ExcVectorBase() + vect_offset);
-	return;
+	return TRUE;
 }

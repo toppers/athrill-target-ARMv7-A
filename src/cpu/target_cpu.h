@@ -368,7 +368,7 @@ static inline uint32 ExcVectorBase(void)
 {
 	return 0x18004400;//TODO
 }
-extern void TakePhysicalIRQException(uint32 coreId);
+extern bool TakePhysicalIRQException(uint32 coreId);
 
 
 typedef enum {

@@ -49,13 +49,31 @@ typedef struct {
 	uint32						id;
 	bool						enable;				//TRACE_REG_MAP: ICDISERn, ICDICERn
 	struct GicIntrCpuConnector	*current_irq;
-	struct GicIntrCpuConnector	*next_irq;
 	uint32						priority_threshold;
 	uint32						priority_mask;
 } GicCpuInterfaceType;
 
 extern GicCpuInterfaceType	arm_gic_cpu_interface_table[GIC_CPU_NUM];
+#define ARM_GIC_SPURIOUS_INTID	1023
 
+static inline void arm_gic_cpuinf_set_priority(uint32 coreId, uint32 priority)
+{
+	int i;
+	for (i = 0; i < GIC_CPU_NUM; i++) {
+		if (arm_gic_cpu_interface_table[i].id == coreId) {
+			arm_gic_cpu_interface_table[i].priority_threshold = priority;
+		}
+	}
+}
+static inline void arm_gic_cpuinf_set_priority_mask(uint32 coreId, uint32 priority_mask)
+{
+	int i;
+	for (i = 0; i < GIC_CPU_NUM; i++) {
+		if (arm_gic_cpu_interface_table[i].id == coreId) {
+			arm_gic_cpu_interface_table[i].priority_mask = priority_mask;
+		}
+	}
+}
 typedef enum {
 	GicIntrHandlingStateType_Inactive 		= 0x00,
 	GicIntrHandlingStateType_Pending		= 0x01,
@@ -73,6 +91,17 @@ static inline uint32 CpuInterfaceCurrentPriority(GicCpuInterfaceType *cpu_inf)
 {
 	ASSERT(cpu_inf->current_irq != NULL);
 	return cpu_inf->current_irq->intr->priority;
+}
+static inline GicCpuInterfaceType *arm_gic_get_cpuinf(uint32 coreId)
+{
+	int i;
+	for (i = 0; i < GIC_CPU_NUM; i++) {
+		if (arm_gic_cpu_interface_table[i].id != coreId) {
+			continue;
+		}
+		return &arm_gic_cpu_interface_table[i];
+	}
+	return NULL;
 }
 
 extern GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM];

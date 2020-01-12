@@ -227,26 +227,58 @@ void arm_gicd_register_mapping_io_ICCICR(DevRegisterIoType io_type, DevRegisterI
 }
 void arm_gicd_register_mapping_io_ICCPMR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	if (io_type == DevRegisterIo_Write) {
+		uint32 data;
+		device_io_read32(arm_gic_region, arg->coreId, ARM_GIC_ADDR_ALIGN(arg->address, 4), &data);
+		arm_gic_cpuinf_set_priority(arg->coreId, data & 0xFF);
+		//printf("prio_thresh_hold=%d\n", data);
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICCBPR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	if (io_type == DevRegisterIo_Write) {
+		uint32 data;
+		device_io_read32(arm_gic_region, arg->coreId, ARM_GIC_ADDR_ALIGN(arg->address, 4), &data);
+		uint32 mask = ( (0xFF00 >> (7 - (data & 0x7))) & 0xFF);
+		arm_gic_cpuinf_set_priority_mask(arg->coreId, mask);
+		//printf("prio_mask=0x%x\n", mask);
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICCIAR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	if (io_type == DevRegisterIo_Read) {
+		uint32 data;
+		GicCpuInterfaceType *cpuinf = arm_gic_get_cpuinf(arg->coreId);
+		if ((cpuinf != NULL) && (cpuinf->current_irq != NULL)) {
+			data = CpuInterfaceCurrentPriority(cpuinf);
+			CpuInterfaceIntrAck(cpuinf);
+		}
+		else {
+			data = ARM_GIC_SPURIOUS_INTID;
+		}
+		device_io_write32(arm_gic_region, arg->coreId, ARM_GIC_ADDR_ALIGN(arg->address, 4), data);
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICCEOIR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	if (io_type == DevRegisterIo_Write) {
+		uint32 data;
+		device_io_read32(arm_gic_region, arg->coreId, ARM_GIC_ADDR_ALIGN(arg->address, 4), &data);
+		uint32 intid = data & 0x3FF;
+		GicCpuInterfaceType *cpuinf = arm_gic_get_cpuinf(arg->coreId);
+		if ((cpuinf != NULL) && (cpuinf->current_irq != NULL)) {
+			if (cpuinf->current_irq->intr->intrno == intid) {
+				CpuInterfaceIntrEoi(cpuinf);
+			}
+		}
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICCRPR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)

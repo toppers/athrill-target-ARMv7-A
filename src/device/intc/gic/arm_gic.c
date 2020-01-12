@@ -113,6 +113,9 @@ void GIC_GenerateException(void)
 	if (arm_gic_distributor.enable == FALSE) {
 		return;
 	}
+	if (arm_gic_distributor.enable_cpuinf == FALSE) {
+		return;
+	}
 	for (coreId = 0; coreId < GIC_CPU_NUM; coreId++) {
 		asserted_intr_line = arm_gic_get_highest_priority_connector(coreId);
 		if (asserted_intr_line == NULL) {

@@ -194,14 +194,14 @@ void arm_gicd_register_mapping_io_ICDIPTRn(DevRegisterIoType io_type, DevRegiste
 }
 void arm_gicd_register_mapping_io_ICDICFRn(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//not supported.
+	//printf("NS:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
 	return;
 }
 void arm_gicd_register_mapping_io_ICDSGIR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//not supported.
+	//printf("NS:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
 	return;
 }
 
@@ -210,8 +210,19 @@ void arm_gicd_register_mapping_io_ICDSGIR(DevRegisterIoType io_type, DevRegister
  *********************************************/
 void arm_gicd_register_mapping_io_ICCICR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	if (io_type == DevRegisterIo_Write) {
+		uint32 data;
+		device_io_read32(arm_gic_region, arg->coreId, ARM_GIC_ADDR_ALIGN(arg->address, 4), &data);
+		if ((data & 0x1) != 0) {
+			arm_gic_distributor.enable_cpuinf = TRUE;
+			//printf("ICCICR:enabled\n");
+		}
+		else {
+			arm_gic_distributor.enable_cpuinf = FALSE;
+			//printf("ICCICR:disabled\n");
+		}
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICCPMR(DevRegisterIoType io_type, DevRegisterIoArgType *arg)

@@ -64,6 +64,7 @@ GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM] = {
 
 GicDistributorType arm_gic_distributor = {
 		.enable = FALSE,					//TRACE_REG_INIT: ICDDCR-Enable
+		.enable_cpuinf = FALSE,				//TRACE_REG_INIT: ICCICR
 		.num = GIC_CONNECTOR_NUM,
 		.connector = arm_gic_intr_cpu_connector_table,
 };

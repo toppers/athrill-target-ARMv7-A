@@ -103,6 +103,7 @@ extern void GicInterruptAssertion(uint32 intno);
 
 typedef struct {
 	bool						enable;	//TRACE_REG_MAP: ICDDCR-Enable
+	bool						enable_cpuinf; //TRACE_REG_MAP: ICCICR
 	uint32						num;
 	GicIntrCpuConnectorType		*connector;
 } GicDistributorType;

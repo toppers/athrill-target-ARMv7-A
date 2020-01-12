@@ -78,6 +78,9 @@ static GicIntrCpuConnectorType *arm_gic_get_highest_priority_connector(uint32 co
 	int i;
 	GicIntrCpuConnectorType *connector = NULL;
 	for (i = 0; i < arm_gic_distributor.num; i++) {
+		if (arm_gic_distributor.connector[i].enable == FALSE) {
+			continue;
+		}
 		if (arm_gic_distributor.connector[i].cpu_inf->id != coreId) {
 			continue;
 		}

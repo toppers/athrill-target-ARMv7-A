@@ -153,10 +153,43 @@ void arm_gicd_register_mapping_io_ICDIPRn(DevRegisterIoType io_type, DevRegister
 	}
 	return;
 }
+static void arm_gicd_set_connection(uint32 data, uint32 n, uint32 bytes)
+{
+	uint32 intno = (n * 4) + bytes;
+	GicInterruptType *intr = arm_gic_get_intr(intno);
+	if (intr == NULL) {
+		return;
+	}
+	uint32 cpus = ((data >> (8 * bytes)) & 0xFF);
+	uint32 coreId;
+	for (coreId = 0; coreId < 8U; coreId++) {
+		if ( (cpus & (1U << coreId)) != 0) {
+			//printf("ON:intno=%d:cpus=0x%x cpu=%d\n", intno, cpus, coreId);
+			arm_gic_intr_cpu_set_connection(intno, coreId, TRUE);
+		}
+		else {
+			//printf("OFF:intno=%d:cpus=0x%x cpu=%d\n", intno, cpus, coreId);
+			arm_gic_intr_cpu_set_connection(intno, coreId, FALSE);
+		}
+	}
+	return;
+}
 void arm_gicd_register_mapping_io_ICDIPTRn(DevRegisterIoType io_type, DevRegisterIoArgType *arg)
 {
-	//TODO
-	printf("TODO:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	//printf("DBG:%s(%s 0x%x %u)\n", __FUNCTION__, (io_type == DevRegisterIo_Read) ? "R" : "W", arg->address, arg->size);
+	uint32 data;
+	uint32 addr = ARM_GIC_ADDR_ALIGN(arg->address, 4);
+	uint32 n = (addr - ARM_GICD_ICDIPTRn) / 4;
+	uint32 bytes;
+	if (io_type == DevRegisterIo_Write) {
+		device_io_read32(arm_gic_region, arg->coreId, addr, &data);
+		for (bytes = 0; bytes < 4; bytes++) {
+			arm_gicd_set_connection(data, n, bytes);
+		}
+	}
+	else { /* READ */
+		//nothing to do.
+	}
 	return;
 }
 void arm_gicd_register_mapping_io_ICDICFRn(DevRegisterIoType io_type, DevRegisterIoArgType *arg)

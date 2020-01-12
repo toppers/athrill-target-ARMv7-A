@@ -65,6 +65,7 @@ typedef enum {
 
 typedef struct GicIntrCpuConnector {
 	GicIntrHandlingStateType	state;
+	bool						enable;		//TRACE_REG_MAP: ICDIPTRn
 	GicInterruptType 			*intr;
 	GicCpuInterfaceType			*cpu_inf;
 } GicIntrCpuConnectorType;
@@ -75,6 +76,27 @@ static inline uint32 CpuInterfaceCurrentPriority(GicCpuInterfaceType *cpu_inf)
 }
 
 extern GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM];
+
+static inline void arm_gic_intr_cpu_set_connection(uint32 intno, uint32 coreId, bool add)
+{
+	int i;
+	for (i = 0; i < GIC_CONNECTOR_NUM; i++) {
+		if (arm_gic_intr_cpu_connector_table[i].cpu_inf->id != coreId) {
+			continue;
+		}
+		if (arm_gic_intr_cpu_connector_table[i].intr->intrno != intno) {
+			continue;
+		}
+		if (add == TRUE) {
+			arm_gic_intr_cpu_connector_table[i].enable = TRUE;
+		}
+		else {
+			arm_gic_intr_cpu_connector_table[i].enable = FALSE;
+		}
+	}
+	return;
+}
+
 extern void CpuInterfaceIntrAck(GicCpuInterfaceType *cpu_inf);
 extern void CpuInterfaceIntrEoi(GicCpuInterfaceType *cpu_inf);
 extern void GicInterruptAssertion(uint32 intno);

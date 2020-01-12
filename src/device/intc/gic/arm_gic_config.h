@@ -3,7 +3,7 @@
 
 #define GIC_INTR_NUM		3U
 #define GIC_CPU_NUM			1U
-#define GIC_CONNECTOR_NUM	2U
+#define GIC_CONNECTOR_NUM	3U
 
 /*
  *	割込み番号

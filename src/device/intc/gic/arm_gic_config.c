@@ -2,6 +2,7 @@
 
 #define ARM_GIC_INTR_TABLE_INX_TIMER_CMP0	0
 #define ARM_GIC_INTR_TABLE_INX_SERIAL_RX0	1
+#define ARM_GIC_INTR_TABLE_INX_SERIAL_TX0	2
 
 GicInterruptType arm_gic_interrupt_table[GIC_INTR_NUM] = {
 		{		/* ARM_GIC_INTR_TABLE_INX_TIMER_CMP0 */
@@ -43,13 +44,21 @@ GicCpuInterfaceType	arm_gic_cpu_interface_table[GIC_CPU_NUM] = {
 GicIntrCpuConnectorType	arm_gic_intr_cpu_connector_table[GIC_CONNECTOR_NUM] = {
 		{
 				.state = GicIntrHandlingStateType_Inactive,
+				.enable = FALSE,
 				.cpu_inf = &arm_gic_cpu_interface_table[0],
 				.intr = &arm_gic_interrupt_table[ARM_GIC_INTR_TABLE_INX_TIMER_CMP0],
 		},
 		{
 				.state = GicIntrHandlingStateType_Inactive,
+				.enable = FALSE,
 				.cpu_inf = &arm_gic_cpu_interface_table[0],
 				.intr = &arm_gic_interrupt_table[ARM_GIC_INTR_TABLE_INX_SERIAL_RX0],
+		},
+		{
+				.state = GicIntrHandlingStateType_Inactive,
+				.enable = FALSE,
+				.cpu_inf = &arm_gic_cpu_interface_table[0],
+				.intr = &arm_gic_interrupt_table[ARM_GIC_INTR_TABLE_INX_SERIAL_TX0],
 		}
 };
 

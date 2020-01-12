@@ -279,7 +279,7 @@ int arm_op_exec_arm_ldm(struct TargetCore *core,  arm_ldm_input_type *in, arm_ld
 		}
 		//if wback && registers<n> == ‘0’ then R[n] = R[n] + 4*BitCount(registers);
 		//if wback && registers<n> == ‘1’ then R[n] = bits(32) UNKNOWN
-		if (in->wback && ((in->registers & (1U << in->Rn.regId)) != 0 )) {
+		if (in->wback && ((in->registers & (1U << in->Rn.regId)) == 0 )) {
 			//R[n] = R[n] + 4*BitCount(registers);
 			out->Rn.regData += 4 * in->bitcount;
 			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);

@@ -255,7 +255,7 @@ void arm_gicd_register_mapping_io_ICCIAR(DevRegisterIoType io_type, DevRegisterI
 		uint32 data;
 		GicCpuInterfaceType *cpuinf = arm_gic_get_cpuinf(arg->coreId);
 		if ((cpuinf != NULL) && (cpuinf->current_irq != NULL)) {
-			data = CpuInterfaceCurrentPriority(cpuinf);
+			data = cpuinf->current_irq->intr->intrno;
 			CpuInterfaceIntrAck(cpuinf);
 		}
 		else {

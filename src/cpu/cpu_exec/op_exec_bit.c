@@ -114,15 +114,15 @@ int arm_op_exec_arm_bfc_a1(struct TargetCore *core)
 
 
 
-int arm_op_exec_arm_utxb_a1(struct TargetCore *core)
+int arm_op_exec_arm_uxtb_a1(struct TargetCore *core)
 {
-	arm_OpCodeFormatType_arm_utxb_a1 *op = &core->decoded_code->code.arm_utxb_a1;
+	arm_OpCodeFormatType_arm_uxtb_a1 *op = &core->decoded_code->code.arm_uxtb_a1;
 
-	arm_utx_input_type in;
-	arm_utx_output_type out;
+	arm_uxt_input_type in;
+	arm_uxt_output_type out;
 	out.status = *cpu_get_status(core);
 
-	in.instrName = "UTXB";
+	in.instrName = "UXTB";
 	in.size = 1U;
 	in.cond = op->cond;
 	OP_SET_REG(core, &in, op, Rd);
@@ -134,8 +134,8 @@ int arm_op_exec_arm_utxb_a1(struct TargetCore *core)
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rd);
 
-	int ret = arm_op_exec_arm_utx(core, &in, &out);
-	DBG_ARM_UTX(core, &in, &out);
+	int ret = arm_op_exec_arm_uxt(core, &in, &out);
+	DBG_ARM_UXT(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -166,15 +166,15 @@ int arm_op_exec_arm_sxtb_a1(struct TargetCore *core)
 	return ret;
 }
 
-int arm_op_exec_arm_utxh_a1(struct TargetCore *core)
+int arm_op_exec_arm_uxth_a1(struct TargetCore *core)
 {
-	arm_OpCodeFormatType_arm_utxh_a1 *op = &core->decoded_code->code.arm_utxh_a1;
+	arm_OpCodeFormatType_arm_uxth_a1 *op = &core->decoded_code->code.arm_uxth_a1;
 
-	arm_utx_input_type in;
-	arm_utx_output_type out;
+	arm_uxt_input_type in;
+	arm_uxt_output_type out;
 	out.status = *cpu_get_status(core);
 
-	in.instrName = "UTXB";
+	in.instrName = "UXTH";
 	in.size = 2U;
 	in.cond = op->cond;
 	OP_SET_REG(core, &in, op, Rd);
@@ -186,8 +186,8 @@ int arm_op_exec_arm_utxh_a1(struct TargetCore *core)
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rd);
 
-	int ret = arm_op_exec_arm_utx(core, &in, &out);
-	DBG_ARM_UTX(core, &in, &out);
+	int ret = arm_op_exec_arm_uxt(core, &in, &out);
+	DBG_ARM_UXT(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

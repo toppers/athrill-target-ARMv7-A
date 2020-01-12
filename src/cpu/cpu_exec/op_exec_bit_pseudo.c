@@ -171,7 +171,7 @@ int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bf
 }
 
 
-int arm_op_exec_arm_utx(struct TargetCore *core,  arm_utx_input_type *in, arm_utx_output_type *out)
+int arm_op_exec_arm_uxt(struct TargetCore *core,  arm_uxt_input_type *in, arm_uxt_output_type *out)
 {
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;

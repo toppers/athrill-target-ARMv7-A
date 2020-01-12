@@ -2101,7 +2101,7 @@ static inline void DBG_ARM_AND_REG(TargetCoreType *core, arm_and_reg_input_type 
 	));
 }
 
-static inline void DBG_ARM_UTX(TargetCoreType *core, arm_utx_input_type *in, arm_utx_output_type *out)
+static inline void DBG_ARM_UXT(TargetCoreType *core, arm_uxt_input_type *in, arm_uxt_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR

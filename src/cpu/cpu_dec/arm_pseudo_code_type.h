@@ -1095,7 +1095,7 @@ typedef struct {
 	PseudoCodeRotationType	rotate;
 
 	PseudoCodeRegisterDataType	Rm;
-} arm_utx_input_type;
+} arm_uxt_input_type;
 
 typedef struct {
 	uint32	next_address;
@@ -1104,7 +1104,7 @@ typedef struct {
 	PseudoCodeRegisterDataType	Rd;
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
-} arm_utx_output_type;
+} arm_uxt_output_type;
 
 typedef struct {
 	char* instrName;

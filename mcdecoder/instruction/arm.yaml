@@ -487,7 +487,7 @@ machine:
           status_flag: PseudoCodeStatusFlagType
 
 
-      - name: arm_utx
+      - name: arm_uxt
         inputs:
           cond: PseudoCodeConditionDataType
           size: PseudoCodeSizeType
@@ -1094,19 +1094,19 @@ instructions:
       clocks: 10
       pseudo_code: arm_and_reg
  
-  - name: arm_utxb_a1
+  - name: arm_uxtb_a1
     format: xxxx:cond|01101110|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
     unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) 
     extras:
       clocks: 10
-      pseudo_code: arm_utx
+      pseudo_code: arm_uxt
       
-  - name: arm_utxh_a1
+  - name: arm_uxth_a1
     format: xxxx:cond|01101111|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm
     unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) 
     extras:
       clocks: 10
-      pseudo_code: arm_utx
+      pseudo_code: arm_uxt
 
   - name: arm_rsb_reg_a1
     format: xxxx:cond|00|0|0011|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm

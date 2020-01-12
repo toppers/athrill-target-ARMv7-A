@@ -24,7 +24,7 @@ typedef struct {
 	 */
 	uint32						intrno;
 	bool 						enable;
-	uint32						priority;
+	uint32						priority;	//TRACE_REG_MAP: ICDIPRn
 	GicIntrDetectlType			dtype;
 	/*
 	 * not support Security Extensions

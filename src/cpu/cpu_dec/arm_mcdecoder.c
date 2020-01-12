@@ -1,5 +1,8 @@
-
 #include "arm_mcdecoder.h"
+
+#include <stdbool.h>
+
+/* types */
 
 typedef struct {
     arm_uint16 *code;
@@ -1087,6 +1090,39 @@ typedef struct {
             #define OP_SF_MASK_arm_push_a2_Rt_0 (0x0000f000l) /* subfield mask */
             #define OP_SF_EBII_arm_push_a2_Rt_0 (12) /* subfield end bit position in instruction */
             #define OP_SF_EBIF_arm_push_a2_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_stmfd_a1 */
+    #define OP_FB_MASK_arm_stmfd_a1 (0x0fd00000l) /* fixed bits mask */
+    #define OP_FB_arm_stmfd_a1 (0x09000000l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_stmfd_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_stmfd_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_stmfd_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'W' */
+            #define OP_SF_MASK_arm_stmfd_a1_W_0 (0x00200000l) /* subfield mask */
+            #define OP_SF_EBII_arm_stmfd_a1_W_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_stmfd_a1_W_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_stmfd_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_stmfd_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_stmfd_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'register_list' */
+            #define OP_SF_MASK_arm_stmfd_a1_register_list_0 (0x0000ffffl) /* subfield mask */
+            #define OP_SF_EBII_arm_stmfd_a1_register_list_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_stmfd_a1_register_list_0 (0) /* subfield end bit position in field */
         
     
 
@@ -2781,156 +2817,26 @@ typedef struct {
     
 
 
+/* macros */
+#define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
+
+/* functions for conditions */
+static arm_uint32 setbit_count(arm_uint32 value) {
+    arm_uint32 count = 0;
+    while (value) {
+        count += value & 1;
+        value >>= 1;
+    }
+    return count;
+}
+
 /* individual op parse functions */
-
-static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_add_spimm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_adr_a1(OpDecodeContext *context);
-
-static int op_parse_arm_subs_pclr_a1(OpDecodeContext *context);
-
-static int op_parse_arm_cmp_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_cmn_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_sub_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_sub_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_sub_spimm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_cmp_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mov_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mov_imm_a2(OpDecodeContext *context);
-
-static int op_parse_arm_mvn_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mov_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mvn_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_bl_a1(OpDecodeContext *context);
-
-static int op_parse_arm_blx_a2(OpDecodeContext *context);
-
-static int op_parse_arm_blx_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_b_a1(OpDecodeContext *context);
-
-static int op_parse_arm_bx_a1(OpDecodeContext *context);
-
-static int op_parse_arm_str_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_strb_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_strh_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_strd_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_str_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_strb_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_push_a1(OpDecodeContext *context);
-
-static int op_parse_arm_push_a2(OpDecodeContext *context);
-
-static int op_parse_arm_stm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldr_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldr_literal_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldrb_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldrh_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldrd_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldr_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldrb_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_ldrh_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_pop_a1(OpDecodeContext *context);
-
-static int op_parse_arm_pop_a2(OpDecodeContext *context);
-
-static int op_parse_arm_ldm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_nop_a1(OpDecodeContext *context);
-
-static int op_parse_arm_msr_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_msr2_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mrs_a1(OpDecodeContext *context);
-
-static int op_parse_arm_msr2_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mcr_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mcr2_a2(OpDecodeContext *context);
-
-static int op_parse_arm_mrc_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mrc2_a2(OpDecodeContext *context);
-
-static int op_parse_arm_bic_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_orr_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_orr_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_movt_a1(OpDecodeContext *context);
-
-static int op_parse_arm_lsl_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_lsl_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_lsr_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_bfc_a1(OpDecodeContext *context);
-
-static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_and_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_uxtb_a1(OpDecodeContext *context);
-
-static int op_parse_arm_uxth_a1(OpDecodeContext *context);
-
-static int op_parse_arm_rsb_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_mul_a1(OpDecodeContext *context);
-
-static int op_parse_arm_tst_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_tst_reg_a1(OpDecodeContext *context);
-
-static int op_parse_arm_sxtb_a1(OpDecodeContext *context);
-
-static int op_parse_arm_asr_imm_a1(OpDecodeContext *context);
-
-static int op_parse_arm_srs_a1(OpDecodeContext *context);
-
-
 
     /* arm_add_imm_a1 */
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_add_imm_a1) != OP_FB_arm_add_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_add_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_add_imm_a1;
@@ -2986,7 +2892,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_add_reg_a1) != OP_FB_arm_add_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_add_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_add_reg_a1;
@@ -3049,7 +2954,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_add_spimm_a1) != OP_FB_arm_add_spimm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_add_spimm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_add_spimm_a1;
@@ -3096,7 +3000,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_adr_a1) != OP_FB_arm_adr_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_adr_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_adr_a1;
@@ -3134,7 +3037,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_subs_pclr_a1) != OP_FB_arm_subs_pclr_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_subs_pclr_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_subs_pclr_a1;
@@ -3177,7 +3079,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_cmp_imm_a1) != OP_FB_arm_cmp_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_cmp_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_cmp_imm_a1;
@@ -3215,7 +3116,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_cmn_imm_a1) != OP_FB_arm_cmn_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_cmn_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_cmn_imm_a1;
@@ -3253,7 +3153,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_sub_imm_a1) != OP_FB_arm_sub_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_sub_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_sub_imm_a1;
@@ -3309,7 +3208,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_sub_reg_a1) != OP_FB_arm_sub_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_sub_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_sub_reg_a1;
@@ -3372,7 +3270,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_sub_spimm_a1) != OP_FB_arm_sub_spimm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_sub_spimm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_sub_spimm_a1;
@@ -3419,7 +3316,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_cmp_reg_a1) != OP_FB_arm_cmp_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_cmp_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_cmp_reg_a1;
@@ -3467,7 +3363,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mov_imm_a1) != OP_FB_arm_mov_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mov_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mov_imm_a1;
@@ -3514,7 +3409,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mov_imm_a2) != OP_FB_arm_mov_imm_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mov_imm_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mov_imm_a2;
@@ -3557,7 +3451,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mvn_imm_a1) != OP_FB_arm_mvn_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mvn_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mvn_imm_a1;
@@ -3604,7 +3497,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mov_reg_a1) != OP_FB_arm_mov_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mov_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mov_reg_a1;
@@ -3651,7 +3543,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mvn_reg_a1) != OP_FB_arm_mvn_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mvn_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mvn_reg_a1;
@@ -3708,7 +3599,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_bl_a1) != OP_FB_arm_bl_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_bl_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_bl_a1;
@@ -3741,7 +3631,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_blx_a2) != OP_FB_arm_blx_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_blx_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_blx_a2;
@@ -3768,7 +3657,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_blx_reg_a1) != OP_FB_arm_blx_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_blx_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_blx_reg_a1;
@@ -3803,7 +3691,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_b_a1) != OP_FB_arm_b_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_b_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_b_a1;
@@ -3836,7 +3723,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_bx_a1) != OP_FB_arm_bx_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_bx_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_bx_a1;
@@ -3869,7 +3755,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_str_imm_a1) != OP_FB_arm_str_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_str_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_str_imm_a1;
@@ -3937,7 +3822,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_strb_imm_a1) != OP_FB_arm_strb_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_strb_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_strb_imm_a1;
@@ -3999,7 +3883,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_strh_imm_a1) != OP_FB_arm_strh_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_strh_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_strh_imm_a1;
@@ -4063,7 +3946,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_strd_imm_a1) != OP_FB_arm_strd_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_strd_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_strd_imm_a1;
@@ -4127,7 +4009,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_str_reg_a1) != OP_FB_arm_str_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_str_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_str_reg_a1;
@@ -4200,7 +4081,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_strb_reg_a1) != OP_FB_arm_strb_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_strb_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_strb_reg_a1;
@@ -4272,7 +4152,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_push_a1) != OP_FB_arm_push_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_push_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_push_a1;
@@ -4292,7 +4171,9 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         
         
             if (
-                context->decoded_code->code.arm_push_a1.cond == 15
+                (context->decoded_code->code.arm_push_a1.cond == 15)
+         || (setbit_count(context->decoded_code->code.arm_push_a1.register_list) < 2)
+        
             ) {
                 return 1;
             }
@@ -4305,7 +4186,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_push_a2) != OP_FB_arm_push_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_push_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_push_a2;
@@ -4335,12 +4215,60 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         return 0;
     }
 
+    /* arm_stmfd_a1 */
+    static int op_parse_arm_stmfd_a1(OpDecodeContext *context) {
+        if ((context->code32 & OP_FB_MASK_arm_stmfd_a1) != OP_FB_arm_stmfd_a1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_stmfd_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_stmfd_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_stmfd_a1;
+        
+            context->decoded_code->code.arm_stmfd_a1.cond =
+            
+                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_cond_0) >> OP_SF_EBII_arm_stmfd_a1_cond_0) << OP_SF_EBIF_arm_stmfd_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_stmfd_a1.W =
+            
+                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_W_0) >> OP_SF_EBII_arm_stmfd_a1_W_0) << OP_SF_EBIF_arm_stmfd_a1_W_0);
+            
+        
+            context->decoded_code->code.arm_stmfd_a1.Rn =
+            
+                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_Rn_0) >> OP_SF_EBII_arm_stmfd_a1_Rn_0) << OP_SF_EBIF_arm_stmfd_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_stmfd_a1.register_list =
+            
+                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_register_list_0) >> OP_SF_EBII_arm_stmfd_a1_register_list_0) << OP_SF_EBIF_arm_stmfd_a1_register_list_0);
+            
+        
+
+        
+        
+            if (
+                (context->decoded_code->code.arm_stmfd_a1.cond == 15)
+         || ((context->decoded_code->code.arm_stmfd_a1.W == 1)
+         && (context->decoded_code->code.arm_stmfd_a1.Rn == 13)
+         && (setbit_count(context->decoded_code->code.arm_stmfd_a1.register_list) > 1)
+        )
+         || (context->decoded_code->code.arm_stmfd_a1.Rn == 15)
+         || (setbit_count(context->decoded_code->code.arm_stmfd_a1.register_list) < 1)
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_stm_a1 */
     static int op_parse_arm_stm_a1(OpDecodeContext *context) {
         if ((context->code32 & OP_FB_MASK_arm_stm_a1) != OP_FB_arm_stm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_stm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_stm_a1;
@@ -4385,7 +4313,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldr_imm_a1) != OP_FB_arm_ldr_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldr_imm_a1;
@@ -4454,7 +4381,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldr_literal_a1) != OP_FB_arm_ldr_literal_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldr_literal_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldr_literal_a1;
@@ -4511,7 +4437,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldrb_imm_a1) != OP_FB_arm_ldrb_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldrb_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrb_imm_a1;
@@ -4578,7 +4503,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldrh_imm_a1) != OP_FB_arm_ldrh_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldrh_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrh_imm_a1;
@@ -4647,7 +4571,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldrd_imm_a1) != OP_FB_arm_ldrd_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldrd_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrd_imm_a1;
@@ -4712,7 +4635,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldr_reg_a1) != OP_FB_arm_ldr_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldr_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldr_reg_a1;
@@ -4790,7 +4712,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldrb_reg_a1) != OP_FB_arm_ldrb_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldrb_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrb_reg_a1;
@@ -4870,7 +4791,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldrh_reg_a1) != OP_FB_arm_ldrh_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldrh_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldrh_reg_a1;
@@ -4939,7 +4859,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_pop_a1) != OP_FB_arm_pop_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_pop_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_pop_a1;
@@ -4959,7 +4878,9 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         
         
             if (
-                context->decoded_code->code.arm_pop_a1.cond == 15
+                (context->decoded_code->code.arm_pop_a1.cond == 15)
+         || (setbit_count(context->decoded_code->code.arm_pop_a1.register_list) < 2)
+        
             ) {
                 return 1;
             }
@@ -4972,7 +4893,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_pop_a2) != OP_FB_arm_pop_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_pop_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_pop_a2;
@@ -5007,7 +4927,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_ldm_a1) != OP_FB_arm_ldm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_ldm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_ldm_a1;
@@ -5038,7 +4957,12 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         
             if (
                 (context->decoded_code->code.arm_ldm_a1.cond == 15)
+         || ((context->decoded_code->code.arm_ldm_a1.W == 1)
+         && (context->decoded_code->code.arm_ldm_a1.Rn == 13)
+         && (setbit_count(context->decoded_code->code.arm_ldm_a1.register_list) > 1)
+        )
          || (context->decoded_code->code.arm_ldm_a1.Rn == 15)
+         || (setbit_count(context->decoded_code->code.arm_ldm_a1.register_list) < 1)
         
             ) {
                 return 1;
@@ -5052,7 +4976,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_nop_a1) != OP_FB_arm_nop_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_nop_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_nop_a1;
@@ -5080,7 +5003,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_msr_imm_a1) != OP_FB_arm_msr_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_msr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_msr_imm_a1;
@@ -5120,7 +5042,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_msr2_imm_a1) != OP_FB_arm_msr2_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_msr2_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_msr2_imm_a1;
@@ -5167,7 +5088,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mrs_a1) != OP_FB_arm_mrs_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mrs_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mrs_a1;
@@ -5202,7 +5122,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_msr2_reg_a1) != OP_FB_arm_msr2_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_msr2_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_msr2_reg_a1;
@@ -5248,7 +5167,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mcr_a1) != OP_FB_arm_mcr_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mcr_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mcr_a1;
@@ -5310,7 +5228,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mcr2_a2) != OP_FB_arm_mcr2_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mcr2_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mcr2_a2;
@@ -5366,7 +5283,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mrc_a1) != OP_FB_arm_mrc_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mrc_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mrc_a1;
@@ -5428,7 +5344,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mrc2_a2) != OP_FB_arm_mrc2_a2) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mrc2_a2;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mrc2_a2;
@@ -5484,7 +5399,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_bic_imm_a1) != OP_FB_arm_bic_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_bic_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_bic_imm_a1;
@@ -5536,7 +5450,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_orr_imm_a1) != OP_FB_arm_orr_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_orr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_orr_imm_a1;
@@ -5588,7 +5501,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_orr_reg_a1) != OP_FB_arm_orr_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_orr_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_orr_reg_a1;
@@ -5650,7 +5562,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_movt_a1) != OP_FB_arm_movt_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_movt_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_movt_a1;
@@ -5692,7 +5603,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_lsl_imm_a1) != OP_FB_arm_lsl_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_lsl_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_lsl_imm_a1;
@@ -5742,7 +5652,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_lsl_reg_a1) != OP_FB_arm_lsl_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_lsl_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_lsl_reg_a1;
@@ -5794,7 +5703,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_lsr_imm_a1) != OP_FB_arm_lsr_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_lsr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_lsr_imm_a1;
@@ -5846,7 +5754,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_bfc_a1) != OP_FB_arm_bfc_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_bfc_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_bfc_a1;
@@ -5891,7 +5798,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_and_imm_a1) != OP_FB_arm_and_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_and_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_and_imm_a1;
@@ -5943,7 +5849,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_and_reg_a1) != OP_FB_arm_and_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_and_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_and_reg_a1;
@@ -6005,7 +5910,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_uxtb_a1) != OP_FB_arm_uxtb_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_uxtb_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_uxtb_a1;
@@ -6051,7 +5955,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_uxth_a1) != OP_FB_arm_uxth_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_uxth_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_uxth_a1;
@@ -6097,7 +6000,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_rsb_reg_a1) != OP_FB_arm_rsb_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_rsb_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_rsb_reg_a1;
@@ -6159,7 +6061,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_sbc_reg_a1) != OP_FB_arm_sbc_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_sbc_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_sbc_reg_a1;
@@ -6221,7 +6122,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_mul_a1) != OP_FB_arm_mul_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_mul_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_mul_a1;
@@ -6273,7 +6173,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_tst_imm_a1) != OP_FB_arm_tst_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_tst_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_tst_imm_a1;
@@ -6311,7 +6210,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_tst_reg_a1) != OP_FB_arm_tst_reg_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_tst_reg_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_tst_reg_a1;
@@ -6359,7 +6257,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_sxtb_a1) != OP_FB_arm_sxtb_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_sxtb_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_sxtb_a1;
@@ -6405,7 +6302,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_asr_imm_a1) != OP_FB_arm_asr_imm_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_asr_imm_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_asr_imm_a1;
@@ -6457,7 +6353,6 @@ static int op_parse_arm_srs_a1(OpDecodeContext *context);
         if ((context->code32 & OP_FB_MASK_arm_srs_a1) != OP_FB_arm_srs_a1) {
             return 1;
         }
-    
 
         context->optype->code_id = arm_OpCodeId_arm_srs_a1;
         context->optype->format_id = arm_OP_CODE_FORMAT_arm_srs_a1;
@@ -6613,6 +6508,10 @@ int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *deco
         }
     
         if (op_parse_arm_push_a2(&context) == 0) {
+            return 0;
+        }
+    
+        if (op_parse_arm_stmfd_a1(&context) == 0) {
             return 0;
         }
     
@@ -6843,6 +6742,8 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_push_a1 },		/* arm_push_a1 */
     
 	{ 1, arm_op_exec_arm_push_a2 },		/* arm_push_a2 */
+    
+	{ 1, arm_op_exec_arm_stmfd_a1 },		/* arm_stmfd_a1 */
     
 	{ 1, arm_op_exec_arm_stm_a1 },		/* arm_stm_a1 */
     

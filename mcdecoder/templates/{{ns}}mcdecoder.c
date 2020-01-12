@@ -1,4 +1,20 @@
-{% macro instruction_condition(instruction, condition) -%}
+{# Renders the object/subject of a condition #}
+{%- macro instruction_condition_object(instruction, object) -%}
+    {%- if object.type == 'field' -%}
+        {%- if object.element_index is none -%}
+            context->decoded_code->code.{{ instruction.name }}.{{ object.field }}
+        {%- else -%}
+            BIT_ELEMENT(context->decoded_code->code.{{ instruction.name }}.{{ object.field }}, {{ object.element_index }})
+        {%- endif -%}
+    {%- elif object.type == 'immediate' -%}
+        {{ object.value }}
+    {%- elif object.type == 'function' -%}
+        {{ object.function }}({{ instruction_condition_object(instruction, object.argument) }})
+    {%- endif -%}
+{%- endmacro -%}
+
+{# Renders a condition recursively #}
+{%- macro instruction_condition(instruction, condition) -%}
     {%- if condition.type == 'and' -%}
         {% for child_condition in condition.conditions %}
             {%- if not loop.first %} && {% endif -%}
@@ -10,17 +26,22 @@
             ({{ instruction_condition(instruction, child_condition) }})
         {% endfor %}
     {%- elif condition.type == 'equality' -%}
-        context->decoded_code->code.{{ instruction.name }}.{{ condition.field }} {{ condition.operator }} {{ condition.value }}
+        {{ instruction_condition_object(instruction, condition.subject) }} {{ condition.operator }} {{ instruction_condition_object(instruction, condition.object) }}
     {%- elif condition.type == 'in' -%}
         {% for value in condition.values %}
             {%- if not loop.first %} || {% endif -%}
-            context->decoded_code->code.{{ instruction.name }}.{{ condition.field }} == {{ value }}
+            {{ instruction_condition_object(instruction, condition.subject) }} == {{ value }}
         {% endfor %}
     {%- elif condition.type == 'in_range' -%}
-        context->decoded_code->code.{{ instruction.name }}.{{ condition.field }} >= {{ condition.value_start }} && context->decoded_code->code.{{ instruction.name }}.{{ condition.field }} <= {{ condition.value_end }}
+        {{ instruction_condition_object(instruction, condition.subject) }} >= {{ condition.value_start }} && {{ instruction_condition_object(instruction, condition.subject) }} <= {{ condition.value_end }}
     {%- endif %}
-{%- endmacro %}
+{%- endmacro -%}
+
 #include "{{ ns }}mcdecoder.h"
+
+#include <stdbool.h>
+
+/* types */
 
 typedef struct {
     {{ ns }}uint16 *code;
@@ -45,22 +66,26 @@ typedef struct {
     {% endfor %}
 {% endfor %}
 
-/* individual op parse functions */
-{% for inst in instruction_decoders %}
-static int op_parse_{{ inst.name }}(OpDecodeContext *context);
-{% endfor %}
+/* macros */
+#define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
 
+/* functions for conditions */
+static {{ ns }}uint32 setbit_count({{ ns }}uint32 value) {
+    {{ ns }}uint32 count = 0;
+    while (value) {
+        count += value & 1;
+        value >>= 1;
+    }
+    return count;
+}
+
+/* individual op parse functions */
 {% for inst in instruction_decoders %}
     /* {{ inst.name }} */
     static int op_parse_{{ inst.name }}(OpDecodeContext *context) {
         if ((context->code{{ inst.type_bit_size }} & OP_FB_MASK_{{ inst.name }}) != OP_FB_{{ inst.name }}) {
             return 1;
         }
-    {% for child in inst.extras.child_codes %}
-        if (op_parse_{{ child }}(context) == 0) {
-            return 0;
-        }
-    {% endfor %}
 
         context->optype->code_id = {{ ns }}OpCodeId_{{ inst.name }};
         context->optype->format_id = {{ ns }}OP_CODE_FORMAT_{{ inst.name }};

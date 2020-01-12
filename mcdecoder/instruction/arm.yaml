@@ -245,6 +245,17 @@ machine:
         outputs:
           SP: PseudoCodeRegisterDataType
 
+
+      - name: arm_stmfd
+        inputs:
+          cond: PseudoCodeConditionDataType
+          bitcount: PseudoCodeBitCountType
+          wback: PseudoCodeBoolWbackType
+          registers: PseudoCodeRegisterListType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
       - name: arm_stm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -827,7 +838,7 @@ instructions:
 
   - name: arm_push_a1
     format: xxxx:cond|1001 00|1|0|1101|xxxx xxxx xxxx xxxx:register_list
-    unmatch_condition: (cond == 0b1111) 
+    unmatch_condition: (cond == 0b1111) or (setbit_count(register_list) < 2)
     extras:
       clocks: 10
       pseudo_code: arm_push
@@ -840,6 +851,19 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_push
+
+
+  - name: arm_stmfd_a1
+    format: xxxx:cond|1001 00|x:W|0|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
+    unmatch_condition: >
+                         (cond == 0b1111) 
+                         or ( (W == 1) and (Rn == 0b1101) and (setbit_count(register_list) > 1) )
+                         or (Rn == 15)
+                         or (setbit_count(register_list) < 1)
+    extras:
+      clocks: 10
+      pseudo_code: arm_stmfd
+
 
   - name: arm_stm_a1
     format: xxxx:cond|1000 10|x:W|0|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
@@ -945,7 +969,7 @@ instructions:
 
   - name: arm_pop_a1
     format: xxxx:cond|1000 10|1|1|1101|xxxx xxxx xxxx xxxx:register_list
-    unmatch_condition: (cond == 0b1111)
+    unmatch_condition: (cond == 0b1111) or (setbit_count(register_list) < 2)
     extras:
       clocks: 10
       pseudo_code: arm_pop
@@ -959,11 +983,13 @@ instructions:
       clocks: 10
       pseudo_code: arm_pop
 
-
   - name: arm_ldm_a1
     format: xxxx:cond|1000 10|x:W|1|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
-    unmatch_condition: (cond == 0b1111)
-                        or (Rn == 15)
+    unmatch_condition: >
+                         (cond == 0b1111)
+                         or ( (W == 1) and (Rn == 0b1101) and (setbit_count(register_list) > 1) )
+                         or (Rn == 15)
+                         or (setbit_count(register_list) < 1)
     extras:
       clocks: 10
       pseudo_code: arm_ldm

@@ -544,6 +544,29 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeBitCountType	bitcount;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeRegisterListType	registers;
+
+	PseudoCodeRegisterDataType	Rn;
+} arm_stmfd_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_stmfd_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeBoolWbackType	wback;
 
 	PseudoCodeBitCountType	bitcount;

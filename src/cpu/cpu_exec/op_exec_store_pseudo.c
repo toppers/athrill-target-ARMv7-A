@@ -122,25 +122,16 @@ int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_
 	if (out->passed != FALSE) {
 		int i;
 		uint32 address = (uint32)in->SP.regData - (4 * (in->bitcount));
-		uint32 lowestbit = LowestSetBit(8, in->registers);
 		for (i = 0; i <= CpuRegId_PC; i++) {
-			uint32 data = cpu_get_reg(core, i);
 			if ( ((1U << i) & in->registers) != 0 ) {
-				if ((i == 13) && (i != lowestbit)) {
-					// Only possible for encoding A1
-					//MemA[address,4] = bits(32) UNKNOWN;
-					ret = MemA_W(core, address, 4, (uint8*)&data);
+				uint32 data;
+				if (i != CpuRegId_PC) {
+					data = cpu_get_reg(core, i);
 				}
 				else {
-					if (in->UnalignedAllowed == TRUE) {
-						//MemU[address,4] = R[i]; TODO
-						ret = MemA_W(core, address, 4, (uint8*)&data);
-					}
-					else {
-						//MemA[address,4] = R[i];
-						ret = MemA_W(core, address, 4, (uint8*)&data);
-					}
+					data = PCStoreValue(core);
 				}
+				ret = MemA_W(core, address, 4, (uint8*)&data);
 				if (ret < 0) {
 					goto done;
 				}
@@ -154,6 +145,41 @@ done:
     return ret;
 }
 
+int arm_op_exec_arm_stmfd(struct TargetCore *core,  arm_stmfd_input_type *in, arm_stmfd_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//address = R[n] - 4*BitCount(registers);
+		uint32 address = in->Rn.regData - (4 * in->bitcount);
+		int i;
+		for (i = 0; i <= CpuRegId_PC; i++) {
+			if ( ((1U << i) & in->registers) != 0 ) {
+				uint32 data;
+				if (i != CpuRegId_PC) {
+					data = cpu_get_reg(core, i);
+				}
+				else {
+					data = PCStoreValue(core);
+				}
+				ret = MemA_W(core, address, 4, (uint8*)&data);
+				if (ret < 0) {
+					goto done;
+				}
+				address = address + 4;
+			}
+		}
+		if (in->wback) {
+			//if wback then R[n] = R[n] - 4*BitCount(registers);
+			out->Rn.regData = (in->Rn.regData - (4 * (in->bitcount)));
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_stm_output_type *out)
 {

@@ -25,6 +25,7 @@ extern int arm_op_exec_arm_ldr_literal(struct TargetCore *core,  arm_ldr_literal
 extern int arm_op_exec_arm_ldrd_imm(struct TargetCore *core,  arm_ldrd_imm_input_type *in, arm_ldrd_imm_output_type *out);
 extern int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out);
 extern int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_push_output_type *out);
+extern int arm_op_exec_arm_stmfd(struct TargetCore *core,  arm_stmfd_input_type *in, arm_stmfd_output_type *out);
 extern int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_stm_output_type *out);
 extern int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out);
 extern int arm_op_exec_arm_ldm(struct TargetCore *core,  arm_ldm_input_type *in, arm_ldm_output_type *out);

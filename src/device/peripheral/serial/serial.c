@@ -7,9 +7,10 @@
 #include <stdio.h>
 
 typedef struct {
-	uint32 					last_raised_counter;
+	uint32					baseaddr;
 	uint16 					id;
-	uint16 					intno;
+	uint16 					rx_intno;
+	uint16 					tx_intno;
 	uint32					flush_count;
 	bool   					is_send_data;
 	uint8 					send_data;
@@ -49,27 +50,42 @@ void device_init_serial(MpuAddressRegionType *region)
 
 	for (i = 0; i < UARTChannelNum; i++) {
 		SerialDevice[i].id = i;
-		SerialDevice[i].intno = -1;
+		SerialDevice[i].rx_intno = -1;
+		SerialDevice[i].tx_intno = -1;
 		SerialDevice[i].is_send_data = FALSE;
 		SerialDevice[i].start_clock = 0;
 		SerialDevice[i].flush_count = 0;
 		SerialDevice[i].ops = NULL;
-		SerialDevice[i].last_raised_counter = 0;
 	}
 
-	SerialDevice[UARTnCH3].intno = 0; //TODO
+	SerialDevice[UARTnCH3].baseaddr = UART3_BASE;
+	SerialDevice[UARTnCH3].rx_intno = 231;
+	SerialDevice[UARTnCH3].tx_intno = 232;
 	serial_put_data16(region, 0, (UART3_BASE + REG_SCFSR), SCFSR_TDFE);
 
-	SerialDevice[UARTnCH4].intno = 0; //TODO
 	serial_region = region;
 
 	return;
 }
 
-void device_do_serial(SerialDeviceType *serial)
+static void device_do_serial(SerialDeviceType *serial)
 {
+	uint8 data;
+	bool ret;
 	if (serial->ops == NULL) {
 		return;
+	}
+	uint16 status;
+	(void)serial_get_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), &status);
+	if ((status & SCFSR_RDF) != 0) {
+		return;
+	}
+	ret = serial->ops->getchar(0, &data);
+	if (ret == TRUE) {
+		printf("serial: addr=0x%x status=0x%x\n", (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
+		(void)serial_put_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
+		(void)serial_put_data8(serial_region, 0U, (serial->baseaddr + REG_SCFRDR), data);
+		device_raise_int(serial->rx_intno);
 	}
 
 	return;
@@ -78,6 +94,7 @@ void device_do_serial(SerialDeviceType *serial)
 void device_supply_clock_serial(DeviceClockType *dev_clock)
 {
 	SerialDevice[UARTnCH3].dev_clock = dev_clock;
+	device_do_serial(&SerialDevice[UARTnCH3]);
 }
 
 
@@ -92,6 +109,7 @@ static Std_ReturnType serial_get_data8(MpuAddressRegionType *region, CoreIdType 
 {
 	uint32 off = (addr - region->start);
 	*data = *((uint8*)(&region->data[off]));
+	printf("get:%c\n", *data);
 	return STD_E_OK;
 }
 static Std_ReturnType serial_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data)
@@ -121,7 +139,13 @@ static Std_ReturnType serial_put_data16(MpuAddressRegionType *region, CoreIdType
 {
 	uint32 off = (addr - region->start);
 	if (addr == (UART3_BASE + REG_SCFSR)) {
-		*((uint16*)(&region->data[off])) = SCFSR_TDFE;
+		uint16 *org_data = ((uint16*)(&region->data[off]));
+		if ((*org_data & SCFSR_TDFE) != 0) {
+			if ((data & SCFSR_TDFE) == 0) {
+				data |= SCFSR_TDFE;
+			}
+		}
+		*org_data = data;
 	}
 	else {
 		*((uint16*)(&region->data[off])) = data;

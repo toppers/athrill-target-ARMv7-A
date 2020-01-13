@@ -182,6 +182,7 @@ int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in
 	uint32 offset = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(arg.status));
 	arg.offset_addr = (in->add) ? (in->Rn.regData + offset) : (in->Rn.regData - offset);
 	arg.address = (in->index) ? arg.offset_addr : in->Rn.regData;
+	arg.next_address = &out->next_address;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *arg.status);
 	if (out->passed != FALSE) {

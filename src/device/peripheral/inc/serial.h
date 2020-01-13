@@ -41,6 +41,7 @@
 #define SCFSR_RDF       0x0002          /* 1:受信FIFOデータフル */
 #define SCFSR_DR        0x0001          /* 1:受信データレディ */
 
+#define SCLSR_ORER      0x0001          /* 1:オーバーランエラー */
 
 /*
  * 各レジスタのオフセット

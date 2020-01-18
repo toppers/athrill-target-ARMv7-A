@@ -51,6 +51,7 @@ extern int arm_op_exec_arm_and_imm(struct TargetCore *core,  arm_and_imm_input_t
 extern int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_type *in, arm_and_reg_output_type *out);
 extern int arm_op_exec_arm_uxt(struct TargetCore *core,  arm_uxt_input_type *in, arm_uxt_output_type *out);
 extern int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_type *in, arm_rsb_reg_output_type *out);
+extern int arm_op_exec_arm_rsb_imm(struct TargetCore *core,  arm_rsb_imm_input_type *in, arm_rsb_imm_output_type *out);
 extern int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in, arm_sbc_reg_output_type *out);
 extern int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mul_output_type *out);
 extern int arm_op_exec_arm_tst_imm(struct TargetCore *core,  arm_tst_imm_input_type *in, arm_tst_imm_output_type *out);
@@ -59,4 +60,5 @@ extern int arm_op_exec_arm_sxtb(struct TargetCore *core,  arm_sxtb_input_type *i
 extern int arm_op_exec_arm_asr_imm(struct TargetCore *core,  arm_asr_imm_input_type *in, arm_asr_imm_output_type *out);
 extern int arm_op_exec_arm_srs(struct TargetCore *core,  arm_srs_input_type *in, arm_srs_output_type *out);
 extern int arm_op_exec_arm_rfe(struct TargetCore *core,  arm_rfe_input_type *in, arm_rfe_output_type *out);
+extern int arm_op_exec_arm_wfi(struct TargetCore *core,  arm_wfi_input_type *in, arm_wfi_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

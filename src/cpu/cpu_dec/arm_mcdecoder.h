@@ -139,6 +139,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_rsb_reg_a1,
 	
+		arm_OP_CODE_FORMAT_arm_rsb_imm_a1,
+	
 		arm_OP_CODE_FORMAT_arm_sbc_reg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_mul_a1,
@@ -154,6 +156,8 @@ typedef enum {
 		arm_OP_CODE_FORMAT_arm_srs_a1,
 	
 		arm_OP_CODE_FORMAT_arm_rfe_a1,
+	
+		arm_OP_CODE_FORMAT_arm_wfi_a1,
 	
 	arm_OP_CODE_FORMAT_UNKNOWN,
 } arm_OpCodeFormatId;
@@ -288,6 +292,8 @@ typedef enum {
 	
 		arm_OpCodeId_arm_rsb_reg_a1,
 	
+		arm_OpCodeId_arm_rsb_imm_a1,
+	
 		arm_OpCodeId_arm_sbc_reg_a1,
 	
 		arm_OpCodeId_arm_mul_a1,
@@ -303,6 +309,8 @@ typedef enum {
 		arm_OpCodeId_arm_srs_a1,
 	
 		arm_OpCodeId_arm_rfe_a1,
+	
+		arm_OpCodeId_arm_wfi_a1,
 	
 	arm_OpCodeId_Num,
 } arm_OpCodeId;
@@ -1206,6 +1214,20 @@ typedef struct {
 	
 		arm_uint8 Rd;	/* 15-12 */
 	
+		arm_uint16 imm12;	/* 11-0 */
+	
+} arm_OpCodeFormatType_arm_rsb_imm_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
 		arm_uint8 imm5;	/* 11-7 */
 	
 		arm_uint8 type;	/* 6-5 */
@@ -1301,6 +1323,12 @@ typedef struct {
 		arm_uint8 Rn;	/* 19-16 */
 	
 } arm_OpCodeFormatType_arm_rfe_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+} arm_OpCodeFormatType_arm_wfi_a1;
 
 
 typedef struct {
@@ -1435,6 +1463,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_rsb_reg_a1 arm_rsb_reg_a1;
 		
+        	arm_OpCodeFormatType_arm_rsb_imm_a1 arm_rsb_imm_a1;
+		
         	arm_OpCodeFormatType_arm_sbc_reg_a1 arm_sbc_reg_a1;
 		
         	arm_OpCodeFormatType_arm_mul_a1 arm_mul_a1;
@@ -1450,6 +1480,8 @@ typedef struct {
         	arm_OpCodeFormatType_arm_srs_a1 arm_srs_a1;
 		
         	arm_OpCodeFormatType_arm_rfe_a1 arm_rfe_a1;
+		
+        	arm_OpCodeFormatType_arm_wfi_a1 arm_wfi_a1;
 		
     } code;
 } arm_OpDecodedCodeType;
@@ -1529,6 +1561,7 @@ extern int arm_op_exec_arm_and_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_uxtb_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_uxth_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_rsb_reg_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_rsb_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_sbc_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_mul_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_tst_imm_a1(struct TargetCore *core);
@@ -1537,4 +1570,5 @@ extern int arm_op_exec_arm_sxtb_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_asr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_srs_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_rfe_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_wfi_a1(struct TargetCore *core);
 #endif /* !_arm_MC_DECODER_H_ */

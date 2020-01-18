@@ -247,9 +247,10 @@ MpuAddressRegionOperationType cpu_register_operation = {
 
 bool TakePhysicalIRQException(uint32 coreId)
 {
-	//TODO
 	TargetCoreType *core = &virtual_cpu.cores[coreId].core;
 	uint32 *status = cpu_get_status(core);
+
+	core->is_halt = FALSE;
 
 	if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_I)) {
 		return FALSE;

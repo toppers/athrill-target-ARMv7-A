@@ -86,7 +86,7 @@ static void device_do_serial(SerialDeviceType *serial)
 		uint16 status;
 		serial->rdf = TRUE;
 		(void)serial_get_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), &status);
-		printf("serial: addr=0x%x status=0x%x\n", (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
+		//printf("serial: addr=0x%x status=0x%x\n", (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
 		(void)serial_put_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
 		(void)serial_put_data8(serial_region, 0U, (serial->baseaddr + REG_SCFRDR), data);
 		device_raise_int(serial->rx_intno);
@@ -113,7 +113,7 @@ static Std_ReturnType serial_get_data8(MpuAddressRegionType *region, CoreIdType 
 {
 	uint32 off = (addr - region->start);
 	*data = *((uint8*)(&region->data[off]));
-	printf("get:%c\n", *data);
+	//printf("get:%c\n", *data);
 	return STD_E_OK;
 }
 static Std_ReturnType serial_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data)

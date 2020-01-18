@@ -202,3 +202,15 @@ done:
 	return ret;
 }
 
+int arm_op_exec_arm_wfi(struct TargetCore *core,  arm_wfi_input_type *in, arm_wfi_output_type *out)
+{
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		core->is_halt = TRUE;
+	}
+	out->status = *status;
+	return 0;
+}
+

@@ -1169,6 +1169,31 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rd;
 
+	PseudoCodeImmediateData32Type	imm32;
+} arm_rsb_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_rsb_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rd;
+
 	PseudoCodeSRType	shift_t;
 
 	PseudoCodeShiftNType	shift_n;
@@ -1349,5 +1374,17 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_rfe_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+} arm_wfi_input_type;
+
+typedef struct {
+	uint32	next_address;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_wfi_output_type;
 
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

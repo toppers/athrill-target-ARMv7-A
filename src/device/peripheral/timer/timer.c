@@ -17,6 +17,7 @@ typedef struct {
 	uint16 				cnt;
 	TimerStateType 		state;
 	TimerModeType 		mode;
+	bool				enable;
 	uint16 				compare0;
 	uint16 				compare0_intno;
 	uint64 				start_clock;
@@ -42,13 +43,12 @@ MpuAddressRegionOperationType	timer_memory_operation = {
 
 		.get_pointer	= timer_get_pointer,
 };
-static TimerDeviceType TimerDevice[TAAnChannelNum];
+static TimerDeviceType TimerDevice[ARM_TIMER_NUM];
 static MpuAddressRegionType *timer_region;
 
 void device_init_timer(MpuAddressRegionType *region)
 {
 	int i = 0;
-	uint16 base;
 	uint32 value = 50000;
 
 	(void)cpuemu_get_devcfg_value("DEVICE_CONFIG_TIMER_FD", &value);
@@ -56,24 +56,17 @@ void device_init_timer(MpuAddressRegionType *region)
 
 	timer_region = region;
 
-	for (i = 0; i < TAAnChannelNum; i++) {
+	for (i = 0; i < ARM_TIMER_NUM; i++) {
 		TimerDevice[i].cnt = 0;
 		TimerDevice[i].state = TIMER_STATE_STOP;
 		TimerDevice[i].mode = TIMER_MODE_FREERUN;
+		TimerDevice[i].enable = FALSE;
 		TimerDevice[i].compare0 = 0;
 		TimerDevice[i].fd = value;
 		TimerDevice[i].start_clock = 0;
 	}
-
-	for (i = 0; i < 5; i++) {
-		base = 15 + (i * 3);
-		TimerDevice[i].compare0_intno = base + 1;
-	}
-	for (i = 5; i < TAAnChannelNum; i++) {
-		base = 96 + ((i - 5) * 3) + 1;
-		TimerDevice[i].compare0_intno = base + 1;
-	}
-
+	TimerDevice[ARM_TIMER_CH0].mode = TIMER_MODE_INTERVAL;
+	TimerDevice[ARM_TIMER_CH0].compare0_intno = ARM_TIMER_INTNO_CMP_CH0;
 	return;
 }
 
@@ -98,10 +91,12 @@ static void device_timer_do_update(DeviceClockType *device, int ch)
 
 	timer->cnt = (uint16)((device->clock - timer->start_clock) / (uint64)timer->fd);
 	if (timer->mode == TIMER_MODE_INTERVAL) {
-		if (timer->cnt == timer->compare0) {
-			//printf("raise INT:ch=%d cnt=%d\n", ch, timer->cnt);
-			device_raise_int(timer->compare0_intno);
-			timer->state = TIMER_STATE_READY;
+		if (timer->enable == TRUE) {
+			if (timer->cnt == timer->compare0) {
+				//printf("raise INT:ch=%d cnt=%d\n", ch, timer->cnt);
+				device_raise_int(timer->compare0_intno);
+				timer->state = TIMER_STATE_READY;
+			}
 		}
 	}
 	return;
@@ -142,12 +137,7 @@ do {	\
 
 void device_supply_clock_timer(DeviceClockType *dev_clock)
 {
-#ifndef MINIMUM_DEVICE_CONFIG
-	INLINE_device_supply_clock_timer(dev_clock, 0);
-	INLINE_device_supply_clock_timer(dev_clock, 1);
-#endif /* MINIMUM_DEVICE_CONFIG */
-	INLINE_device_supply_clock_timer(dev_clock, 2);
-	INLINE_device_supply_clock_timer(dev_clock, 3);
+	INLINE_device_supply_clock_timer(dev_clock, ARM_TIMER_CH0);
 	return;
 }
 
@@ -160,73 +150,70 @@ static Std_ReturnType timer_get_data8(MpuAddressRegionType *region, CoreIdType c
 }
 static Std_ReturnType timer_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data)
 {
-	uint8 ch;
-	for (ch = 0; ch < TAAnChannelNum; ch++) {
-		if (addr == (TAAnCNT(ch) & region->mask)) {
-			*data = TimerDevice[ch].cnt;
-			return STD_E_OK;
-		}
-	}
+	uint32 off = (addr - region->start);
+	*data = *((uint16*)(&region->data[off]));
 	return STD_E_SEGV;
 }
 static Std_ReturnType timer_get_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 *data)
 {
 	uint32 off = (addr - region->start);
-	*data = *((uint32*)(&region->data[off]));
+	uint32 *datap = ((uint32*)(&region->data[off]));
+
+	if (addr == ARM_REG_OSTM0CNT) {
+		*datap = TimerDevice[ARM_TIMER_CH0].cnt;
+	}
+	*data = *datap;
+
 	return STD_E_OK;
 }
 static Std_ReturnType timer_put_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 data)
 {
-	uint8 ch;
 	uint32 off = (addr - region->start);
-	*((uint8*)(&region->data[off])) = data;
 
 	//printf("timer_put_data8 core=%d addr=0x%x data=0x%x\n", core_id, addr, data);
-	for (ch = 0; ch < TAAnChannelNum; ch++) {
-		if (addr == (TAAnCTL0(ch) & region->mask)) {
-			if ((data & (1 << 7)) == (1 << 7)) {
-				TimerDevice[ch].state = TIMER_STATE_READY;
-				//printf("timer%d addr=0x%x ready\n", ch, addr);
-			}
-			else {
-				TimerDevice[ch].state = TIMER_STATE_STOP;
-				//TimerDevice[ch].cnt = 0;
-				//printf("timer%d addr=0x%x stop\n", ch, addr);
-			}
-			break;
+
+	if (addr == ARM_REG_OSTM0CTL) {
+		if ((data & ARM_BIT_OSTMMD1) == 0) {
+			TimerDevice[ARM_TIMER_CH0].mode = TIMER_MODE_INTERVAL;
+			//printf("timer:mode=interval\n");
 		}
-		else if (addr == (TAAnCTL1(ch) & region->mask)) {
-			uint8 mode = (data & 0x07);
-			if (mode == 0x00) {
-				TimerDevice[ch].mode = TIMER_MODE_INTERVAL;
-				//printf("timer%d addr=0x%x interval\n", ch, addr);
-			}
-			else {
-				TimerDevice[ch].mode = TIMER_MODE_FREERUN;
-				//printf("timer%d addr=0x%x freerun\n", ch, addr);
-			}
-			break;
+		if ((data & ARM_BIT_OSTMMD0) == 0) {
+			TimerDevice[ARM_TIMER_CH0].enable = TRUE;
+			//printf("timer:enable=true\n");
+		}
+		else {
+			TimerDevice[ARM_TIMER_CH0].enable = FALSE;
 		}
 	}
+	else if (addr == ARM_REG_OSTM0TS) {
+		if ((data & ARM_BIT_OSTMTS) != 0) {
+			//printf("timer:READY\n");
+			TimerDevice[ARM_TIMER_CH0].state = TIMER_STATE_READY;
+		}
+	}
+	else if (addr == ARM_REG_OSTM0TT) {
+		if ((data & ARM_BIT_OSTMTT) != 0) {
+			//printf("timer:STOP\n");
+			TimerDevice[ARM_TIMER_CH0].state = TIMER_STATE_STOP;
+		}
+	}
+	*((uint8*)(&region->data[off])) = data;
+
+
 	return STD_E_OK;
 }
 static Std_ReturnType timer_put_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 data)
 {
-	uint8 ch;
 	uint32 off = (addr - region->start);
 	*((uint16*)(&region->data[off])) = data;
-	for (ch = 0; ch < TAAnChannelNum; ch++) {
-		if (addr == (TAAnCCR0(ch) & region->mask)) {
-			TimerDevice[ch].compare0 = data;
-			TimerDevice[ch].state = TIMER_STATE_READY;
-			break;
-		}
-	}
 	return STD_E_OK;
 }
 static Std_ReturnType timer_put_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 data)
 {
 	uint32 off = (addr - region->start);
+	if (addr == ARM_REG_OSTM0CMP) {
+		TimerDevice[ARM_TIMER_CH0].compare0 = data;
+	}
 	*((uint32*)(&region->data[off])) = data;
 	return STD_E_OK;
 }
@@ -234,11 +221,11 @@ static Std_ReturnType timer_get_pointer(MpuAddressRegionType *region, CoreIdType
 {
 	uint32 off = (addr - region->start);
 	uint8 ch;
-	uint16 *cntp;
+	uint32 *cntp;
 
-	for (ch = 0; ch < TAAnChannelNum; ch++) {
-		if (addr == (TAAnCNT(ch) & region->mask)) {
-			cntp = (uint16*)&region->data[off];
+	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
+		if (addr == (ARM_REG_OSTM0CNT)) {
+			cntp = (uint32*)&region->data[off];
 			*cntp = TimerDevice[ch].cnt;
 			break;
 		}

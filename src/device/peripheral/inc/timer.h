@@ -3,63 +3,32 @@
 
 #include "device.h"
 
-/*************************************************
- * 16ビットタイマ／イベントカウンタAA(TAA)
- *************************************************/
+#define ARM_REG_OSTM0_BASE  0xFCFEC000
+#define ARM_REG_OSTM0CMP    (ARM_REG_OSTM0_BASE)            /* OSTM0CMP register (32bit) */
+#define ARM_REG_OSTM0CNT    (ARM_REG_OSTM0_BASE + 0x04)     /* OSTM0CNT register (32bit) */
+#define ARM_REG_OSTM0TE     (ARM_REG_OSTM0_BASE + 0x10)     /* OSTM0TE register (8bit) */
+#define ARM_REG_OSTM0TS     (ARM_REG_OSTM0_BASE + 0x14)     /* OSTM0TS register (8bit) */
+#define ARM_REG_OSTM0TT     (ARM_REG_OSTM0_BASE + 0x18)     /* OSTM0TT register (8bit) */
+#define ARM_REG_OSTM0CTL    (ARM_REG_OSTM0_BASE + 0x20)     /* OSTM0CTL register (8bit) */
 
-#define TAAnChannelNum			UINT_C(8)
-#define TAAnCH0					UINT_C(0)
-#define TAAnCH1					UINT_C(1)
-#define TAAnCH2					UINT_C(2)
-#define TAAnCH3					UINT_C(3)
-#define TAAnCH4					UINT_C(4)
-#define TAAnCH5					UINT_C(5)
-#define TAAnCH6					UINT_C(6)
-#define TAAnCH7					UINT_C(7)
+/* OSTMnTS register */
+#define ARM_BIT_OSTMTS      0x01    /* OSTMnTS bit - 1:start count */
 
-/*
- * TAAn制御レジスタ0
- */
-#define TAAnCTL0_BASE			UINT_C(0xFFFFF590)
-#define TAAnCTL0(CH)			(TAAnCTL0_BASE + ((CH) * 16U))
-/*
- * TAAn制御レジスタ1
- */
-#define TAAnCTL1_BASE			UINT_C(0xFFFFF591)
-#define TAAnCTL1(CH)			(TAAnCTL1_BASE + ((CH) * 16U))
+/* OSTMnTT register */
+#define ARM_BIT_OSTMTT      0x01    /* OSTMnTT bit - 1:stop count */
+
+/* OSTMnCTL register */
+#define ARM_BIT_OSTMMD0     0x01    /* OSTMnMD0 bit - 1:enable interrupt at start */
+#define ARM_BIT_OSTMMD1     0x02    /* OSTMnMD1 bit - 0:interval timer mode */
 
 
 /*
- * TAAn キャプチャ／コンペア・レジスタ 0（ TAAnCCR0）
+ *  タイマ割込みハンドラ登録のための定数
  */
-#define TAAnCCR0_BASE			UINT_C(0xFFFFF596)
-#define TAAnCCR0(CH)			(TAAnCCR0_BASE + ((CH) * 16U))
+#define ARM_TIMER_INTNO_CMP_CH0     134
 
-/*
- * TAAn キャプチャ／コンペア・レジスタ 1（ TAAnCCR1）
- */
-#define TAAnCCR1_BASE			UINT_C(0xFFFFF598)
-#define TAAnCCR1(CH)			(TAAnCCR1_BASE + ((CH) * 16U))
-
-/*
- * TAAnカウンタ・リード・バッファ・レジスタ
- */
-#define TAAnCNT_BASE			UINT_C(0xFFFFF59A)
-#define TAAnCNT(CH)				(TAAnCNT_BASE + ((CH) * 16U))
-
-/*
- * TAAn オプション・レジスタ 0（ TAAnOPT0）
- */
-#define TAAnOPT0_BASE			UINT_C(0xFFFFF595)
-#define TAAnOPT0(CH)			(TAAnOPT0_BASE + ((CH) * 16U))
-
-/*
- * TAAn オプション・レジスタ 1（ TAAnOPT1）
- */
-#define TAA1OPT1				UINT_C(0xFFFFF5AD)
-#define TAA3OPT1				UINT_C(0xFFFFF5CD)
-#define TAA6OPT1				UINT_C(0xFFFFF5FD)
-
+#define ARM_TIMER_NUM	1U
+#define ARM_TIMER_CH0	0U
 
 
 #endif /* _TIMER_H_ */

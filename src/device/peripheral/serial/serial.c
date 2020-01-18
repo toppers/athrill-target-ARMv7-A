@@ -13,6 +13,7 @@ typedef struct {
 	uint16 					tx_intno;
 	uint32					flush_count;
 	bool   					is_send_data;
+	bool					rdf;
 	uint8 					send_data;
 	DeviceExSerialOpType 	*ops;
 	DeviceClockType 		*dev_clock;
@@ -55,6 +56,7 @@ void device_init_serial(MpuAddressRegionType *region)
 		SerialDevice[i].is_send_data = FALSE;
 		SerialDevice[i].start_clock = 0;
 		SerialDevice[i].flush_count = 0;
+		SerialDevice[i].rdf = FALSE;
 		SerialDevice[i].ops = NULL;
 	}
 
@@ -75,13 +77,15 @@ static void device_do_serial(SerialDeviceType *serial)
 	if (serial->ops == NULL) {
 		return;
 	}
-	uint16 status;
-	(void)serial_get_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), &status);
-	if ((status & SCFSR_RDF) != 0) {
+	if (serial->rdf == TRUE) {
 		return;
 	}
 	ret = serial->ops->getchar(0, &data);
+	//printf("serial:getchar()=%d\n", ret);
 	if (ret == TRUE) {
+		uint16 status;
+		serial->rdf = TRUE;
+		(void)serial_get_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), &status);
 		printf("serial: addr=0x%x status=0x%x\n", (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
 		(void)serial_put_data16(serial_region, 0U, (serial->baseaddr + REG_SCFSR), status | SCFSR_RDF);
 		(void)serial_put_data8(serial_region, 0U, (serial->baseaddr + REG_SCFRDR), data);
@@ -116,6 +120,9 @@ static Std_ReturnType serial_get_data16(MpuAddressRegionType *region, CoreIdType
 {
 	uint32 off = (addr - region->start);
 	*data = *((uint16*)(&region->data[off]));
+	//if (addr == (UART3_BASE + REG_SCFSR)) {
+	//	printf("read addr=0x%x REG_SCFSR=0x%x\n", addr, *data);
+	//}
 	return STD_E_OK;
 }
 static Std_ReturnType serial_get_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 *data)
@@ -145,7 +152,13 @@ static Std_ReturnType serial_put_data16(MpuAddressRegionType *region, CoreIdType
 				data |= SCFSR_TDFE;
 			}
 		}
+		if ((*org_data & SCFSR_RDF) != 0) {
+			if ((data & SCFSR_RDF) == 0) {
+				SerialDevice[UARTnCH3].rdf = FALSE;
+			}
+		}
 		*org_data = data;
+		//printf("write addr=0x%x REG_SCFSR=0x%x\n", addr, *org_data);
 	}
 	else {
 		*((uint16*)(&region->data[off])) = data;

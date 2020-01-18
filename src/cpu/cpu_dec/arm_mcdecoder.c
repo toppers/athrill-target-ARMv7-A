@@ -8,8 +8,9 @@ typedef struct {
     arm_uint16 *code;
     arm_OpDecodedCodeType *decoded_code;
     arm_OperationCodeType *optype;
-    arm_uint16 code16;
-    arm_uint32 code32;
+    arm_uint16 code16x1;
+    arm_uint32 code16x2;
+    arm_uint32 code32x1;
 } OpDecodeContext;
 
 /* op constants */
@@ -2905,6 +2906,198 @@ typedef struct {
 /* macros */
 #define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
 
+/* function declarations */
+static arm_uint32 setbit_count(arm_uint32 value);
+
+        static int decision_node_code32x1_0(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_1(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_2(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_3(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_4(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_5(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_6(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_7(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_8(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_9(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_10(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_11(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_12(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_13(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_14(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_15(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_16(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_17(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_18(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_19(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_20(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_21(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_22(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_23(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_24(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_25(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_26(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_27(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_28(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_29(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_30(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_31(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_32(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_33(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_34(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_35(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_36(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_37(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_38(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_39(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_40(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_41(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_42(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_43(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_44(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_45(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_46(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_47(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_48(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_49(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_50(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_51(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_52(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_53(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_54(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_55(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_56(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_57(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_58(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_59(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_60(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_61(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_62(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_63(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_64(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_65(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_66(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_67(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_68(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_69(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_70(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_71(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_72(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_73(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_74(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_75(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_76(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_77(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_78(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_79(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_80(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_81(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_82(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_83(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_84(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_85(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_86(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_87(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_88(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_89(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_90(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_91(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_92(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_93(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_94(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_95(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_96(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_97(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_98(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_99(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_100(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_101(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_102(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_103(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_104(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_105(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_106(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_107(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_108(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_109(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code);
+
+    static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_add_spimm_a1(OpDecodeContext *context);
+    static int op_parse_arm_adr_a1(OpDecodeContext *context);
+    static int op_parse_arm_subs_pclr_a1(OpDecodeContext *context);
+    static int op_parse_arm_cmp_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_cmn_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_sub_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_sub_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_sub_spimm_a1(OpDecodeContext *context);
+    static int op_parse_arm_cmp_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_mov_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_mov_imm_a2(OpDecodeContext *context);
+    static int op_parse_arm_mvn_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_mov_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_mvn_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_bl_a1(OpDecodeContext *context);
+    static int op_parse_arm_blx_a2(OpDecodeContext *context);
+    static int op_parse_arm_blx_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_b_a1(OpDecodeContext *context);
+    static int op_parse_arm_bx_a1(OpDecodeContext *context);
+    static int op_parse_arm_str_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_strb_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_strh_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_strd_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_str_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_strb_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_push_a1(OpDecodeContext *context);
+    static int op_parse_arm_push_a2(OpDecodeContext *context);
+    static int op_parse_arm_stmfd_a1(OpDecodeContext *context);
+    static int op_parse_arm_stm_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldr_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldr_literal_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldrb_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldrh_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldrd_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldr_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldrb_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_ldrh_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_pop_a1(OpDecodeContext *context);
+    static int op_parse_arm_pop_a2(OpDecodeContext *context);
+    static int op_parse_arm_ldm_a1(OpDecodeContext *context);
+    static int op_parse_arm_nop_a1(OpDecodeContext *context);
+    static int op_parse_arm_msr_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_msr2_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_mrs_a1(OpDecodeContext *context);
+    static int op_parse_arm_msr2_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_mcr_a1(OpDecodeContext *context);
+    static int op_parse_arm_mcr2_a2(OpDecodeContext *context);
+    static int op_parse_arm_mrc_a1(OpDecodeContext *context);
+    static int op_parse_arm_mrc2_a2(OpDecodeContext *context);
+    static int op_parse_arm_bic_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_orr_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_orr_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_movt_a1(OpDecodeContext *context);
+    static int op_parse_arm_lsl_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_lsl_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_lsr_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_bfc_a1(OpDecodeContext *context);
+    static int op_parse_arm_and_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_and_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_uxtb_a1(OpDecodeContext *context);
+    static int op_parse_arm_uxth_a1(OpDecodeContext *context);
+    static int op_parse_arm_rsb_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_rsb_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_mul_a1(OpDecodeContext *context);
+    static int op_parse_arm_tst_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_tst_reg_a1(OpDecodeContext *context);
+    static int op_parse_arm_sxtb_a1(OpDecodeContext *context);
+    static int op_parse_arm_asr_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_srs_a1(OpDecodeContext *context);
+    static int op_parse_arm_rfe_a1(OpDecodeContext *context);
+    static int op_parse_arm_wfi_a1(OpDecodeContext *context);
+
 /* functions for conditions */
 static arm_uint32 setbit_count(arm_uint32 value) {
     arm_uint32 count = 0;
@@ -2919,7 +3112,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_add_imm_a1 */
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_add_imm_a1) != OP_FB_arm_add_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_add_imm_a1) != OP_FB_arm_add_imm_a1) {
             return 1;
         }
 
@@ -2929,30 +3122,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_add_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_add_imm_a1_cond_0) >> OP_SF_EBII_arm_add_imm_a1_cond_0) << OP_SF_EBIF_arm_add_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_imm_a1_cond_0) >> OP_SF_EBII_arm_add_imm_a1_cond_0) << OP_SF_EBIF_arm_add_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_add_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_add_imm_a1_S_0) >> OP_SF_EBII_arm_add_imm_a1_S_0) << OP_SF_EBIF_arm_add_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_imm_a1_S_0) >> OP_SF_EBII_arm_add_imm_a1_S_0) << OP_SF_EBIF_arm_add_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_add_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_add_imm_a1_Rn_0) >> OP_SF_EBII_arm_add_imm_a1_Rn_0) << OP_SF_EBIF_arm_add_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_imm_a1_Rn_0) >> OP_SF_EBII_arm_add_imm_a1_Rn_0) << OP_SF_EBIF_arm_add_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_add_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_add_imm_a1_Rd_0) >> OP_SF_EBII_arm_add_imm_a1_Rd_0) << OP_SF_EBIF_arm_add_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_imm_a1_Rd_0) >> OP_SF_EBII_arm_add_imm_a1_Rd_0) << OP_SF_EBIF_arm_add_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_add_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_add_imm_a1_imm12_0) >> OP_SF_EBII_arm_add_imm_a1_imm12_0) << OP_SF_EBIF_arm_add_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_imm_a1_imm12_0) >> OP_SF_EBII_arm_add_imm_a1_imm12_0) << OP_SF_EBIF_arm_add_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -2974,7 +3166,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_add_reg_a1 */
     static int op_parse_arm_add_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_add_reg_a1) != OP_FB_arm_add_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_add_reg_a1) != OP_FB_arm_add_reg_a1) {
             return 1;
         }
 
@@ -2984,40 +3176,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_add_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_cond_0) >> OP_SF_EBII_arm_add_reg_a1_cond_0) << OP_SF_EBIF_arm_add_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_cond_0) >> OP_SF_EBII_arm_add_reg_a1_cond_0) << OP_SF_EBIF_arm_add_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_S_0) >> OP_SF_EBII_arm_add_reg_a1_S_0) << OP_SF_EBIF_arm_add_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_S_0) >> OP_SF_EBII_arm_add_reg_a1_S_0) << OP_SF_EBIF_arm_add_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_Rn_0) >> OP_SF_EBII_arm_add_reg_a1_Rn_0) << OP_SF_EBIF_arm_add_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_Rn_0) >> OP_SF_EBII_arm_add_reg_a1_Rn_0) << OP_SF_EBIF_arm_add_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_Rd_0) >> OP_SF_EBII_arm_add_reg_a1_Rd_0) << OP_SF_EBIF_arm_add_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_Rd_0) >> OP_SF_EBII_arm_add_reg_a1_Rd_0) << OP_SF_EBIF_arm_add_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_imm5_0) >> OP_SF_EBII_arm_add_reg_a1_imm5_0) << OP_SF_EBIF_arm_add_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_imm5_0) >> OP_SF_EBII_arm_add_reg_a1_imm5_0) << OP_SF_EBIF_arm_add_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_type_0) >> OP_SF_EBII_arm_add_reg_a1_type_0) << OP_SF_EBIF_arm_add_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_type_0) >> OP_SF_EBII_arm_add_reg_a1_type_0) << OP_SF_EBIF_arm_add_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_add_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_add_reg_a1_Rm_0) >> OP_SF_EBII_arm_add_reg_a1_Rm_0) << OP_SF_EBIF_arm_add_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_reg_a1_Rm_0) >> OP_SF_EBII_arm_add_reg_a1_Rm_0) << OP_SF_EBIF_arm_add_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3036,7 +3227,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_add_spimm_a1 */
     static int op_parse_arm_add_spimm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_add_spimm_a1) != OP_FB_arm_add_spimm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_add_spimm_a1) != OP_FB_arm_add_spimm_a1) {
             return 1;
         }
 
@@ -3046,25 +3237,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_add_spimm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_add_spimm_a1_cond_0) >> OP_SF_EBII_arm_add_spimm_a1_cond_0) << OP_SF_EBIF_arm_add_spimm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_spimm_a1_cond_0) >> OP_SF_EBII_arm_add_spimm_a1_cond_0) << OP_SF_EBIF_arm_add_spimm_a1_cond_0);
             
         
             context->decoded_code->code.arm_add_spimm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_add_spimm_a1_S_0) >> OP_SF_EBII_arm_add_spimm_a1_S_0) << OP_SF_EBIF_arm_add_spimm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_spimm_a1_S_0) >> OP_SF_EBII_arm_add_spimm_a1_S_0) << OP_SF_EBIF_arm_add_spimm_a1_S_0);
             
         
             context->decoded_code->code.arm_add_spimm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_add_spimm_a1_Rd_0) >> OP_SF_EBII_arm_add_spimm_a1_Rd_0) << OP_SF_EBIF_arm_add_spimm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_spimm_a1_Rd_0) >> OP_SF_EBII_arm_add_spimm_a1_Rd_0) << OP_SF_EBIF_arm_add_spimm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_add_spimm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_add_spimm_a1_imm12_0) >> OP_SF_EBII_arm_add_spimm_a1_imm12_0) << OP_SF_EBIF_arm_add_spimm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_add_spimm_a1_imm12_0) >> OP_SF_EBII_arm_add_spimm_a1_imm12_0) << OP_SF_EBIF_arm_add_spimm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3082,7 +3272,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_adr_a1 */
     static int op_parse_arm_adr_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_adr_a1) != OP_FB_arm_adr_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_adr_a1) != OP_FB_arm_adr_a1) {
             return 1;
         }
 
@@ -3092,20 +3282,19 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_adr_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_adr_a1_cond_0) >> OP_SF_EBII_arm_adr_a1_cond_0) << OP_SF_EBIF_arm_adr_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_adr_a1_cond_0) >> OP_SF_EBII_arm_adr_a1_cond_0) << OP_SF_EBIF_arm_adr_a1_cond_0);
             
         
             context->decoded_code->code.arm_adr_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_adr_a1_Rd_0) >> OP_SF_EBII_arm_adr_a1_Rd_0) << OP_SF_EBIF_arm_adr_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_adr_a1_Rd_0) >> OP_SF_EBII_arm_adr_a1_Rd_0) << OP_SF_EBIF_arm_adr_a1_Rd_0);
             
         
             context->decoded_code->code.arm_adr_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_adr_a1_imm12_0) >> OP_SF_EBII_arm_adr_a1_imm12_0) << OP_SF_EBIF_arm_adr_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_adr_a1_imm12_0) >> OP_SF_EBII_arm_adr_a1_imm12_0) << OP_SF_EBIF_arm_adr_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3119,7 +3308,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_subs_pclr_a1 */
     static int op_parse_arm_subs_pclr_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_subs_pclr_a1) != OP_FB_arm_subs_pclr_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_subs_pclr_a1) != OP_FB_arm_subs_pclr_a1) {
             return 1;
         }
 
@@ -3129,25 +3318,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_subs_pclr_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_subs_pclr_a1_cond_0) >> OP_SF_EBII_arm_subs_pclr_a1_cond_0) << OP_SF_EBIF_arm_subs_pclr_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_subs_pclr_a1_cond_0) >> OP_SF_EBII_arm_subs_pclr_a1_cond_0) << OP_SF_EBIF_arm_subs_pclr_a1_cond_0);
             
         
             context->decoded_code->code.arm_subs_pclr_a1.opcode =
             
-                (((context->code32 & OP_SF_MASK_arm_subs_pclr_a1_opcode_0) >> OP_SF_EBII_arm_subs_pclr_a1_opcode_0) << OP_SF_EBIF_arm_subs_pclr_a1_opcode_0);
+                (((context->code32x1 & OP_SF_MASK_arm_subs_pclr_a1_opcode_0) >> OP_SF_EBII_arm_subs_pclr_a1_opcode_0) << OP_SF_EBIF_arm_subs_pclr_a1_opcode_0);
             
         
             context->decoded_code->code.arm_subs_pclr_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_subs_pclr_a1_Rn_0) >> OP_SF_EBII_arm_subs_pclr_a1_Rn_0) << OP_SF_EBIF_arm_subs_pclr_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_subs_pclr_a1_Rn_0) >> OP_SF_EBII_arm_subs_pclr_a1_Rn_0) << OP_SF_EBIF_arm_subs_pclr_a1_Rn_0);
             
         
             context->decoded_code->code.arm_subs_pclr_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_subs_pclr_a1_imm12_0) >> OP_SF_EBII_arm_subs_pclr_a1_imm12_0) << OP_SF_EBIF_arm_subs_pclr_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_subs_pclr_a1_imm12_0) >> OP_SF_EBII_arm_subs_pclr_a1_imm12_0) << OP_SF_EBIF_arm_subs_pclr_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3161,7 +3349,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_cmp_imm_a1 */
     static int op_parse_arm_cmp_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_cmp_imm_a1) != OP_FB_arm_cmp_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_cmp_imm_a1) != OP_FB_arm_cmp_imm_a1) {
             return 1;
         }
 
@@ -3171,20 +3359,19 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_cmp_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_imm_a1_cond_0) >> OP_SF_EBII_arm_cmp_imm_a1_cond_0) << OP_SF_EBIF_arm_cmp_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_imm_a1_cond_0) >> OP_SF_EBII_arm_cmp_imm_a1_cond_0) << OP_SF_EBIF_arm_cmp_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_cmp_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_imm_a1_Rn_0) >> OP_SF_EBII_arm_cmp_imm_a1_Rn_0) << OP_SF_EBIF_arm_cmp_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_imm_a1_Rn_0) >> OP_SF_EBII_arm_cmp_imm_a1_Rn_0) << OP_SF_EBIF_arm_cmp_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_cmp_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_imm_a1_imm12_0) >> OP_SF_EBII_arm_cmp_imm_a1_imm12_0) << OP_SF_EBIF_arm_cmp_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_imm_a1_imm12_0) >> OP_SF_EBII_arm_cmp_imm_a1_imm12_0) << OP_SF_EBIF_arm_cmp_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3198,7 +3385,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_cmn_imm_a1 */
     static int op_parse_arm_cmn_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_cmn_imm_a1) != OP_FB_arm_cmn_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_cmn_imm_a1) != OP_FB_arm_cmn_imm_a1) {
             return 1;
         }
 
@@ -3208,20 +3395,19 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_cmn_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_cmn_imm_a1_cond_0) >> OP_SF_EBII_arm_cmn_imm_a1_cond_0) << OP_SF_EBIF_arm_cmn_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmn_imm_a1_cond_0) >> OP_SF_EBII_arm_cmn_imm_a1_cond_0) << OP_SF_EBIF_arm_cmn_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_cmn_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_cmn_imm_a1_Rn_0) >> OP_SF_EBII_arm_cmn_imm_a1_Rn_0) << OP_SF_EBIF_arm_cmn_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmn_imm_a1_Rn_0) >> OP_SF_EBII_arm_cmn_imm_a1_Rn_0) << OP_SF_EBIF_arm_cmn_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_cmn_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_cmn_imm_a1_imm12_0) >> OP_SF_EBII_arm_cmn_imm_a1_imm12_0) << OP_SF_EBIF_arm_cmn_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmn_imm_a1_imm12_0) >> OP_SF_EBII_arm_cmn_imm_a1_imm12_0) << OP_SF_EBIF_arm_cmn_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3235,7 +3421,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_sub_imm_a1 */
     static int op_parse_arm_sub_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_sub_imm_a1) != OP_FB_arm_sub_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_sub_imm_a1) != OP_FB_arm_sub_imm_a1) {
             return 1;
         }
 
@@ -3245,30 +3431,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_sub_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_imm_a1_cond_0) >> OP_SF_EBII_arm_sub_imm_a1_cond_0) << OP_SF_EBIF_arm_sub_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_imm_a1_cond_0) >> OP_SF_EBII_arm_sub_imm_a1_cond_0) << OP_SF_EBIF_arm_sub_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_sub_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_imm_a1_S_0) >> OP_SF_EBII_arm_sub_imm_a1_S_0) << OP_SF_EBIF_arm_sub_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_imm_a1_S_0) >> OP_SF_EBII_arm_sub_imm_a1_S_0) << OP_SF_EBIF_arm_sub_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_sub_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_imm_a1_Rn_0) >> OP_SF_EBII_arm_sub_imm_a1_Rn_0) << OP_SF_EBIF_arm_sub_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_imm_a1_Rn_0) >> OP_SF_EBII_arm_sub_imm_a1_Rn_0) << OP_SF_EBIF_arm_sub_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_sub_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_imm_a1_Rd_0) >> OP_SF_EBII_arm_sub_imm_a1_Rd_0) << OP_SF_EBIF_arm_sub_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_imm_a1_Rd_0) >> OP_SF_EBII_arm_sub_imm_a1_Rd_0) << OP_SF_EBIF_arm_sub_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_sub_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_imm_a1_imm12_0) >> OP_SF_EBII_arm_sub_imm_a1_imm12_0) << OP_SF_EBIF_arm_sub_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_imm_a1_imm12_0) >> OP_SF_EBII_arm_sub_imm_a1_imm12_0) << OP_SF_EBIF_arm_sub_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3290,7 +3475,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_sub_reg_a1 */
     static int op_parse_arm_sub_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_sub_reg_a1) != OP_FB_arm_sub_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_sub_reg_a1) != OP_FB_arm_sub_reg_a1) {
             return 1;
         }
 
@@ -3300,40 +3485,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_sub_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_cond_0) >> OP_SF_EBII_arm_sub_reg_a1_cond_0) << OP_SF_EBIF_arm_sub_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_cond_0) >> OP_SF_EBII_arm_sub_reg_a1_cond_0) << OP_SF_EBIF_arm_sub_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_S_0) >> OP_SF_EBII_arm_sub_reg_a1_S_0) << OP_SF_EBIF_arm_sub_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_S_0) >> OP_SF_EBII_arm_sub_reg_a1_S_0) << OP_SF_EBIF_arm_sub_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_Rn_0) >> OP_SF_EBII_arm_sub_reg_a1_Rn_0) << OP_SF_EBIF_arm_sub_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_Rn_0) >> OP_SF_EBII_arm_sub_reg_a1_Rn_0) << OP_SF_EBIF_arm_sub_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_Rd_0) >> OP_SF_EBII_arm_sub_reg_a1_Rd_0) << OP_SF_EBIF_arm_sub_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_Rd_0) >> OP_SF_EBII_arm_sub_reg_a1_Rd_0) << OP_SF_EBIF_arm_sub_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_imm5_0) >> OP_SF_EBII_arm_sub_reg_a1_imm5_0) << OP_SF_EBIF_arm_sub_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_imm5_0) >> OP_SF_EBII_arm_sub_reg_a1_imm5_0) << OP_SF_EBIF_arm_sub_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_type_0) >> OP_SF_EBII_arm_sub_reg_a1_type_0) << OP_SF_EBIF_arm_sub_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_type_0) >> OP_SF_EBII_arm_sub_reg_a1_type_0) << OP_SF_EBIF_arm_sub_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_sub_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_reg_a1_Rm_0) >> OP_SF_EBII_arm_sub_reg_a1_Rm_0) << OP_SF_EBIF_arm_sub_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_reg_a1_Rm_0) >> OP_SF_EBII_arm_sub_reg_a1_Rm_0) << OP_SF_EBIF_arm_sub_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3352,7 +3536,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_sub_spimm_a1 */
     static int op_parse_arm_sub_spimm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_sub_spimm_a1) != OP_FB_arm_sub_spimm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_sub_spimm_a1) != OP_FB_arm_sub_spimm_a1) {
             return 1;
         }
 
@@ -3362,25 +3546,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_sub_spimm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_spimm_a1_cond_0) >> OP_SF_EBII_arm_sub_spimm_a1_cond_0) << OP_SF_EBIF_arm_sub_spimm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_spimm_a1_cond_0) >> OP_SF_EBII_arm_sub_spimm_a1_cond_0) << OP_SF_EBIF_arm_sub_spimm_a1_cond_0);
             
         
             context->decoded_code->code.arm_sub_spimm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_spimm_a1_S_0) >> OP_SF_EBII_arm_sub_spimm_a1_S_0) << OP_SF_EBIF_arm_sub_spimm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_spimm_a1_S_0) >> OP_SF_EBII_arm_sub_spimm_a1_S_0) << OP_SF_EBIF_arm_sub_spimm_a1_S_0);
             
         
             context->decoded_code->code.arm_sub_spimm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_spimm_a1_Rd_0) >> OP_SF_EBII_arm_sub_spimm_a1_Rd_0) << OP_SF_EBIF_arm_sub_spimm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_spimm_a1_Rd_0) >> OP_SF_EBII_arm_sub_spimm_a1_Rd_0) << OP_SF_EBIF_arm_sub_spimm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_sub_spimm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_sub_spimm_a1_imm12_0) >> OP_SF_EBII_arm_sub_spimm_a1_imm12_0) << OP_SF_EBIF_arm_sub_spimm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sub_spimm_a1_imm12_0) >> OP_SF_EBII_arm_sub_spimm_a1_imm12_0) << OP_SF_EBIF_arm_sub_spimm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3398,7 +3581,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_cmp_reg_a1 */
     static int op_parse_arm_cmp_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_cmp_reg_a1) != OP_FB_arm_cmp_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_cmp_reg_a1) != OP_FB_arm_cmp_reg_a1) {
             return 1;
         }
 
@@ -3408,30 +3591,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_cmp_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_reg_a1_cond_0) >> OP_SF_EBII_arm_cmp_reg_a1_cond_0) << OP_SF_EBIF_arm_cmp_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_reg_a1_cond_0) >> OP_SF_EBII_arm_cmp_reg_a1_cond_0) << OP_SF_EBIF_arm_cmp_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_cmp_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_reg_a1_Rn_0) >> OP_SF_EBII_arm_cmp_reg_a1_Rn_0) << OP_SF_EBIF_arm_cmp_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_reg_a1_Rn_0) >> OP_SF_EBII_arm_cmp_reg_a1_Rn_0) << OP_SF_EBIF_arm_cmp_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_cmp_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_reg_a1_imm5_0) >> OP_SF_EBII_arm_cmp_reg_a1_imm5_0) << OP_SF_EBIF_arm_cmp_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_reg_a1_imm5_0) >> OP_SF_EBII_arm_cmp_reg_a1_imm5_0) << OP_SF_EBIF_arm_cmp_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_cmp_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_reg_a1_type_0) >> OP_SF_EBII_arm_cmp_reg_a1_type_0) << OP_SF_EBIF_arm_cmp_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_reg_a1_type_0) >> OP_SF_EBII_arm_cmp_reg_a1_type_0) << OP_SF_EBIF_arm_cmp_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_cmp_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_cmp_reg_a1_Rm_0) >> OP_SF_EBII_arm_cmp_reg_a1_Rm_0) << OP_SF_EBIF_arm_cmp_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_cmp_reg_a1_Rm_0) >> OP_SF_EBII_arm_cmp_reg_a1_Rm_0) << OP_SF_EBIF_arm_cmp_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3445,7 +3627,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mov_imm_a1 */
     static int op_parse_arm_mov_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mov_imm_a1) != OP_FB_arm_mov_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mov_imm_a1) != OP_FB_arm_mov_imm_a1) {
             return 1;
         }
 
@@ -3455,25 +3637,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mov_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a1_cond_0) >> OP_SF_EBII_arm_mov_imm_a1_cond_0) << OP_SF_EBIF_arm_mov_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a1_cond_0) >> OP_SF_EBII_arm_mov_imm_a1_cond_0) << OP_SF_EBIF_arm_mov_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_mov_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a1_S_0) >> OP_SF_EBII_arm_mov_imm_a1_S_0) << OP_SF_EBIF_arm_mov_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a1_S_0) >> OP_SF_EBII_arm_mov_imm_a1_S_0) << OP_SF_EBIF_arm_mov_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_mov_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a1_Rd_0) >> OP_SF_EBII_arm_mov_imm_a1_Rd_0) << OP_SF_EBIF_arm_mov_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a1_Rd_0) >> OP_SF_EBII_arm_mov_imm_a1_Rd_0) << OP_SF_EBIF_arm_mov_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_mov_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a1_imm12_0) >> OP_SF_EBII_arm_mov_imm_a1_imm12_0) << OP_SF_EBIF_arm_mov_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a1_imm12_0) >> OP_SF_EBII_arm_mov_imm_a1_imm12_0) << OP_SF_EBIF_arm_mov_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3491,7 +3672,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mov_imm_a2 */
     static int op_parse_arm_mov_imm_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mov_imm_a2) != OP_FB_arm_mov_imm_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mov_imm_a2) != OP_FB_arm_mov_imm_a2) {
             return 1;
         }
 
@@ -3501,25 +3682,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mov_imm_a2.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a2_cond_0) >> OP_SF_EBII_arm_mov_imm_a2_cond_0) << OP_SF_EBIF_arm_mov_imm_a2_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a2_cond_0) >> OP_SF_EBII_arm_mov_imm_a2_cond_0) << OP_SF_EBIF_arm_mov_imm_a2_cond_0);
             
         
             context->decoded_code->code.arm_mov_imm_a2.imm4 =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a2_imm4_0) >> OP_SF_EBII_arm_mov_imm_a2_imm4_0) << OP_SF_EBIF_arm_mov_imm_a2_imm4_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a2_imm4_0) >> OP_SF_EBII_arm_mov_imm_a2_imm4_0) << OP_SF_EBIF_arm_mov_imm_a2_imm4_0);
             
         
             context->decoded_code->code.arm_mov_imm_a2.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a2_Rd_0) >> OP_SF_EBII_arm_mov_imm_a2_Rd_0) << OP_SF_EBIF_arm_mov_imm_a2_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a2_Rd_0) >> OP_SF_EBII_arm_mov_imm_a2_Rd_0) << OP_SF_EBIF_arm_mov_imm_a2_Rd_0);
             
         
             context->decoded_code->code.arm_mov_imm_a2.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_imm_a2_imm12_0) >> OP_SF_EBII_arm_mov_imm_a2_imm12_0) << OP_SF_EBIF_arm_mov_imm_a2_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_imm_a2_imm12_0) >> OP_SF_EBII_arm_mov_imm_a2_imm12_0) << OP_SF_EBIF_arm_mov_imm_a2_imm12_0);
             
         
-
         
         
             if (
@@ -3533,7 +3713,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mvn_imm_a1 */
     static int op_parse_arm_mvn_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mvn_imm_a1) != OP_FB_arm_mvn_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mvn_imm_a1) != OP_FB_arm_mvn_imm_a1) {
             return 1;
         }
 
@@ -3543,25 +3723,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mvn_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_cond_0) >> OP_SF_EBII_arm_mvn_imm_a1_cond_0) << OP_SF_EBIF_arm_mvn_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_imm_a1_cond_0) >> OP_SF_EBII_arm_mvn_imm_a1_cond_0) << OP_SF_EBIF_arm_mvn_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_mvn_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_S_0) >> OP_SF_EBII_arm_mvn_imm_a1_S_0) << OP_SF_EBIF_arm_mvn_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_imm_a1_S_0) >> OP_SF_EBII_arm_mvn_imm_a1_S_0) << OP_SF_EBIF_arm_mvn_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_mvn_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_Rd_0) >> OP_SF_EBII_arm_mvn_imm_a1_Rd_0) << OP_SF_EBIF_arm_mvn_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_imm_a1_Rd_0) >> OP_SF_EBII_arm_mvn_imm_a1_Rd_0) << OP_SF_EBIF_arm_mvn_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_mvn_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_imm_a1_imm12_0) >> OP_SF_EBII_arm_mvn_imm_a1_imm12_0) << OP_SF_EBIF_arm_mvn_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_imm_a1_imm12_0) >> OP_SF_EBII_arm_mvn_imm_a1_imm12_0) << OP_SF_EBIF_arm_mvn_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3579,7 +3758,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mov_reg_a1 */
     static int op_parse_arm_mov_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mov_reg_a1) != OP_FB_arm_mov_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mov_reg_a1) != OP_FB_arm_mov_reg_a1) {
             return 1;
         }
 
@@ -3589,25 +3768,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mov_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_reg_a1_cond_0) >> OP_SF_EBII_arm_mov_reg_a1_cond_0) << OP_SF_EBIF_arm_mov_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_reg_a1_cond_0) >> OP_SF_EBII_arm_mov_reg_a1_cond_0) << OP_SF_EBIF_arm_mov_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_mov_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_reg_a1_S_0) >> OP_SF_EBII_arm_mov_reg_a1_S_0) << OP_SF_EBIF_arm_mov_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_reg_a1_S_0) >> OP_SF_EBII_arm_mov_reg_a1_S_0) << OP_SF_EBIF_arm_mov_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_mov_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_reg_a1_Rd_0) >> OP_SF_EBII_arm_mov_reg_a1_Rd_0) << OP_SF_EBIF_arm_mov_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_reg_a1_Rd_0) >> OP_SF_EBII_arm_mov_reg_a1_Rd_0) << OP_SF_EBIF_arm_mov_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_mov_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_mov_reg_a1_Rm_0) >> OP_SF_EBII_arm_mov_reg_a1_Rm_0) << OP_SF_EBIF_arm_mov_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mov_reg_a1_Rm_0) >> OP_SF_EBII_arm_mov_reg_a1_Rm_0) << OP_SF_EBIF_arm_mov_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3625,7 +3803,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mvn_reg_a1 */
     static int op_parse_arm_mvn_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mvn_reg_a1) != OP_FB_arm_mvn_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mvn_reg_a1) != OP_FB_arm_mvn_reg_a1) {
             return 1;
         }
 
@@ -3635,35 +3813,34 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mvn_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_cond_0) >> OP_SF_EBII_arm_mvn_reg_a1_cond_0) << OP_SF_EBIF_arm_mvn_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_cond_0) >> OP_SF_EBII_arm_mvn_reg_a1_cond_0) << OP_SF_EBIF_arm_mvn_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_mvn_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_S_0) >> OP_SF_EBII_arm_mvn_reg_a1_S_0) << OP_SF_EBIF_arm_mvn_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_S_0) >> OP_SF_EBII_arm_mvn_reg_a1_S_0) << OP_SF_EBIF_arm_mvn_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_mvn_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_Rd_0) >> OP_SF_EBII_arm_mvn_reg_a1_Rd_0) << OP_SF_EBIF_arm_mvn_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_Rd_0) >> OP_SF_EBII_arm_mvn_reg_a1_Rd_0) << OP_SF_EBIF_arm_mvn_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_mvn_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_imm5_0) >> OP_SF_EBII_arm_mvn_reg_a1_imm5_0) << OP_SF_EBIF_arm_mvn_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_imm5_0) >> OP_SF_EBII_arm_mvn_reg_a1_imm5_0) << OP_SF_EBIF_arm_mvn_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_mvn_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_type_0) >> OP_SF_EBII_arm_mvn_reg_a1_type_0) << OP_SF_EBIF_arm_mvn_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_type_0) >> OP_SF_EBII_arm_mvn_reg_a1_type_0) << OP_SF_EBIF_arm_mvn_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_mvn_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_mvn_reg_a1_Rm_0) >> OP_SF_EBII_arm_mvn_reg_a1_Rm_0) << OP_SF_EBIF_arm_mvn_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mvn_reg_a1_Rm_0) >> OP_SF_EBII_arm_mvn_reg_a1_Rm_0) << OP_SF_EBIF_arm_mvn_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3681,7 +3858,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_bl_a1 */
     static int op_parse_arm_bl_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_bl_a1) != OP_FB_arm_bl_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_bl_a1) != OP_FB_arm_bl_a1) {
             return 1;
         }
 
@@ -3691,15 +3868,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_bl_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_bl_a1_cond_0) >> OP_SF_EBII_arm_bl_a1_cond_0) << OP_SF_EBIF_arm_bl_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bl_a1_cond_0) >> OP_SF_EBII_arm_bl_a1_cond_0) << OP_SF_EBIF_arm_bl_a1_cond_0);
             
         
             context->decoded_code->code.arm_bl_a1.imm24 =
             
-                (((context->code32 & OP_SF_MASK_arm_bl_a1_imm24_0) >> OP_SF_EBII_arm_bl_a1_imm24_0) << OP_SF_EBIF_arm_bl_a1_imm24_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bl_a1_imm24_0) >> OP_SF_EBII_arm_bl_a1_imm24_0) << OP_SF_EBIF_arm_bl_a1_imm24_0);
             
         
-
         
         
             if (
@@ -3713,7 +3889,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_blx_a2 */
     static int op_parse_arm_blx_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_blx_a2) != OP_FB_arm_blx_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_blx_a2) != OP_FB_arm_blx_a2) {
             return 1;
         }
 
@@ -3723,15 +3899,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_blx_a2.H =
             
-                (((context->code32 & OP_SF_MASK_arm_blx_a2_H_0) >> OP_SF_EBII_arm_blx_a2_H_0) << OP_SF_EBIF_arm_blx_a2_H_0);
+                (((context->code32x1 & OP_SF_MASK_arm_blx_a2_H_0) >> OP_SF_EBII_arm_blx_a2_H_0) << OP_SF_EBIF_arm_blx_a2_H_0);
             
         
             context->decoded_code->code.arm_blx_a2.imm24 =
             
-                (((context->code32 & OP_SF_MASK_arm_blx_a2_imm24_0) >> OP_SF_EBII_arm_blx_a2_imm24_0) << OP_SF_EBIF_arm_blx_a2_imm24_0);
+                (((context->code32x1 & OP_SF_MASK_arm_blx_a2_imm24_0) >> OP_SF_EBII_arm_blx_a2_imm24_0) << OP_SF_EBIF_arm_blx_a2_imm24_0);
             
         
-
         
         
         return 0;
@@ -3739,7 +3914,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_blx_reg_a1 */
     static int op_parse_arm_blx_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_blx_reg_a1) != OP_FB_arm_blx_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_blx_reg_a1) != OP_FB_arm_blx_reg_a1) {
             return 1;
         }
 
@@ -3749,15 +3924,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_blx_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_blx_reg_a1_cond_0) >> OP_SF_EBII_arm_blx_reg_a1_cond_0) << OP_SF_EBIF_arm_blx_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_blx_reg_a1_cond_0) >> OP_SF_EBII_arm_blx_reg_a1_cond_0) << OP_SF_EBIF_arm_blx_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_blx_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_blx_reg_a1_Rm_0) >> OP_SF_EBII_arm_blx_reg_a1_Rm_0) << OP_SF_EBIF_arm_blx_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_blx_reg_a1_Rm_0) >> OP_SF_EBII_arm_blx_reg_a1_Rm_0) << OP_SF_EBIF_arm_blx_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3773,7 +3947,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_b_a1 */
     static int op_parse_arm_b_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_b_a1) != OP_FB_arm_b_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_b_a1) != OP_FB_arm_b_a1) {
             return 1;
         }
 
@@ -3783,15 +3957,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_b_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_b_a1_cond_0) >> OP_SF_EBII_arm_b_a1_cond_0) << OP_SF_EBIF_arm_b_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_b_a1_cond_0) >> OP_SF_EBII_arm_b_a1_cond_0) << OP_SF_EBIF_arm_b_a1_cond_0);
             
         
             context->decoded_code->code.arm_b_a1.imm24 =
             
-                (((context->code32 & OP_SF_MASK_arm_b_a1_imm24_0) >> OP_SF_EBII_arm_b_a1_imm24_0) << OP_SF_EBIF_arm_b_a1_imm24_0);
+                (((context->code32x1 & OP_SF_MASK_arm_b_a1_imm24_0) >> OP_SF_EBII_arm_b_a1_imm24_0) << OP_SF_EBIF_arm_b_a1_imm24_0);
             
         
-
         
         
             if (
@@ -3805,7 +3978,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_bx_a1 */
     static int op_parse_arm_bx_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_bx_a1) != OP_FB_arm_bx_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_bx_a1) != OP_FB_arm_bx_a1) {
             return 1;
         }
 
@@ -3815,15 +3988,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_bx_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_bx_a1_cond_0) >> OP_SF_EBII_arm_bx_a1_cond_0) << OP_SF_EBIF_arm_bx_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bx_a1_cond_0) >> OP_SF_EBII_arm_bx_a1_cond_0) << OP_SF_EBIF_arm_bx_a1_cond_0);
             
         
             context->decoded_code->code.arm_bx_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_bx_a1_Rm_0) >> OP_SF_EBII_arm_bx_a1_Rm_0) << OP_SF_EBIF_arm_bx_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bx_a1_Rm_0) >> OP_SF_EBII_arm_bx_a1_Rm_0) << OP_SF_EBIF_arm_bx_a1_Rm_0);
             
         
-
         
         
             if (
@@ -3837,7 +4009,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_str_imm_a1 */
     static int op_parse_arm_str_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_str_imm_a1) != OP_FB_arm_str_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_str_imm_a1) != OP_FB_arm_str_imm_a1) {
             return 1;
         }
 
@@ -3847,40 +4019,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_str_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_cond_0) >> OP_SF_EBII_arm_str_imm_a1_cond_0) << OP_SF_EBIF_arm_str_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_cond_0) >> OP_SF_EBII_arm_str_imm_a1_cond_0) << OP_SF_EBIF_arm_str_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_P_0) >> OP_SF_EBII_arm_str_imm_a1_P_0) << OP_SF_EBIF_arm_str_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_P_0) >> OP_SF_EBII_arm_str_imm_a1_P_0) << OP_SF_EBIF_arm_str_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_U_0) >> OP_SF_EBII_arm_str_imm_a1_U_0) << OP_SF_EBIF_arm_str_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_U_0) >> OP_SF_EBII_arm_str_imm_a1_U_0) << OP_SF_EBIF_arm_str_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_W_0) >> OP_SF_EBII_arm_str_imm_a1_W_0) << OP_SF_EBIF_arm_str_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_W_0) >> OP_SF_EBII_arm_str_imm_a1_W_0) << OP_SF_EBIF_arm_str_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_Rn_0) >> OP_SF_EBII_arm_str_imm_a1_Rn_0) << OP_SF_EBIF_arm_str_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_Rn_0) >> OP_SF_EBII_arm_str_imm_a1_Rn_0) << OP_SF_EBIF_arm_str_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_Rt_0) >> OP_SF_EBII_arm_str_imm_a1_Rt_0) << OP_SF_EBIF_arm_str_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_Rt_0) >> OP_SF_EBII_arm_str_imm_a1_Rt_0) << OP_SF_EBIF_arm_str_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_str_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_str_imm_a1_imm12_0) >> OP_SF_EBII_arm_str_imm_a1_imm12_0) << OP_SF_EBIF_arm_str_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_imm_a1_imm12_0) >> OP_SF_EBII_arm_str_imm_a1_imm12_0) << OP_SF_EBIF_arm_str_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3904,7 +4075,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_strb_imm_a1 */
     static int op_parse_arm_strb_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_strb_imm_a1) != OP_FB_arm_strb_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_strb_imm_a1) != OP_FB_arm_strb_imm_a1) {
             return 1;
         }
 
@@ -3914,40 +4085,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_strb_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_cond_0) >> OP_SF_EBII_arm_strb_imm_a1_cond_0) << OP_SF_EBIF_arm_strb_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_cond_0) >> OP_SF_EBII_arm_strb_imm_a1_cond_0) << OP_SF_EBIF_arm_strb_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_P_0) >> OP_SF_EBII_arm_strb_imm_a1_P_0) << OP_SF_EBIF_arm_strb_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_P_0) >> OP_SF_EBII_arm_strb_imm_a1_P_0) << OP_SF_EBIF_arm_strb_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_U_0) >> OP_SF_EBII_arm_strb_imm_a1_U_0) << OP_SF_EBIF_arm_strb_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_U_0) >> OP_SF_EBII_arm_strb_imm_a1_U_0) << OP_SF_EBIF_arm_strb_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_W_0) >> OP_SF_EBII_arm_strb_imm_a1_W_0) << OP_SF_EBIF_arm_strb_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_W_0) >> OP_SF_EBII_arm_strb_imm_a1_W_0) << OP_SF_EBIF_arm_strb_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_Rn_0) >> OP_SF_EBII_arm_strb_imm_a1_Rn_0) << OP_SF_EBIF_arm_strb_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_Rn_0) >> OP_SF_EBII_arm_strb_imm_a1_Rn_0) << OP_SF_EBIF_arm_strb_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_Rt_0) >> OP_SF_EBII_arm_strb_imm_a1_Rt_0) << OP_SF_EBIF_arm_strb_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_Rt_0) >> OP_SF_EBII_arm_strb_imm_a1_Rt_0) << OP_SF_EBIF_arm_strb_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_strb_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_imm_a1_imm12_0) >> OP_SF_EBII_arm_strb_imm_a1_imm12_0) << OP_SF_EBIF_arm_strb_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_imm_a1_imm12_0) >> OP_SF_EBII_arm_strb_imm_a1_imm12_0) << OP_SF_EBIF_arm_strb_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -3965,7 +4135,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_strh_imm_a1 */
     static int op_parse_arm_strh_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_strh_imm_a1) != OP_FB_arm_strh_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_strh_imm_a1) != OP_FB_arm_strh_imm_a1) {
             return 1;
         }
 
@@ -3975,42 +4145,41 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_strh_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_cond_0) >> OP_SF_EBII_arm_strh_imm_a1_cond_0) << OP_SF_EBIF_arm_strh_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_cond_0) >> OP_SF_EBII_arm_strh_imm_a1_cond_0) << OP_SF_EBIF_arm_strh_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_P_0) >> OP_SF_EBII_arm_strh_imm_a1_P_0) << OP_SF_EBIF_arm_strh_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_P_0) >> OP_SF_EBII_arm_strh_imm_a1_P_0) << OP_SF_EBIF_arm_strh_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_U_0) >> OP_SF_EBII_arm_strh_imm_a1_U_0) << OP_SF_EBIF_arm_strh_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_U_0) >> OP_SF_EBII_arm_strh_imm_a1_U_0) << OP_SF_EBIF_arm_strh_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_W_0) >> OP_SF_EBII_arm_strh_imm_a1_W_0) << OP_SF_EBIF_arm_strh_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_W_0) >> OP_SF_EBII_arm_strh_imm_a1_W_0) << OP_SF_EBIF_arm_strh_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_Rn_0) >> OP_SF_EBII_arm_strh_imm_a1_Rn_0) << OP_SF_EBIF_arm_strh_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_Rn_0) >> OP_SF_EBII_arm_strh_imm_a1_Rn_0) << OP_SF_EBIF_arm_strh_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_Rt_0) >> OP_SF_EBII_arm_strh_imm_a1_Rt_0) << OP_SF_EBIF_arm_strh_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_Rt_0) >> OP_SF_EBII_arm_strh_imm_a1_Rt_0) << OP_SF_EBIF_arm_strh_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_strh_imm_a1.imm8 =
             
-                (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_imm8_0) >> OP_SF_EBII_arm_strh_imm_a1_imm8_0) << OP_SF_EBIF_arm_strh_imm_a1_imm8_0)
+                (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_imm8_0) >> OP_SF_EBII_arm_strh_imm_a1_imm8_0) << OP_SF_EBIF_arm_strh_imm_a1_imm8_0)
             
-                | (((context->code32 & OP_SF_MASK_arm_strh_imm_a1_imm8_1) >> OP_SF_EBII_arm_strh_imm_a1_imm8_1) << OP_SF_EBIF_arm_strh_imm_a1_imm8_1);
+                | (((context->code32x1 & OP_SF_MASK_arm_strh_imm_a1_imm8_1) >> OP_SF_EBII_arm_strh_imm_a1_imm8_1) << OP_SF_EBIF_arm_strh_imm_a1_imm8_1);
             
         
-
         
         
             if (
@@ -4028,7 +4197,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_strd_imm_a1 */
     static int op_parse_arm_strd_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_strd_imm_a1) != OP_FB_arm_strd_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_strd_imm_a1) != OP_FB_arm_strd_imm_a1) {
             return 1;
         }
 
@@ -4038,42 +4207,41 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_strd_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_cond_0) >> OP_SF_EBII_arm_strd_imm_a1_cond_0) << OP_SF_EBIF_arm_strd_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_cond_0) >> OP_SF_EBII_arm_strd_imm_a1_cond_0) << OP_SF_EBIF_arm_strd_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_P_0) >> OP_SF_EBII_arm_strd_imm_a1_P_0) << OP_SF_EBIF_arm_strd_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_P_0) >> OP_SF_EBII_arm_strd_imm_a1_P_0) << OP_SF_EBIF_arm_strd_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_U_0) >> OP_SF_EBII_arm_strd_imm_a1_U_0) << OP_SF_EBIF_arm_strd_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_U_0) >> OP_SF_EBII_arm_strd_imm_a1_U_0) << OP_SF_EBIF_arm_strd_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_W_0) >> OP_SF_EBII_arm_strd_imm_a1_W_0) << OP_SF_EBIF_arm_strd_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_W_0) >> OP_SF_EBII_arm_strd_imm_a1_W_0) << OP_SF_EBIF_arm_strd_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_Rn_0) >> OP_SF_EBII_arm_strd_imm_a1_Rn_0) << OP_SF_EBIF_arm_strd_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_Rn_0) >> OP_SF_EBII_arm_strd_imm_a1_Rn_0) << OP_SF_EBIF_arm_strd_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_Rt_0) >> OP_SF_EBII_arm_strd_imm_a1_Rt_0) << OP_SF_EBIF_arm_strd_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_Rt_0) >> OP_SF_EBII_arm_strd_imm_a1_Rt_0) << OP_SF_EBIF_arm_strd_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_strd_imm_a1.imm8 =
             
-                (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_imm8_0) >> OP_SF_EBII_arm_strd_imm_a1_imm8_0) << OP_SF_EBIF_arm_strd_imm_a1_imm8_0)
+                (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_imm8_0) >> OP_SF_EBII_arm_strd_imm_a1_imm8_0) << OP_SF_EBIF_arm_strd_imm_a1_imm8_0)
             
-                | (((context->code32 & OP_SF_MASK_arm_strd_imm_a1_imm8_1) >> OP_SF_EBII_arm_strd_imm_a1_imm8_1) << OP_SF_EBIF_arm_strd_imm_a1_imm8_1);
+                | (((context->code32x1 & OP_SF_MASK_arm_strd_imm_a1_imm8_1) >> OP_SF_EBII_arm_strd_imm_a1_imm8_1) << OP_SF_EBIF_arm_strd_imm_a1_imm8_1);
             
         
-
         
         
             if (
@@ -4091,7 +4259,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_str_reg_a1 */
     static int op_parse_arm_str_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_str_reg_a1) != OP_FB_arm_str_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_str_reg_a1) != OP_FB_arm_str_reg_a1) {
             return 1;
         }
 
@@ -4101,50 +4269,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_str_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_cond_0) >> OP_SF_EBII_arm_str_reg_a1_cond_0) << OP_SF_EBIF_arm_str_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_cond_0) >> OP_SF_EBII_arm_str_reg_a1_cond_0) << OP_SF_EBIF_arm_str_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_P_0) >> OP_SF_EBII_arm_str_reg_a1_P_0) << OP_SF_EBIF_arm_str_reg_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_P_0) >> OP_SF_EBII_arm_str_reg_a1_P_0) << OP_SF_EBIF_arm_str_reg_a1_P_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_U_0) >> OP_SF_EBII_arm_str_reg_a1_U_0) << OP_SF_EBIF_arm_str_reg_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_U_0) >> OP_SF_EBII_arm_str_reg_a1_U_0) << OP_SF_EBIF_arm_str_reg_a1_U_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_W_0) >> OP_SF_EBII_arm_str_reg_a1_W_0) << OP_SF_EBIF_arm_str_reg_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_W_0) >> OP_SF_EBII_arm_str_reg_a1_W_0) << OP_SF_EBIF_arm_str_reg_a1_W_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_Rn_0) >> OP_SF_EBII_arm_str_reg_a1_Rn_0) << OP_SF_EBIF_arm_str_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_Rn_0) >> OP_SF_EBII_arm_str_reg_a1_Rn_0) << OP_SF_EBIF_arm_str_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_Rt_0) >> OP_SF_EBII_arm_str_reg_a1_Rt_0) << OP_SF_EBIF_arm_str_reg_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_Rt_0) >> OP_SF_EBII_arm_str_reg_a1_Rt_0) << OP_SF_EBIF_arm_str_reg_a1_Rt_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_imm5_0) >> OP_SF_EBII_arm_str_reg_a1_imm5_0) << OP_SF_EBIF_arm_str_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_imm5_0) >> OP_SF_EBII_arm_str_reg_a1_imm5_0) << OP_SF_EBIF_arm_str_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_type_0) >> OP_SF_EBII_arm_str_reg_a1_type_0) << OP_SF_EBIF_arm_str_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_type_0) >> OP_SF_EBII_arm_str_reg_a1_type_0) << OP_SF_EBIF_arm_str_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_str_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_str_reg_a1_Rm_0) >> OP_SF_EBII_arm_str_reg_a1_Rm_0) << OP_SF_EBIF_arm_str_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_str_reg_a1_Rm_0) >> OP_SF_EBII_arm_str_reg_a1_Rm_0) << OP_SF_EBIF_arm_str_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -4163,7 +4330,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_strb_reg_a1 */
     static int op_parse_arm_strb_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_strb_reg_a1) != OP_FB_arm_strb_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_strb_reg_a1) != OP_FB_arm_strb_reg_a1) {
             return 1;
         }
 
@@ -4173,50 +4340,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_strb_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_cond_0) >> OP_SF_EBII_arm_strb_reg_a1_cond_0) << OP_SF_EBIF_arm_strb_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_cond_0) >> OP_SF_EBII_arm_strb_reg_a1_cond_0) << OP_SF_EBIF_arm_strb_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_P_0) >> OP_SF_EBII_arm_strb_reg_a1_P_0) << OP_SF_EBIF_arm_strb_reg_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_P_0) >> OP_SF_EBII_arm_strb_reg_a1_P_0) << OP_SF_EBIF_arm_strb_reg_a1_P_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_U_0) >> OP_SF_EBII_arm_strb_reg_a1_U_0) << OP_SF_EBIF_arm_strb_reg_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_U_0) >> OP_SF_EBII_arm_strb_reg_a1_U_0) << OP_SF_EBIF_arm_strb_reg_a1_U_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_W_0) >> OP_SF_EBII_arm_strb_reg_a1_W_0) << OP_SF_EBIF_arm_strb_reg_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_W_0) >> OP_SF_EBII_arm_strb_reg_a1_W_0) << OP_SF_EBIF_arm_strb_reg_a1_W_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_Rn_0) >> OP_SF_EBII_arm_strb_reg_a1_Rn_0) << OP_SF_EBIF_arm_strb_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_Rn_0) >> OP_SF_EBII_arm_strb_reg_a1_Rn_0) << OP_SF_EBIF_arm_strb_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_Rt_0) >> OP_SF_EBII_arm_strb_reg_a1_Rt_0) << OP_SF_EBIF_arm_strb_reg_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_Rt_0) >> OP_SF_EBII_arm_strb_reg_a1_Rt_0) << OP_SF_EBIF_arm_strb_reg_a1_Rt_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_imm5_0) >> OP_SF_EBII_arm_strb_reg_a1_imm5_0) << OP_SF_EBIF_arm_strb_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_imm5_0) >> OP_SF_EBII_arm_strb_reg_a1_imm5_0) << OP_SF_EBIF_arm_strb_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_type_0) >> OP_SF_EBII_arm_strb_reg_a1_type_0) << OP_SF_EBIF_arm_strb_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_type_0) >> OP_SF_EBII_arm_strb_reg_a1_type_0) << OP_SF_EBIF_arm_strb_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_strb_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_strb_reg_a1_Rm_0) >> OP_SF_EBII_arm_strb_reg_a1_Rm_0) << OP_SF_EBIF_arm_strb_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_strb_reg_a1_Rm_0) >> OP_SF_EBII_arm_strb_reg_a1_Rm_0) << OP_SF_EBIF_arm_strb_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -4234,7 +4400,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_push_a1 */
     static int op_parse_arm_push_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_push_a1) != OP_FB_arm_push_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_push_a1) != OP_FB_arm_push_a1) {
             return 1;
         }
 
@@ -4244,15 +4410,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_push_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_push_a1_cond_0) >> OP_SF_EBII_arm_push_a1_cond_0) << OP_SF_EBIF_arm_push_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_push_a1_cond_0) >> OP_SF_EBII_arm_push_a1_cond_0) << OP_SF_EBIF_arm_push_a1_cond_0);
             
         
             context->decoded_code->code.arm_push_a1.register_list =
             
-                (((context->code32 & OP_SF_MASK_arm_push_a1_register_list_0) >> OP_SF_EBII_arm_push_a1_register_list_0) << OP_SF_EBIF_arm_push_a1_register_list_0);
+                (((context->code32x1 & OP_SF_MASK_arm_push_a1_register_list_0) >> OP_SF_EBII_arm_push_a1_register_list_0) << OP_SF_EBIF_arm_push_a1_register_list_0);
             
         
-
         
         
             if (
@@ -4268,7 +4433,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_push_a2 */
     static int op_parse_arm_push_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_push_a2) != OP_FB_arm_push_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_push_a2) != OP_FB_arm_push_a2) {
             return 1;
         }
 
@@ -4278,15 +4443,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_push_a2.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_push_a2_cond_0) >> OP_SF_EBII_arm_push_a2_cond_0) << OP_SF_EBIF_arm_push_a2_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_push_a2_cond_0) >> OP_SF_EBII_arm_push_a2_cond_0) << OP_SF_EBIF_arm_push_a2_cond_0);
             
         
             context->decoded_code->code.arm_push_a2.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_push_a2_Rt_0) >> OP_SF_EBII_arm_push_a2_Rt_0) << OP_SF_EBIF_arm_push_a2_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_push_a2_Rt_0) >> OP_SF_EBII_arm_push_a2_Rt_0) << OP_SF_EBIF_arm_push_a2_Rt_0);
             
         
-
         
         
             if (
@@ -4302,7 +4466,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_stmfd_a1 */
     static int op_parse_arm_stmfd_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_stmfd_a1) != OP_FB_arm_stmfd_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_stmfd_a1) != OP_FB_arm_stmfd_a1) {
             return 1;
         }
 
@@ -4312,25 +4476,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_stmfd_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_cond_0) >> OP_SF_EBII_arm_stmfd_a1_cond_0) << OP_SF_EBIF_arm_stmfd_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stmfd_a1_cond_0) >> OP_SF_EBII_arm_stmfd_a1_cond_0) << OP_SF_EBIF_arm_stmfd_a1_cond_0);
             
         
             context->decoded_code->code.arm_stmfd_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_W_0) >> OP_SF_EBII_arm_stmfd_a1_W_0) << OP_SF_EBIF_arm_stmfd_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stmfd_a1_W_0) >> OP_SF_EBII_arm_stmfd_a1_W_0) << OP_SF_EBIF_arm_stmfd_a1_W_0);
             
         
             context->decoded_code->code.arm_stmfd_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_Rn_0) >> OP_SF_EBII_arm_stmfd_a1_Rn_0) << OP_SF_EBIF_arm_stmfd_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stmfd_a1_Rn_0) >> OP_SF_EBII_arm_stmfd_a1_Rn_0) << OP_SF_EBIF_arm_stmfd_a1_Rn_0);
             
         
             context->decoded_code->code.arm_stmfd_a1.register_list =
             
-                (((context->code32 & OP_SF_MASK_arm_stmfd_a1_register_list_0) >> OP_SF_EBII_arm_stmfd_a1_register_list_0) << OP_SF_EBIF_arm_stmfd_a1_register_list_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stmfd_a1_register_list_0) >> OP_SF_EBII_arm_stmfd_a1_register_list_0) << OP_SF_EBIF_arm_stmfd_a1_register_list_0);
             
         
-
         
         
             if (
@@ -4351,7 +4514,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_stm_a1 */
     static int op_parse_arm_stm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_stm_a1) != OP_FB_arm_stm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_stm_a1) != OP_FB_arm_stm_a1) {
             return 1;
         }
 
@@ -4361,25 +4524,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_stm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_stm_a1_cond_0) >> OP_SF_EBII_arm_stm_a1_cond_0) << OP_SF_EBIF_arm_stm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stm_a1_cond_0) >> OP_SF_EBII_arm_stm_a1_cond_0) << OP_SF_EBIF_arm_stm_a1_cond_0);
             
         
             context->decoded_code->code.arm_stm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_stm_a1_W_0) >> OP_SF_EBII_arm_stm_a1_W_0) << OP_SF_EBIF_arm_stm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stm_a1_W_0) >> OP_SF_EBII_arm_stm_a1_W_0) << OP_SF_EBIF_arm_stm_a1_W_0);
             
         
             context->decoded_code->code.arm_stm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_stm_a1_Rn_0) >> OP_SF_EBII_arm_stm_a1_Rn_0) << OP_SF_EBIF_arm_stm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stm_a1_Rn_0) >> OP_SF_EBII_arm_stm_a1_Rn_0) << OP_SF_EBIF_arm_stm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_stm_a1.register_list =
             
-                (((context->code32 & OP_SF_MASK_arm_stm_a1_register_list_0) >> OP_SF_EBII_arm_stm_a1_register_list_0) << OP_SF_EBIF_arm_stm_a1_register_list_0);
+                (((context->code32x1 & OP_SF_MASK_arm_stm_a1_register_list_0) >> OP_SF_EBII_arm_stm_a1_register_list_0) << OP_SF_EBIF_arm_stm_a1_register_list_0);
             
         
-
         
         
             if (
@@ -4395,7 +4557,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldr_imm_a1 */
     static int op_parse_arm_ldr_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldr_imm_a1) != OP_FB_arm_ldr_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldr_imm_a1) != OP_FB_arm_ldr_imm_a1) {
             return 1;
         }
 
@@ -4405,40 +4567,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldr_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_cond_0) >> OP_SF_EBII_arm_ldr_imm_a1_cond_0) << OP_SF_EBIF_arm_ldr_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_cond_0) >> OP_SF_EBII_arm_ldr_imm_a1_cond_0) << OP_SF_EBIF_arm_ldr_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_P_0) >> OP_SF_EBII_arm_ldr_imm_a1_P_0) << OP_SF_EBIF_arm_ldr_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_P_0) >> OP_SF_EBII_arm_ldr_imm_a1_P_0) << OP_SF_EBIF_arm_ldr_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_U_0) >> OP_SF_EBII_arm_ldr_imm_a1_U_0) << OP_SF_EBIF_arm_ldr_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_U_0) >> OP_SF_EBII_arm_ldr_imm_a1_U_0) << OP_SF_EBIF_arm_ldr_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_W_0) >> OP_SF_EBII_arm_ldr_imm_a1_W_0) << OP_SF_EBIF_arm_ldr_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_W_0) >> OP_SF_EBII_arm_ldr_imm_a1_W_0) << OP_SF_EBIF_arm_ldr_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldr_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldr_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldr_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldr_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldr_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldr_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldr_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldr_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldr_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_imm_a1_imm12_0) >> OP_SF_EBII_arm_ldr_imm_a1_imm12_0) << OP_SF_EBIF_arm_ldr_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_imm_a1_imm12_0) >> OP_SF_EBII_arm_ldr_imm_a1_imm12_0) << OP_SF_EBIF_arm_ldr_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -4463,7 +4624,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldr_literal_a1 */
     static int op_parse_arm_ldr_literal_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldr_literal_a1) != OP_FB_arm_ldr_literal_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldr_literal_a1) != OP_FB_arm_ldr_literal_a1) {
             return 1;
         }
 
@@ -4473,35 +4634,34 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldr_literal_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_cond_0) >> OP_SF_EBII_arm_ldr_literal_a1_cond_0) << OP_SF_EBIF_arm_ldr_literal_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_cond_0) >> OP_SF_EBII_arm_ldr_literal_a1_cond_0) << OP_SF_EBIF_arm_ldr_literal_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldr_literal_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_P_0) >> OP_SF_EBII_arm_ldr_literal_a1_P_0) << OP_SF_EBIF_arm_ldr_literal_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_P_0) >> OP_SF_EBII_arm_ldr_literal_a1_P_0) << OP_SF_EBIF_arm_ldr_literal_a1_P_0);
             
         
             context->decoded_code->code.arm_ldr_literal_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_U_0) >> OP_SF_EBII_arm_ldr_literal_a1_U_0) << OP_SF_EBIF_arm_ldr_literal_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_U_0) >> OP_SF_EBII_arm_ldr_literal_a1_U_0) << OP_SF_EBIF_arm_ldr_literal_a1_U_0);
             
         
             context->decoded_code->code.arm_ldr_literal_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_W_0) >> OP_SF_EBII_arm_ldr_literal_a1_W_0) << OP_SF_EBIF_arm_ldr_literal_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_W_0) >> OP_SF_EBII_arm_ldr_literal_a1_W_0) << OP_SF_EBIF_arm_ldr_literal_a1_W_0);
             
         
             context->decoded_code->code.arm_ldr_literal_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_Rt_0) >> OP_SF_EBII_arm_ldr_literal_a1_Rt_0) << OP_SF_EBIF_arm_ldr_literal_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_Rt_0) >> OP_SF_EBII_arm_ldr_literal_a1_Rt_0) << OP_SF_EBIF_arm_ldr_literal_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldr_literal_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_literal_a1_imm12_0) >> OP_SF_EBII_arm_ldr_literal_a1_imm12_0) << OP_SF_EBIF_arm_ldr_literal_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_literal_a1_imm12_0) >> OP_SF_EBII_arm_ldr_literal_a1_imm12_0) << OP_SF_EBIF_arm_ldr_literal_a1_imm12_0);
             
         
-
         
         
             if (
@@ -4519,7 +4679,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldrb_imm_a1 */
     static int op_parse_arm_ldrb_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldrb_imm_a1) != OP_FB_arm_ldrb_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldrb_imm_a1) != OP_FB_arm_ldrb_imm_a1) {
             return 1;
         }
 
@@ -4529,40 +4689,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldrb_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrb_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrb_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrb_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrb_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_P_0) >> OP_SF_EBII_arm_ldrb_imm_a1_P_0) << OP_SF_EBIF_arm_ldrb_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_P_0) >> OP_SF_EBII_arm_ldrb_imm_a1_P_0) << OP_SF_EBIF_arm_ldrb_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_U_0) >> OP_SF_EBII_arm_ldrb_imm_a1_U_0) << OP_SF_EBIF_arm_ldrb_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_U_0) >> OP_SF_EBII_arm_ldrb_imm_a1_U_0) << OP_SF_EBIF_arm_ldrb_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_W_0) >> OP_SF_EBII_arm_ldrb_imm_a1_W_0) << OP_SF_EBIF_arm_ldrb_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_W_0) >> OP_SF_EBII_arm_ldrb_imm_a1_W_0) << OP_SF_EBIF_arm_ldrb_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrb_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrb_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrb_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrb_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrb_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrb_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrb_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrb_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldrb_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_imm_a1_imm12_0) >> OP_SF_EBII_arm_ldrb_imm_a1_imm12_0) << OP_SF_EBIF_arm_ldrb_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_imm_a1_imm12_0) >> OP_SF_EBII_arm_ldrb_imm_a1_imm12_0) << OP_SF_EBIF_arm_ldrb_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -4585,7 +4744,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldrh_imm_a1 */
     static int op_parse_arm_ldrh_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldrh_imm_a1) != OP_FB_arm_ldrh_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldrh_imm_a1) != OP_FB_arm_ldrh_imm_a1) {
             return 1;
         }
 
@@ -4595,42 +4754,41 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldrh_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrh_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrh_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrh_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrh_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_P_0) >> OP_SF_EBII_arm_ldrh_imm_a1_P_0) << OP_SF_EBIF_arm_ldrh_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_P_0) >> OP_SF_EBII_arm_ldrh_imm_a1_P_0) << OP_SF_EBIF_arm_ldrh_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_U_0) >> OP_SF_EBII_arm_ldrh_imm_a1_U_0) << OP_SF_EBIF_arm_ldrh_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_U_0) >> OP_SF_EBII_arm_ldrh_imm_a1_U_0) << OP_SF_EBIF_arm_ldrh_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_W_0) >> OP_SF_EBII_arm_ldrh_imm_a1_W_0) << OP_SF_EBIF_arm_ldrh_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_W_0) >> OP_SF_EBII_arm_ldrh_imm_a1_W_0) << OP_SF_EBIF_arm_ldrh_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldrh_imm_a1.imm8 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_0) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_0) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_0)
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_0) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_0) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_0)
             
-                | (((context->code32 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_1) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_1) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_1);
+                | (((context->code32x1 & OP_SF_MASK_arm_ldrh_imm_a1_imm8_1) >> OP_SF_EBII_arm_ldrh_imm_a1_imm8_1) << OP_SF_EBIF_arm_ldrh_imm_a1_imm8_1);
             
         
-
         
         
             if (
@@ -4653,7 +4811,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldrd_imm_a1 */
     static int op_parse_arm_ldrd_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldrd_imm_a1) != OP_FB_arm_ldrd_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldrd_imm_a1) != OP_FB_arm_ldrd_imm_a1) {
             return 1;
         }
 
@@ -4663,42 +4821,41 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldrd_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrd_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrd_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_cond_0) >> OP_SF_EBII_arm_ldrd_imm_a1_cond_0) << OP_SF_EBIF_arm_ldrd_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_P_0) >> OP_SF_EBII_arm_ldrd_imm_a1_P_0) << OP_SF_EBIF_arm_ldrd_imm_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_P_0) >> OP_SF_EBII_arm_ldrd_imm_a1_P_0) << OP_SF_EBIF_arm_ldrd_imm_a1_P_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_U_0) >> OP_SF_EBII_arm_ldrd_imm_a1_U_0) << OP_SF_EBIF_arm_ldrd_imm_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_U_0) >> OP_SF_EBII_arm_ldrd_imm_a1_U_0) << OP_SF_EBIF_arm_ldrd_imm_a1_U_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_W_0) >> OP_SF_EBII_arm_ldrd_imm_a1_W_0) << OP_SF_EBIF_arm_ldrd_imm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_W_0) >> OP_SF_EBII_arm_ldrd_imm_a1_W_0) << OP_SF_EBIF_arm_ldrd_imm_a1_W_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrd_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrd_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_Rn_0) >> OP_SF_EBII_arm_ldrd_imm_a1_Rn_0) << OP_SF_EBIF_arm_ldrd_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrd_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrd_imm_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_Rt_0) >> OP_SF_EBII_arm_ldrd_imm_a1_Rt_0) << OP_SF_EBIF_arm_ldrd_imm_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldrd_imm_a1.imm8 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_imm8_0) >> OP_SF_EBII_arm_ldrd_imm_a1_imm8_0) << OP_SF_EBIF_arm_ldrd_imm_a1_imm8_0)
+                (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_imm8_0) >> OP_SF_EBII_arm_ldrd_imm_a1_imm8_0) << OP_SF_EBIF_arm_ldrd_imm_a1_imm8_0)
             
-                | (((context->code32 & OP_SF_MASK_arm_ldrd_imm_a1_imm8_1) >> OP_SF_EBII_arm_ldrd_imm_a1_imm8_1) << OP_SF_EBIF_arm_ldrd_imm_a1_imm8_1);
+                | (((context->code32x1 & OP_SF_MASK_arm_ldrd_imm_a1_imm8_1) >> OP_SF_EBII_arm_ldrd_imm_a1_imm8_1) << OP_SF_EBIF_arm_ldrd_imm_a1_imm8_1);
             
         
-
         
         
             if (
@@ -4717,7 +4874,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldr_reg_a1 */
     static int op_parse_arm_ldr_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldr_reg_a1) != OP_FB_arm_ldr_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldr_reg_a1) != OP_FB_arm_ldr_reg_a1) {
             return 1;
         }
 
@@ -4727,50 +4884,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldr_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_cond_0) >> OP_SF_EBII_arm_ldr_reg_a1_cond_0) << OP_SF_EBIF_arm_ldr_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_cond_0) >> OP_SF_EBII_arm_ldr_reg_a1_cond_0) << OP_SF_EBIF_arm_ldr_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_P_0) >> OP_SF_EBII_arm_ldr_reg_a1_P_0) << OP_SF_EBIF_arm_ldr_reg_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_P_0) >> OP_SF_EBII_arm_ldr_reg_a1_P_0) << OP_SF_EBIF_arm_ldr_reg_a1_P_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_U_0) >> OP_SF_EBII_arm_ldr_reg_a1_U_0) << OP_SF_EBIF_arm_ldr_reg_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_U_0) >> OP_SF_EBII_arm_ldr_reg_a1_U_0) << OP_SF_EBIF_arm_ldr_reg_a1_U_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_W_0) >> OP_SF_EBII_arm_ldr_reg_a1_W_0) << OP_SF_EBIF_arm_ldr_reg_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_W_0) >> OP_SF_EBII_arm_ldr_reg_a1_W_0) << OP_SF_EBIF_arm_ldr_reg_a1_W_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_imm5_0) >> OP_SF_EBII_arm_ldr_reg_a1_imm5_0) << OP_SF_EBIF_arm_ldr_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_imm5_0) >> OP_SF_EBII_arm_ldr_reg_a1_imm5_0) << OP_SF_EBIF_arm_ldr_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_type_0) >> OP_SF_EBII_arm_ldr_reg_a1_type_0) << OP_SF_EBIF_arm_ldr_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_type_0) >> OP_SF_EBII_arm_ldr_reg_a1_type_0) << OP_SF_EBIF_arm_ldr_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_ldr_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_ldr_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldr_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldr_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldr_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -4794,7 +4950,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldrb_reg_a1 */
     static int op_parse_arm_ldrb_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldrb_reg_a1) != OP_FB_arm_ldrb_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldrb_reg_a1) != OP_FB_arm_ldrb_reg_a1) {
             return 1;
         }
 
@@ -4804,50 +4960,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldrb_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_cond_0) >> OP_SF_EBII_arm_ldrb_reg_a1_cond_0) << OP_SF_EBIF_arm_ldrb_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_cond_0) >> OP_SF_EBII_arm_ldrb_reg_a1_cond_0) << OP_SF_EBIF_arm_ldrb_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_P_0) >> OP_SF_EBII_arm_ldrb_reg_a1_P_0) << OP_SF_EBIF_arm_ldrb_reg_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_P_0) >> OP_SF_EBII_arm_ldrb_reg_a1_P_0) << OP_SF_EBIF_arm_ldrb_reg_a1_P_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_U_0) >> OP_SF_EBII_arm_ldrb_reg_a1_U_0) << OP_SF_EBIF_arm_ldrb_reg_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_U_0) >> OP_SF_EBII_arm_ldrb_reg_a1_U_0) << OP_SF_EBIF_arm_ldrb_reg_a1_U_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_W_0) >> OP_SF_EBII_arm_ldrb_reg_a1_W_0) << OP_SF_EBIF_arm_ldrb_reg_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_W_0) >> OP_SF_EBII_arm_ldrb_reg_a1_W_0) << OP_SF_EBIF_arm_ldrb_reg_a1_W_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_imm5_0) >> OP_SF_EBII_arm_ldrb_reg_a1_imm5_0) << OP_SF_EBIF_arm_ldrb_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_imm5_0) >> OP_SF_EBII_arm_ldrb_reg_a1_imm5_0) << OP_SF_EBIF_arm_ldrb_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_type_0) >> OP_SF_EBII_arm_ldrb_reg_a1_type_0) << OP_SF_EBIF_arm_ldrb_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_type_0) >> OP_SF_EBII_arm_ldrb_reg_a1_type_0) << OP_SF_EBIF_arm_ldrb_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_ldrb_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrb_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrb_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldrb_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldrb_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -4873,7 +5028,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldrh_reg_a1 */
     static int op_parse_arm_ldrh_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldrh_reg_a1) != OP_FB_arm_ldrh_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldrh_reg_a1) != OP_FB_arm_ldrh_reg_a1) {
             return 1;
         }
 
@@ -4883,40 +5038,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldrh_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_cond_0) >> OP_SF_EBII_arm_ldrh_reg_a1_cond_0) << OP_SF_EBIF_arm_ldrh_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_cond_0) >> OP_SF_EBII_arm_ldrh_reg_a1_cond_0) << OP_SF_EBIF_arm_ldrh_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_P_0) >> OP_SF_EBII_arm_ldrh_reg_a1_P_0) << OP_SF_EBIF_arm_ldrh_reg_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_P_0) >> OP_SF_EBII_arm_ldrh_reg_a1_P_0) << OP_SF_EBIF_arm_ldrh_reg_a1_P_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_U_0) >> OP_SF_EBII_arm_ldrh_reg_a1_U_0) << OP_SF_EBIF_arm_ldrh_reg_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_U_0) >> OP_SF_EBII_arm_ldrh_reg_a1_U_0) << OP_SF_EBIF_arm_ldrh_reg_a1_U_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_W_0) >> OP_SF_EBII_arm_ldrh_reg_a1_W_0) << OP_SF_EBIF_arm_ldrh_reg_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_W_0) >> OP_SF_EBII_arm_ldrh_reg_a1_W_0) << OP_SF_EBIF_arm_ldrh_reg_a1_W_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_Rn_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rn_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_Rt_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rt_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rt_0);
             
         
             context->decoded_code->code.arm_ldrh_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_ldrh_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldrh_reg_a1_Rm_0) >> OP_SF_EBII_arm_ldrh_reg_a1_Rm_0) << OP_SF_EBIF_arm_ldrh_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -4941,7 +5095,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_pop_a1 */
     static int op_parse_arm_pop_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_pop_a1) != OP_FB_arm_pop_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_pop_a1) != OP_FB_arm_pop_a1) {
             return 1;
         }
 
@@ -4951,15 +5105,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_pop_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_pop_a1_cond_0) >> OP_SF_EBII_arm_pop_a1_cond_0) << OP_SF_EBIF_arm_pop_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_pop_a1_cond_0) >> OP_SF_EBII_arm_pop_a1_cond_0) << OP_SF_EBIF_arm_pop_a1_cond_0);
             
         
             context->decoded_code->code.arm_pop_a1.register_list =
             
-                (((context->code32 & OP_SF_MASK_arm_pop_a1_register_list_0) >> OP_SF_EBII_arm_pop_a1_register_list_0) << OP_SF_EBIF_arm_pop_a1_register_list_0);
+                (((context->code32x1 & OP_SF_MASK_arm_pop_a1_register_list_0) >> OP_SF_EBII_arm_pop_a1_register_list_0) << OP_SF_EBIF_arm_pop_a1_register_list_0);
             
         
-
         
         
             if (
@@ -4975,7 +5128,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_pop_a2 */
     static int op_parse_arm_pop_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_pop_a2) != OP_FB_arm_pop_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_pop_a2) != OP_FB_arm_pop_a2) {
             return 1;
         }
 
@@ -4985,15 +5138,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_pop_a2.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_pop_a2_cond_0) >> OP_SF_EBII_arm_pop_a2_cond_0) << OP_SF_EBIF_arm_pop_a2_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_pop_a2_cond_0) >> OP_SF_EBII_arm_pop_a2_cond_0) << OP_SF_EBIF_arm_pop_a2_cond_0);
             
         
             context->decoded_code->code.arm_pop_a2.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_pop_a2_Rt_0) >> OP_SF_EBII_arm_pop_a2_Rt_0) << OP_SF_EBIF_arm_pop_a2_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_pop_a2_Rt_0) >> OP_SF_EBII_arm_pop_a2_Rt_0) << OP_SF_EBIF_arm_pop_a2_Rt_0);
             
         
-
         
         
             if (
@@ -5009,7 +5161,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_ldm_a1 */
     static int op_parse_arm_ldm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_ldm_a1) != OP_FB_arm_ldm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_ldm_a1) != OP_FB_arm_ldm_a1) {
             return 1;
         }
 
@@ -5019,25 +5171,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_ldm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_ldm_a1_cond_0) >> OP_SF_EBII_arm_ldm_a1_cond_0) << OP_SF_EBIF_arm_ldm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldm_a1_cond_0) >> OP_SF_EBII_arm_ldm_a1_cond_0) << OP_SF_EBIF_arm_ldm_a1_cond_0);
             
         
             context->decoded_code->code.arm_ldm_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_ldm_a1_W_0) >> OP_SF_EBII_arm_ldm_a1_W_0) << OP_SF_EBIF_arm_ldm_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldm_a1_W_0) >> OP_SF_EBII_arm_ldm_a1_W_0) << OP_SF_EBIF_arm_ldm_a1_W_0);
             
         
             context->decoded_code->code.arm_ldm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_ldm_a1_Rn_0) >> OP_SF_EBII_arm_ldm_a1_Rn_0) << OP_SF_EBIF_arm_ldm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldm_a1_Rn_0) >> OP_SF_EBII_arm_ldm_a1_Rn_0) << OP_SF_EBIF_arm_ldm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_ldm_a1.register_list =
             
-                (((context->code32 & OP_SF_MASK_arm_ldm_a1_register_list_0) >> OP_SF_EBII_arm_ldm_a1_register_list_0) << OP_SF_EBIF_arm_ldm_a1_register_list_0);
+                (((context->code32x1 & OP_SF_MASK_arm_ldm_a1_register_list_0) >> OP_SF_EBII_arm_ldm_a1_register_list_0) << OP_SF_EBIF_arm_ldm_a1_register_list_0);
             
         
-
         
         
             if (
@@ -5058,7 +5209,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_nop_a1 */
     static int op_parse_arm_nop_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_nop_a1) != OP_FB_arm_nop_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_nop_a1) != OP_FB_arm_nop_a1) {
             return 1;
         }
 
@@ -5068,10 +5219,9 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_nop_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_nop_a1_cond_0) >> OP_SF_EBII_arm_nop_a1_cond_0) << OP_SF_EBIF_arm_nop_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_nop_a1_cond_0) >> OP_SF_EBII_arm_nop_a1_cond_0) << OP_SF_EBIF_arm_nop_a1_cond_0);
             
         
-
         
         
             if (
@@ -5085,7 +5235,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_msr_imm_a1 */
     static int op_parse_arm_msr_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_msr_imm_a1) != OP_FB_arm_msr_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_msr_imm_a1) != OP_FB_arm_msr_imm_a1) {
             return 1;
         }
 
@@ -5095,20 +5245,19 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_msr_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_msr_imm_a1_cond_0) >> OP_SF_EBII_arm_msr_imm_a1_cond_0) << OP_SF_EBIF_arm_msr_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr_imm_a1_cond_0) >> OP_SF_EBII_arm_msr_imm_a1_cond_0) << OP_SF_EBIF_arm_msr_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_msr_imm_a1.mask =
             
-                (((context->code32 & OP_SF_MASK_arm_msr_imm_a1_mask_0) >> OP_SF_EBII_arm_msr_imm_a1_mask_0) << OP_SF_EBIF_arm_msr_imm_a1_mask_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr_imm_a1_mask_0) >> OP_SF_EBII_arm_msr_imm_a1_mask_0) << OP_SF_EBIF_arm_msr_imm_a1_mask_0);
             
         
             context->decoded_code->code.arm_msr_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_msr_imm_a1_imm12_0) >> OP_SF_EBII_arm_msr_imm_a1_imm12_0) << OP_SF_EBIF_arm_msr_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr_imm_a1_imm12_0) >> OP_SF_EBII_arm_msr_imm_a1_imm12_0) << OP_SF_EBIF_arm_msr_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -5124,7 +5273,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_msr2_imm_a1 */
     static int op_parse_arm_msr2_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_msr2_imm_a1) != OP_FB_arm_msr2_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_msr2_imm_a1) != OP_FB_arm_msr2_imm_a1) {
             return 1;
         }
 
@@ -5134,25 +5283,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_msr2_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_imm_a1_cond_0) >> OP_SF_EBII_arm_msr2_imm_a1_cond_0) << OP_SF_EBIF_arm_msr2_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_imm_a1_cond_0) >> OP_SF_EBII_arm_msr2_imm_a1_cond_0) << OP_SF_EBIF_arm_msr2_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_msr2_imm_a1.R =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_imm_a1_R_0) >> OP_SF_EBII_arm_msr2_imm_a1_R_0) << OP_SF_EBIF_arm_msr2_imm_a1_R_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_imm_a1_R_0) >> OP_SF_EBII_arm_msr2_imm_a1_R_0) << OP_SF_EBIF_arm_msr2_imm_a1_R_0);
             
         
             context->decoded_code->code.arm_msr2_imm_a1.mask =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_imm_a1_mask_0) >> OP_SF_EBII_arm_msr2_imm_a1_mask_0) << OP_SF_EBIF_arm_msr2_imm_a1_mask_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_imm_a1_mask_0) >> OP_SF_EBII_arm_msr2_imm_a1_mask_0) << OP_SF_EBIF_arm_msr2_imm_a1_mask_0);
             
         
             context->decoded_code->code.arm_msr2_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_imm_a1_imm12_0) >> OP_SF_EBII_arm_msr2_imm_a1_imm12_0) << OP_SF_EBIF_arm_msr2_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_imm_a1_imm12_0) >> OP_SF_EBII_arm_msr2_imm_a1_imm12_0) << OP_SF_EBIF_arm_msr2_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -5170,7 +5318,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mrs_a1 */
     static int op_parse_arm_mrs_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mrs_a1) != OP_FB_arm_mrs_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mrs_a1) != OP_FB_arm_mrs_a1) {
             return 1;
         }
 
@@ -5180,15 +5328,14 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mrs_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mrs_a1_cond_0) >> OP_SF_EBII_arm_mrs_a1_cond_0) << OP_SF_EBIF_arm_mrs_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrs_a1_cond_0) >> OP_SF_EBII_arm_mrs_a1_cond_0) << OP_SF_EBIF_arm_mrs_a1_cond_0);
             
         
             context->decoded_code->code.arm_mrs_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mrs_a1_Rd_0) >> OP_SF_EBII_arm_mrs_a1_Rd_0) << OP_SF_EBIF_arm_mrs_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrs_a1_Rd_0) >> OP_SF_EBII_arm_mrs_a1_Rd_0) << OP_SF_EBIF_arm_mrs_a1_Rd_0);
             
         
-
         
         
             if (
@@ -5204,7 +5351,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_msr2_reg_a1 */
     static int op_parse_arm_msr2_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_msr2_reg_a1) != OP_FB_arm_msr2_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_msr2_reg_a1) != OP_FB_arm_msr2_reg_a1) {
             return 1;
         }
 
@@ -5214,25 +5361,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_msr2_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_cond_0) >> OP_SF_EBII_arm_msr2_reg_a1_cond_0) << OP_SF_EBIF_arm_msr2_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_reg_a1_cond_0) >> OP_SF_EBII_arm_msr2_reg_a1_cond_0) << OP_SF_EBIF_arm_msr2_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_msr2_reg_a1.R =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_R_0) >> OP_SF_EBII_arm_msr2_reg_a1_R_0) << OP_SF_EBIF_arm_msr2_reg_a1_R_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_reg_a1_R_0) >> OP_SF_EBII_arm_msr2_reg_a1_R_0) << OP_SF_EBIF_arm_msr2_reg_a1_R_0);
             
         
             context->decoded_code->code.arm_msr2_reg_a1.mask =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_mask_0) >> OP_SF_EBII_arm_msr2_reg_a1_mask_0) << OP_SF_EBIF_arm_msr2_reg_a1_mask_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_reg_a1_mask_0) >> OP_SF_EBII_arm_msr2_reg_a1_mask_0) << OP_SF_EBIF_arm_msr2_reg_a1_mask_0);
             
         
             context->decoded_code->code.arm_msr2_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_msr2_reg_a1_Rn_0) >> OP_SF_EBII_arm_msr2_reg_a1_Rn_0) << OP_SF_EBIF_arm_msr2_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_msr2_reg_a1_Rn_0) >> OP_SF_EBII_arm_msr2_reg_a1_Rn_0) << OP_SF_EBIF_arm_msr2_reg_a1_Rn_0);
             
         
-
         
         
             if (
@@ -5249,7 +5395,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mcr_a1 */
     static int op_parse_arm_mcr_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mcr_a1) != OP_FB_arm_mcr_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mcr_a1) != OP_FB_arm_mcr_a1) {
             return 1;
         }
 
@@ -5259,40 +5405,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mcr_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_cond_0) >> OP_SF_EBII_arm_mcr_a1_cond_0) << OP_SF_EBIF_arm_mcr_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_cond_0) >> OP_SF_EBII_arm_mcr_a1_cond_0) << OP_SF_EBIF_arm_mcr_a1_cond_0);
             
         
             context->decoded_code->code.arm_mcr_a1.opc1 =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_opc1_0) >> OP_SF_EBII_arm_mcr_a1_opc1_0) << OP_SF_EBIF_arm_mcr_a1_opc1_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_opc1_0) >> OP_SF_EBII_arm_mcr_a1_opc1_0) << OP_SF_EBIF_arm_mcr_a1_opc1_0);
             
         
             context->decoded_code->code.arm_mcr_a1.CRn =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_CRn_0) >> OP_SF_EBII_arm_mcr_a1_CRn_0) << OP_SF_EBIF_arm_mcr_a1_CRn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_CRn_0) >> OP_SF_EBII_arm_mcr_a1_CRn_0) << OP_SF_EBIF_arm_mcr_a1_CRn_0);
             
         
             context->decoded_code->code.arm_mcr_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_Rt_0) >> OP_SF_EBII_arm_mcr_a1_Rt_0) << OP_SF_EBIF_arm_mcr_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_Rt_0) >> OP_SF_EBII_arm_mcr_a1_Rt_0) << OP_SF_EBIF_arm_mcr_a1_Rt_0);
             
         
             context->decoded_code->code.arm_mcr_a1.coproc =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_coproc_0) >> OP_SF_EBII_arm_mcr_a1_coproc_0) << OP_SF_EBIF_arm_mcr_a1_coproc_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_coproc_0) >> OP_SF_EBII_arm_mcr_a1_coproc_0) << OP_SF_EBIF_arm_mcr_a1_coproc_0);
             
         
             context->decoded_code->code.arm_mcr_a1.opc2 =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_opc2_0) >> OP_SF_EBII_arm_mcr_a1_opc2_0) << OP_SF_EBIF_arm_mcr_a1_opc2_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_opc2_0) >> OP_SF_EBII_arm_mcr_a1_opc2_0) << OP_SF_EBIF_arm_mcr_a1_opc2_0);
             
         
             context->decoded_code->code.arm_mcr_a1.CRm =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr_a1_CRm_0) >> OP_SF_EBII_arm_mcr_a1_CRm_0) << OP_SF_EBIF_arm_mcr_a1_CRm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr_a1_CRm_0) >> OP_SF_EBII_arm_mcr_a1_CRm_0) << OP_SF_EBIF_arm_mcr_a1_CRm_0);
             
         
-
         
         
             if (
@@ -5310,7 +5455,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mcr2_a2 */
     static int op_parse_arm_mcr2_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mcr2_a2) != OP_FB_arm_mcr2_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mcr2_a2) != OP_FB_arm_mcr2_a2) {
             return 1;
         }
 
@@ -5320,35 +5465,34 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mcr2_a2.opc1 =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_opc1_0) >> OP_SF_EBII_arm_mcr2_a2_opc1_0) << OP_SF_EBIF_arm_mcr2_a2_opc1_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_opc1_0) >> OP_SF_EBII_arm_mcr2_a2_opc1_0) << OP_SF_EBIF_arm_mcr2_a2_opc1_0);
             
         
             context->decoded_code->code.arm_mcr2_a2.CRn =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_CRn_0) >> OP_SF_EBII_arm_mcr2_a2_CRn_0) << OP_SF_EBIF_arm_mcr2_a2_CRn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_CRn_0) >> OP_SF_EBII_arm_mcr2_a2_CRn_0) << OP_SF_EBIF_arm_mcr2_a2_CRn_0);
             
         
             context->decoded_code->code.arm_mcr2_a2.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_Rt_0) >> OP_SF_EBII_arm_mcr2_a2_Rt_0) << OP_SF_EBIF_arm_mcr2_a2_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_Rt_0) >> OP_SF_EBII_arm_mcr2_a2_Rt_0) << OP_SF_EBIF_arm_mcr2_a2_Rt_0);
             
         
             context->decoded_code->code.arm_mcr2_a2.coproc =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_coproc_0) >> OP_SF_EBII_arm_mcr2_a2_coproc_0) << OP_SF_EBIF_arm_mcr2_a2_coproc_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_coproc_0) >> OP_SF_EBII_arm_mcr2_a2_coproc_0) << OP_SF_EBIF_arm_mcr2_a2_coproc_0);
             
         
             context->decoded_code->code.arm_mcr2_a2.opc2 =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_opc2_0) >> OP_SF_EBII_arm_mcr2_a2_opc2_0) << OP_SF_EBIF_arm_mcr2_a2_opc2_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_opc2_0) >> OP_SF_EBII_arm_mcr2_a2_opc2_0) << OP_SF_EBIF_arm_mcr2_a2_opc2_0);
             
         
             context->decoded_code->code.arm_mcr2_a2.CRm =
             
-                (((context->code32 & OP_SF_MASK_arm_mcr2_a2_CRm_0) >> OP_SF_EBII_arm_mcr2_a2_CRm_0) << OP_SF_EBIF_arm_mcr2_a2_CRm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mcr2_a2_CRm_0) >> OP_SF_EBII_arm_mcr2_a2_CRm_0) << OP_SF_EBIF_arm_mcr2_a2_CRm_0);
             
         
-
         
         
             if (
@@ -5365,7 +5509,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mrc_a1 */
     static int op_parse_arm_mrc_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mrc_a1) != OP_FB_arm_mrc_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mrc_a1) != OP_FB_arm_mrc_a1) {
             return 1;
         }
 
@@ -5375,40 +5519,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mrc_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_cond_0) >> OP_SF_EBII_arm_mrc_a1_cond_0) << OP_SF_EBIF_arm_mrc_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_cond_0) >> OP_SF_EBII_arm_mrc_a1_cond_0) << OP_SF_EBIF_arm_mrc_a1_cond_0);
             
         
             context->decoded_code->code.arm_mrc_a1.opc1 =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_opc1_0) >> OP_SF_EBII_arm_mrc_a1_opc1_0) << OP_SF_EBIF_arm_mrc_a1_opc1_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_opc1_0) >> OP_SF_EBII_arm_mrc_a1_opc1_0) << OP_SF_EBIF_arm_mrc_a1_opc1_0);
             
         
             context->decoded_code->code.arm_mrc_a1.CRn =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_CRn_0) >> OP_SF_EBII_arm_mrc_a1_CRn_0) << OP_SF_EBIF_arm_mrc_a1_CRn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_CRn_0) >> OP_SF_EBII_arm_mrc_a1_CRn_0) << OP_SF_EBIF_arm_mrc_a1_CRn_0);
             
         
             context->decoded_code->code.arm_mrc_a1.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_Rt_0) >> OP_SF_EBII_arm_mrc_a1_Rt_0) << OP_SF_EBIF_arm_mrc_a1_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_Rt_0) >> OP_SF_EBII_arm_mrc_a1_Rt_0) << OP_SF_EBIF_arm_mrc_a1_Rt_0);
             
         
             context->decoded_code->code.arm_mrc_a1.coproc =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_coproc_0) >> OP_SF_EBII_arm_mrc_a1_coproc_0) << OP_SF_EBIF_arm_mrc_a1_coproc_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_coproc_0) >> OP_SF_EBII_arm_mrc_a1_coproc_0) << OP_SF_EBIF_arm_mrc_a1_coproc_0);
             
         
             context->decoded_code->code.arm_mrc_a1.opc2 =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_opc2_0) >> OP_SF_EBII_arm_mrc_a1_opc2_0) << OP_SF_EBIF_arm_mrc_a1_opc2_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_opc2_0) >> OP_SF_EBII_arm_mrc_a1_opc2_0) << OP_SF_EBIF_arm_mrc_a1_opc2_0);
             
         
             context->decoded_code->code.arm_mrc_a1.CRm =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc_a1_CRm_0) >> OP_SF_EBII_arm_mrc_a1_CRm_0) << OP_SF_EBIF_arm_mrc_a1_CRm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc_a1_CRm_0) >> OP_SF_EBII_arm_mrc_a1_CRm_0) << OP_SF_EBIF_arm_mrc_a1_CRm_0);
             
         
-
         
         
             if (
@@ -5426,7 +5569,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mrc2_a2 */
     static int op_parse_arm_mrc2_a2(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mrc2_a2) != OP_FB_arm_mrc2_a2) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mrc2_a2) != OP_FB_arm_mrc2_a2) {
             return 1;
         }
 
@@ -5436,35 +5579,34 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mrc2_a2.opc1 =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_opc1_0) >> OP_SF_EBII_arm_mrc2_a2_opc1_0) << OP_SF_EBIF_arm_mrc2_a2_opc1_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_opc1_0) >> OP_SF_EBII_arm_mrc2_a2_opc1_0) << OP_SF_EBIF_arm_mrc2_a2_opc1_0);
             
         
             context->decoded_code->code.arm_mrc2_a2.CRn =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_CRn_0) >> OP_SF_EBII_arm_mrc2_a2_CRn_0) << OP_SF_EBIF_arm_mrc2_a2_CRn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_CRn_0) >> OP_SF_EBII_arm_mrc2_a2_CRn_0) << OP_SF_EBIF_arm_mrc2_a2_CRn_0);
             
         
             context->decoded_code->code.arm_mrc2_a2.Rt =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_Rt_0) >> OP_SF_EBII_arm_mrc2_a2_Rt_0) << OP_SF_EBIF_arm_mrc2_a2_Rt_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_Rt_0) >> OP_SF_EBII_arm_mrc2_a2_Rt_0) << OP_SF_EBIF_arm_mrc2_a2_Rt_0);
             
         
             context->decoded_code->code.arm_mrc2_a2.coproc =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_coproc_0) >> OP_SF_EBII_arm_mrc2_a2_coproc_0) << OP_SF_EBIF_arm_mrc2_a2_coproc_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_coproc_0) >> OP_SF_EBII_arm_mrc2_a2_coproc_0) << OP_SF_EBIF_arm_mrc2_a2_coproc_0);
             
         
             context->decoded_code->code.arm_mrc2_a2.opc2 =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_opc2_0) >> OP_SF_EBII_arm_mrc2_a2_opc2_0) << OP_SF_EBIF_arm_mrc2_a2_opc2_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_opc2_0) >> OP_SF_EBII_arm_mrc2_a2_opc2_0) << OP_SF_EBIF_arm_mrc2_a2_opc2_0);
             
         
             context->decoded_code->code.arm_mrc2_a2.CRm =
             
-                (((context->code32 & OP_SF_MASK_arm_mrc2_a2_CRm_0) >> OP_SF_EBII_arm_mrc2_a2_CRm_0) << OP_SF_EBIF_arm_mrc2_a2_CRm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mrc2_a2_CRm_0) >> OP_SF_EBII_arm_mrc2_a2_CRm_0) << OP_SF_EBIF_arm_mrc2_a2_CRm_0);
             
         
-
         
         
             if (
@@ -5481,7 +5623,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_bic_imm_a1 */
     static int op_parse_arm_bic_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_bic_imm_a1) != OP_FB_arm_bic_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_bic_imm_a1) != OP_FB_arm_bic_imm_a1) {
             return 1;
         }
 
@@ -5491,30 +5633,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_bic_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_bic_imm_a1_cond_0) >> OP_SF_EBII_arm_bic_imm_a1_cond_0) << OP_SF_EBIF_arm_bic_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bic_imm_a1_cond_0) >> OP_SF_EBII_arm_bic_imm_a1_cond_0) << OP_SF_EBIF_arm_bic_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_bic_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_bic_imm_a1_S_0) >> OP_SF_EBII_arm_bic_imm_a1_S_0) << OP_SF_EBIF_arm_bic_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bic_imm_a1_S_0) >> OP_SF_EBII_arm_bic_imm_a1_S_0) << OP_SF_EBIF_arm_bic_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_bic_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_bic_imm_a1_Rn_0) >> OP_SF_EBII_arm_bic_imm_a1_Rn_0) << OP_SF_EBIF_arm_bic_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bic_imm_a1_Rn_0) >> OP_SF_EBII_arm_bic_imm_a1_Rn_0) << OP_SF_EBIF_arm_bic_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_bic_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_bic_imm_a1_Rd_0) >> OP_SF_EBII_arm_bic_imm_a1_Rd_0) << OP_SF_EBIF_arm_bic_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bic_imm_a1_Rd_0) >> OP_SF_EBII_arm_bic_imm_a1_Rd_0) << OP_SF_EBIF_arm_bic_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_bic_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_bic_imm_a1_imm12_0) >> OP_SF_EBII_arm_bic_imm_a1_imm12_0) << OP_SF_EBIF_arm_bic_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bic_imm_a1_imm12_0) >> OP_SF_EBII_arm_bic_imm_a1_imm12_0) << OP_SF_EBIF_arm_bic_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -5532,7 +5673,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_orr_imm_a1 */
     static int op_parse_arm_orr_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_orr_imm_a1) != OP_FB_arm_orr_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_orr_imm_a1) != OP_FB_arm_orr_imm_a1) {
             return 1;
         }
 
@@ -5542,30 +5683,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_orr_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_imm_a1_cond_0) >> OP_SF_EBII_arm_orr_imm_a1_cond_0) << OP_SF_EBIF_arm_orr_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_imm_a1_cond_0) >> OP_SF_EBII_arm_orr_imm_a1_cond_0) << OP_SF_EBIF_arm_orr_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_orr_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_imm_a1_S_0) >> OP_SF_EBII_arm_orr_imm_a1_S_0) << OP_SF_EBIF_arm_orr_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_imm_a1_S_0) >> OP_SF_EBII_arm_orr_imm_a1_S_0) << OP_SF_EBIF_arm_orr_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_orr_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_imm_a1_Rn_0) >> OP_SF_EBII_arm_orr_imm_a1_Rn_0) << OP_SF_EBIF_arm_orr_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_imm_a1_Rn_0) >> OP_SF_EBII_arm_orr_imm_a1_Rn_0) << OP_SF_EBIF_arm_orr_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_orr_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_imm_a1_Rd_0) >> OP_SF_EBII_arm_orr_imm_a1_Rd_0) << OP_SF_EBIF_arm_orr_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_imm_a1_Rd_0) >> OP_SF_EBII_arm_orr_imm_a1_Rd_0) << OP_SF_EBIF_arm_orr_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_orr_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_imm_a1_imm12_0) >> OP_SF_EBII_arm_orr_imm_a1_imm12_0) << OP_SF_EBIF_arm_orr_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_imm_a1_imm12_0) >> OP_SF_EBII_arm_orr_imm_a1_imm12_0) << OP_SF_EBIF_arm_orr_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -5583,7 +5723,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_orr_reg_a1 */
     static int op_parse_arm_orr_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_orr_reg_a1) != OP_FB_arm_orr_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_orr_reg_a1) != OP_FB_arm_orr_reg_a1) {
             return 1;
         }
 
@@ -5593,40 +5733,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_orr_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_cond_0) >> OP_SF_EBII_arm_orr_reg_a1_cond_0) << OP_SF_EBIF_arm_orr_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_cond_0) >> OP_SF_EBII_arm_orr_reg_a1_cond_0) << OP_SF_EBIF_arm_orr_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_S_0) >> OP_SF_EBII_arm_orr_reg_a1_S_0) << OP_SF_EBIF_arm_orr_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_S_0) >> OP_SF_EBII_arm_orr_reg_a1_S_0) << OP_SF_EBIF_arm_orr_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_Rn_0) >> OP_SF_EBII_arm_orr_reg_a1_Rn_0) << OP_SF_EBIF_arm_orr_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_Rn_0) >> OP_SF_EBII_arm_orr_reg_a1_Rn_0) << OP_SF_EBIF_arm_orr_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_Rd_0) >> OP_SF_EBII_arm_orr_reg_a1_Rd_0) << OP_SF_EBIF_arm_orr_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_Rd_0) >> OP_SF_EBII_arm_orr_reg_a1_Rd_0) << OP_SF_EBIF_arm_orr_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_imm5_0) >> OP_SF_EBII_arm_orr_reg_a1_imm5_0) << OP_SF_EBIF_arm_orr_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_imm5_0) >> OP_SF_EBII_arm_orr_reg_a1_imm5_0) << OP_SF_EBIF_arm_orr_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_type_0) >> OP_SF_EBII_arm_orr_reg_a1_type_0) << OP_SF_EBIF_arm_orr_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_type_0) >> OP_SF_EBII_arm_orr_reg_a1_type_0) << OP_SF_EBIF_arm_orr_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_orr_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_orr_reg_a1_Rm_0) >> OP_SF_EBII_arm_orr_reg_a1_Rm_0) << OP_SF_EBIF_arm_orr_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_orr_reg_a1_Rm_0) >> OP_SF_EBII_arm_orr_reg_a1_Rm_0) << OP_SF_EBIF_arm_orr_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -5644,7 +5783,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_movt_a1 */
     static int op_parse_arm_movt_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_movt_a1) != OP_FB_arm_movt_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_movt_a1) != OP_FB_arm_movt_a1) {
             return 1;
         }
 
@@ -5654,22 +5793,21 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_movt_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_movt_a1_cond_0) >> OP_SF_EBII_arm_movt_a1_cond_0) << OP_SF_EBIF_arm_movt_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_movt_a1_cond_0) >> OP_SF_EBII_arm_movt_a1_cond_0) << OP_SF_EBIF_arm_movt_a1_cond_0);
             
         
             context->decoded_code->code.arm_movt_a1.imm16 =
             
-                (((context->code32 & OP_SF_MASK_arm_movt_a1_imm16_0) >> OP_SF_EBII_arm_movt_a1_imm16_0) << OP_SF_EBIF_arm_movt_a1_imm16_0)
+                (((context->code32x1 & OP_SF_MASK_arm_movt_a1_imm16_0) >> OP_SF_EBII_arm_movt_a1_imm16_0) << OP_SF_EBIF_arm_movt_a1_imm16_0)
             
-                | (((context->code32 & OP_SF_MASK_arm_movt_a1_imm16_1) >> OP_SF_EBII_arm_movt_a1_imm16_1) << OP_SF_EBIF_arm_movt_a1_imm16_1);
+                | (((context->code32x1 & OP_SF_MASK_arm_movt_a1_imm16_1) >> OP_SF_EBII_arm_movt_a1_imm16_1) << OP_SF_EBIF_arm_movt_a1_imm16_1);
             
         
             context->decoded_code->code.arm_movt_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_movt_a1_Rd_0) >> OP_SF_EBII_arm_movt_a1_Rd_0) << OP_SF_EBIF_arm_movt_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_movt_a1_Rd_0) >> OP_SF_EBII_arm_movt_a1_Rd_0) << OP_SF_EBIF_arm_movt_a1_Rd_0);
             
         
-
         
         
             if (
@@ -5685,7 +5823,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_lsl_imm_a1 */
     static int op_parse_arm_lsl_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_lsl_imm_a1) != OP_FB_arm_lsl_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_lsl_imm_a1) != OP_FB_arm_lsl_imm_a1) {
             return 1;
         }
 
@@ -5695,30 +5833,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_lsl_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_imm_a1_cond_0) >> OP_SF_EBII_arm_lsl_imm_a1_cond_0) << OP_SF_EBIF_arm_lsl_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_imm_a1_cond_0) >> OP_SF_EBII_arm_lsl_imm_a1_cond_0) << OP_SF_EBIF_arm_lsl_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_lsl_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_imm_a1_S_0) >> OP_SF_EBII_arm_lsl_imm_a1_S_0) << OP_SF_EBIF_arm_lsl_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_imm_a1_S_0) >> OP_SF_EBII_arm_lsl_imm_a1_S_0) << OP_SF_EBIF_arm_lsl_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_lsl_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_imm_a1_Rd_0) >> OP_SF_EBII_arm_lsl_imm_a1_Rd_0) << OP_SF_EBIF_arm_lsl_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_imm_a1_Rd_0) >> OP_SF_EBII_arm_lsl_imm_a1_Rd_0) << OP_SF_EBIF_arm_lsl_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_lsl_imm_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_imm_a1_imm5_0) >> OP_SF_EBII_arm_lsl_imm_a1_imm5_0) << OP_SF_EBIF_arm_lsl_imm_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_imm_a1_imm5_0) >> OP_SF_EBII_arm_lsl_imm_a1_imm5_0) << OP_SF_EBIF_arm_lsl_imm_a1_imm5_0);
             
         
             context->decoded_code->code.arm_lsl_imm_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_imm_a1_Rm_0) >> OP_SF_EBII_arm_lsl_imm_a1_Rm_0) << OP_SF_EBIF_arm_lsl_imm_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_imm_a1_Rm_0) >> OP_SF_EBII_arm_lsl_imm_a1_Rm_0) << OP_SF_EBIF_arm_lsl_imm_a1_Rm_0);
             
         
-
         
         
             if (
@@ -5734,7 +5871,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_lsl_reg_a1 */
     static int op_parse_arm_lsl_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_lsl_reg_a1) != OP_FB_arm_lsl_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_lsl_reg_a1) != OP_FB_arm_lsl_reg_a1) {
             return 1;
         }
 
@@ -5744,30 +5881,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_lsl_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_cond_0) >> OP_SF_EBII_arm_lsl_reg_a1_cond_0) << OP_SF_EBIF_arm_lsl_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_reg_a1_cond_0) >> OP_SF_EBII_arm_lsl_reg_a1_cond_0) << OP_SF_EBIF_arm_lsl_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_lsl_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_S_0) >> OP_SF_EBII_arm_lsl_reg_a1_S_0) << OP_SF_EBIF_arm_lsl_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_reg_a1_S_0) >> OP_SF_EBII_arm_lsl_reg_a1_S_0) << OP_SF_EBIF_arm_lsl_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_lsl_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rd_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rd_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_reg_a1_Rd_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rd_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_lsl_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rm_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rm_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_reg_a1_Rm_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rm_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rm_0);
             
         
             context->decoded_code->code.arm_lsl_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_lsl_reg_a1_Rn_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rn_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsl_reg_a1_Rn_0) >> OP_SF_EBII_arm_lsl_reg_a1_Rn_0) << OP_SF_EBIF_arm_lsl_reg_a1_Rn_0);
             
         
-
         
         
             if (
@@ -5785,7 +5921,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_lsr_imm_a1 */
     static int op_parse_arm_lsr_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_lsr_imm_a1) != OP_FB_arm_lsr_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_lsr_imm_a1) != OP_FB_arm_lsr_imm_a1) {
             return 1;
         }
 
@@ -5795,30 +5931,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_lsr_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_lsr_imm_a1_cond_0) >> OP_SF_EBII_arm_lsr_imm_a1_cond_0) << OP_SF_EBIF_arm_lsr_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsr_imm_a1_cond_0) >> OP_SF_EBII_arm_lsr_imm_a1_cond_0) << OP_SF_EBIF_arm_lsr_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_lsr_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_lsr_imm_a1_S_0) >> OP_SF_EBII_arm_lsr_imm_a1_S_0) << OP_SF_EBIF_arm_lsr_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsr_imm_a1_S_0) >> OP_SF_EBII_arm_lsr_imm_a1_S_0) << OP_SF_EBIF_arm_lsr_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_lsr_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_lsr_imm_a1_Rd_0) >> OP_SF_EBII_arm_lsr_imm_a1_Rd_0) << OP_SF_EBIF_arm_lsr_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsr_imm_a1_Rd_0) >> OP_SF_EBII_arm_lsr_imm_a1_Rd_0) << OP_SF_EBIF_arm_lsr_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_lsr_imm_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_lsr_imm_a1_imm5_0) >> OP_SF_EBII_arm_lsr_imm_a1_imm5_0) << OP_SF_EBIF_arm_lsr_imm_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsr_imm_a1_imm5_0) >> OP_SF_EBII_arm_lsr_imm_a1_imm5_0) << OP_SF_EBIF_arm_lsr_imm_a1_imm5_0);
             
         
             context->decoded_code->code.arm_lsr_imm_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_lsr_imm_a1_Rm_0) >> OP_SF_EBII_arm_lsr_imm_a1_Rm_0) << OP_SF_EBIF_arm_lsr_imm_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_lsr_imm_a1_Rm_0) >> OP_SF_EBII_arm_lsr_imm_a1_Rm_0) << OP_SF_EBIF_arm_lsr_imm_a1_Rm_0);
             
         
-
         
         
             if (
@@ -5836,7 +5971,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_bfc_a1 */
     static int op_parse_arm_bfc_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_bfc_a1) != OP_FB_arm_bfc_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_bfc_a1) != OP_FB_arm_bfc_a1) {
             return 1;
         }
 
@@ -5846,25 +5981,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_bfc_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_bfc_a1_cond_0) >> OP_SF_EBII_arm_bfc_a1_cond_0) << OP_SF_EBIF_arm_bfc_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bfc_a1_cond_0) >> OP_SF_EBII_arm_bfc_a1_cond_0) << OP_SF_EBIF_arm_bfc_a1_cond_0);
             
         
             context->decoded_code->code.arm_bfc_a1.msb =
             
-                (((context->code32 & OP_SF_MASK_arm_bfc_a1_msb_0) >> OP_SF_EBII_arm_bfc_a1_msb_0) << OP_SF_EBIF_arm_bfc_a1_msb_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bfc_a1_msb_0) >> OP_SF_EBII_arm_bfc_a1_msb_0) << OP_SF_EBIF_arm_bfc_a1_msb_0);
             
         
             context->decoded_code->code.arm_bfc_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_bfc_a1_Rd_0) >> OP_SF_EBII_arm_bfc_a1_Rd_0) << OP_SF_EBIF_arm_bfc_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bfc_a1_Rd_0) >> OP_SF_EBII_arm_bfc_a1_Rd_0) << OP_SF_EBIF_arm_bfc_a1_Rd_0);
             
         
             context->decoded_code->code.arm_bfc_a1.lsb =
             
-                (((context->code32 & OP_SF_MASK_arm_bfc_a1_lsb_0) >> OP_SF_EBII_arm_bfc_a1_lsb_0) << OP_SF_EBIF_arm_bfc_a1_lsb_0);
+                (((context->code32x1 & OP_SF_MASK_arm_bfc_a1_lsb_0) >> OP_SF_EBII_arm_bfc_a1_lsb_0) << OP_SF_EBIF_arm_bfc_a1_lsb_0);
             
         
-
         
         
             if (
@@ -5880,7 +6014,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_and_imm_a1 */
     static int op_parse_arm_and_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_and_imm_a1) != OP_FB_arm_and_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_and_imm_a1) != OP_FB_arm_and_imm_a1) {
             return 1;
         }
 
@@ -5890,30 +6024,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_and_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_and_imm_a1_cond_0) >> OP_SF_EBII_arm_and_imm_a1_cond_0) << OP_SF_EBIF_arm_and_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_imm_a1_cond_0) >> OP_SF_EBII_arm_and_imm_a1_cond_0) << OP_SF_EBIF_arm_and_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_and_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_and_imm_a1_S_0) >> OP_SF_EBII_arm_and_imm_a1_S_0) << OP_SF_EBIF_arm_and_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_imm_a1_S_0) >> OP_SF_EBII_arm_and_imm_a1_S_0) << OP_SF_EBIF_arm_and_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_and_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_and_imm_a1_Rn_0) >> OP_SF_EBII_arm_and_imm_a1_Rn_0) << OP_SF_EBIF_arm_and_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_imm_a1_Rn_0) >> OP_SF_EBII_arm_and_imm_a1_Rn_0) << OP_SF_EBIF_arm_and_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_and_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_and_imm_a1_Rd_0) >> OP_SF_EBII_arm_and_imm_a1_Rd_0) << OP_SF_EBIF_arm_and_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_imm_a1_Rd_0) >> OP_SF_EBII_arm_and_imm_a1_Rd_0) << OP_SF_EBIF_arm_and_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_and_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_and_imm_a1_imm12_0) >> OP_SF_EBII_arm_and_imm_a1_imm12_0) << OP_SF_EBIF_arm_and_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_imm_a1_imm12_0) >> OP_SF_EBII_arm_and_imm_a1_imm12_0) << OP_SF_EBIF_arm_and_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -5931,7 +6064,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_and_reg_a1 */
     static int op_parse_arm_and_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_and_reg_a1) != OP_FB_arm_and_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_and_reg_a1) != OP_FB_arm_and_reg_a1) {
             return 1;
         }
 
@@ -5941,40 +6074,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_and_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_cond_0) >> OP_SF_EBII_arm_and_reg_a1_cond_0) << OP_SF_EBIF_arm_and_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_cond_0) >> OP_SF_EBII_arm_and_reg_a1_cond_0) << OP_SF_EBIF_arm_and_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_S_0) >> OP_SF_EBII_arm_and_reg_a1_S_0) << OP_SF_EBIF_arm_and_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_S_0) >> OP_SF_EBII_arm_and_reg_a1_S_0) << OP_SF_EBIF_arm_and_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_Rn_0) >> OP_SF_EBII_arm_and_reg_a1_Rn_0) << OP_SF_EBIF_arm_and_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_Rn_0) >> OP_SF_EBII_arm_and_reg_a1_Rn_0) << OP_SF_EBIF_arm_and_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_Rd_0) >> OP_SF_EBII_arm_and_reg_a1_Rd_0) << OP_SF_EBIF_arm_and_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_Rd_0) >> OP_SF_EBII_arm_and_reg_a1_Rd_0) << OP_SF_EBIF_arm_and_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_imm5_0) >> OP_SF_EBII_arm_and_reg_a1_imm5_0) << OP_SF_EBIF_arm_and_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_imm5_0) >> OP_SF_EBII_arm_and_reg_a1_imm5_0) << OP_SF_EBIF_arm_and_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_type_0) >> OP_SF_EBII_arm_and_reg_a1_type_0) << OP_SF_EBIF_arm_and_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_type_0) >> OP_SF_EBII_arm_and_reg_a1_type_0) << OP_SF_EBIF_arm_and_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_and_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_and_reg_a1_Rm_0) >> OP_SF_EBII_arm_and_reg_a1_Rm_0) << OP_SF_EBIF_arm_and_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_and_reg_a1_Rm_0) >> OP_SF_EBII_arm_and_reg_a1_Rm_0) << OP_SF_EBIF_arm_and_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -5992,7 +6124,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_uxtb_a1 */
     static int op_parse_arm_uxtb_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_uxtb_a1) != OP_FB_arm_uxtb_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_uxtb_a1) != OP_FB_arm_uxtb_a1) {
             return 1;
         }
 
@@ -6002,25 +6134,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_uxtb_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_uxtb_a1_cond_0) >> OP_SF_EBII_arm_uxtb_a1_cond_0) << OP_SF_EBIF_arm_uxtb_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxtb_a1_cond_0) >> OP_SF_EBII_arm_uxtb_a1_cond_0) << OP_SF_EBIF_arm_uxtb_a1_cond_0);
             
         
             context->decoded_code->code.arm_uxtb_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_uxtb_a1_Rd_0) >> OP_SF_EBII_arm_uxtb_a1_Rd_0) << OP_SF_EBIF_arm_uxtb_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxtb_a1_Rd_0) >> OP_SF_EBII_arm_uxtb_a1_Rd_0) << OP_SF_EBIF_arm_uxtb_a1_Rd_0);
             
         
             context->decoded_code->code.arm_uxtb_a1.rotate =
             
-                (((context->code32 & OP_SF_MASK_arm_uxtb_a1_rotate_0) >> OP_SF_EBII_arm_uxtb_a1_rotate_0) << OP_SF_EBIF_arm_uxtb_a1_rotate_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxtb_a1_rotate_0) >> OP_SF_EBII_arm_uxtb_a1_rotate_0) << OP_SF_EBIF_arm_uxtb_a1_rotate_0);
             
         
             context->decoded_code->code.arm_uxtb_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_uxtb_a1_Rm_0) >> OP_SF_EBII_arm_uxtb_a1_Rm_0) << OP_SF_EBIF_arm_uxtb_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxtb_a1_Rm_0) >> OP_SF_EBII_arm_uxtb_a1_Rm_0) << OP_SF_EBIF_arm_uxtb_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6037,7 +6168,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_uxth_a1 */
     static int op_parse_arm_uxth_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_uxth_a1) != OP_FB_arm_uxth_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_uxth_a1) != OP_FB_arm_uxth_a1) {
             return 1;
         }
 
@@ -6047,25 +6178,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_uxth_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_uxth_a1_cond_0) >> OP_SF_EBII_arm_uxth_a1_cond_0) << OP_SF_EBIF_arm_uxth_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxth_a1_cond_0) >> OP_SF_EBII_arm_uxth_a1_cond_0) << OP_SF_EBIF_arm_uxth_a1_cond_0);
             
         
             context->decoded_code->code.arm_uxth_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_uxth_a1_Rd_0) >> OP_SF_EBII_arm_uxth_a1_Rd_0) << OP_SF_EBIF_arm_uxth_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxth_a1_Rd_0) >> OP_SF_EBII_arm_uxth_a1_Rd_0) << OP_SF_EBIF_arm_uxth_a1_Rd_0);
             
         
             context->decoded_code->code.arm_uxth_a1.rotate =
             
-                (((context->code32 & OP_SF_MASK_arm_uxth_a1_rotate_0) >> OP_SF_EBII_arm_uxth_a1_rotate_0) << OP_SF_EBIF_arm_uxth_a1_rotate_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxth_a1_rotate_0) >> OP_SF_EBII_arm_uxth_a1_rotate_0) << OP_SF_EBIF_arm_uxth_a1_rotate_0);
             
         
             context->decoded_code->code.arm_uxth_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_uxth_a1_Rm_0) >> OP_SF_EBII_arm_uxth_a1_Rm_0) << OP_SF_EBIF_arm_uxth_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_uxth_a1_Rm_0) >> OP_SF_EBII_arm_uxth_a1_Rm_0) << OP_SF_EBIF_arm_uxth_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6082,7 +6212,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_rsb_reg_a1 */
     static int op_parse_arm_rsb_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_rsb_reg_a1) != OP_FB_arm_rsb_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_rsb_reg_a1) != OP_FB_arm_rsb_reg_a1) {
             return 1;
         }
 
@@ -6092,40 +6222,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_rsb_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_cond_0) >> OP_SF_EBII_arm_rsb_reg_a1_cond_0) << OP_SF_EBIF_arm_rsb_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_cond_0) >> OP_SF_EBII_arm_rsb_reg_a1_cond_0) << OP_SF_EBIF_arm_rsb_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_S_0) >> OP_SF_EBII_arm_rsb_reg_a1_S_0) << OP_SF_EBIF_arm_rsb_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_S_0) >> OP_SF_EBII_arm_rsb_reg_a1_S_0) << OP_SF_EBIF_arm_rsb_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_Rn_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rn_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_Rn_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rn_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_Rd_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rd_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_Rd_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rd_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_imm5_0) >> OP_SF_EBII_arm_rsb_reg_a1_imm5_0) << OP_SF_EBIF_arm_rsb_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_imm5_0) >> OP_SF_EBII_arm_rsb_reg_a1_imm5_0) << OP_SF_EBIF_arm_rsb_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_type_0) >> OP_SF_EBII_arm_rsb_reg_a1_type_0) << OP_SF_EBIF_arm_rsb_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_type_0) >> OP_SF_EBII_arm_rsb_reg_a1_type_0) << OP_SF_EBIF_arm_rsb_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_rsb_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_reg_a1_Rm_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rm_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_reg_a1_Rm_0) >> OP_SF_EBII_arm_rsb_reg_a1_Rm_0) << OP_SF_EBIF_arm_rsb_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6143,7 +6272,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_rsb_imm_a1 */
     static int op_parse_arm_rsb_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_rsb_imm_a1) != OP_FB_arm_rsb_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_rsb_imm_a1) != OP_FB_arm_rsb_imm_a1) {
             return 1;
         }
 
@@ -6153,30 +6282,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_rsb_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_imm_a1_cond_0) >> OP_SF_EBII_arm_rsb_imm_a1_cond_0) << OP_SF_EBIF_arm_rsb_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_imm_a1_cond_0) >> OP_SF_EBII_arm_rsb_imm_a1_cond_0) << OP_SF_EBIF_arm_rsb_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_rsb_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_imm_a1_S_0) >> OP_SF_EBII_arm_rsb_imm_a1_S_0) << OP_SF_EBIF_arm_rsb_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_imm_a1_S_0) >> OP_SF_EBII_arm_rsb_imm_a1_S_0) << OP_SF_EBIF_arm_rsb_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_rsb_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_imm_a1_Rn_0) >> OP_SF_EBII_arm_rsb_imm_a1_Rn_0) << OP_SF_EBIF_arm_rsb_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_imm_a1_Rn_0) >> OP_SF_EBII_arm_rsb_imm_a1_Rn_0) << OP_SF_EBIF_arm_rsb_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_rsb_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_imm_a1_Rd_0) >> OP_SF_EBII_arm_rsb_imm_a1_Rd_0) << OP_SF_EBIF_arm_rsb_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_imm_a1_Rd_0) >> OP_SF_EBII_arm_rsb_imm_a1_Rd_0) << OP_SF_EBIF_arm_rsb_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_rsb_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_rsb_imm_a1_imm12_0) >> OP_SF_EBII_arm_rsb_imm_a1_imm12_0) << OP_SF_EBIF_arm_rsb_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rsb_imm_a1_imm12_0) >> OP_SF_EBII_arm_rsb_imm_a1_imm12_0) << OP_SF_EBIF_arm_rsb_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -6194,7 +6322,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_sbc_reg_a1 */
     static int op_parse_arm_sbc_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_sbc_reg_a1) != OP_FB_arm_sbc_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_sbc_reg_a1) != OP_FB_arm_sbc_reg_a1) {
             return 1;
         }
 
@@ -6204,40 +6332,39 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_sbc_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_cond_0) >> OP_SF_EBII_arm_sbc_reg_a1_cond_0) << OP_SF_EBIF_arm_sbc_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_cond_0) >> OP_SF_EBII_arm_sbc_reg_a1_cond_0) << OP_SF_EBIF_arm_sbc_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_S_0) >> OP_SF_EBII_arm_sbc_reg_a1_S_0) << OP_SF_EBIF_arm_sbc_reg_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_S_0) >> OP_SF_EBII_arm_sbc_reg_a1_S_0) << OP_SF_EBIF_arm_sbc_reg_a1_S_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_Rn_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rn_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_Rn_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rn_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_Rd_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rd_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_Rd_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rd_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rd_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_imm5_0) >> OP_SF_EBII_arm_sbc_reg_a1_imm5_0) << OP_SF_EBIF_arm_sbc_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_imm5_0) >> OP_SF_EBII_arm_sbc_reg_a1_imm5_0) << OP_SF_EBIF_arm_sbc_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_type_0) >> OP_SF_EBII_arm_sbc_reg_a1_type_0) << OP_SF_EBIF_arm_sbc_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_type_0) >> OP_SF_EBII_arm_sbc_reg_a1_type_0) << OP_SF_EBIF_arm_sbc_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_sbc_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_sbc_reg_a1_Rm_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rm_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sbc_reg_a1_Rm_0) >> OP_SF_EBII_arm_sbc_reg_a1_Rm_0) << OP_SF_EBIF_arm_sbc_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6255,7 +6382,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_mul_a1 */
     static int op_parse_arm_mul_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_mul_a1) != OP_FB_arm_mul_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_mul_a1) != OP_FB_arm_mul_a1) {
             return 1;
         }
 
@@ -6265,30 +6392,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_mul_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_mul_a1_cond_0) >> OP_SF_EBII_arm_mul_a1_cond_0) << OP_SF_EBIF_arm_mul_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mul_a1_cond_0) >> OP_SF_EBII_arm_mul_a1_cond_0) << OP_SF_EBIF_arm_mul_a1_cond_0);
             
         
             context->decoded_code->code.arm_mul_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_mul_a1_S_0) >> OP_SF_EBII_arm_mul_a1_S_0) << OP_SF_EBIF_arm_mul_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mul_a1_S_0) >> OP_SF_EBII_arm_mul_a1_S_0) << OP_SF_EBIF_arm_mul_a1_S_0);
             
         
             context->decoded_code->code.arm_mul_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rd_0) >> OP_SF_EBII_arm_mul_a1_Rd_0) << OP_SF_EBIF_arm_mul_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mul_a1_Rd_0) >> OP_SF_EBII_arm_mul_a1_Rd_0) << OP_SF_EBIF_arm_mul_a1_Rd_0);
             
         
             context->decoded_code->code.arm_mul_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rm_0) >> OP_SF_EBII_arm_mul_a1_Rm_0) << OP_SF_EBIF_arm_mul_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mul_a1_Rm_0) >> OP_SF_EBII_arm_mul_a1_Rm_0) << OP_SF_EBIF_arm_mul_a1_Rm_0);
             
         
             context->decoded_code->code.arm_mul_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_mul_a1_Rn_0) >> OP_SF_EBII_arm_mul_a1_Rn_0) << OP_SF_EBIF_arm_mul_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_mul_a1_Rn_0) >> OP_SF_EBII_arm_mul_a1_Rn_0) << OP_SF_EBIF_arm_mul_a1_Rn_0);
             
         
-
         
         
             if (
@@ -6306,7 +6432,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_tst_imm_a1 */
     static int op_parse_arm_tst_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_tst_imm_a1) != OP_FB_arm_tst_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_tst_imm_a1) != OP_FB_arm_tst_imm_a1) {
             return 1;
         }
 
@@ -6316,20 +6442,19 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_tst_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_cond_0) >> OP_SF_EBII_arm_tst_imm_a1_cond_0) << OP_SF_EBIF_arm_tst_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_imm_a1_cond_0) >> OP_SF_EBII_arm_tst_imm_a1_cond_0) << OP_SF_EBIF_arm_tst_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_tst_imm_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_Rn_0) >> OP_SF_EBII_arm_tst_imm_a1_Rn_0) << OP_SF_EBIF_arm_tst_imm_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_imm_a1_Rn_0) >> OP_SF_EBII_arm_tst_imm_a1_Rn_0) << OP_SF_EBIF_arm_tst_imm_a1_Rn_0);
             
         
             context->decoded_code->code.arm_tst_imm_a1.imm12 =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_imm_a1_imm12_0) >> OP_SF_EBII_arm_tst_imm_a1_imm12_0) << OP_SF_EBIF_arm_tst_imm_a1_imm12_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_imm_a1_imm12_0) >> OP_SF_EBII_arm_tst_imm_a1_imm12_0) << OP_SF_EBIF_arm_tst_imm_a1_imm12_0);
             
         
-
         
         
             if (
@@ -6343,7 +6468,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_tst_reg_a1 */
     static int op_parse_arm_tst_reg_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_tst_reg_a1) != OP_FB_arm_tst_reg_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_tst_reg_a1) != OP_FB_arm_tst_reg_a1) {
             return 1;
         }
 
@@ -6353,30 +6478,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_tst_reg_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_cond_0) >> OP_SF_EBII_arm_tst_reg_a1_cond_0) << OP_SF_EBIF_arm_tst_reg_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_reg_a1_cond_0) >> OP_SF_EBII_arm_tst_reg_a1_cond_0) << OP_SF_EBIF_arm_tst_reg_a1_cond_0);
             
         
             context->decoded_code->code.arm_tst_reg_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_Rn_0) >> OP_SF_EBII_arm_tst_reg_a1_Rn_0) << OP_SF_EBIF_arm_tst_reg_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_reg_a1_Rn_0) >> OP_SF_EBII_arm_tst_reg_a1_Rn_0) << OP_SF_EBIF_arm_tst_reg_a1_Rn_0);
             
         
             context->decoded_code->code.arm_tst_reg_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_imm5_0) >> OP_SF_EBII_arm_tst_reg_a1_imm5_0) << OP_SF_EBIF_arm_tst_reg_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_reg_a1_imm5_0) >> OP_SF_EBII_arm_tst_reg_a1_imm5_0) << OP_SF_EBIF_arm_tst_reg_a1_imm5_0);
             
         
             context->decoded_code->code.arm_tst_reg_a1.type =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_type_0) >> OP_SF_EBII_arm_tst_reg_a1_type_0) << OP_SF_EBIF_arm_tst_reg_a1_type_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_reg_a1_type_0) >> OP_SF_EBII_arm_tst_reg_a1_type_0) << OP_SF_EBIF_arm_tst_reg_a1_type_0);
             
         
             context->decoded_code->code.arm_tst_reg_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_tst_reg_a1_Rm_0) >> OP_SF_EBII_arm_tst_reg_a1_Rm_0) << OP_SF_EBIF_arm_tst_reg_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_tst_reg_a1_Rm_0) >> OP_SF_EBII_arm_tst_reg_a1_Rm_0) << OP_SF_EBIF_arm_tst_reg_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6390,7 +6514,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_sxtb_a1 */
     static int op_parse_arm_sxtb_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_sxtb_a1) != OP_FB_arm_sxtb_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_sxtb_a1) != OP_FB_arm_sxtb_a1) {
             return 1;
         }
 
@@ -6400,25 +6524,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_sxtb_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_sxtb_a1_cond_0) >> OP_SF_EBII_arm_sxtb_a1_cond_0) << OP_SF_EBIF_arm_sxtb_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sxtb_a1_cond_0) >> OP_SF_EBII_arm_sxtb_a1_cond_0) << OP_SF_EBIF_arm_sxtb_a1_cond_0);
             
         
             context->decoded_code->code.arm_sxtb_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_sxtb_a1_Rd_0) >> OP_SF_EBII_arm_sxtb_a1_Rd_0) << OP_SF_EBIF_arm_sxtb_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sxtb_a1_Rd_0) >> OP_SF_EBII_arm_sxtb_a1_Rd_0) << OP_SF_EBIF_arm_sxtb_a1_Rd_0);
             
         
             context->decoded_code->code.arm_sxtb_a1.rotate =
             
-                (((context->code32 & OP_SF_MASK_arm_sxtb_a1_rotate_0) >> OP_SF_EBII_arm_sxtb_a1_rotate_0) << OP_SF_EBIF_arm_sxtb_a1_rotate_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sxtb_a1_rotate_0) >> OP_SF_EBII_arm_sxtb_a1_rotate_0) << OP_SF_EBIF_arm_sxtb_a1_rotate_0);
             
         
             context->decoded_code->code.arm_sxtb_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_sxtb_a1_Rm_0) >> OP_SF_EBII_arm_sxtb_a1_Rm_0) << OP_SF_EBIF_arm_sxtb_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_sxtb_a1_Rm_0) >> OP_SF_EBII_arm_sxtb_a1_Rm_0) << OP_SF_EBIF_arm_sxtb_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6435,7 +6558,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_asr_imm_a1 */
     static int op_parse_arm_asr_imm_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_asr_imm_a1) != OP_FB_arm_asr_imm_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_asr_imm_a1) != OP_FB_arm_asr_imm_a1) {
             return 1;
         }
 
@@ -6445,30 +6568,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_asr_imm_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_asr_imm_a1_cond_0) >> OP_SF_EBII_arm_asr_imm_a1_cond_0) << OP_SF_EBIF_arm_asr_imm_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_asr_imm_a1_cond_0) >> OP_SF_EBII_arm_asr_imm_a1_cond_0) << OP_SF_EBIF_arm_asr_imm_a1_cond_0);
             
         
             context->decoded_code->code.arm_asr_imm_a1.S =
             
-                (((context->code32 & OP_SF_MASK_arm_asr_imm_a1_S_0) >> OP_SF_EBII_arm_asr_imm_a1_S_0) << OP_SF_EBIF_arm_asr_imm_a1_S_0);
+                (((context->code32x1 & OP_SF_MASK_arm_asr_imm_a1_S_0) >> OP_SF_EBII_arm_asr_imm_a1_S_0) << OP_SF_EBIF_arm_asr_imm_a1_S_0);
             
         
             context->decoded_code->code.arm_asr_imm_a1.Rd =
             
-                (((context->code32 & OP_SF_MASK_arm_asr_imm_a1_Rd_0) >> OP_SF_EBII_arm_asr_imm_a1_Rd_0) << OP_SF_EBIF_arm_asr_imm_a1_Rd_0);
+                (((context->code32x1 & OP_SF_MASK_arm_asr_imm_a1_Rd_0) >> OP_SF_EBII_arm_asr_imm_a1_Rd_0) << OP_SF_EBIF_arm_asr_imm_a1_Rd_0);
             
         
             context->decoded_code->code.arm_asr_imm_a1.imm5 =
             
-                (((context->code32 & OP_SF_MASK_arm_asr_imm_a1_imm5_0) >> OP_SF_EBII_arm_asr_imm_a1_imm5_0) << OP_SF_EBIF_arm_asr_imm_a1_imm5_0);
+                (((context->code32x1 & OP_SF_MASK_arm_asr_imm_a1_imm5_0) >> OP_SF_EBII_arm_asr_imm_a1_imm5_0) << OP_SF_EBIF_arm_asr_imm_a1_imm5_0);
             
         
             context->decoded_code->code.arm_asr_imm_a1.Rm =
             
-                (((context->code32 & OP_SF_MASK_arm_asr_imm_a1_Rm_0) >> OP_SF_EBII_arm_asr_imm_a1_Rm_0) << OP_SF_EBIF_arm_asr_imm_a1_Rm_0);
+                (((context->code32x1 & OP_SF_MASK_arm_asr_imm_a1_Rm_0) >> OP_SF_EBII_arm_asr_imm_a1_Rm_0) << OP_SF_EBIF_arm_asr_imm_a1_Rm_0);
             
         
-
         
         
             if (
@@ -6486,7 +6608,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_srs_a1 */
     static int op_parse_arm_srs_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_srs_a1) != OP_FB_arm_srs_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_srs_a1) != OP_FB_arm_srs_a1) {
             return 1;
         }
 
@@ -6496,25 +6618,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_srs_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_srs_a1_P_0) >> OP_SF_EBII_arm_srs_a1_P_0) << OP_SF_EBIF_arm_srs_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_srs_a1_P_0) >> OP_SF_EBII_arm_srs_a1_P_0) << OP_SF_EBIF_arm_srs_a1_P_0);
             
         
             context->decoded_code->code.arm_srs_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_srs_a1_U_0) >> OP_SF_EBII_arm_srs_a1_U_0) << OP_SF_EBIF_arm_srs_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_srs_a1_U_0) >> OP_SF_EBII_arm_srs_a1_U_0) << OP_SF_EBIF_arm_srs_a1_U_0);
             
         
             context->decoded_code->code.arm_srs_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_srs_a1_W_0) >> OP_SF_EBII_arm_srs_a1_W_0) << OP_SF_EBIF_arm_srs_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_srs_a1_W_0) >> OP_SF_EBII_arm_srs_a1_W_0) << OP_SF_EBIF_arm_srs_a1_W_0);
             
         
             context->decoded_code->code.arm_srs_a1.mode =
             
-                (((context->code32 & OP_SF_MASK_arm_srs_a1_mode_0) >> OP_SF_EBII_arm_srs_a1_mode_0) << OP_SF_EBIF_arm_srs_a1_mode_0);
+                (((context->code32x1 & OP_SF_MASK_arm_srs_a1_mode_0) >> OP_SF_EBII_arm_srs_a1_mode_0) << OP_SF_EBIF_arm_srs_a1_mode_0);
             
         
-
         
         
         return 0;
@@ -6522,7 +6643,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_rfe_a1 */
     static int op_parse_arm_rfe_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_rfe_a1) != OP_FB_arm_rfe_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_rfe_a1) != OP_FB_arm_rfe_a1) {
             return 1;
         }
 
@@ -6532,25 +6653,24 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_rfe_a1.P =
             
-                (((context->code32 & OP_SF_MASK_arm_rfe_a1_P_0) >> OP_SF_EBII_arm_rfe_a1_P_0) << OP_SF_EBIF_arm_rfe_a1_P_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rfe_a1_P_0) >> OP_SF_EBII_arm_rfe_a1_P_0) << OP_SF_EBIF_arm_rfe_a1_P_0);
             
         
             context->decoded_code->code.arm_rfe_a1.U =
             
-                (((context->code32 & OP_SF_MASK_arm_rfe_a1_U_0) >> OP_SF_EBII_arm_rfe_a1_U_0) << OP_SF_EBIF_arm_rfe_a1_U_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rfe_a1_U_0) >> OP_SF_EBII_arm_rfe_a1_U_0) << OP_SF_EBIF_arm_rfe_a1_U_0);
             
         
             context->decoded_code->code.arm_rfe_a1.W =
             
-                (((context->code32 & OP_SF_MASK_arm_rfe_a1_W_0) >> OP_SF_EBII_arm_rfe_a1_W_0) << OP_SF_EBIF_arm_rfe_a1_W_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rfe_a1_W_0) >> OP_SF_EBII_arm_rfe_a1_W_0) << OP_SF_EBIF_arm_rfe_a1_W_0);
             
         
             context->decoded_code->code.arm_rfe_a1.Rn =
             
-                (((context->code32 & OP_SF_MASK_arm_rfe_a1_Rn_0) >> OP_SF_EBII_arm_rfe_a1_Rn_0) << OP_SF_EBIF_arm_rfe_a1_Rn_0);
+                (((context->code32x1 & OP_SF_MASK_arm_rfe_a1_Rn_0) >> OP_SF_EBII_arm_rfe_a1_Rn_0) << OP_SF_EBIF_arm_rfe_a1_Rn_0);
             
         
-
         
         
             if (
@@ -6564,7 +6684,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
 
     /* arm_wfi_a1 */
     static int op_parse_arm_wfi_a1(OpDecodeContext *context) {
-        if ((context->code32 & OP_FB_MASK_arm_wfi_a1) != OP_FB_arm_wfi_a1) {
+        if ((context->code32x1 & OP_FB_MASK_arm_wfi_a1) != OP_FB_arm_wfi_a1) {
             return 1;
         }
 
@@ -6574,10 +6694,9 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             context->decoded_code->code.arm_wfi_a1.cond =
             
-                (((context->code32 & OP_SF_MASK_arm_wfi_a1_cond_0) >> OP_SF_EBII_arm_wfi_a1_cond_0) << OP_SF_EBIF_arm_wfi_a1_cond_0);
+                (((context->code32x1 & OP_SF_MASK_arm_wfi_a1_cond_0) >> OP_SF_EBII_arm_wfi_a1_cond_0) << OP_SF_EBIF_arm_wfi_a1_cond_0);
             
         
-
         
         
             if (
@@ -6590,313 +6709,1462 @@ static arm_uint32 setbit_count(arm_uint32 value) {
     }
 
 
+/* decision node functions */
+
+        static int decision_node_code32x1_0(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x0e000000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_1(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x02000000:
+                            if (decision_node_code32x1_36(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x04000000:
+                            if (decision_node_code32x1_67(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x06000000:
+                            if (decision_node_code32x1_77(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x08000000:
+                            if (decision_node_code32x1_90(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x0a000000:
+                            if (decision_node_code32x1_102(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x0e000000:
+                            if (decision_node_code32x1_106(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_1(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00000010) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_2(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000010:
+                            if (decision_node_code32x1_24(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_2(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01a00000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_3(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00200000:
+                            if (decision_node_code32x1_6(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00800000:
+                            if (decision_node_code32x1_7(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_10(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01200000:
+                            if (decision_node_code32x1_14(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_15(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01a00000:
+                            if (decision_node_code32x1_16(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_3(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_4(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_5(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_4(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_and_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_5(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sub_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_6(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_rsb_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_7(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_8(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_9(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_8(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_add_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_9(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sbc_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_10(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00500000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_11(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_12(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00500000:
+                            if (decision_node_code32x1_13(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_11(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mrs_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_12(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_tst_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_13(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_cmp_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_14(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_msr2_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_15(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_orr_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_16(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x004f0000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_17(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_23(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_17(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00000060) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_18(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000020:
+                            if (decision_node_code32x1_21(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000040:
+                            if (decision_node_code32x1_22(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_18(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00000f80) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_19(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_20(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_19(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mov_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_20(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_lsl_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_21(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_lsr_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_22(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_asr_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_23(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mvn_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_24(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x004000e0) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_25(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000020:
+                            if (decision_node_code32x1_28(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000080:
+                            if (decision_node_code32x1_29(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x000000a0:
+                            if (decision_node_code32x1_30(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x004000a0:
+                            if (decision_node_code32x1_31(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x004000c0:
+                            if (decision_node_code32x1_34(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x004000e0:
+                            if (decision_node_code32x1_35(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_25(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01af0000) {
+                    
+                        case 0x012f0000:
+                            if (decision_node_code32x1_26(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01a00000:
+                            if (decision_node_code32x1_27(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_26(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_bx_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_27(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_lsl_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_28(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_blx_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_29(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mul_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_30(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrh_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_31(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_32(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_33(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_32(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_strh_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_33(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrh_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_34(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrd_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_35(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_strd_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_36(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01a00000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_37(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00200000:
+                            if (decision_node_code32x1_42(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00800000:
+                            if (decision_node_code32x1_43(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_47(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01200000:
+                            if (decision_node_code32x1_52(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_60(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01a00000:
+                            if (decision_node_code32x1_63(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_66(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_37(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_38(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_39(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_38(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_and_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_39(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000f0000) {
+                    
+                        case 0x000d0000:
+                            if (decision_node_code32x1_40(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_41(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_40(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sub_spimm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_41(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sub_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_42(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_rsb_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_43(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000f0000) {
+                    
+                        case 0x000d0000:
+                            if (decision_node_code32x1_44(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x000f0000:
+                            if (decision_node_code32x1_45(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_46(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_44(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_add_spimm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_45(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_adr_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_46(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_add_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_47(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00500000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_48(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_49(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_50(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00500000:
+                            if (decision_node_code32x1_51(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_48(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mov_imm_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_49(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_tst_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_50(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_movt_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_51(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_cmp_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_52(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x0010f000) {
+                    
+                        case 0x0000f000:
+                            if (decision_node_code32x1_53(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_59(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_53(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000c0fff) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_54(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000003:
+                            if (decision_node_code32x1_55(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_56(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_54(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_nop_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_55(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_wfi_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_56(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00430000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_57(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_58(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_57(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_msr_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_58(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_msr2_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_59(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_cmn_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_60(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_61(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_62(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_61(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_orr_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_62(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_bic_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_63(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x004f0000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_64(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_65(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_64(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mov_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_65(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mvn_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_66(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_subs_pclr_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_67(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00500000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_68(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_71(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_75(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00500000:
+                            if (decision_node_code32x1_76(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_68(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01af0fff) {
+                    
+                        case 0x012d0004:
+                            if (decision_node_code32x1_69(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_70(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_69(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_push_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_70(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_str_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_71(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000f0000) {
+                    
+                        case 0x000d0000:
+                            if (decision_node_code32x1_72(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x000f0000:
+                            if (decision_node_code32x1_73(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_74(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_72(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_pop_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_73(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldr_literal_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_74(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldr_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_75(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_strb_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_76(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrb_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_77(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400010) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_78(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000010:
+                            if (decision_node_code32x1_81(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_82(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400010:
+                            if (decision_node_code32x1_85(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_78(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_79(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_80(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_79(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_str_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_80(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldr_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_81(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sxtb_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_82(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_83(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_84(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_83(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_strb_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_84(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrb_reg_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_85(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01a00060) {
+                    
+                        case 0x00a00060:
+                            if (decision_node_code32x1_86(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_89(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_86(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x001f0380) {
+                    
+                        case 0x000f0000:
+                            if (decision_node_code32x1_87(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x001f0000:
+                            if (decision_node_code32x1_88(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_87(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_uxtb_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_88(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_uxth_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_89(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_bfc_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_90(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00500000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_91(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_96(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_101(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_91(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01800000) {
+                    
+                        case 0x00800000:
+                            if (decision_node_code32x1_92(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_93(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_92(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_stm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_93(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x002f0000) {
+                    
+                        case 0x002d0000:
+                            if (decision_node_code32x1_94(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_95(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_94(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_push_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_95(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_stmfd_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_96(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01800000) {
+                    
+                        case 0x00800000:
+                            if (decision_node_code32x1_97(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_100(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_97(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x002f0000) {
+                    
+                        case 0x002d0000:
+                            if (decision_node_code32x1_98(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_99(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_98(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_pop_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_99(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_100(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_rfe_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_101(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_srs_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_102(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01000000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_103(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_104(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_105(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_103(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_b_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_104(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_bl_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_105(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_blx_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_106(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01100010) {
+                    
+                        case 0x00000010:
+                            if (decision_node_code32x1_107(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100010:
+                            if (decision_node_code32x1_110(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_107(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0xf0000000) {
+                    
+                        case 0xf0000000:
+                            if (decision_node_code32x1_108(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_109(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_108(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mcr2_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_109(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mcr_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0xf0000000) {
+                    
+                        case 0xf0000000:
+                            if (decision_node_code32x1_111(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_112(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mrc2_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mrc_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+
 /* op parse function */
 int arm_op_parse(arm_uint16 code[arm_OP_DECODE_MAX], arm_OpDecodedCodeType *decoded_code, arm_OperationCodeType *optype) {
+    
+
     OpDecodeContext context;
     context.code = &code[0];
     context.decoded_code = decoded_code;
     context.optype = optype;
-    context.code16 = (arm_uint16) code[0];
-    context.code32 = *((arm_uint32 *) &code[0]);
-
     
-        if (op_parse_arm_add_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_add_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_add_spimm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_adr_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_subs_pclr_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_cmp_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_cmn_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_sub_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_sub_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_sub_spimm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_cmp_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mov_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mov_imm_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mvn_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mov_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mvn_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_bl_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_blx_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_blx_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_b_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_bx_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_str_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_strb_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_strh_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_strd_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_str_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_strb_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_push_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_push_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_stmfd_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_stm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldr_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldr_literal_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldrb_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldrh_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldrd_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldr_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldrb_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldrh_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_pop_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_pop_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_ldm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_nop_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_msr_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_msr2_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mrs_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_msr2_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mcr_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mcr2_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mrc_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mrc2_a2(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_bic_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_orr_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_orr_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_movt_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_lsl_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_lsl_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_lsr_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_bfc_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_and_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_and_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_uxtb_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_uxth_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_rsb_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_rsb_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_sbc_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_mul_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_tst_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_tst_reg_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_sxtb_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_asr_imm_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_srs_a1(&context) == 0) {
-            return 0;
-        }
-    
-        if (op_parse_arm_rfe_a1(&context) == 0) {
-            return 0;
-        }
+        context.code16x1 = code[0];
+        context.code16x2 = (((arm_uint32) code[0]) << 16) | ((arm_uint32) code[1]);
+        context.code32x1 = *((arm_uint32 *) &code[0]);
     
-        if (op_parse_arm_wfi_a1(&context) == 0) {
+    if (decision_node_code32x1_0(&context, context.code32x1) == 0) {
             return 0;
         }
     
-
     return 1;
 }
 

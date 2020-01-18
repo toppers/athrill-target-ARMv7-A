@@ -1,4 +1,5 @@
 machine:
+  byteorder: little
   extras:
     arch_type: arm
     pseudo_codes:

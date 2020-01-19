@@ -2,9 +2,11 @@
 #define _ARM_COPROC_H_
 
 #include "coproc/cp15/arm_coproc_cp15.h"
+#include "coproc/cp11/arm_coproc_fpu.h"
 
 typedef struct {
 	CoprocCP15RegisterType cp15;
+	CoprocCP11RegisterType cp11;
 } CoprocRegisterType;
 
 struct TargetCore;

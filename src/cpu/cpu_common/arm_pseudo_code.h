@@ -571,59 +571,59 @@ static inline int CPSRWriteByInstr(TargetCoreType *core, uint32 value, uint8 byt
 			//CPSR<8> = value<8>; // A interrupt mask
 			user_status_set(status, 0x00000100, value);
 		}
-		if (BYTEMASK_BIT_ISSET(bytemask, 0) != 0) {
-			if (privileged) {
-				//CPSR<7> = value<7>; // I interrupt mask
-				user_status_set(status, 0x00000080, value);
+	}
+	if (BYTEMASK_BIT_ISSET(bytemask, 0) != 0) {
+		if (privileged) {
+			//CPSR<7> = value<7>; // I interrupt mask
+			user_status_set(status, 0x00000080, value);
+		}
+		if (privileged && (!nmfi || (BYTEMASK_BIT_ISSET(value, 6) == 0)) &&
+			( IsSecure(core) || IsSCR_FW(core) || HaveVirtExt(core)) ) {
+			//CPSR<6> = value<6>; // F interrupt mask
+			user_status_set(status, 0x00000040, value);
+		}
+		if (is_excpt_return) {
+			//CPSR<5> = value<5>; // T execution state bit
+			user_status_set(status, 0x00000020, value);
+		}
+		if (privileged) {
+			uint8 value4_0 = (value & 0x1F);
+			uint32 cpsr_m = ((*status) & 0x1F);
+			//value<4:0>
+			if (BadMode(value4_0, core)) {
+				//UNPREDICTABLE;
+				return -1;
 			}
-			if (privileged && (!nmfi || (BYTEMASK_BIT_ISSET(value, 6) == 0)) &&
-				( IsSecure(core) || IsSCR_FW(core) || HaveVirtExt(core)) ) {
-				//CPSR<6> = value<6>; // F interrupt mask
-				user_status_set(status, 0x00000040, value);
-			}
-			if (is_excpt_return) {
-				//CPSR<5> = value<5>; // T execution state bit
-				user_status_set(status, 0x00000020, value);
-			}
-			if (privileged) {
-				uint8 value4_0 = (value & 0x1F);
-				uint32 cpsr_m = ((*status) & 0x1F);
-				//value<4:0>
-				if (BadMode(value4_0, core)) {
+			else {
+				// Check for attempts to enter modes only permitted in Secure state from
+				// Non-secure state. These are Monitor mode ('10110'), and FIQ mode ('10001')
+				// if the Security Extensions have reserved it. The definition of UNPREDICTABLE
+				// does not permit the resulting behavior to be a security hole.
+				if (!IsSecure(core) && (value4_0 == 0b10110)) {
+					//then UNPREDICTABLE;
+					return -1;
+				}
+				if (!IsSecure(core) && (value4_0 == 0b10001) && IsNSACR_RFR(core)) {
+					//then UNPREDICTABLE;
+					return -1;
+				}
+				// There is no Hyp mode ('11010') in Secure state, so that is UNPREDICTABLE
+				if ((IsSCR_NS(core) == FALSE) && (value4_0 == 0b11010)) {
+					 //then UNPREDICTABLE;
+					 return -1;
+				}
+				// Cannot move into Hyp mode directly from a Non-secure PL1 mode
+				if (!IsSecure(core) && (cpsr_m != 0b11010) && (value4_0 == 0b11010)) {
 					//UNPREDICTABLE;
 					return -1;
 				}
-				else {
-					// Check for attempts to enter modes only permitted in Secure state from
-					// Non-secure state. These are Monitor mode ('10110'), and FIQ mode ('10001')
-					// if the Security Extensions have reserved it. The definition of UNPREDICTABLE
-					// does not permit the resulting behavior to be a security hole.
-					if (!IsSecure(core) && (value4_0 == 0b10110)) {
-						//then UNPREDICTABLE;
-						return -1;
-					} 
-					if (!IsSecure(core) && (value4_0 == 0b10001) && IsNSACR_RFR(core)) {
-						//then UNPREDICTABLE;
-						return -1;
-					}
-					// There is no Hyp mode ('11010') in Secure state, so that is UNPREDICTABLE
-					if ((IsSCR_NS(core) == FALSE) && (value4_0 == 0b11010)) {
-						 //then UNPREDICTABLE;
-						 return -1;
-					}
-					// Cannot move into Hyp mode directly from a Non-secure PL1 mode
-					if (!IsSecure(core) && (cpsr_m != 0b11010) && (value4_0 == 0b11010)) {
-						//UNPREDICTABLE;
-						return -1;
-					}
-					// Cannot move out of Hyp mode with this function except on an exception return
-					if ((cpsr_m == 0b11010) && (value4_0 != 0b11010) && !is_excpt_return) {
-						//UNPREDICTABLE;
-						return -1;
-					}
-					// CPSR<4:0>, mode bits
-					user_status_set(status, 0x0000001F, value4_0);
+				// Cannot move out of Hyp mode with this function except on an exception return
+				if ((cpsr_m == 0b11010) && (value4_0 != 0b11010) && !is_excpt_return) {
+					//UNPREDICTABLE;
+					return -1;
 				}
+				// CPSR<4:0>, mode bits
+				user_status_set(status, 0x0000001F, value4_0);
 			}
 		}
 	}

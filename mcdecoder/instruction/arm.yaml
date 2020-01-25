@@ -626,6 +626,20 @@ machine:
           cond: PseudoCodeConditionDataType
 
 
+      - name: arm_vadd_freg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Vn: PseudoCodeFloatRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+          advsimd: PseudoCodeBoolWbackType
+          dp_operation: PseudoCodeBoolIncrementType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+
+
+
+
 decoder:
   namespace: arm
 
@@ -1252,4 +1266,12 @@ instructions:
       clocks: 10
       pseudo_code: arm_wfi
       
+
+  - name: arm_vadd_freg_a2
+    format: xxxx:cond|1110 0|x:D|11|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|0|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vadd_freg
+
       

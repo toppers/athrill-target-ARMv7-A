@@ -1387,4 +1387,29 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_wfi_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeFloatRegisterDataType	Vn;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeBoolWbackType	advsimd;
+
+	PseudoCodeBoolIncrementType	dp_operation;
+} arm_vadd_freg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vadd_freg_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

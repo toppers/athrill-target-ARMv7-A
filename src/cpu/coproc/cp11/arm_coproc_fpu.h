@@ -30,4 +30,44 @@ typedef struct {
 	uint32 fpscr;
 } CoprocCP11RegisterType;
 
+
+typedef struct {
+	bool is64;
+	uint32 regId;
+	union {
+		float32	Data32;
+		float64	Data64;
+	} reg;
+} CoprocFpuRegisterType;
+
+static inline void cpu_get_freg(const CoprocCP11RegisterType *coproc11, CoprocFpuRegisterType *out)
+{
+	if (out->is64 != FALSE) {
+		out->reg.Data64 = coproc11->vfp.d.r[out->regId];
+	}
+	else {
+		out->reg.Data32 = coproc11->vfp.d.r[out->regId];
+	}
+	return;
+}
+
+static inline void cpu_set_freg(CoprocCP11RegisterType *coproc11, const CoprocFpuRegisterType *in)
+{
+	if (in->is64 != FALSE) {
+		coproc11->vfp.d.r[in->regId] = in->reg.Data64;
+	}
+	else {
+		coproc11->vfp.d.r[in->regId] = in->reg.Data32;
+	}
+	return;
+}
+
+#define OP_SET_FREG(coproc11, arg, op, regName)	\
+do {	\
+	(arg)->name = #regName;	\
+	(arg)->freg.regId = (op)->regName;	\
+	(arg)->freg.is64 = ((op)->sz == 1);	\
+	cpu_get_freg((coproc11), &(arg)->freg);	\
+} while (0)
+
 #endif /* _ARM_COPROC_FPU_H_ */

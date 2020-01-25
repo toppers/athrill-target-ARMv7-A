@@ -2694,4 +2694,53 @@ static inline void DBG_ARM_WFI(TargetCoreType *core, arm_wfi_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_VADD_FREG(TargetCoreType *core, arm_vadd_freg_input_type *in, arm_vadd_freg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeBoolIncrementType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vn),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vm),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->advsimd),
+
+		DBG_ARG_PseudoCodeBoolIncrementType(&in->dp_operation),
+
+
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vd),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

@@ -2902,6 +2902,67 @@ typedef struct {
         
     
 
+    /* arm_vadd_freg_a2 */
+    #define OP_FB_MASK_arm_vadd_freg_a2 (0x0fb00e50l) /* fixed bits mask */
+    #define OP_FB_arm_vadd_freg_a2 (0x0e300a00l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'D' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_D_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_D_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_D_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vn' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_Vn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_Vn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_Vn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vd' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_Vd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_Vd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_Vd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'sz' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_sz_0 (0x00000100l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_sz_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_sz_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'N' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_N_0 (0x00000080l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_N_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_N_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'M' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_M_0 (0x00000020l) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_M_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_M_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vm' */
+            #define OP_SF_MASK_arm_vadd_freg_a2_Vm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_vadd_freg_a2_Vm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vadd_freg_a2_Vm_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* macros */
 #define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
@@ -3022,6 +3083,7 @@ static arm_uint32 setbit_count(arm_uint32 value);
         static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_113(OpDecodeContext *context, arm_uint32 code);
 
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
@@ -3097,6 +3159,7 @@ static arm_uint32 setbit_count(arm_uint32 value);
     static int op_parse_arm_srs_a1(OpDecodeContext *context);
     static int op_parse_arm_rfe_a1(OpDecodeContext *context);
     static int op_parse_arm_wfi_a1(OpDecodeContext *context);
+    static int op_parse_arm_vadd_freg_a2(OpDecodeContext *context);
 
 /* functions for conditions */
 static arm_uint32 setbit_count(arm_uint32 value) {
@@ -6708,6 +6771,67 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         return 0;
     }
 
+    /* arm_vadd_freg_a2 */
+    static int op_parse_arm_vadd_freg_a2(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_vadd_freg_a2) != OP_FB_arm_vadd_freg_a2) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_vadd_freg_a2;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_vadd_freg_a2;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_vadd_freg_a2;
+        
+            context->decoded_code->code.arm_vadd_freg_a2.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_cond_0) >> OP_SF_EBII_arm_vadd_freg_a2_cond_0) << OP_SF_EBIF_arm_vadd_freg_a2_cond_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.D =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_D_0) >> OP_SF_EBII_arm_vadd_freg_a2_D_0) << OP_SF_EBIF_arm_vadd_freg_a2_D_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.Vn =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_Vn_0) >> OP_SF_EBII_arm_vadd_freg_a2_Vn_0) << OP_SF_EBIF_arm_vadd_freg_a2_Vn_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.Vd =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_Vd_0) >> OP_SF_EBII_arm_vadd_freg_a2_Vd_0) << OP_SF_EBIF_arm_vadd_freg_a2_Vd_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.sz =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_sz_0) >> OP_SF_EBII_arm_vadd_freg_a2_sz_0) << OP_SF_EBIF_arm_vadd_freg_a2_sz_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.N =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_N_0) >> OP_SF_EBII_arm_vadd_freg_a2_N_0) << OP_SF_EBIF_arm_vadd_freg_a2_N_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.M =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_M_0) >> OP_SF_EBII_arm_vadd_freg_a2_M_0) << OP_SF_EBIF_arm_vadd_freg_a2_M_0);
+            
+        
+            context->decoded_code->code.arm_vadd_freg_a2.Vm =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vadd_freg_a2_Vm_0) >> OP_SF_EBII_arm_vadd_freg_a2_Vm_0) << OP_SF_EBIF_arm_vadd_freg_a2_Vm_0);
+            
+        
+        
+        
+            if (
+                context->decoded_code->code.arm_vadd_freg_a2.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* decision node functions */
 
@@ -8074,8 +8198,13 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                                 return 0;
                             }
                             break;
-                        case 0x00100010:
+                        case 0x00100000:
                             if (decision_node_code32x1_110(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100010:
+                            if (decision_node_code32x1_111(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -8117,21 +8246,29 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code) {
             
+                if (op_parse_arm_vadd_freg_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code) {
+            
             switch (code & 0xf0000000) {
                     
                         case 0xf0000000:
-                            if (decision_node_code32x1_111(context, code) == 0) {
+                            if (decision_node_code32x1_112(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_112(context, code) == 0) {
+                if (decision_node_code32x1_113(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mrc2_a2(context) == 0) {
                     return 0;
@@ -8139,7 +8276,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_113(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mrc_a1(context) == 0) {
                     return 0;
@@ -8317,5 +8454,7 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_rfe_a1 },		/* arm_rfe_a1 */
     
 	{ 1, arm_op_exec_arm_wfi_a1 },		/* arm_wfi_a1 */
+    
+	{ 1, arm_op_exec_arm_vadd_freg_a2 },		/* arm_vadd_freg_a2 */
     
 };

@@ -304,4 +304,23 @@ typedef uint32 PseudoCodeSPSRType;
 #define DBG_FMT_PseudoCodeSPSRType		"SPSR(0x%x) "
 #define DBG_ARG_PseudoCodeSPSRType(arg)	(*(arg))
 
+/********************************************
+ * FPU
+ ********************************************/
+
+typedef struct {
+	char*	name;
+	CoprocFpuRegisterType freg;
+} PseudoCodeFloatRegisterDataType; 				/* Vn, Vd, Vm, etc */
+#define DBG_FMT_PseudoCodeFloatRegisterDataType			"%s(V%d[%lf]) "
+#define DBG_ARG_PseudoCodeFloatRegisterDataType(arg)		(arg)->name, (arg)->freg.regId, (((arg)->freg.is64 != FALSE) ? (arg)->freg.reg.Data64 : (arg)->freg.reg.Data32)
+
+typedef bool PseudoCdodeAdvsimdType;
+#define DBG_FMT_PseudoCdodeAdvsimdType		"advsimd(%s) "
+#define DBG_ARG_PseudoCdodeAdvsimdType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeDpOperationType;
+#define DBG_FMT_PseudoCodeDpOperationType		"dp_operation(%s) "
+#define DBG_ARG_PseudoCodeDpOperationType(arg)	DbgBoolFlag(*(arg))
+
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

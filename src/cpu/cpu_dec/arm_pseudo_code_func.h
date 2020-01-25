@@ -61,4 +61,5 @@ extern int arm_op_exec_arm_asr_imm(struct TargetCore *core,  arm_asr_imm_input_t
 extern int arm_op_exec_arm_srs(struct TargetCore *core,  arm_srs_input_type *in, arm_srs_output_type *out);
 extern int arm_op_exec_arm_rfe(struct TargetCore *core,  arm_rfe_input_type *in, arm_rfe_output_type *out);
 extern int arm_op_exec_arm_wfi(struct TargetCore *core,  arm_wfi_input_type *in, arm_wfi_output_type *out);
+extern int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type *in, arm_vadd_freg_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

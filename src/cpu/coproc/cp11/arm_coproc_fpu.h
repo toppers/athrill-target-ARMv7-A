@@ -30,6 +30,27 @@ typedef struct {
 	uint32 fpscr;
 } CoprocCP11RegisterType;
 
+/*
+ * RMode, bits[23:22]
+ *
+ * Rounding Mode control field. The encoding of this field is:
+ * 0b00 Round to Nearest (RN) mode
+ * 0b01 Round towards Plus Infinity (RP) mode
+ * 0b10 Round towards Minus Infinity (RM) mode
+ * 0b11 Round towards Zero (RZ) mode.
+ */
+typedef enum {
+    FpuRounding_RN = 0b00,
+    FpuRounding_RP = 0b01,
+    FpuRounding_RM = 0b10,
+    FpuRounding_RZ = 0b11,
+} FpuConfigRoundingType;
+
+static inline FpuConfigRoundingType cpu_get_fpu_rmode(uint32 fpscr)
+{
+	return (FpuConfigRoundingType)( (fpscr >> 22U) & 0b11 );
+}
+
 typedef enum {
 	CoprocFpuDataSize_16 = 0,
 	CoprocFpuDataSize_32,

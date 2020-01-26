@@ -6,13 +6,6 @@
 #include "coproc/arm_coproc.h"
 #include "assert.h"
 
-#define OP_SET_FREG(core, arg, op, regName)	\
-do {	\
-	(arg)->regName.name = #regName;	\
-	(arg)->regName.regId = (op)->regName;	\
-	(arg)->regName.reg.Data32 = cpu_get_freg(core, (op)->regName);	\
-} while (0)
-
 typedef enum {
 	FPType_Nonzero = 0,
 	FPType_Zero,
@@ -20,6 +13,25 @@ typedef enum {
 	FPType_QNaN,
 	FPType_SNaN
 } FPType;
+
+typedef enum {
+	FPExc_InvalidOp = 0,
+	FPExc_DivideByZero,
+	FPExc_Overflow,
+	FPExc_Underflow,
+	FPExc_Inexact,
+	FPExc_InputDenorm
+} FPExcType;
+
+static inline uint32 StandardFPSCRValue(uint32 fpscr)
+{
+	if ((fpscr & (1U << 26)) != 0) {
+		return ( (0b000001 << 26) | 0b11000000000000000000000000 );
+	}
+	else {
+		return ( (0b000000 << 26) | 0b11000000000000000000000000 );
+	}
+}
 
 static inline uint32 FP_ExpBits(CoprocFpuDataSizeType size)
 {
@@ -215,32 +227,5 @@ static inline void FPDefaultNaN(CoprocFpuRegisterType *data)
 	}
 	return;
 }
-static inline void FPAdd(CoprocFpuRegisterType *op1, CoprocFpuRegisterType *op2, bool fpscr_controlled, CoprocFpuRegisterType *result)
-{
-	//TODO
-	//fpscr_val = if fpscr_controlled then FPSCR else StandardFPSCRValue();
-	//(type1,sign1,value1) = FPUnpack(op1, fpscr_val);
-	//(type2,sign2,value2) = FPUnpack(op2, fpscr_val);
-	//(done,result) = FPProcessNaNs(type1, type2, op1, op2, fpscr_val);
-	//if !done then
-		//inf1 = (type1 == FPType_Infinity); inf2 = (type2 == FPType_Infinity);
-		//zero1 = (type1 == FPType_Zero); zero2 = (type2 == FPType_Zero);
-		//if inf1 && inf2 && sign1 == NOT(sign2) then
-			//result = FPDefaultNaN(N);
-			//FPProcessException(FPExc_InvalidOp, fpscr_val);
-		//elsif (inf1 && sign1 == '0') || (inf2 && sign2 == '0') then
-			//result = FPInfinity('0', N);
-		//elsif (inf1 && sign1 == '1') || (inf2 && sign2 == '1') then
-			//result = FPInfinity('1', N);
-		//elsif zero1 && zero2 && sign1 == sign2 then
-			//result = FPZero(sign1, N);
-		//else
-			//result_value = value1 + value2;
-			//if result_value == 0.0 then // Sign of exact zero result depends on rounding mode
-				//result_sign = if fpscr_val<23:22> == '10' then '1' else '0';
-				//result = FPZero(result_sign, N);
-			//else
-				//result = FPRound(result_value, N, fpscr_val);
-	//return result;
-}
+
 #endif /* _ARM_PSEUDO_FPU_CODE_H_ */

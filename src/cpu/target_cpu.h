@@ -95,6 +95,10 @@ typedef struct TargetCore {
 	CoprocRegisterType			coproc;
 } TargetCoreType;
 
+static inline uint32 cpu_get_fpscr(TargetCoreType *core)
+{
+	return core->coproc.cp11.fpscr;
+}
 static inline bool IsSecure(TargetCoreType *core)
 {
 	//not supported

@@ -205,12 +205,12 @@ static inline void set_subnormal_result_float(FpuConfigRoundingType cfg, CoprocF
             FLOAT_SIGN_BIT_SET(result);
         }
         else {
-            result->reg.raw32 = FLT_MIN;
+            result->reg.Data32 = FLT_MIN;
         }
         break;
     case FpuRounding_RM:
         if (FLOAT_IS_MINUS(result)) {
-            result->reg.raw32 = FLT_MIN;
+            result->reg.Data32 = FLT_MIN;
             FLOAT_SIGN_BIT_SET(result);
         }
         else {
@@ -334,6 +334,7 @@ int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		FPAdd(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
 	}
 	out->status = *status;
 	return ret;

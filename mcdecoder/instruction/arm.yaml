@@ -637,6 +637,15 @@ machine:
         outputs:
           Vd: PseudoCodeFloatRegisterDataType
 
+      - name: arm_vldr
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rn: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+          add: PseudoCodeBoolAddType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
 
 
 
@@ -1274,4 +1283,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_vadd_freg
 
+  - name: arm_vldr_a1
+    format: xxxx:cond|1101|x:U|x:D|0|1|xxxx:Rn|xxxx:Vd|1011|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vldr
+
+  - name: arm_vldr_a2
+    format: xxxx:cond|1101|x:U|x:D|0|1|xxxx:Rn|xxxx:Vd|1010|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vldr
       

@@ -98,11 +98,11 @@ static inline void cpu_set_freg(CoprocCP11RegisterType *coproc11, const CoprocFp
 	return;
 }
 
-#define OP_SET_FREG(coproc11, arg, op, regName)	\
+#define OP_SET_FREG(coproc11, is64, arg, op, regName)	\
 do {	\
 	(arg)->name = #regName;	\
 	(arg)->freg.regId = (op)->regName;	\
-	if ((op)->sz == 1) {	\
+	if (is64) {	\
 		(arg)->freg.size = CoprocFpuDataSize_64;	\
 	}	\
 	else {	\

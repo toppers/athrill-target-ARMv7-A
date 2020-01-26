@@ -2876,3 +2876,77 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vldr_a1 *op = &core->decoded_code->code.arm_vldr_a1;
+
+	arm_vldr_input_type in;
+	arm_vldr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VLDR_A1";
+
+	in.cond = op->cond;
+
+	in.Rn = op->Rn;
+
+	in.Vd = op->Vd;
+
+	in.add = op->add;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vldr(core, &in, &out);
+	DBG_ARM_VLDR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vldr_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vldr_a2 *op = &core->decoded_code->code.arm_vldr_a2;
+
+	arm_vldr_input_type in;
+	arm_vldr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VLDR_A2";
+
+	in.cond = op->cond;
+
+	in.Rn = op->Rn;
+
+	in.Vd = op->Vd;
+
+	in.add = op->add;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vldr(core, &in, &out);
+	DBG_ARM_VLDR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

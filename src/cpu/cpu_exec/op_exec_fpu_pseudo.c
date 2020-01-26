@@ -339,3 +339,48 @@ int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_vldr_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		uint32 base = (in->Rn.regId == CpuRegId_PC) ? Align(in->Rn.regData, 4) : in->Rn.regData;
+		uint32 address = (in->add) ? (base + in->imm32) : (base - in->imm32);
+		if (in->Vd.freg.size == CoprocFpuDataSize_32) {
+			//S[d] = MemA[address,4];
+			ret = MemA_R(core, address, 4, (uint8*)&out->Vd.freg.reg.raw32);
+			if (ret < 0) {
+				goto done;
+			}
+		}
+		else {
+			uint32 word1;
+			uint32 word2;
+			ret = MemA_R(core, address, 4, (uint8*)&word1);
+			if (ret < 0) {
+				goto done;
+			}
+			ret = MemA_R(core, address + 4, 4, (uint8*)&word2);
+			if (ret < 0) {
+				goto done;
+			}
+			if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+				out->Vd.freg.reg.raw32_array[0] = word2;
+				out->Vd.freg.reg.raw32_array[1] = word1;
+			}
+			else {
+				out->Vd.freg.reg.raw32_array[0] = word1;
+				out->Vd.freg.reg.raw32_array[1] = word2;
+			}
+		}
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+

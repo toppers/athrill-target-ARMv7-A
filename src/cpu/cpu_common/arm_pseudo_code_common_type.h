@@ -313,7 +313,7 @@ typedef struct {
 	CoprocFpuRegisterType freg;
 } PseudoCodeFloatRegisterDataType; 				/* Vn, Vd, Vm, etc */
 #define DBG_FMT_PseudoCodeFloatRegisterDataType			"%s(V%d[%lf]) "
-#define DBG_ARG_PseudoCodeFloatRegisterDataType(arg)		(arg)->name, (arg)->freg.regId, (((arg)->freg.is64 != FALSE) ? (arg)->freg.reg.Data64 : (arg)->freg.reg.Data32)
+#define DBG_ARG_PseudoCodeFloatRegisterDataType(arg)		(arg)->name, (arg)->freg.regId, (((arg)->freg.size == CoprocFpuDataSize_64) ? (arg)->freg.reg.Data64 : (arg)->freg.reg.Data32)
 
 typedef bool PseudoCdodeAdvsimdType;
 #define DBG_FMT_PseudoCdodeAdvsimdType		"advsimd(%s) "

@@ -30,34 +30,49 @@ typedef struct {
 	uint32 fpscr;
 } CoprocCP11RegisterType;
 
+typedef enum {
+	CoprocFpuDataSize_16 = 0,
+	CoprocFpuDataSize_32,
+	CoprocFpuDataSize_64
+} CoprocFpuDataSizeType;
 
 typedef struct {
-	bool is64;
+	CoprocFpuDataSizeType size;
 	uint32 regId;
 	union {
 		float32	Data32;
 		float64	Data64;
+		uint16	raw16;
+		uint32	raw32;
+		uint64	raw64;
+		uint32	raw32_array[2];
 	} reg;
 } CoprocFpuRegisterType;
 
 static inline void cpu_get_freg(const CoprocCP11RegisterType *coproc11, CoprocFpuRegisterType *out)
 {
-	if (out->is64 != FALSE) {
+	if (out->size == CoprocFpuDataSize_64) {
 		out->reg.Data64 = coproc11->vfp.d.r[out->regId];
 	}
-	else {
+	else if (out->size == CoprocFpuDataSize_32) {
 		out->reg.Data32 = coproc11->vfp.d.r[out->regId];
+	}
+	else {
+		//TODO
 	}
 	return;
 }
 
 static inline void cpu_set_freg(CoprocCP11RegisterType *coproc11, const CoprocFpuRegisterType *in)
 {
-	if (in->is64 != FALSE) {
+	if (in->size == CoprocFpuDataSize_64) {
 		coproc11->vfp.d.r[in->regId] = in->reg.Data64;
 	}
-	else {
+	else if (in->size == CoprocFpuDataSize_32) {
 		coproc11->vfp.d.r[in->regId] = in->reg.Data32;
+	}
+	else {
+		//TODO
 	}
 	return;
 }
@@ -66,7 +81,12 @@ static inline void cpu_set_freg(CoprocCP11RegisterType *coproc11, const CoprocFp
 do {	\
 	(arg)->name = #regName;	\
 	(arg)->freg.regId = (op)->regName;	\
-	(arg)->freg.is64 = ((op)->sz == 1);	\
+	if ((op)->sz == 1) {	\
+		(arg)->freg.size = CoprocFpuDataSize_64;	\
+	}	\
+	else {	\
+		(arg)->freg.size = CoprocFpuDataSize_32;	\
+	}	\
 	cpu_get_freg((coproc11), &(arg)->freg);	\
 } while (0)
 

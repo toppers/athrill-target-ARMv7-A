@@ -3063,3 +3063,81 @@ int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vcmp_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vcmp_a1 *op = &core->decoded_code->code.arm_vcmp_a1;
+
+	arm_vcmp_input_type in;
+	arm_vcmp_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VCMP_A1";
+
+	in.cond = op->cond;
+
+	in.dp_operation = op->dp_operation;
+
+	in.quiet_nan_exc = op->quiet_nan_exc;
+
+	in.with_zero = op->with_zero;
+
+	in.Vd = op->Vd;
+
+	in.Vm = op->Vm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vcmp(core, &in, &out);
+	DBG_ARM_VCMP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vcmp_a2 *op = &core->decoded_code->code.arm_vcmp_a2;
+
+	arm_vcmp_input_type in;
+	arm_vcmp_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VCMP_A2";
+
+	in.cond = op->cond;
+
+	in.dp_operation = op->dp_operation;
+
+	in.quiet_nan_exc = op->quiet_nan_exc;
+
+	in.with_zero = op->with_zero;
+
+	in.Vd = op->Vd;
+
+	in.Vm = op->Vm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vcmp(core, &in, &out);
+	DBG_ARM_VCMP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

@@ -2,15 +2,13 @@
 #include "arm_pseudo_code_debug.h"
 #include "arm_pseudo_code_func.h"
 
-
-
 int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vadd_freg_a2 *op = &core->decoded_code->code.arm_vadd_freg_a2;
 
 	arm_vadd_freg_input_type in;
 	arm_vadd_freg_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VADD";
 	in.cond = op->cond;
@@ -55,7 +53,7 @@ int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 
 	arm_vldr_input_type in;
 	arm_vldr_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VLDR";
 
@@ -85,7 +83,7 @@ int arm_op_exec_arm_vldr_a2(struct TargetCore *core)
 
 	arm_vldr_input_type in;
 	arm_vldr_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VLDR";
 
@@ -115,7 +113,7 @@ int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core)
 
 	arm_vcvt_df_input_type in;
 	arm_vcvt_df_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VCVT";
 
@@ -156,7 +154,7 @@ int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
 
 	arm_vstr_input_type in;
 	arm_vstr_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VSTR";
 	in.cond = op->cond;
@@ -186,7 +184,7 @@ int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 
 	arm_vstr_input_type in;
 	arm_vstr_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VSTR";
 	in.cond = op->cond;
@@ -203,6 +201,82 @@ int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 
 	int ret = arm_op_exec_arm_vstr(core, &in, &out);
 	DBG_ARM_VSTR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vcmp_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vcmp_a1 *op = &core->decoded_code->code.arm_vcmp_a1;
+
+	arm_vcmp_input_type in;
+	arm_vcmp_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.instrName = "VCMP";
+	in.cond = op->cond;
+
+	in.dp_operation = (op->sz == 1);
+	in.quiet_nan_exc = (op->E == 1);
+	in.with_zero = FALSE;
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (in.dp_operation) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+	}
+	else {
+		op->Vd = ( ((op->Vd) << 1) | op->D );
+		op->Vm = ( ((op->Vm) << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+	}
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	fpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_vcmp(core, &in, &out);
+	DBG_ARM_VCMP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vcmp_a2 *op = &core->decoded_code->code.arm_vcmp_a2;
+
+	arm_vcmp_input_type in;
+	arm_vcmp_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+	memset((void*)&in.Vm, 0, sizeof(PseudoCodeFloatRegisterDataType));
+
+	in.instrName = "VCMP";
+
+	in.cond = op->cond;
+	in.dp_operation = (op->sz == 1);
+	in.quiet_nan_exc = (op->E == 1);
+	in.with_zero = TRUE;
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	if (in.dp_operation) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	}
+	else {
+		op->Vd = ( ((op->Vd) << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	}
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	fpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_vcmp(core, &in, &out);
+	DBG_ARM_VCMP(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

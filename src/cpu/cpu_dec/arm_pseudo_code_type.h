@@ -1481,4 +1481,29 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_vstr_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolIncrementType	dp_operation;
+
+	PseudoCodeQuietNanExcType	quiet_nan_exc;
+
+	PseudoCodeWithZeroType	with_zero;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+} arm_vcmp_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vcmp_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

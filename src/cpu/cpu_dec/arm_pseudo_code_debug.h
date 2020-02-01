@@ -2878,4 +2878,53 @@ static inline void DBG_ARM_VSTR(TargetCoreType *core, arm_vstr_input_type *in, a
 	));
 }
 
+static inline void DBG_ARM_VCMP(TargetCoreType *core, arm_vcmp_input_type *in, arm_vcmp_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeBoolIncrementType
+
+		DBG_FMT_PseudoCodeQuietNanExcType
+
+		DBG_FMT_PseudoCodeWithZeroType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeBoolIncrementType(&in->dp_operation),
+
+		DBG_ARG_PseudoCodeQuietNanExcType(&in->quiet_nan_exc),
+
+		DBG_ARG_PseudoCodeWithZeroType(&in->with_zero),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vm),
+
+
+
+		DBG_ARG_PseudoCodeFloatStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

@@ -101,6 +101,81 @@ do { \
 	}	\
 } while (0)
 
+static inline bool float_is_qnan(CoprocFpuRegisterType *x)
+{
+	if (!FLOAT_IS_NAN(x)) {
+		return FALSE;
+	}
+	if ((x->reg.raw32 & (1U << FLOAT_MANTISSA_POS_START)) != 0) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+static inline bool float_is_snan(CoprocFpuRegisterType *x)
+{
+	if (!FLOAT_IS_NAN(x)) {
+		return FALSE;
+	}
+	if ((x->reg.raw32 & (1U << FLOAT_MANTISSA_POS_START)) != 0) {
+		return FALSE;
+	}
+	else {
+		return TRUE;
+	}
+}
+
+static inline void float_get_qnan(CoprocFpuRegisterType *x)
+{
+	x->reg.raw32 = 0x7FFFFFFF;
+	return;
+}
+static inline void float_get_snan(CoprocFpuRegisterType *x)
+{
+	x->reg.raw32 = ( 0x7FFFFFFF & ~(1U << FLOAT_MANTISSA_POS_START) );
+	return;
+}
+
+
+static inline bool double_is_qnan(CoprocFpuRegisterType *x)
+{
+	if (!DOUBLE_IS_NAN(x)) {
+		return FALSE;
+	}
+	if ((x->reg.raw32_array[1] & (1U << DOUBLE_MANTISSA1_POS_START)) != 0) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+static inline bool double_is_snan(CoprocFpuRegisterType *x)
+{
+	if (!DOUBLE_IS_NAN(x)) {
+		return FALSE;
+	}
+	if ((x->reg.raw32_array[1] & (1U << DOUBLE_MANTISSA1_POS_START)) != 0) {
+		return FALSE;
+	}
+	else {
+		return TRUE;
+	}
+}
+
+static inline void double_get_qnan(CoprocFpuRegisterType *x)
+{
+	x->reg.raw32_array[1] = 0x7FFFFFFF;
+	x->reg.raw32_array[0] = 0xFFFFFFFF;
+	return;
+}
+static inline void double_get_snan(CoprocFpuRegisterType *x)
+{
+	x->reg.raw32_array[1] = ( 0x7FFFFFFF & ~(1U << DOUBLE_MANTISSA1_POS_START) );
+	x->reg.raw32_array[0] = 0xFFFFFFFF;
+	return;
+}
+
 static void prepare_float_op(FpuConfigRoundingType cfg)
 {
 
@@ -167,6 +242,16 @@ do {	\
 do {	\
 	(x)->reg.raw32_array[1] &= DOUBLE_SIGN_BIT_MASK;	\
 } while (0)
+
+
+static inline void fpu_update_status_flag(uint32 *status, PseudoCodeFloatStatusFlagType *status_flag)
+{
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, status_flag->carry);
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_V, status_flag->overflow);
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, status_flag->zero);
+	CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, status_flag->negative);
+	return;
+}
 
 static inline void set_subnormal_operand_float(CoprocFpuRegisterType *operand)
 {
@@ -358,10 +443,79 @@ static void FPSingleToDouble(uint32 fpscr, CoprocFpuRegisterType *op1, bool fpsc
 
 	return;
 }
+static void FPCompare(uint32 fpscr, CoprocFpuRegisterType *op1, CoprocFpuRegisterType *op2, bool quiet_nan_exc, bool fpscr_controlled, PseudoCodeFloatStatusFlagType *status)
+{
+	//fpscr_val = if fpscr_controlled then FPSCR else StandardFPSCRValue();
+	//uint32 fpscr_val = (fpscr_controlled) ? fpscr : StandardFPSCRValue(fpscr);
+
+	if (op1->size == CoprocFpuDataSize_64) {
+		//if type1==FPType_SNaN || type1==FPType_QNaN || type2==FPType_SNaN || type2==FPType_QNaN then
+		//result = ('0','0','1','1');
+		if (double_is_snan(op1) || double_is_qnan(op1) || double_is_snan(op2) || double_is_qnan(op2)) {
+			status->negative = FALSE;
+			status->zero = FALSE;
+			status->carry = TRUE;
+			status->overflow = TRUE;
+		}
+		else if (op1->reg.Data64 == op2->reg.Data64) {
+			//result = ('0','1','1','0');
+			status->negative = FALSE;
+			status->zero = TRUE;
+			status->carry = TRUE;
+			status->overflow = FALSE;
+		}
+		else if (op1->reg.Data64 < op2->reg.Data64) {
+			//result = ('1','0','0','0');
+			status->negative = TRUE;
+			status->zero = FALSE;
+			status->carry = FALSE;
+			status->overflow = FALSE;
+		}
+		else {
+			//result = ('0','0','1','0');
+			status->negative = FALSE;
+			status->zero = FALSE;
+			status->carry = TRUE;
+			status->overflow = FALSE;
+		}
+	}
+	else {
+		//if type1==FPType_SNaN || type1==FPType_QNaN || type2==FPType_SNaN || type2==FPType_QNaN then
+		//result = ('0','0','1','1');
+		if (float_is_snan(op1) || float_is_qnan(op1) || float_is_snan(op2) || float_is_qnan(op2)) {
+			status->negative = FALSE;
+			status->zero = FALSE;
+			status->carry = TRUE;
+			status->overflow = TRUE;
+		}
+		else if (op1->reg.Data32 == op2->reg.Data32) {
+			//result = ('0','1','1','0');
+			status->negative = FALSE;
+			status->zero = TRUE;
+			status->carry = TRUE;
+			status->overflow = FALSE;
+		}
+		else if (op1->reg.Data32 < op2->reg.Data32) {
+			//result = ('1','0','0','0');
+			status->negative = TRUE;
+			status->zero = FALSE;
+			status->carry = FALSE;
+			status->overflow = FALSE;
+		}
+		else {
+			//result = ('0','0','1','0');
+			status->negative = FALSE;
+			status->zero = FALSE;
+			status->carry = TRUE;
+			status->overflow = FALSE;
+		}
+	}
+	return;
+}
 int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type *in, arm_vadd_freg_output_type *out)
 {
 	int ret = 0;
-	uint32 *status = cpu_get_status(core);
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
@@ -376,7 +530,7 @@ int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type
 int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_vldr_output_type *out)
 {
 	int ret = 0;
-	uint32 *status = cpu_get_status(core);
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
@@ -421,7 +575,7 @@ done:
 int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_vstr_output_type *out)
 {
 	int ret = 0;
-	uint32 *status = cpu_get_status(core);
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
@@ -471,7 +625,7 @@ done:
 int arm_op_exec_arm_vcvt_df(struct TargetCore *core,  arm_vcvt_df_input_type *in, arm_vcvt_df_output_type *out)
 {
 	int ret = 0;
-	uint32 *status = cpu_get_status(core);
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
@@ -487,3 +641,32 @@ int arm_op_exec_arm_vcvt_df(struct TargetCore *core,  arm_vcvt_df_input_type *in
 	return ret;
 }
 
+
+
+int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_vcmp_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->dp_operation) {
+			//op64 = if with_zero then FPZero(‘0’,64) else D[m];
+			if (in->with_zero) {
+				in->Vm.freg.reg.raw64 = 0;
+			}
+			//(FPSCR.N, FPSCR.Z, FPSCR.C, FPSCR.V) = FPCompare(D[d], op64, quiet_nan_exc, TRUE);
+		}
+		else {
+			//op32 = if with_zero then FPZero(‘0’,32) else S[m];
+			if (in->with_zero) {
+				in->Vm.freg.reg.raw32 = 0;
+			}
+			//(FPSCR.N, FPSCR.Z, FPSCR.C, FPSCR.V) = FPCompare(S[d], op32, quiet_nan_exc, TRUE);
+		}
+		FPCompare(cpu_get_fpscr(core), &in->Vd.freg, &in->Vm.freg, in->quiet_nan_exc, TRUE, &out->status_flag);
+		fpu_update_status_flag(status, &out->status_flag);
+	}
+	out->status = *status;
+	return ret;
+}

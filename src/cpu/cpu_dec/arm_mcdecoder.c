@@ -3198,6 +3198,100 @@ typedef struct {
         
     
 
+    /* arm_vcmp_a1 */
+    #define OP_FB_MASK_arm_vcmp_a1 (0x0fbf0e50l) /* fixed bits mask */
+    #define OP_FB_arm_vcmp_a1 (0x0eb40a40l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_vcmp_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'D' */
+            #define OP_SF_MASK_arm_vcmp_a1_D_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_D_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_D_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vd' */
+            #define OP_SF_MASK_arm_vcmp_a1_Vd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_Vd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_Vd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'sz' */
+            #define OP_SF_MASK_arm_vcmp_a1_sz_0 (0x00000100l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_sz_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_sz_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'E' */
+            #define OP_SF_MASK_arm_vcmp_a1_E_0 (0x00000080l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_E_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_E_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'M' */
+            #define OP_SF_MASK_arm_vcmp_a1_M_0 (0x00000020l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_M_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_M_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vm' */
+            #define OP_SF_MASK_arm_vcmp_a1_Vm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a1_Vm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a1_Vm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_vcmp_a2 */
+    #define OP_FB_MASK_arm_vcmp_a2 (0x0fbf0e7fl) /* fixed bits mask */
+    #define OP_FB_arm_vcmp_a2 (0x0eb50a40l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_vcmp_a2_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a2_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a2_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'D' */
+            #define OP_SF_MASK_arm_vcmp_a2_D_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a2_D_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a2_D_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vd' */
+            #define OP_SF_MASK_arm_vcmp_a2_Vd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a2_Vd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a2_Vd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'sz' */
+            #define OP_SF_MASK_arm_vcmp_a2_sz_0 (0x00000100l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a2_sz_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a2_sz_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'E' */
+            #define OP_SF_MASK_arm_vcmp_a2_E_0 (0x00000080l) /* subfield mask */
+            #define OP_SF_EBII_arm_vcmp_a2_E_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vcmp_a2_E_0 (0) /* subfield end bit position in field */
+        
+    
+
 
 /* macros */
 #define BIT_ELEMENT(value, element_index) (((value) & (1 << (element_index))) >> element_index)
@@ -3326,6 +3420,9 @@ static arm_uint32 setbit_count(arm_uint32 value);
         static int decision_node_code32x1_118(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_119(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_120(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_121(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_122(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_123(OpDecodeContext *context, arm_uint32 code);
 
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
@@ -3407,6 +3504,8 @@ static arm_uint32 setbit_count(arm_uint32 value);
     static int op_parse_arm_vcvt_df_a1(OpDecodeContext *context);
     static int op_parse_arm_vstr_a1(OpDecodeContext *context);
     static int op_parse_arm_vstr_a2(OpDecodeContext *context);
+    static int op_parse_arm_vcmp_a1(OpDecodeContext *context);
+    static int op_parse_arm_vcmp_a2(OpDecodeContext *context);
 
 /* functions for conditions */
 static arm_uint32 setbit_count(arm_uint32 value) {
@@ -7334,6 +7433,108 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         return 0;
     }
 
+    /* arm_vcmp_a1 */
+    static int op_parse_arm_vcmp_a1(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_vcmp_a1) != OP_FB_arm_vcmp_a1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_vcmp_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_vcmp_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_vcmp_a1;
+        
+            context->decoded_code->code.arm_vcmp_a1.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_cond_0) >> OP_SF_EBII_arm_vcmp_a1_cond_0) << OP_SF_EBIF_arm_vcmp_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.D =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_D_0) >> OP_SF_EBII_arm_vcmp_a1_D_0) << OP_SF_EBIF_arm_vcmp_a1_D_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.Vd =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_Vd_0) >> OP_SF_EBII_arm_vcmp_a1_Vd_0) << OP_SF_EBIF_arm_vcmp_a1_Vd_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.sz =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_sz_0) >> OP_SF_EBII_arm_vcmp_a1_sz_0) << OP_SF_EBIF_arm_vcmp_a1_sz_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.E =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_E_0) >> OP_SF_EBII_arm_vcmp_a1_E_0) << OP_SF_EBIF_arm_vcmp_a1_E_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.M =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_M_0) >> OP_SF_EBII_arm_vcmp_a1_M_0) << OP_SF_EBIF_arm_vcmp_a1_M_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a1.Vm =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a1_Vm_0) >> OP_SF_EBII_arm_vcmp_a1_Vm_0) << OP_SF_EBIF_arm_vcmp_a1_Vm_0);
+            
+        
+        
+        
+            if (
+                context->decoded_code->code.arm_vcmp_a1.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_vcmp_a2 */
+    static int op_parse_arm_vcmp_a2(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_vcmp_a2) != OP_FB_arm_vcmp_a2) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_vcmp_a2;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_vcmp_a2;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_vcmp_a2;
+        
+            context->decoded_code->code.arm_vcmp_a2.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a2_cond_0) >> OP_SF_EBII_arm_vcmp_a2_cond_0) << OP_SF_EBIF_arm_vcmp_a2_cond_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a2.D =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a2_D_0) >> OP_SF_EBII_arm_vcmp_a2_D_0) << OP_SF_EBIF_arm_vcmp_a2_D_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a2.Vd =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a2_Vd_0) >> OP_SF_EBII_arm_vcmp_a2_Vd_0) << OP_SF_EBIF_arm_vcmp_a2_Vd_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a2.sz =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a2_sz_0) >> OP_SF_EBII_arm_vcmp_a2_sz_0) << OP_SF_EBIF_arm_vcmp_a2_sz_0);
+            
+        
+            context->decoded_code->code.arm_vcmp_a2.E =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vcmp_a2_E_0) >> OP_SF_EBII_arm_vcmp_a2_E_0) << OP_SF_EBIF_arm_vcmp_a2_E_0);
+            
+        
+        
+        
+            if (
+                context->decoded_code->code.arm_vcmp_a2.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
 
 /* decision node functions */
 
@@ -8771,7 +8972,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             }
                             break;
                         case 0x00100010:
-                            if (decision_node_code32x1_118(context, code) == 0) {
+                            if (decision_node_code32x1_121(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -8839,29 +9040,68 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_117(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vcvt_df_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x000f0000) {
+                    
+                        case 0x00040000:
+                            if (decision_node_code32x1_118(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00050000:
+                            if (decision_node_code32x1_119(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00070000:
+                            if (decision_node_code32x1_120(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_118(OpDecodeContext *context, arm_uint32 code) {
             
+                if (op_parse_arm_vcmp_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_119(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vcmp_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_120(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vcvt_df_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_121(OpDecodeContext *context, arm_uint32 code) {
+            
             switch (code & 0xf0000000) {
                     
                         case 0xf0000000:
-                            if (decision_node_code32x1_119(context, code) == 0) {
+                            if (decision_node_code32x1_122(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_120(context, code) == 0) {
+                if (decision_node_code32x1_123(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_119(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_122(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mrc2_a2(context) == 0) {
                     return 0;
@@ -8869,7 +9109,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_120(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_123(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mrc_a1(context) == 0) {
                     return 0;
@@ -9059,5 +9299,9 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_vstr_a1 },		/* arm_vstr_a1 */
     
 	{ 1, arm_op_exec_arm_vstr_a2 },		/* arm_vstr_a2 */
+    
+	{ 1, arm_op_exec_arm_vcmp_a1 },		/* arm_vcmp_a1 */
+    
+	{ 1, arm_op_exec_arm_vcmp_a2 },		/* arm_vcmp_a2 */
     
 };

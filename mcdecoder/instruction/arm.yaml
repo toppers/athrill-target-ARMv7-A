@@ -668,6 +668,16 @@ machine:
         outputs:
           Vd: PseudoCodeFloatRegisterDataType
 
+      - name: arm_vcmp
+        inputs:
+          cond: PseudoCodeConditionDataType
+          dp_operation: PseudoCodeBoolIncrementType
+          quiet_nan_exc: PseudoCodeQuietNanExcType
+          with_zero: PseudoCodeWithZeroType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+        outputs:
+          status_flag: PseudoCodeFloatStatusFlagType
 
 
 decoder:
@@ -1339,4 +1349,20 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vstr
+
+  - name: arm_vcmp_a1
+    format: xxxx:cond|11101|x:D|11|0100|xxxx:Vd|101|x:sz|x:E|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vcmp
+
+  - name: arm_vcmp_a2
+    format: xxxx:cond|11101|x:D|11|0101|xxxx:Vd|101|x:sz|x:E|1|0|0|0000
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vcmp
+
+
       

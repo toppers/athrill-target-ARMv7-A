@@ -331,4 +331,40 @@ typedef bool PseudoCodeSingleRegType;
 #define DBG_FMT_PseudoCodeSingleRegType		"single_reg(%s) "
 #define DBG_ARG_PseudoCodeSingleRegType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeQuietNanExcType;
+#define DBG_FMT_PseudoCodeQuietNanExcType		"quiet_nan_exc(%s) "
+#define DBG_ARG_PseudoCodeQuietNanExcType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeWithZeroType;
+#define DBG_FMT_PseudoCodeWithZeroType		"with_zero(%s) "
+#define DBG_ARG_PseudoCodeWithZeroType(arg)	DbgBoolFlag(*(arg))
+
+typedef struct {
+	bool	overflow;
+	bool	carry;
+	bool	zero;
+	bool	negative;
+} PseudoCodeFloatStatusFlagType;
+#define DBG_FMT_PseudoCodeFloatStatusFlagType			"FCF[%s%s%s%s] "
+#define DBG_ARG_PseudoCodeFloatStatusFlagType(arg)	DbgBoolFlag((arg)->negative), DbgBoolFlag((arg)->zero), DbgBoolFlag((arg)->carry), DbgBoolFlag((arg)->overflow)
+static inline void fpu_conv_status_flag(uint32 status, PseudoCodeFloatStatusFlagType *out)
+{
+	out->negative = FALSE;
+	out->overflow = FALSE;
+	out->carry = FALSE;
+	out->zero = FALSE;
+	if (CPU_STATUS_BIT_IS_SET(status, FPU_STATUS_BITPOS_N)) {
+		out->negative = TRUE;
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, FPU_STATUS_BITPOS_V)) {
+		out->overflow = TRUE;
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, FPU_STATUS_BITPOS_C)) {
+		out->carry = TRUE;
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, FPU_STATUS_BITPOS_Z)) {
+		out->zero = TRUE;
+	}
+}
+
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

@@ -30,6 +30,10 @@ typedef struct {
 	uint32 fpscr;
 } CoprocCP11RegisterType;
 
+static inline uint32 *fpu_get_status(CoprocCP11RegisterType *cp11)
+{
+	return &cp11->fpscr;
+}
 /*
  * RMode, bits[23:22]
  *

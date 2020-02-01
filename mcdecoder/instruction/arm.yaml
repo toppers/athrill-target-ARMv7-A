@@ -648,6 +648,15 @@ machine:
           Vd: PseudoCodeFloatRegisterDataType
 
 
+      - name: arm_vcvt_df
+        inputs:
+          cond: PseudoCodeConditionDataType
+          double_to_single: PseudoCodeDoubleToSingleType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+
 
 decoder:
   namespace: arm
@@ -1296,4 +1305,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vldr
+
+
+  - name: arm_vcvt_df_a1
+    format: xxxx:cond|1110|1|x:D|11|0111|xxxx:Vd|101|x:sz|1|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vcvt_df
+
+
       

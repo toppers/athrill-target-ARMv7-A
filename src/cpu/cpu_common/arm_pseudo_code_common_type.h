@@ -323,4 +323,9 @@ typedef bool PseudoCodeDpOperationType;
 #define DBG_FMT_PseudoCodeDpOperationType		"dp_operation(%s) "
 #define DBG_ARG_PseudoCodeDpOperationType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeDoubleToSingleType;
+#define DBG_FMT_PseudoCodeDoubleToSingleType		"double_to_single(%s) "
+#define DBG_ARG_PseudoCodeDoubleToSingleType(arg)	DbgBoolFlag(*(arg))
+
+
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

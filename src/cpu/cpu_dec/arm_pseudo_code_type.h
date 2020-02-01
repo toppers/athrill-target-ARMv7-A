@@ -1435,4 +1435,25 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_vldr_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeDoubleToSingleType	double_to_single;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+} arm_vcvt_df_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vcvt_df_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

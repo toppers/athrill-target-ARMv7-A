@@ -67,4 +67,5 @@ extern int arm_op_exec_arm_vcvt_df(struct TargetCore *core,  arm_vcvt_df_input_t
 extern int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_vstr_output_type *out);
 extern int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_vcmp_output_type *out);
 extern int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_vmrs_output_type *out);
+extern int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

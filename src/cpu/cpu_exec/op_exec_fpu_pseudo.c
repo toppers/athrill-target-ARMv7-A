@@ -697,3 +697,32 @@ int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//if single_register then
+		if (in->single_reg) {
+			out->Vd1.freg.reg.raw32 = in->imm32;
+			cpu_set_freg(&core->coproc.cp11, &out->Vd1.freg);
+		}
+		else {
+			uint32 *array = (uint32*)&in->imm64;
+			out->Vd1.freg.reg.raw32_array[0] = array[0];
+			out->Vd1.freg.reg.raw32_array[1] = array[1];
+			cpu_set_freg(&core->coproc.cp11, &out->Vd1.freg);
+			if (in->regs == 2) {
+				out->Vd2.freg.reg.raw32_array[0] = array[0];
+				out->Vd2.freg.reg.raw32_array[1] = array[1];
+				cpu_set_freg(&core->coproc.cp11, &out->Vd2.freg);
+			}
+		}
+	}
+	out->status = *status;
+	return ret;
+}

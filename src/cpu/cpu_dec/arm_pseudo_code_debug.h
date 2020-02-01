@@ -2960,4 +2960,69 @@ static inline void DBG_ARM_VMRS(TargetCoreType *core, arm_vmrs_input_type *in, a
 	));
 }
 
+static inline void DBG_ARM_VMOV_IMM(TargetCoreType *core, arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeImmediateData32Type
+
+		DBG_FMT_PseudoCodeImmediateData64Type
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeSingleRegType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeRegNumType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
+
+		DBG_ARG_PseudoCodeImmediateData64Type(&in->imm64),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->advsimd),
+
+		DBG_ARG_PseudoCodeSingleRegType(&in->single_reg),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd1),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd2),
+
+		DBG_ARG_PseudoCodeRegNumType(&in->regs),
+
+
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vd1),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vd2),
+
+		DBG_ARG_PseudoCodeFloatStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

@@ -367,4 +367,13 @@ static inline void fpu_conv_status_flag(uint32 status, PseudoCodeFloatStatusFlag
 	}
 }
 
+typedef uint64 PseudoCodeImmediateData64Type;
+#define DBG_FMT_PseudoCodeImmediateData64Type		"imm64(%lld) "
+#define DBG_ARG_PseudoCodeImmediateData64Type(arg)	(*(arg))
+
+typedef uint32 PseudoCodeRegNumType;
+#define DBG_FMT_PseudoCodeRegNumType		"regs(%d) "
+#define DBG_ARG_PseudoCodeRegNumType(arg)	(*(arg))
+
+
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

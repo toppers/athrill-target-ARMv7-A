@@ -686,6 +686,22 @@ machine:
         outputs:
           status_flag: PseudoCodeFloatStatusFlagType
 
+      - name: arm_vmov_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          imm64: PseudoCodeImmediateData64Type
+          advsimd: PseudoCodeBoolWbackType
+          single_reg: PseudoCodeSingleRegType
+          Vd1: PseudoCodeFloatRegisterDataType
+          Vd2: PseudoCodeFloatRegisterDataType
+          regs: PseudoCodeRegNumType
+        outputs:
+          Vd1: PseudoCodeFloatRegisterDataType
+          Vd2: PseudoCodeFloatRegisterDataType
+          status_flag: PseudoCodeFloatStatusFlagType
+
+
 decoder:
   namespace: arm
 
@@ -1378,5 +1394,22 @@ instructions:
       clocks: 10
       pseudo_code: arm_vmrs
 
+  - name: arm_vmov_imm_a1
+    format: 1111|001|x:i|1|x:D|000|xxx:imm7[6:4]|xxxx:Vd|xxxx:cmode|0|x:Q|x:op|1|xxxx:imm7[3:0]
+    unmatch_condition: >
+                         ( (op == 0) and (cmode[0] == 1) and ( (cmode[3] != 1) and (cmode[2] != 1) ) )
+                         or ( (op == 1) and (cmode != 0b1110) )
+                         or ( (Q == 1) and (Vd[0] == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmov_imm
+
+
+  - name: arm_vmov_imm_a2
+    format: xxxx:cond|11101|x:D|11|xxxx:imm8[7:4]|xxxx:Vd|101|x:sz|0|0|0|0|xxxx:imm8[3:0]
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmov_imm
 
       

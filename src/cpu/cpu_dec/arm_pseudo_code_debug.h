@@ -2829,4 +2829,53 @@ static inline void DBG_ARM_VCVT_DF(TargetCoreType *core, arm_vcvt_df_input_type 
 	));
 }
 
+static inline void DBG_ARM_VSTR(TargetCoreType *core, arm_vstr_input_type *in, arm_vstr_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeSingleRegType
+
+		DBG_FMT_PseudoCodeBoolAddType
+
+		DBG_FMT_PseudoCodeImmediateData32Type
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeSingleRegType(&in->single_reg),
+
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
+
+		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd),
+
+
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vd),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

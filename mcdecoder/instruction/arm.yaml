@@ -657,6 +657,18 @@ machine:
         outputs:
           Vd: PseudoCodeFloatRegisterDataType
 
+      - name: arm_vstr
+        inputs:
+          cond: PseudoCodeConditionDataType
+          single_reg: PseudoCodeSingleRegType
+          add: PseudoCodeBoolAddType
+          imm32: PseudoCodeImmediateData32Type
+          Rn: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+
+
 
 decoder:
   namespace: arm
@@ -1314,5 +1326,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_vcvt_df
 
+  - name: arm_vstr_a1
+    format: xxxx:cond|1101|x:U|x:D|0|0|xxxx:Rn|xxxx:Vd|1011|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vstr
 
+  - name: arm_vstr_a2
+    format: xxxx:cond|1101|x:U|x:D|0|0|xxxx:Rn|xxxx:Vd|1010|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vstr
       

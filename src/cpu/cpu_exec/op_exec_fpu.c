@@ -14,6 +14,21 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 
 	in.instrName = "VADD";
 	in.cond = op->cond;
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (op->sz == 1) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		op->Vn = ( (op->Vd) | (op->N << 4) );
+		op->Vm = ( (op->Vd) | (op->M << 4) );
+	}
+	else {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		op->Vn = ( (op->Vn << 1) | op->N );
+		op->Vm = ( (op->Vm << 1) | op->M );
+	}
+
 	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
 	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
 	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
@@ -129,6 +144,65 @@ int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core)
 
 	int ret = arm_op_exec_arm_vcvt_df(core, &in, &out);
 	DBG_ARM_VCVT_DF(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vstr_a1 *op = &core->decoded_code->code.arm_vstr_a1;
+
+	arm_vstr_input_type in;
+	arm_vstr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VSTR";
+	in.cond = op->cond;
+	in.single_reg = FALSE;
+	in.add = (op->U == 1);
+
+	in.imm32 = (((uint32)op->imm8) << 2);
+	OP_SET_REG(core, &in, op, Rn);
+	op->Vd = ( (op->Vd) | (op->D << 4) );
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_vstr(core, &in, &out);
+	DBG_ARM_VSTR(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vstr_a2 *op = &core->decoded_code->code.arm_vstr_a2;
+
+	arm_vstr_input_type in;
+	arm_vstr_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VSTR";
+	in.cond = op->cond;
+	in.single_reg = TRUE;
+	in.add = (op->U == 1);
+	in.imm32 = (((uint32)op->imm8) << 2);
+	OP_SET_REG(core, &in, op, Rn);
+	op->Vd = ( ((op->Vd) << 1) | op->D );
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_vstr(core, &in, &out);
+	DBG_ARM_VSTR(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

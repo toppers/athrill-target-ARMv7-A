@@ -327,5 +327,8 @@ typedef bool PseudoCodeDoubleToSingleType;
 #define DBG_FMT_PseudoCodeDoubleToSingleType		"double_to_single(%s) "
 #define DBG_ARG_PseudoCodeDoubleToSingleType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeSingleRegType;
+#define DBG_FMT_PseudoCodeSingleRegType		"single_reg(%s) "
+#define DBG_ARG_PseudoCodeSingleRegType(arg)	DbgBoolFlag(*(arg))
 
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

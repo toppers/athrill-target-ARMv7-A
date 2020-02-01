@@ -401,15 +401,66 @@ int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_
 				goto done;
 			}
 			if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+				//Big-endian operation
 				out->Vd.freg.reg.raw32_array[0] = word2;
 				out->Vd.freg.reg.raw32_array[1] = word1;
 			}
 			else {
+				//Little-endian operation
 				out->Vd.freg.reg.raw32_array[0] = word1;
 				out->Vd.freg.reg.raw32_array[1] = word2;
 			}
 		}
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+
+int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_vstr_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//address = if add then (R[n] + imm32) else (R[n] - imm32);
+		uint32 address = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
+		if (in->single_reg) {
+			//MemA[address,4] = S[d];
+			ret = MemA_W(core, address, 4, (uint8*)&in->Vd.freg.reg.raw32);
+			if (ret < 0) {
+				goto done;
+			}
+		}
+		else {
+			// Store as two word-aligned words in the correct order for current endianness.
+			//MemA[address,4] = if BigEndian() then D[d]<63:32> else D[d]<31:0>;
+			//MemA[address+4,4] = if BigEndian() then D[d]<31:0> else D[d]<63:32>;
+			if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+				//Big-endian operation
+				ret = MemA_W(core, address, 4, (uint8*)&in->Vd.freg.reg.raw32_array[1]);
+				if (ret < 0) {
+					goto done;
+				}
+				ret = MemA_W(core, address + 4, 4, (uint8*)&in->Vd.freg.reg.raw32_array[0]);
+				if (ret < 0) {
+					goto done;
+				}
+			}
+			else {
+				//Little-endian operation
+				ret = MemA_W(core, address, 4, (uint8*)&in->Vd.freg.reg.raw32_array[0]);
+				if (ret < 0) {
+					goto done;
+				}
+				ret = MemA_W(core, address + 4, 4, (uint8*)&in->Vd.freg.reg.raw32_array[1]);
+				if (ret < 0) {
+					goto done;
+				}
+			}
+		}
 	}
 done:
 	out->status = *status;

@@ -1506,4 +1506,21 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_vcmp_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_vmrs_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmrs_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

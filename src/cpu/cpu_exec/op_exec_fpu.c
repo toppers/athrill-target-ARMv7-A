@@ -1,6 +1,7 @@
 #include "cpu_dec/arm_mcdecoder.h"
 #include "arm_pseudo_code_debug.h"
 #include "arm_pseudo_code_func.h"
+#include <string.h>
 
 int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 {
@@ -277,6 +278,30 @@ int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
 
 	int ret = arm_op_exec_arm_vcmp(core, &in, &out);
 	DBG_ARM_VCMP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmrs_a1 *op = &core->decoded_code->code.arm_vmrs_a1;
+
+	arm_vmrs_input_type in;
+	arm_vmrs_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VMRS";
+
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rt);
+	fpu_conv_status_flag(out.status, &out.status_flag);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_vmrs(core, &in, &out);
+	DBG_ARM_VMRS(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

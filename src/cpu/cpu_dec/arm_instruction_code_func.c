@@ -3141,3 +3141,34 @@ int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmrs_a1 *op = &core->decoded_code->code.arm_vmrs_a1;
+
+	arm_vmrs_input_type in;
+	arm_vmrs_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VMRS_A1";
+
+	in.cond = op->cond;
+
+	in.Rt = op->Rt;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vmrs(core, &in, &out);
+	DBG_ARM_VMRS(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

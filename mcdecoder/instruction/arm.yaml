@@ -679,6 +679,12 @@ machine:
         outputs:
           status_flag: PseudoCodeFloatStatusFlagType
 
+      - name: arm_vmrs
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          status_flag: PseudoCodeFloatStatusFlagType
 
 decoder:
   namespace: arm
@@ -1363,6 +1369,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vcmp
+
+
+  - name: arm_vmrs_a1
+    format: xxxx:cond|11101111|0001|xxxx:Rt|1010|000|1|0000
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmrs
 
 
       

@@ -670,3 +670,30 @@ int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_vmrs_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->Rt.regId != CpuRegId_PC) {
+			in->Rt.regData = *status;
+		}
+		else {
+			uint32 *cpsr = cpu_get_status(core);
+			//APSR.N = FPSCR.N;
+			//APSR.Z = FPSCR.Z;
+			//APSR.C = FPSCR.C;
+			//APSR.V = FPSCR.V;
+			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_C, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_C));
+			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_V, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_V));
+			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_Z, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_Z));
+			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_N, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_N));
+		}
+	}
+	out->status = *status;
+	return ret;
+}

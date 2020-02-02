@@ -259,6 +259,51 @@ int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vdiv_freg_a2 *op = &core->decoded_code->code.arm_vdiv_freg_a2;
+
+	arm_vdiv_freg_input_type in;
+	arm_vdiv_freg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VDIV";
+	in.cond = op->cond;
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (op->sz == 1) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		op->Vn = ( (op->Vd) | (op->N << 4) );
+		op->Vm = ( (op->Vd) | (op->M << 4) );
+	}
+	else {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		op->Vn = ( (op->Vn << 1) | op->N );
+		op->Vm = ( (op->Vm << 1) | op->M );
+	}
+
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+
+	in.advsimd = FALSE;
+	in.dp_operation = (op->sz == 1);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+
+	int ret = arm_op_exec_arm_vdiv_freg(core, &in, &out);
+	DBG_ARM_VDIV_FREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vldr_a1 *op = &core->decoded_code->code.arm_vldr_a1;

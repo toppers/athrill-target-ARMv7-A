@@ -882,3 +882,23 @@ int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type *in, arm_vmov_sreg_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->to_arm_register) {
+			out->Rt.regData = in->Vn.freg.reg.raw32;
+			cpu_set_reg(core, out->Rt.regId, out->Rt.regData);
+		}
+		else {
+			out->Vn.freg.reg.raw32 = in->Rt.regData;
+			cpu_set_freg(&core->coproc.cp11, &out->Vn.freg);
+		}
+	}
+	out->status = *status;
+	return ret;
+}

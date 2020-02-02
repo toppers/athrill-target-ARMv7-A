@@ -3311,6 +3311,43 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;
+
+	arm_vmov_sreg_input_type in;
+	arm_vmov_sreg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VMOV_SREG_A1";
+
+	in.cond = op->cond;
+
+	in.to_arm_register = op->to_arm_register;
+
+	in.Vn = op->Vn;
+
+	in.Rt = op->Rt;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vn = -1;
+	
+	out.Rt = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vmov_sreg(core, &in, &out);
+	DBG_ARM_VMOV_SREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vsub_freg_a2 *op = &core->decoded_code->code.arm_vsub_freg_a2;

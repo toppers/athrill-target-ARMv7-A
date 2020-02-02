@@ -1660,4 +1660,27 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_vmov_imm_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeToArmRegisterType	to_arm_register;
+
+	PseudoCodeFloatRegisterDataType	Vn;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_vmov_sreg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vn;
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmov_sreg_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

@@ -3229,4 +3229,49 @@ static inline void DBG_ARM_VMOV_IMM(TargetCoreType *core, arm_vmov_imm_input_typ
 	));
 }
 
+static inline void DBG_ARM_VMOV_SREG(TargetCoreType *core, arm_vmov_sreg_input_type *in, arm_vmov_sreg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeToArmRegisterType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeToArmRegisterType(&in->to_arm_register),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 #endif /* !_ARM_PSEUDO_CODE_DEBUG_H_ */

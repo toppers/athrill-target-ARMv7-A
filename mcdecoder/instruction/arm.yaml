@@ -751,6 +751,17 @@ machine:
           status_flag: PseudoCodeFloatStatusFlagType
 
 
+      - name: arm_vmov_sreg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          to_arm_register: PseudoCodeToArmRegisterType
+          Vn: PseudoCodeFloatRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Vn: PseudoCodeFloatRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+
 decoder:
   namespace: arm
 
@@ -1471,6 +1482,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vmov_imm
+
+  - name: arm_vmov_sreg_a1
+    format: xxxx:cond|1110|000|x:op|xxxx:Vn|xxxx:Rt|1010|x:N|00|1|0000
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmov_sreg
+
 
   - name: arm_vsub_freg_a2
     format: xxxx:cond|11100|x:D|11|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|1|x:M|0|xxxx:Vm

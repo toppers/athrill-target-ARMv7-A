@@ -4,6 +4,67 @@
 #include <string.h>
 
 
+static void VFPExpandImm(uint32 imm8, CoprocFpuRegisterType *op)
+{
+
+	//assert N IN {32,64};
+	op->reg.raw64 = 0;
+	if (op->size == CoprocFpuDataSize_32) {
+		uint32 exp;
+		uint32 frac;
+		//N = 32;
+		//E = 8;
+		//F = N - E - 1;
+		//sign = imm8<7>;
+		//                 7:6-2                   :1-0
+		//exp = NOT(imm8<6>):Replicate(imm8<6>,E-3):imm8<5:4>;
+		exp = ( (imm8 & 0x30) >> 4 );
+		if ((imm8 & (0x1 << 6)) != 0) {
+			exp |= (0x1F << 2);
+		}
+		else {
+			exp |= (0x1 << 7);
+		}
+		frac = (imm8 & 0xF) << 19;
+		//frac = imm8<3:0>:Zeros(F-4);
+		//sign:exp:frac
+		op->reg.raw32 = ((exp << 23) | frac);
+		if ((imm8 & (0x1 << 7)) != 0) {
+			op->reg.raw32 |= (0x1 << 31);
+		}
+	}
+	else {
+		uint32 exp;
+		uint32 frac[2];
+		//N = 64;
+		//E = 11;
+		//F = 52;
+		//                30:29-22                :21-20
+		//                10: 9--2                : 1- 0
+		//exp = NOT(imm8<6>):Replicate(imm8<6>,E-3):imm8<5:4>;
+		exp = (imm8 & 0x30) >> 4;
+		if ((imm8 & (0x1 << 6)) != 0) {
+			exp |= (0x1F << 2);
+		}
+		else {
+			exp |= (0x1 << 10);
+		}
+		//           19-16:15-0:31-0
+		//           51-48:47------0
+		//frac = imm8<3:0>:Zeros(F-4);
+		frac[0] = 0;
+		frac[1] = (imm8 & 0xF) << 16;
+		//sign:exp:frac
+		op->reg.raw32_array[0] = frac[0];
+		op->reg.raw32_array[1] = ((exp << 20) | frac[1]);
+		if ((imm8 & (0x1 << 7)) != 0) {
+			op->reg.raw32_array[1] |= (0x1 << 31);
+		}
+	}
+	return;
+}
+
+
 static uint64 AdvSIMDExpandImm(uint8 op, uint8 cmode, uint32 imm8)
 {
 	uint8 cmode3_1 = ( (cmode & 0x0E) >> 1 );
@@ -622,66 +683,6 @@ int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
 	return ret;
 }
 
-static void VFPExpandImm(uint32 imm8, CoprocFpuRegisterType *op)
-{
-
-	//assert N IN {32,64};
-	op->reg.raw64 = 0;
-	if (op->size == CoprocFpuDataSize_32) {
-		uint32 exp;
-		uint32 frac;
-		//N = 32;
-		//E = 8;
-		//F = N - E - 1;
-		//sign = imm8<7>;
-		//                 7:6-2                   :1-0
-		//exp = NOT(imm8<6>):Replicate(imm8<6>,E-3):imm8<5:4>;
-		exp = ( (imm8 & 0x30) >> 4 );
-		if ((imm8 & (0x1 << 6)) != 0) {
-			exp |= (0x1F << 2);
-		}
-		else {
-			exp |= (0x1 << 7);
-		}
-		frac = (imm8 & 0xF) << 19;
-		//frac = imm8<3:0>:Zeros(F-4);
-		//sign:exp:frac
-		op->reg.raw32 = ((exp << 23) | frac);
-		if ((imm8 & (0x1 << 7)) != 0) {
-			op->reg.raw32 |= (0x1 << 31);
-		}
-	}
-	else {
-		uint32 exp;
-		uint32 frac[2];
-		//N = 64;
-		//E = 11;
-		//F = 52;
-		//                30:29-22                :21-20
-		//                10: 9--2                : 1- 0
-		//exp = NOT(imm8<6>):Replicate(imm8<6>,E-3):imm8<5:4>;
-		exp = (imm8 & 0x30) >> 4;
-		if ((imm8 & (0x1 << 6)) != 0) {
-			exp |= (0x1F << 2);
-		}
-		else {
-			exp |= (0x1 << 10);
-		}
-		//           19-16:15-0:31-0
-		//           51-48:47------0
-		//frac = imm8<3:0>:Zeros(F-4);
-		frac[0] = 0;
-		frac[1] = (imm8 & 0xF) << 16;
-		//sign:exp:frac
-		op->reg.raw32_array[0] = frac[0];
-		op->reg.raw32_array[1] = ((exp << 20) | frac[1]);
-		if ((imm8 & (0x1 << 7)) != 0) {
-			op->reg.raw32_array[1] |= (0x1 << 31);
-		}
-	}
-	return;
-}
-
 int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_imm_a1 *op = &core->decoded_code->code.arm_vmov_imm_a1;
@@ -717,7 +718,6 @@ int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
-
 
 int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 {
@@ -761,6 +761,36 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 
 	int ret = arm_op_exec_arm_vmov_imm(core, &in, &out);
 	DBG_ARM_VMOV_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;
+
+	arm_vmov_sreg_input_type in;
+	arm_vmov_sreg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VMOV";
+
+	in.cond = op->cond;
+	in.to_arm_register = (op->op == 1);
+	op->Vn = ( (op->Vn << 1) | op->N );
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, op, Vn);
+	OP_SET_REG(core, &in, op, Rt);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vn, op, Vn);
+	OP_SET_REG(core, &out, op, Rt);
+
+	int ret = arm_op_exec_arm_vmov_sreg(core, &in, &out);
+	DBG_ARM_VMOV_SREG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

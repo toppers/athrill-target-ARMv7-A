@@ -391,4 +391,8 @@ typedef bool PseudoCodeRoundNearestType;
 #define DBG_FMT_PseudoCodeRoundNearestType		"round_nearest(%s) "
 #define DBG_ARG_PseudoCodeRoundNearestType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeToArmRegisterType;
+#define DBG_FMT_PseudoCodeToArmRegisterType		"to_arm_register(%s) "
+#define DBG_ARG_PseudoCodeToArmRegisterType(arg)	DbgBoolFlag(*(arg))
+
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

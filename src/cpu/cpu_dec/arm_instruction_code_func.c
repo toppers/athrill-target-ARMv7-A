@@ -3305,3 +3305,42 @@ int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmul_freg_a2 *op = &core->decoded_code->code.arm_vmul_freg_a2;
+
+	arm_vmul_freg_input_type in;
+	arm_vmul_freg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VMUL_FREG_A2";
+
+	in.cond = op->cond;
+
+	in.Vn = op->Vn;
+
+	in.Vd = op->Vd;
+
+	in.Vm = op->Vm;
+
+	in.advsimd = op->advsimd;
+
+	in.dp_operation = op->dp_operation;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vmul_freg(core, &in, &out);
+	DBG_ARM_VMUL_FREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

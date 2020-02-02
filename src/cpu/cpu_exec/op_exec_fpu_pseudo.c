@@ -746,6 +746,58 @@ int arm_op_exec_arm_vcvt_df(struct TargetCore *core,  arm_vcvt_df_input_type *in
 }
 
 
+int arm_op_exec_arm_vcvt_fi(struct TargetCore *core,  arm_vcvt_fi_input_type *in, arm_vcvt_fi_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->to_integer) {
+			if (in->dp_operation) {
+				//S[d] = FPToFixed(D[m], 32, 0, unsigned, round_zero, TRUE);
+				if (in->unsigned_cvt) {
+					out->Vd.freg.reg.raw32 = (uint32)in->Vm.freg.reg.Data64;
+				}
+				else {
+					out->Vd.freg.reg.raw32 = (sint32)in->Vm.freg.reg.Data64;
+				}
+			}
+			else {
+				//S[d] = FPToFixed(S[m], 32, 0, unsigned, round_zero, TRUE);
+				if (in->unsigned_cvt) {
+					out->Vd.freg.reg.raw32 = (uint32)in->Vm.freg.reg.Data32;
+				}
+				else {
+					out->Vd.freg.reg.raw32 = (sint32)in->Vm.freg.reg.Data32;
+				}
+			}
+		}
+		else {
+			if (in->dp_operation) {
+				//D[d] = FixedToFP(S[m], 64, 0, unsigned, round_nearest, TRUE);
+				if (in->unsigned_cvt) {
+					out->Vd.freg.reg.Data64 = (float64)in->Vm.freg.reg.raw32;
+				}
+				else {
+					out->Vd.freg.reg.Data64 = (float64)((sint32)in->Vm.freg.reg.raw32);
+				}
+			}
+			else {
+				//S[d] = FixedToFP(S[m], 32, 0, unsigned, round_nearest, TRUE);
+				if (in->unsigned_cvt) {
+					out->Vd.freg.reg.Data32 = (float32)in->Vm.freg.reg.raw32;
+				}
+				else {
+					out->Vd.freg.reg.Data32 = (float32)((sint32)in->Vm.freg.reg.raw32);
+				}
+			}
+		}
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_vcmp_output_type *out)
 {

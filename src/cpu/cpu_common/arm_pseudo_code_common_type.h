@@ -375,5 +375,20 @@ typedef uint32 PseudoCodeRegNumType;
 #define DBG_FMT_PseudoCodeRegNumType		"regs(%d) "
 #define DBG_ARG_PseudoCodeRegNumType(arg)	(*(arg))
 
+typedef bool PseudoCodeToIntegerType;
+#define DBG_FMT_PseudoCodeToIntegerType		"to_integer(%s) "
+#define DBG_ARG_PseudoCodeToIntegerType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeUnsignedCvtType;
+#define DBG_FMT_PseudoCodeUnsignedCvtType		"unsigned(%s) "
+#define DBG_ARG_PseudoCodeUnsignedCvtType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeRoundZeroType;
+#define DBG_FMT_PseudoCodeRoundZeroType		"round_zero(%s) "
+#define DBG_ARG_PseudoCodeRoundZeroType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeRoundNearestType;
+#define DBG_FMT_PseudoCodeRoundNearestType		"round_nearest(%s) "
+#define DBG_ARG_PseudoCodeRoundNearestType(arg)	DbgBoolFlag(*(arg))
 
 #endif /* _ARM_PSEUDO_CODE_COMMON_TYPE_H_ */

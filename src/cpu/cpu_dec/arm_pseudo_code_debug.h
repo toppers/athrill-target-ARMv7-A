@@ -2976,6 +2976,63 @@ static inline void DBG_ARM_VCVT_DF(TargetCoreType *core, arm_vcvt_df_input_type 
 	));
 }
 
+static inline void DBG_ARM_VCVT_FI(TargetCoreType *core, arm_vcvt_fi_input_type *in, arm_vcvt_fi_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeBoolIncrementType
+
+		DBG_FMT_PseudoCodeToIntegerType
+
+		DBG_FMT_PseudoCodeUnsignedCvtType
+
+		DBG_FMT_PseudoCodeRoundZeroType
+
+		DBG_FMT_PseudoCodeRoundNearestType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeFloatRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeBoolIncrementType(&in->dp_operation),
+
+		DBG_ARG_PseudoCodeToIntegerType(&in->to_integer),
+
+		DBG_ARG_PseudoCodeUnsignedCvtType(&in->unsigned_cvt),
+
+		DBG_ARG_PseudoCodeRoundZeroType(&in->round_zero),
+
+		DBG_ARG_PseudoCodeRoundNearestType(&in->round_nearest),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vd),
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&in->Vm),
+
+
+
+		DBG_ARG_PseudoCodeFloatRegisterDataType(&out->Vd),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_VSTR(TargetCoreType *core, arm_vstr_input_type *in, arm_vstr_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

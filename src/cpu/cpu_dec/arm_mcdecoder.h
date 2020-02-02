@@ -167,6 +167,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_vcvt_df_a1,
 	
+		arm_OP_CODE_FORMAT_arm_vcvt_fi_a1,
+	
 		arm_OP_CODE_FORMAT_arm_vstr_a1,
 	
 		arm_OP_CODE_FORMAT_arm_vstr_a2,
@@ -347,6 +349,8 @@ typedef enum {
 		arm_OpCodeId_arm_vldr_a2,
 	
 		arm_OpCodeId_arm_vcvt_df_a1,
+	
+		arm_OpCodeId_arm_vcvt_fi_a1,
 	
 		arm_OpCodeId_arm_vstr_a1,
 	
@@ -1458,6 +1462,26 @@ typedef struct {
 	
 		arm_uint8 cond;	/* 31-28 */
 	
+		arm_uint8 D;	/* 22-22 */
+	
+		arm_uint8 opc2;	/* 18-16 */
+	
+		arm_uint8 Vd;	/* 15-12 */
+	
+		arm_uint8 sz;	/* 8-8 */
+	
+		arm_uint8 op;	/* 7-7 */
+	
+		arm_uint8 M;	/* 5-5 */
+	
+		arm_uint8 Vm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_vcvt_fi_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
 		arm_uint8 U;	/* 23-23 */
 	
 		arm_uint8 D;	/* 22-22 */
@@ -1779,6 +1803,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_vcvt_df_a1 arm_vcvt_df_a1;
 		
+        	arm_OpCodeFormatType_arm_vcvt_fi_a1 arm_vcvt_fi_a1;
+		
         	arm_OpCodeFormatType_arm_vstr_a1 arm_vstr_a1;
 		
         	arm_OpCodeFormatType_arm_vstr_a2 arm_vstr_a2;
@@ -1891,6 +1917,7 @@ extern int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vldr_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vldr_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_vcvt_fi_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vstr_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vstr_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vcmp_a1(struct TargetCore *core);

@@ -691,6 +691,21 @@ machine:
         outputs:
           Vd: PseudoCodeFloatRegisterDataType
 
+      - name: arm_vcvt_fi
+        inputs:
+          cond: PseudoCodeConditionDataType
+          dp_operation: PseudoCodeBoolIncrementType
+          to_integer: PseudoCodeToIntegerType
+          unsigned_cvt: PseudoCodeUnsignedCvtType
+          round_zero: PseudoCodeRoundZeroType
+          round_nearest: PseudoCodeRoundNearestType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+
+
+
       - name: arm_vstr
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1391,6 +1406,17 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vcvt_df
+
+
+  - name: arm_vcvt_fi_a1
+    format: xxxx:cond|11101|x:D|11|1|xxx:opc2|xxxx:Vd|101|x:sz|x:op|1|x:M|0|xxxx:Vm
+    unmatch_condition: > 
+                         (cond == 0b1111)
+                         or ( (opc2 != 0b000) and ( (opc2 != 0b101) and (opc2 != 0b100) ) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_vcvt_fi
+
 
   - name: arm_vstr_a1
     format: xxxx:cond|1101|x:U|x:D|0|0|xxxx:Rn|xxxx:Vd|1011|xxxx xxxx:imm8

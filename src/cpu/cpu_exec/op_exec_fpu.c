@@ -3,6 +3,132 @@
 #include "arm_pseudo_code_func.h"
 #include <string.h>
 
+
+static uint64 AdvSIMDExpandImm(uint8 op, uint8 cmode, uint32 imm8)
+{
+	uint8 cmode3_1 = ( (cmode & 0x0E) >> 1 );
+	uint8 cmode0 = (cmode & 0x1);
+	bool testimm8 = TRUE;
+	uint32 tmp_data;
+	union {
+		uint8  array8[8];
+		uint16 array16[4];
+		uint32 array32[2];
+		uint64 imm64;
+	} data;
+	int i;
+
+	data.imm64 = -1;
+
+	switch (cmode3_1) {
+	case 0b000:
+		//testimm8 = FALSE; imm64 = Replicate(Zeros(24):imm8, 2);
+		testimm8 = FALSE;
+		data.array32[0] = imm8;
+		data.array32[1] = imm8;
+		break;
+	case 0b001:
+		//testimm8 = TRUE; imm64 = Replicate(Zeros(16):imm8:Zeros(8), 2);
+		data.array32[0] = imm8 << 8;
+		data.array32[1] = imm8 << 8;
+		break;
+	case 0b010:
+		//testimm8 = TRUE; imm64 = Replicate(Zeros(8):imm8:Zeros(16), 2);
+		data.array32[0] = imm8 << 16;
+		data.array32[1] = imm8 << 16;
+		break;
+	case 0b011:
+		//testimm8 = TRUE; imm64 = Replicate(imm8:Zeros(24), 2);
+		data.array32[0] = imm8 << 24;
+		data.array32[1] = imm8 << 24;
+		break;
+	case 0b100:
+		//testimm8 = FALSE; imm64 = Replicate(Zeros(8):imm8, 4);
+		testimm8 = FALSE;
+		data.array16[0] = (uint16)imm8;
+		data.array16[1] = (uint16)imm8;
+		data.array16[2] = (uint16)imm8;
+		data.array16[3] = (uint16)imm8;
+		break;
+	case 0b101:
+		//testimm8 = TRUE; imm64 = Replicate(imm8:Zeros(8), 4);
+		data.array16[0] = (uint16)(imm8 << 8);
+		data.array16[1] = (uint16)(imm8 << 8);
+		data.array16[2] = (uint16)(imm8 << 8);
+		data.array16[3] = (uint16)(imm8 << 8);
+		break;
+	case 0b110:
+		//testimm8 = TRUE;
+		//if cmode<0> == '0' then
+		//imm64 = Replicate(Zeros(16):imm8:Ones(8), 2);
+		//else
+		//imm64 = Replicate(Zeros(8):imm8:Ones(16), 2);
+		if (cmode0 == 0) {
+			tmp_data = imm8 << 8;
+		}
+		else {
+			tmp_data = imm8 << 16;
+		}
+		data.array32[0] = tmp_data;
+		data.array32[1] = tmp_data;
+		break;
+	case 0b111:
+		testimm8 = FALSE;
+		if ((cmode0 == 0) && (op == 0)) {
+			for (i = 0; i < 8; i++) {
+				data.array8[i] = (uint8)imm8;
+			}
+		}
+		else if ((cmode0 == 0) && (op == 1)) {
+			//imm8a = Replicate(imm8<7>, 8); imm8b = Replicate(imm8<6>, 8);
+			//imm8c = Replicate(imm8<5>, 8); imm8d = Replicate(imm8<4>, 8);
+			//imm8e = Replicate(imm8<3>, 8); imm8f = Replicate(imm8<2>, 8);
+			//imm8g = Replicate(imm8<1>, 8); imm8h = Replicate(imm8<0>, 8);
+			//imm64 = imm8a:imm8b:imm8c:imm8d:imm8e:imm8f:imm8g:imm8h;
+			for (i = 0; i < 8; i++) {
+				if ((imm8 & (1U << i)) != 0) {
+					data.array8[i] = 0xFF;
+				}
+				else {
+					data.array8[i] = 0x00;
+				}
+			}
+		}
+		else if ((cmode0 == 1) && (op == 0)) {
+			//             12:          11:                10-6:5-0
+			//imm32 = imm8<7>:NOT(imm8<6>):Replicate(imm8<6>,5):imm8<5:0>:Zeros(19);
+			tmp_data = (imm8 & 0x3F);
+			if ((imm8 & (0x1 << 6)) != 0) {
+				tmp_data |= (0x3F << 6);
+			}
+			else {
+				tmp_data |= (0x1  << 11);
+			}
+			if ((imm8 & (0x1 << 7)) != 0) {
+				tmp_data |= (0x1 << 12);
+			}
+			tmp_data <<= 19;
+			//imm64 = Replicate(imm32, 2);
+			data.array32[0] = tmp_data;
+			data.array32[1] = tmp_data;
+		}
+		else if ((cmode0 == 1) && (op == 1)) {
+			//UNDEFINED;
+			printf("UNPREDICTABLE: %s %d\n", __FUNCTION__, __LINE__);
+		}
+		break;
+	default:
+		break;
+	}
+	if ((testimm8 == TRUE) && (imm8 == 0)) {
+		//UNPREDICTABLE;
+		printf("UNPREDICTABLE: %s %d\n", __FUNCTION__, __LINE__);
+	}
+
+	return data.imm64;
+}
+
+
 int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vadd_freg_a2 *op = &core->decoded_code->code.arm_vadd_freg_a2;
@@ -47,6 +173,49 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vsub_freg_a2 *op = &core->decoded_code->code.arm_vsub_freg_a2;
+
+	arm_vsub_freg_input_type in;
+	arm_vsub_freg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VSUB";
+	in.cond = op->cond;
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (op->sz == 1) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		op->Vn = ( (op->Vd) | (op->N << 4) );
+		op->Vm = ( (op->Vd) | (op->M << 4) );
+	}
+	else {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		op->Vn = ( (op->Vn << 1) | op->N );
+		op->Vm = ( (op->Vm << 1) | op->M );
+	}
+
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+
+	in.advsimd = FALSE;
+	in.dp_operation = (op->sz == 1);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+
+	int ret = arm_op_exec_arm_vsub_freg(core, &in, &out);
+	DBG_ARM_VSUB_FREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 {
@@ -304,130 +473,6 @@ int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
 
 	core->pc = out.next_address;
 	return ret;
-}
-
-static uint64 AdvSIMDExpandImm(uint8 op, uint8 cmode, uint32 imm8)
-{
-	uint8 cmode3_1 = ( (cmode & 0x0E) >> 1 );
-	uint8 cmode0 = (cmode & 0x1);
-	bool testimm8 = TRUE;
-	uint32 tmp_data;
-	union {
-		uint8  array8[8];
-		uint16 array16[4];
-		uint32 array32[2];
-		uint64 imm64;
-	} data;
-	int i;
-
-	data.imm64 = -1;
-
-	switch (cmode3_1) {
-	case 0b000:
-		//testimm8 = FALSE; imm64 = Replicate(Zeros(24):imm8, 2);
-		testimm8 = FALSE;
-		data.array32[0] = imm8;
-		data.array32[1] = imm8;
-		break;
-	case 0b001:
-		//testimm8 = TRUE; imm64 = Replicate(Zeros(16):imm8:Zeros(8), 2);
-		data.array32[0] = imm8 << 8;
-		data.array32[1] = imm8 << 8;
-		break;
-	case 0b010:
-		//testimm8 = TRUE; imm64 = Replicate(Zeros(8):imm8:Zeros(16), 2);
-		data.array32[0] = imm8 << 16;
-		data.array32[1] = imm8 << 16;
-		break;
-	case 0b011:
-		//testimm8 = TRUE; imm64 = Replicate(imm8:Zeros(24), 2);
-		data.array32[0] = imm8 << 24;
-		data.array32[1] = imm8 << 24;
-		break;
-	case 0b100:
-		//testimm8 = FALSE; imm64 = Replicate(Zeros(8):imm8, 4);
-		testimm8 = FALSE;
-		data.array16[0] = (uint16)imm8;
-		data.array16[1] = (uint16)imm8;
-		data.array16[2] = (uint16)imm8;
-		data.array16[3] = (uint16)imm8;
-		break;
-	case 0b101:
-		//testimm8 = TRUE; imm64 = Replicate(imm8:Zeros(8), 4);
-		data.array16[0] = (uint16)(imm8 << 8);
-		data.array16[1] = (uint16)(imm8 << 8);
-		data.array16[2] = (uint16)(imm8 << 8);
-		data.array16[3] = (uint16)(imm8 << 8);
-		break;
-	case 0b110:
-		//testimm8 = TRUE;
-		//if cmode<0> == '0' then
-		//imm64 = Replicate(Zeros(16):imm8:Ones(8), 2);
-		//else
-		//imm64 = Replicate(Zeros(8):imm8:Ones(16), 2);
-		if (cmode0 == 0) {
-			tmp_data = imm8 << 8;
-		}
-		else {
-			tmp_data = imm8 << 16;
-		}
-		data.array32[0] = tmp_data;
-		data.array32[1] = tmp_data;
-		break;
-	case 0b111:
-		testimm8 = FALSE;
-		if ((cmode0 == 0) && (op == 0)) {
-			for (i = 0; i < 8; i++) {
-				data.array8[i] = (uint8)imm8;
-			}
-		}
-		else if ((cmode0 == 0) && (op == 1)) {
-			//imm8a = Replicate(imm8<7>, 8); imm8b = Replicate(imm8<6>, 8);
-			//imm8c = Replicate(imm8<5>, 8); imm8d = Replicate(imm8<4>, 8);
-			//imm8e = Replicate(imm8<3>, 8); imm8f = Replicate(imm8<2>, 8);
-			//imm8g = Replicate(imm8<1>, 8); imm8h = Replicate(imm8<0>, 8);
-			//imm64 = imm8a:imm8b:imm8c:imm8d:imm8e:imm8f:imm8g:imm8h;
-			for (i = 0; i < 8; i++) {
-				if ((imm8 & (1U << i)) != 0) {
-					data.array8[i] = 0xFF;
-				}
-				else {
-					data.array8[i] = 0x00;
-				}
-			}
-		}
-		else if ((cmode0 == 1) && (op == 0)) {
-			//             12:          11:                10-6:5-0
-			//imm32 = imm8<7>:NOT(imm8<6>):Replicate(imm8<6>,5):imm8<5:0>:Zeros(19);
-			tmp_data = (imm8 & 0x3F);
-			if ((imm8 & (0x1 << 6)) != 0) {
-				tmp_data |= (0x3F << 6);
-			}
-			else {
-				tmp_data |= (0x1  << 11);
-			}
-			if ((imm8 & (0x1 << 7)) != 0) {
-				tmp_data |= (0x1 << 12);
-			}
-			tmp_data <<= 19;
-			//imm64 = Replicate(imm32, 2);
-			data.array32[0] = tmp_data;
-			data.array32[1] = tmp_data;
-		}
-		else if ((cmode0 == 1) && (op == 1)) {
-			//UNDEFINED;
-			printf("UNPREDICTABLE: %s %d\n", __FUNCTION__, __LINE__);
-		}
-		break;
-	default:
-		break;
-	}
-	if ((testimm8 == TRUE) && (imm8 == 0)) {
-		//UNPREDICTABLE;
-		printf("UNPREDICTABLE: %s %d\n", __FUNCTION__, __LINE__);
-	}
-
-	return data.imm64;
 }
 
 static void VFPExpandImm(uint32 imm8, CoprocFpuRegisterType *op)

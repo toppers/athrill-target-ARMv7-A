@@ -637,6 +637,19 @@ machine:
         outputs:
           Vd: PseudoCodeFloatRegisterDataType
 
+      - name: arm_vsub_freg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Vn: PseudoCodeFloatRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+          advsimd: PseudoCodeBoolWbackType
+          dp_operation: PseudoCodeBoolIncrementType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+
+
+
       - name: arm_vldr
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1412,4 +1425,10 @@ instructions:
       clocks: 10
       pseudo_code: arm_vmov_imm
 
-      
+  - name: arm_vsub_freg_a2
+    format: xxxx:cond|11100|x:D|11|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vsub_freg
+

@@ -411,6 +411,26 @@ static void FPAdd(uint32 fpscr, CoprocFpuRegisterType *op1, CoprocFpuRegisterTyp
     return;
 }
 
+static void FPSub(uint32 fpscr, CoprocFpuRegisterType *op1, CoprocFpuRegisterType *op2, bool fpscr_controlled, CoprocFpuRegisterType *result)
+{
+	uint32 fpscr_val = (fpscr_controlled) ? fpscr : StandardFPSCRValue(fpscr);
+	FpuConfigRoundingType cfg = cpu_get_fpu_rmode(fpscr_val);
+
+    set_subnormal_operand(op1);
+    set_subnormal_operand(op2);
+	prepare_float_op(cfg);
+	{
+		if (op1->size == CoprocFpuDataSize_64) {
+			result->reg.Data64 = op1->reg.Data64 - op2->reg.Data64;
+		}
+		else {
+			result->reg.Data32 = op1->reg.Data32 - op2->reg.Data32;
+		}
+	}
+	end_float_op();
+    set_subnormal_result(cfg, result);
+    return;
+}
 static void FPDoubleToSingle(uint32 fpscr, CoprocFpuRegisterType *op1, bool fpscr_controlled, CoprocFpuRegisterType *result)
 {
 	uint32 fpscr_val = (fpscr_controlled) ? fpscr : StandardFPSCRValue(fpscr);
@@ -526,6 +546,19 @@ int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type
 	return ret;
 }
 
+int arm_op_exec_arm_vsub_freg(struct TargetCore *core,  arm_vsub_freg_input_type *in, arm_vsub_freg_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		FPSub(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_vldr_output_type *out)
 {

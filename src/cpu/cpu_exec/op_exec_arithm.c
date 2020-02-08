@@ -427,3 +427,63 @@ int arm_op_exec_arm_mul_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_smmul_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_smmul_a1 *op = &core->decoded_code->code.arm_smmul_a1;
+
+	arm_smmul_input_type in;
+	arm_smmul_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "SMMUL";
+	in.cond = op->cond;
+	in.round = (op->R == 1);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_smmul(core, &in, &out);
+	DBG_ARM_SMMUL(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_smull_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_smull_a1 *op = &core->decoded_code->code.arm_smull_a1;
+
+	arm_smull_input_type in;
+	arm_smull_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "SMULL";
+	in.cond = op->cond;
+	in.S = (op->S == 1);
+	OP_SET_REG(core, &in, op, RdHi);
+	OP_SET_REG(core, &in, op, RdLo);
+	OP_SET_REG(core, &in, op, Rm);
+	OP_SET_REG(core, &in, op, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, RdHi);
+	OP_SET_REG(core, &out, op, RdLo);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_smull(core, &in, &out);
+	DBG_ARM_SMULL(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

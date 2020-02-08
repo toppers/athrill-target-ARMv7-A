@@ -1092,6 +1092,48 @@ int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mu
 	out->status = *status;
 	return ret;
 }
+int arm_op_exec_arm_smmul(struct TargetCore *core,  arm_smmul_input_type *in, arm_smmul_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+        result = in->Rm.regData;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->Rd.regId != CpuRegId_PC) {
+            ret = 0;
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
+int arm_op_exec_arm_smull(struct TargetCore *core,  arm_smull_input_type *in, arm_smull_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+        result = in->Rm.regData;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->Rd.regId != CpuRegId_PC) {
+            ret = 0;
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_tst_imm(struct TargetCore *core,  arm_tst_imm_input_type *in, arm_tst_imm_output_type *out)
 {
 	int ret = 0;

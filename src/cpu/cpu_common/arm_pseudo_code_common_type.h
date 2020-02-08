@@ -208,6 +208,11 @@ typedef bool PseudoCodeWriteSpsrType;
 #define DBG_FMT_PseudoCodeWriteSpsrType			"write_spsr(%s) "
 #define DBG_ARG_PseudoCodeWriteSpsrType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeRoundType;
+#define DBG_FMT_PseudoCodeRoundType			"round(%s) "
+#define DBG_ARG_PseudoCodeRoundType(arg)	DbgBoolFlag(*(arg))
+
+
 typedef uint32 PseudoCodeMaskType;
 #define DBG_FMT_PseudoCodeMaskType			"mask(0x%x) "
 #define DBG_ARG_PseudoCodeMaskType(arg)		(*(arg))

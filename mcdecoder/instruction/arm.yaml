@@ -572,6 +572,34 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+
+      - name: arm_smmul
+        inputs:
+          cond: PseudoCodeConditionDataType
+          round: PseudoCodeRoundType
+          Rn: PseudoCodeRegisterDataType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
+      - name: arm_smull
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          RdHi: PseudoCodeRegisterDataType
+          RdLo: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          RdHi: PseudoCodeRegisterDataType
+          RdLo: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
+
       - name: arm_tst_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1372,6 +1400,22 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mul
+
+  - name: arm_smmul_a1
+    format: xxxx:cond|01110101|xxxx:Rd|1111|xxxx:Rm|00|x:R|1|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15) or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_smmul
+
+  - name: arm_smull_a1
+    format: xxxx:cond|0000110|x:S|xxxx:RdHi|xxxx:RdLo|xxxx:Rm|1001|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (RdHi == 15) or (RdLo == 15) or (Rm == 15) or (Rn == 15) or (RdHi == RdLo)
+    extras:
+      clocks: 10
+      pseudo_code: arm_smull
+
+
 
   - name: arm_tst_imm_a1
     format: xxxx:cond|00|1|1000|1|xxxx:Rn|0000|xxxx xxxx xxxx:imm12

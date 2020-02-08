@@ -55,6 +55,8 @@ extern int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_t
 extern int arm_op_exec_arm_rsb_imm(struct TargetCore *core,  arm_rsb_imm_input_type *in, arm_rsb_imm_output_type *out);
 extern int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in, arm_sbc_reg_output_type *out);
 extern int arm_op_exec_arm_mul(struct TargetCore *core,  arm_mul_input_type *in, arm_mul_output_type *out);
+extern int arm_op_exec_arm_smmul(struct TargetCore *core,  arm_smmul_input_type *in, arm_smmul_output_type *out);
+extern int arm_op_exec_arm_smull(struct TargetCore *core,  arm_smull_input_type *in, arm_smull_output_type *out);
 extern int arm_op_exec_arm_tst_imm(struct TargetCore *core,  arm_tst_imm_input_type *in, arm_tst_imm_output_type *out);
 extern int arm_op_exec_arm_tst_reg(struct TargetCore *core,  arm_tst_reg_input_type *in, arm_tst_reg_output_type *out);
 extern int arm_op_exec_arm_sxtb(struct TargetCore *core,  arm_sxtb_input_type *in, arm_sxtb_output_type *out);

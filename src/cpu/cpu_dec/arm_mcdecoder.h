@@ -147,6 +147,10 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_mul_a1,
 	
+		arm_OP_CODE_FORMAT_arm_smmul_a1,
+	
+		arm_OP_CODE_FORMAT_arm_smull_a1,
+	
 		arm_OP_CODE_FORMAT_arm_tst_imm_a1,
 	
 		arm_OP_CODE_FORMAT_arm_tst_reg_a1,
@@ -337,6 +341,10 @@ typedef enum {
 		arm_OpCodeId_arm_sbc_reg_a1,
 	
 		arm_OpCodeId_arm_mul_a1,
+	
+		arm_OpCodeId_arm_smmul_a1,
+	
+		arm_OpCodeId_arm_smull_a1,
 	
 		arm_OpCodeId_arm_tst_imm_a1,
 	
@@ -1344,6 +1352,36 @@ typedef struct {
 	
 		arm_uint8 cond;	/* 31-28 */
 	
+		arm_uint8 Rd;	/* 19-16 */
+	
+		arm_uint8 Rm;	/* 11-8 */
+	
+		arm_uint8 R;	/* 5-5 */
+	
+		arm_uint8 Rn;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_smmul_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 RdHi;	/* 19-16 */
+	
+		arm_uint8 RdLo;	/* 15-12 */
+	
+		arm_uint8 Rm;	/* 11-8 */
+	
+		arm_uint8 Rn;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_smull_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
 		arm_uint8 Rn;	/* 19-16 */
 	
 		arm_uint16 imm12;	/* 11-0 */
@@ -1851,6 +1889,10 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_mul_a1 arm_mul_a1;
 		
+        	arm_OpCodeFormatType_arm_smmul_a1 arm_smmul_a1;
+		
+        	arm_OpCodeFormatType_arm_smull_a1 arm_smull_a1;
+		
         	arm_OpCodeFormatType_arm_tst_imm_a1 arm_tst_imm_a1;
 		
         	arm_OpCodeFormatType_arm_tst_reg_a1 arm_tst_reg_a1;
@@ -1983,6 +2025,8 @@ extern int arm_op_exec_arm_rsb_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_rsb_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_sbc_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_mul_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_smmul_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_smull_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_tst_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_tst_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_sxtb_a1(struct TargetCore *core);

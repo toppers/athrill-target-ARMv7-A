@@ -465,6 +465,18 @@ machine:
           status_flag: PseudoCodeStatusFlagType
 
 
+      - name: arm_lsr_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_bfc
         inputs:
           cond: PseudoCodeConditionDataType
@@ -760,6 +772,19 @@ machine:
         outputs:
           Vn: PseudoCodeFloatRegisterDataType
           Rt: PseudoCodeRegisterDataType
+
+      - name: arm_vpush
+        inputs:
+          cond: PseudoCodeConditionDataType
+          single_reg: PseudoCodeSingleRegType
+          regs: PseudoCodeRegNumType
+          SP: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          SP: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+
 
 
 decoder:
@@ -1067,7 +1092,7 @@ instructions:
                         or (Rn == 0b1111) 
                         or ( (P == 0) and (W == 1) ) 
                         or (Rt == 15) 
-                        or ( ((P == 0) or (W == 1)) )
+                        or ( ((P == 0) or (W == 1)) and (Rn == Rt) )
     extras:
       clocks: 10
       pseudo_code: arm_ldr_imm
@@ -1274,6 +1299,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_lsr_imm
+
+  - name: arm_lsr_reg_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|xxxx:Rm|0011|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) or (Rm == 15) or (Rn == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_lsr_reg
+
 
  
   - name: arm_bfc_a1
@@ -1513,4 +1546,18 @@ instructions:
       clocks: 10
       pseudo_code: arm_vdiv_freg
 
+
+  - name: arm_vpush_a1
+    format: xxxx:cond|110|1|0|x:D|1|0|1101|xxxx:Vd|1011|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vpush
+
+  - name: arm_vpush_a2
+    format: xxxx:cond|110|1|0|x:D|1|0|1101|xxxx:Vd|1010|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vpush
       

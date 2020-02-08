@@ -902,3 +902,68 @@ int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type
 	out->status = *status;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vpush(struct TargetCore *core,  arm_vpush_input_type *in, arm_vpush_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		//address = SP - imm32;
+		//SP = SP - imm32;
+		uint32 address = (uint32)in->SP.regData - in->imm32;
+		CoprocFpuRegisterType fdata;
+		out->SP.regData = address;
+		fdata = in->Vd.freg;
+		if (in->single_reg) {
+			for (i = 0; i < (in->regs - 1); i++) {
+				//MemA[address,4] = S[d+r]; address = address+4;
+				fdata.regId = in->Vd.freg.regId + i;
+				cpu_get_freg(&core->coproc.cp11, &fdata);
+				ret = MemA_W(core, address, 4, (uint8*)&fdata.reg.raw32);
+				if (ret < 0) {
+					goto done;
+				}
+				address = address + 4;
+			}
+		}
+		else {
+			for (i = 0; i < (in->regs - 1); i++) {
+				fdata.regId = in->Vd.freg.regId + i;
+				cpu_get_freg(&core->coproc.cp11, &fdata);
+				//MemA[address,4] = if BigEndian() then D[d+r]<63:32> else D[d+r]<31:0>;
+				//MemA[address+4,4] = if BigEndian() then D[d+r]<31:0> else D[d+r]<63:32>;
+				if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+					//Big-endian operation
+					ret = MemA_W(core, address, 4, (uint8*)&fdata.reg.raw32_array[1]);
+					if (ret < 0) {
+						goto done;
+					}
+					ret = MemA_W(core, address + 4, 4, (uint8*)&fdata.reg.raw32_array[0]);
+					if (ret < 0) {
+						goto done;
+					}
+				}
+				else {
+					//Little-endian operation
+					ret = MemA_W(core, address, 4, (uint8*)&fdata.reg.raw32_array[0]);
+					if (ret < 0) {
+						goto done;
+					}
+					ret = MemA_W(core, address + 4, 4, (uint8*)&fdata.reg.raw32_array[1]);
+					if (ret < 0) {
+						goto done;
+					}
+				}
+				address = address + 8;
+			}
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+

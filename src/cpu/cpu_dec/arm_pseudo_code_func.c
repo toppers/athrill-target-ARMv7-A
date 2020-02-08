@@ -903,6 +903,27 @@ int arm_op_exec_arm_lsr_imm(struct TargetCore *core,  arm_lsr_imm_input_type *in
 	out->status = *status;
 	return ret;
 }
+int arm_op_exec_arm_lsr_reg(struct TargetCore *core,  arm_lsr_reg_input_type *in, arm_lsr_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+        result = in->Rm.regData;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->Rd.regId != CpuRegId_PC) {
+            ret = 0;
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bfc_output_type *out)
 {
 	int ret = 0;
@@ -1450,6 +1471,27 @@ int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *
 	return ret;
 }
 int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type *in, arm_vmov_sreg_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+        result = in->Rm.regData;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->Rd.regId != CpuRegId_PC) {
+            ret = 0;
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
+int arm_op_exec_arm_vpush(struct TargetCore *core,  arm_vpush_input_type *in, arm_vpush_output_type *out)
 {
 	int ret = 0;
 	uint32 result;

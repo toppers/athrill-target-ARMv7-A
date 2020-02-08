@@ -2237,6 +2237,45 @@ int arm_op_exec_arm_lsr_imm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_lsr_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_lsr_reg_a1 *op = &core->decoded_code->code.arm_lsr_reg_a1;
+
+	arm_lsr_reg_input_type in;
+	arm_lsr_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_LSR_REG_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.Rm = op->Rm;
+
+	in.Rn = op->Rn;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_lsr_reg(core, &in, &out);
+	DBG_ARM_LSR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_bfc_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_bfc_a1 *op = &core->decoded_code->code.arm_bfc_a1;
@@ -3459,6 +3498,88 @@ int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_vdiv_freg(core, &in, &out);
 	DBG_ARM_VDIV_FREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpush_a1 *op = &core->decoded_code->code.arm_vpush_a1;
+
+	arm_vpush_input_type in;
+	arm_vpush_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VPUSH_A1";
+
+	in.cond = op->cond;
+
+	in.single_reg = op->single_reg;
+
+	in.regs = op->regs;
+
+	in.SP = op->SP;
+
+	in.Vd = op->Vd;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.SP = -1;
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vpush(core, &in, &out);
+	DBG_ARM_VPUSH(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpush_a2 *op = &core->decoded_code->code.arm_vpush_a2;
+
+	arm_vpush_input_type in;
+	arm_vpush_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VPUSH_A2";
+
+	in.cond = op->cond;
+
+	in.single_reg = op->single_reg;
+
+	in.regs = op->regs;
+
+	in.SP = op->SP;
+
+	in.Vd = op->Vd;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.SP = -1;
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vpush(core, &in, &out);
+	DBG_ARM_VPUSH(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

@@ -46,6 +46,7 @@ extern int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *i
 extern int arm_op_exec_arm_lsl_imm(struct TargetCore *core,  arm_lsl_imm_input_type *in, arm_lsl_imm_output_type *out);
 extern int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_type *in, arm_lsl_reg_output_type *out);
 extern int arm_op_exec_arm_lsr_imm(struct TargetCore *core,  arm_lsr_imm_input_type *in, arm_lsr_imm_output_type *out);
+extern int arm_op_exec_arm_lsr_reg(struct TargetCore *core,  arm_lsr_reg_input_type *in, arm_lsr_reg_output_type *out);
 extern int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bfc_output_type *out);
 extern int arm_op_exec_arm_and_imm(struct TargetCore *core,  arm_and_imm_input_type *in, arm_and_imm_output_type *out);
 extern int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_type *in, arm_and_reg_output_type *out);
@@ -73,4 +74,5 @@ extern int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *i
 extern int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_vmrs_output_type *out);
 extern int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out);
 extern int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type *in, arm_vmov_sreg_output_type *out);
+extern int arm_op_exec_arm_vpush(struct TargetCore *core,  arm_vpush_input_type *in, arm_vpush_output_type *out);
 #endif /* !_ARM_PSEUDO_CODE_FUNC_H_ */

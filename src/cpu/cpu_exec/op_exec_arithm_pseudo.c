@@ -331,7 +331,7 @@ int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		uint32 shifted = Shift_C(32, in->Rm.regData, in->shift_t, in->shift_n, out->status_flag.carry, &out->status_flag.carry);
-		result = AddWithCarry(32, ~(in->Rn.regData), ~shifted, TRUE, &out->status_flag);
+		result = AddWithCarry(32, in->Rn.regData, ~shifted, out->status_flag.carry, &out->status_flag);
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
 			if (in->S != 0) {

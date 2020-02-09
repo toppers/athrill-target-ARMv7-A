@@ -200,6 +200,21 @@ int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in
 	return ret;
 }
 
+
+int arm_op_exec_arm_cmn_imm(struct TargetCore *core,  arm_cmn_imm_input_type *in, arm_cmn_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		out->result = AddWithCarry(32, in->Rn.regData, in->imm32, FALSE, &out->status_flag);
+		cpu_update_status_flag(status, out->result, &out->status_flag);
+	}
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_cmp_reg(struct TargetCore *core,  arm_cmp_reg_input_type *in, arm_cmp_reg_output_type *out)
 {
 	int ret = 0;

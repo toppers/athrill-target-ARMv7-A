@@ -177,8 +177,8 @@ int arm_op_exec_arm_cmn_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_cmn_imm_a1 *op = &core->decoded_code->code.arm_cmn_imm_a1;
 
-	arm_cmp_imm_input_type in;
-	arm_cmp_imm_output_type out;
+	arm_cmn_imm_input_type in;
+	arm_cmn_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "CMN";
@@ -192,8 +192,8 @@ int arm_op_exec_arm_cmn_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	int ret = arm_op_exec_arm_cmp_imm(core, &in, &out);
-	DBG_ARM_CMP_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_cmn_imm(core, &in, &out);
+	DBG_ARM_CMN_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

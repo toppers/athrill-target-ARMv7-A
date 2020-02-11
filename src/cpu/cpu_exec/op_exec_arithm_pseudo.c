@@ -428,7 +428,7 @@ int arm_op_exec_arm_smull(struct TargetCore *core,  arm_smull_input_type *in, ar
 		//R[dHi] = result<63:32>;
 		//R[dLo] = result<31:0>;
 		out->RdHi.regData = result.array[1];
-		out->RdHi.regData = result.array[0];
+		out->RdLo.regData = result.array[0];
 		//if setflags then
 		//APSR.N = result<63>;
 		//APSR.Z = IsZeroBit(result<63:0>);

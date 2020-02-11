@@ -42,9 +42,9 @@ static void VFPExpandImm(uint32 imm8, CoprocFpuRegisterType *op)
 		//                30:29-22                :21-20
 		//                10: 9--2                : 1- 0
 		//exp = NOT(imm8<6>):Replicate(imm8<6>,E-3):imm8<5:4>;
-		exp = (imm8 & 0x30) >> 4;
+		exp = (imm8 & 0x60) >> 4;
 		if ((imm8 & (0x1 << 6)) != 0) {
-			exp |= (0x1F << 2);
+			exp |= (0xFF << 2);
 		}
 		else {
 			exp |= (0x1 << 10);

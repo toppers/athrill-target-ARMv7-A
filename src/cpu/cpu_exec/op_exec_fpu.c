@@ -206,8 +206,8 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
 		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vd) | (op->N << 4) );
-		op->Vm = ( (op->Vd) | (op->M << 4) );
+		op->Vn = ( (op->Vn) | (op->N << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
 		op->Vd = ( (op->Vd << 1) | op->D );
@@ -251,8 +251,8 @@ int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
 		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vd) | (op->N << 4) );
-		op->Vm = ( (op->Vd) | (op->M << 4) );
+		op->Vn = ( (op->Vn) | (op->N << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
 		op->Vd = ( (op->Vd << 1) | op->D );
@@ -294,8 +294,8 @@ int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
 		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vd) | (op->N << 4) );
-		op->Vm = ( (op->Vd) | (op->M << 4) );
+		op->Vn = ( (op->Vn) | (op->N << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
 		op->Vd = ( (op->Vd << 1) | op->D );
@@ -337,8 +337,8 @@ int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
 		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vd) | (op->N << 4) );
-		op->Vm = ( (op->Vd) | (op->M << 4) );
+		op->Vn = ( (op->Vn) | (op->N << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
 		op->Vd = ( (op->Vd << 1) | op->D );

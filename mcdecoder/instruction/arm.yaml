@@ -835,6 +835,18 @@ machine:
           Vd: PseudoCodeFloatRegisterDataType
 
 
+      - name: arm_vpop
+        inputs:
+          cond: PseudoCodeConditionDataType
+          single_reg: PseudoCodeSingleRegType
+          regs: PseudoCodeRegNumType
+          SP: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          SP: PseudoCodeRegisterDataType
+          Vd: PseudoCodeFloatRegisterDataType
+
 
 decoder:
   namespace: arm
@@ -1632,4 +1644,18 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vpush
-      
+
+  - name: arm_vpop_a1
+    format: xxxx:cond|110|0|1|x:D|1|1|1101|xxxx:Vd|1011|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vpop
+
+  - name: arm_vpop_a2
+    format: xxxx:cond|110|0|1|x:D|1|1|1101|xxxx:Vd|1010|xxxx xxxx:imm8
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vpop
+

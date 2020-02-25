@@ -1833,4 +1833,31 @@ PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_vpush_output_type;
 
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeSingleRegType	single_reg;
+
+	PseudoCodeRegNumType	regs;
+
+	PseudoCodeRegisterDataType	SP;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeImmediateData32Type	imm32;
+} arm_vpop_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	SP;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vpop_output_type;
+
 #endif /* !_ARM_PSEUDO_CODE_TYPE_H_ */

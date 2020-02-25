@@ -967,3 +967,68 @@ done:
 	return ret;
 }
 
+int arm_op_exec_arm_vpop(struct TargetCore *core,  arm_vpop_input_type *in, arm_vpop_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		//address = SP;
+		//SP = SP + imm32;
+		uint32 address = (uint32)in->SP.regData;
+		CoprocFpuRegisterType fdata;
+		out->SP.regData = address + in->imm32;
+		fdata = in->Vd.freg;
+		if (in->single_reg) {
+			for (i = 0; i < (in->regs - 1); i++) {
+				//S[d+r] = MemA[address,4]; address = address+4;
+				fdata.regId = in->Vd.freg.regId + i;
+				ret = MemA_R(core, address, 4, (uint8*)&fdata.reg.raw32);
+				if (ret < 0) {
+					goto done;
+				}
+				cpu_set_freg(&core->coproc.cp11, &fdata);
+				address = address + 4;
+			}
+		}
+		else {
+			for (i = 0; i < (in->regs - 1); i++) {
+				fdata.regId = in->Vd.freg.regId + i;
+				if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+					//Big-endian operation
+					//word1 = MemA[address,4]; word2 = MemA[address+4,4]; address = address+8;
+					//D[d+r] = if BigEndian() then word1:word2 else word2:word1;
+					ret = MemA_R(core, address, 4, (uint8*)&fdata.reg.raw32_array[1]);//word1
+					if (ret < 0) {
+						goto done;
+					}
+					ret = MemA_R(core, address + 4, 4, (uint8*)&fdata.reg.raw32_array[0]);//word2
+					if (ret < 0) {
+						goto done;
+					}
+					//word1:word2
+				}
+				else {
+					//Little-endian operation
+					ret = MemA_R(core, address, 4, (uint8*)&fdata.reg.raw32_array[0]);//word1
+					if (ret < 0) {
+						goto done;
+					}
+					ret = MemA_R(core, address + 4, 4, (uint8*)&fdata.reg.raw32_array[1]);//word2
+					if (ret < 0) {
+						goto done;
+					}
+					//word2:word1
+				}
+				cpu_set_freg(&core->coproc.cp11, &fdata);
+				address = address + 8;
+			}
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+

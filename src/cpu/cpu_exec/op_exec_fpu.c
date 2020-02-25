@@ -811,6 +811,7 @@ int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
 	in.single_reg = FALSE;
 	in.regs = (op->imm8 / 2);
 
+	op->Vd = ( (op->Vd) | (op->D << 4) );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
 	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
@@ -849,6 +850,7 @@ int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 	in.single_reg = TRUE;
 	in.regs = op->imm8;
 
+	op->Vd = ( (op->Vd << 1) | op->D );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
 	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
@@ -873,3 +875,81 @@ int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 
 	return ret;
 }
+
+
+int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpop_a1 *op = &core->decoded_code->code.arm_vpop_a1;
+
+	arm_vpop_input_type in;
+	arm_vpop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VPOP";
+
+	in.cond = op->cond;
+	in.single_reg = FALSE;
+	in.regs = (op->imm8 / 2);
+
+	op->Vd = ( (op->Vd) | (op->D << 4) );
+	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	in.imm32 = ( ((uint32)op->imm8) << 2 );
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+
+	if ((in.regs == 0) || (in.regs > 16) || ((in.Vd.freg.regId + in.regs) > 32)) {
+		//UNPREDICTABLE;
+		return -1;
+	}
+
+	int ret = arm_op_exec_arm_vpop(core, &in, &out);
+	DBG_ARM_VPOP(core, &in, &out);
+	if (ret == 0) {
+		cpu_set_reg(core, CpuRegId_SP, out.SP.regData);
+		core->pc = out.next_address;
+	}
+	return ret;
+}
+
+
+int arm_op_exec_arm_vpop_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpop_a2 *op = &core->decoded_code->code.arm_vpop_a2;
+
+	arm_vpop_input_type in;
+	arm_vpop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "VPOP";
+	in.cond = op->cond;
+
+	in.single_reg = TRUE;
+	in.regs = op->imm8;
+
+	op->Vd = ( (op->Vd << 1) | op->D );
+	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	in.imm32 = ( ((uint32)op->imm8) << 2 );
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	if ((in.regs == 0) || ((in.Vd.freg.regId + in.regs) > 32)) {
+		//UNPREDICTABLE;
+		return -1;
+	}
+
+	int ret = arm_op_exec_arm_vpop(core, &in, &out);
+	DBG_ARM_VPOP(core, &in, &out);
+	if (ret == 0) {
+		cpu_set_reg(core, CpuRegId_SP, out.SP.regData);
+		core->pc = out.next_address;
+	}
+	return ret;
+}
+

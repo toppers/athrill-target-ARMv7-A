@@ -3701,3 +3701,85 @@ int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpop_a1 *op = &core->decoded_code->code.arm_vpop_a1;
+
+	arm_vpop_input_type in;
+	arm_vpop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VPOP_A1";
+
+	in.cond = op->cond;
+
+	in.single_reg = op->single_reg;
+
+	in.regs = op->regs;
+
+	in.SP = op->SP;
+
+	in.Vd = op->Vd;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.SP = -1;
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vpop(core, &in, &out);
+	DBG_ARM_VPOP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vpop_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vpop_a2 *op = &core->decoded_code->code.arm_vpop_a2;
+
+	arm_vpop_input_type in;
+	arm_vpop_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VPOP_A2";
+
+	in.cond = op->cond;
+
+	in.single_reg = op->single_reg;
+
+	in.regs = op->regs;
+
+	in.SP = op->SP;
+
+	in.Vd = op->Vd;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.SP = -1;
+	
+	out.Vd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vpop(core, &in, &out);
+	DBG_ARM_VPOP(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

@@ -1407,6 +1407,27 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRotationType	rotate;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_sxth_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_sxth_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeUpdateStatusFlagType	S;
 
 	PseudoCodeRegisterDataType	Rd;

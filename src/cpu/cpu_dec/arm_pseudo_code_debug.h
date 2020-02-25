@@ -2726,6 +2726,47 @@ static inline void DBG_ARM_SXTB(TargetCoreType *core, arm_sxtb_input_type *in, a
 	));
 }
 
+static inline void DBG_ARM_SXTH(TargetCoreType *core, arm_sxth_input_type *in, arm_sxth_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRotationType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rd),
+
+		DBG_ARG_PseudoCodeRotationType(&in->rotate),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_ASR_IMM(TargetCoreType *core, arm_asr_imm_input_type *in, arm_asr_imm_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

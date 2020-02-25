@@ -2818,6 +2818,41 @@ int arm_op_exec_arm_sxtb_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_sxth_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_sxth_a1 *op = &core->decoded_code->code.arm_sxth_a1;
+
+	arm_sxth_input_type in;
+	arm_sxth_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_SXTH_A1";
+
+	in.cond = op->cond;
+
+	in.Rd = op->Rd;
+
+	in.rotate = op->rotate;
+
+	in.Rm = op->Rm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rd = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_sxth(core, &in, &out);
+	DBG_ARM_SXTH(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_asr_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_asr_imm_a1 *op = &core->decoded_code->code.arm_asr_imm_a1;

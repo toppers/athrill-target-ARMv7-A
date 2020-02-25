@@ -213,6 +213,21 @@ int arm_op_exec_arm_sxtb(struct TargetCore *core,  arm_sxtb_input_type *in, arm_
 	out->status = *status;
 	return 0;
 }
+
+int arm_op_exec_arm_sxth(struct TargetCore *core,  arm_sxth_input_type *in, arm_sxth_output_type *out)
+{
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//rotated = ROR(R[m], rotation);
+		uint32 rotated = ROR(32, in->Rm.regData, in->rotate);
+		//R[d] = SignExtend(rotated<15:0>, 32);
+		out->Rd.regData = (sint32)((sint16)(rotated));
+	}
+	out->status = *status;
+	return 0;
+}
 int arm_op_exec_arm_tst_imm(struct TargetCore *core,  arm_tst_imm_input_type *in, arm_tst_imm_output_type *out)
 {
 	int ret = 0;

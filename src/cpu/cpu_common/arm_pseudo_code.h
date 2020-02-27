@@ -663,6 +663,28 @@ static inline uint32 BitCount(uint32 x)
 	}
 	return sum;
 }
+//CountLeadingZeroBits(x) is the number of zero bits at the left end of x, 
+//in the range 0 to N. This means:
+//CountLeadingZeroBits(x) = N - 1 - HighestSetBit(x)
+static inline uint32 CountLeadingZeroBits(uint32 x)
+{
+	uint32 sum = 0;
+	int i;
+	if (x == 0) {
+		return 32;
+	}
+	for (i = 0; i < 32; i++) {
+		if (((1U << i) & x) == 0) {
+			sum++;
+		}
+		else {
+			break;
+		}
+	}
+	return sum;
+
+}
+
 //bits(8*N) BigEndianReverse (bits(8*N) value, integer N)
 static inline void BigEndianReverse(uint32 N, uint8 *value, uint8 *out)
 {

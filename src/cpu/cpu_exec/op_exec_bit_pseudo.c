@@ -209,6 +209,7 @@ int arm_op_exec_arm_sxtb(struct TargetCore *core,  arm_sxtb_input_type *in, arm_
 		uint32 rotated = ROR(32, in->Rm.regData, in->rotate);
 		//R[d] = SignExtend(rotated<7:0>, 32);
 		out->Rd.regData = (sint32)((sint8)(rotated));
+		cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 	}
 	out->status = *status;
 	return 0;
@@ -224,6 +225,7 @@ int arm_op_exec_arm_sxth(struct TargetCore *core,  arm_sxth_input_type *in, arm_
 		uint32 rotated = ROR(32, in->Rm.regData, in->rotate);
 		//R[d] = SignExtend(rotated<15:0>, 32);
 		out->Rd.regData = (sint32)((sint16)(rotated));
+		cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 	}
 	out->status = *status;
 	return 0;
@@ -257,6 +259,20 @@ int arm_op_exec_arm_tst_reg(struct TargetCore *core,  arm_tst_reg_input_type *in
 		CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, out->status_flag.carry);
 		CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
 		CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+	}
+	out->status = *status;
+	return ret;
+}
+
+int arm_op_exec_arm_clz(struct TargetCore *core,  arm_clz_input_type *in, arm_clz_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		out->Rd.regData = CountLeadingZeroBits(in->Rm.regData);
+		cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 	}
 	out->status = *status;
 	return ret;

@@ -27,6 +27,18 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_adc_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
       - name: arm_sub_imm
         inputs:
@@ -672,6 +684,14 @@ machine:
         outputs:
           SP: PseudoCodeRegisterDataType
 
+      - name: arm_clz
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+
       - name: arm_rfe
         inputs:
           wback: PseudoCodeBoolWbackType
@@ -872,6 +892,16 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_add_reg
+
+  - name: arm_adc_reg_a1
+    format: xxxx:cond|00|0|0101|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) ) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_adc_reg
+
 
   - name: arm_add_spimm_a1
     format: xxxx:cond|00|1|0100|x:S|1101|xxxx:Rd|xxxx xxxx xxxx:imm12
@@ -1490,6 +1520,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_srs
+
+  - name: arm_clz_a1
+    format: xxxx:cond|0001|0110|1111|xxxx:Rd|1111|0001|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or (Rd == 15) or (Rm == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_clz
+
 
   - name: arm_rfe_a1
     format: 1111|100|x:P|x:U|0|x:W|1|xxxx:Rn|0000|1010|0000 0000

@@ -15,6 +15,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_add_reg_a1,
 	
+		arm_OP_CODE_FORMAT_arm_adc_reg_a1,
+	
 		arm_OP_CODE_FORMAT_arm_add_spimm_a1,
 	
 		arm_OP_CODE_FORMAT_arm_adr_a1,
@@ -163,6 +165,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_srs_a1,
 	
+		arm_OP_CODE_FORMAT_arm_clz_a1,
+	
 		arm_OP_CODE_FORMAT_arm_rfe_a1,
 	
 		arm_OP_CODE_FORMAT_arm_wfi_a1,
@@ -215,6 +219,8 @@ typedef enum {
 		arm_OpCodeId_arm_add_imm_a1,
 	
 		arm_OpCodeId_arm_add_reg_a1,
+	
+		arm_OpCodeId_arm_adc_reg_a1,
 	
 		arm_OpCodeId_arm_add_spimm_a1,
 	
@@ -364,6 +370,8 @@ typedef enum {
 	
 		arm_OpCodeId_arm_srs_a1,
 	
+		arm_OpCodeId_arm_clz_a1,
+	
 		arm_OpCodeId_arm_rfe_a1,
 	
 		arm_OpCodeId_arm_wfi_a1,
@@ -449,6 +457,24 @@ typedef struct {
 		arm_uint8 Rm;	/* 3-0 */
 	
 } arm_OpCodeFormatType_arm_add_reg_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
+		arm_uint8 imm5;	/* 11-7 */
+	
+		arm_uint8 type;	/* 6-5 */
+	
+		arm_uint8 Rm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_adc_reg_a1;
 
 typedef struct {
 	
@@ -1466,6 +1492,16 @@ typedef struct {
 
 typedef struct {
 	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
+		arm_uint8 Rm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_clz_a1;
+
+typedef struct {
+	
 		arm_uint8 P;	/* 24-24 */
 	
 		arm_uint8 U;	/* 23-23 */
@@ -1805,6 +1841,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_add_reg_a1 arm_add_reg_a1;
 		
+        	arm_OpCodeFormatType_arm_adc_reg_a1 arm_adc_reg_a1;
+		
         	arm_OpCodeFormatType_arm_add_spimm_a1 arm_add_spimm_a1;
 		
         	arm_OpCodeFormatType_arm_adr_a1 arm_adr_a1;
@@ -1953,6 +1991,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_srs_a1 arm_srs_a1;
 		
+        	arm_OpCodeFormatType_arm_clz_a1 arm_clz_a1;
+		
         	arm_OpCodeFormatType_arm_rfe_a1 arm_rfe_a1;
 		
         	arm_OpCodeFormatType_arm_wfi_a1 arm_wfi_a1;
@@ -2013,6 +2053,7 @@ extern arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num];
 
 extern int arm_op_exec_arm_add_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_add_reg_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_adc_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_add_spimm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_adr_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_subs_pclr_a1(struct TargetCore *core);
@@ -2087,6 +2128,7 @@ extern int arm_op_exec_arm_sxtb_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_sxth_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_asr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_srs_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_clz_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_rfe_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_wfi_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core);

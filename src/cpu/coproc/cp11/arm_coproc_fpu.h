@@ -3,9 +3,6 @@
 
 #include "std_types.h"
 
-typedef float float32;
-typedef double float64;
-
 #define ARM_COPROC_FPU_SINGLE_FLOAT		32U
 #define ARM_COPROC_FPU_DOUBLE_FLOAT		32U
 

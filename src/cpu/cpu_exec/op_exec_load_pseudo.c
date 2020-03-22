@@ -144,20 +144,37 @@ done:
 int arm_op_exec_arm_ldrd_imm(struct TargetCore *core,  arm_ldrd_imm_input_type *in, arm_ldrd_imm_output_type *out)
 {
 	int ret = 0;
-	uint32 result;
+	uint32 result1;
+	uint32 result2;
 	uint32 *status = cpu_get_status(core);
 	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
 	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		ret = mem_to_reg(core, address, 4, &result);
+		ret = mem_to_reg(core, address, 4, &result1);
 		if (ret != 0) {
 			goto done;
 		}
-		ret = mem_to_reg(core, address + 4, 4, &result);
+		ret = mem_to_reg(core, address + 4, 4, &result2);
 		if (ret != 0) {
 			goto done;
+		}
+		if (CPU_STATUS_BIT_IS_SET(*status, CPU_STATUS_BITPOS_E)) {
+			//R[t] = data<63:32>;
+			//R[t2] = data<31:0>;
+			cpu_set_reg(core, in->Rt1.regId, result2);
+			cpu_set_reg(core, in->Rt2.regId, result1);
+        	out->Rt1.regData = result2;
+        	out->Rt2.regData = result1;
+		}
+		else {
+			//R[t] = MemA[address,4];
+			//R[t2] = MemA[address+4,4];
+			cpu_set_reg(core, in->Rt1.regId, result1);
+			cpu_set_reg(core, in->Rt2.regId, result2);
+        	out->Rt1.regData = result1;
+        	out->Rt2.regData = result2;
 		}
 		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
@@ -168,6 +185,61 @@ done:
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_ldrh_imm(struct TargetCore *core,  arm_ldrh_imm_input_type *in, arm_ldrh_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		ret = mem_to_reg(core, address, 2, &result);
+		if (ret != 0) {
+			goto done;
+		}
+		//R[t] = ZeroExtend(data, 32);
+    	out->Rt.regData = (uint32)((uint16)result);
+		cpu_set_reg(core, in->Rt.regId, out->Rt.regData);
+		if ((ret == 0) && in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+        	out->Rn.regData = offset_addr;
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+
+int arm_op_exec_arm_ldrsh_imm(struct TargetCore *core,  arm_ldrsh_imm_input_type *in, arm_ldrsh_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		ret = mem_to_reg(core, address, 2, &result);
+		if (ret != 0) {
+			goto done;
+		}
+		//R[t] = SignExtend(data, 32);
+    	out->Rt.regData = (sint32)((sint16)result);
+		cpu_set_reg(core, in->Rt.regId, out->Rt.regData);
+		if ((ret == 0) && in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+        	out->Rn.regData = offset_addr;
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+
 
 int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out)
 {

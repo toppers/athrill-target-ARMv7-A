@@ -228,6 +228,33 @@ machine:
           Rt: PseudoCodeRegisterDataType
 
 
+      - name: arm_ldrh_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_ldrsh_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+
       - name: arm_ldrd_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -240,6 +267,8 @@ machine:
           Rt2: PseudoCodeRegisterDataType
         outputs:
           Rn: PseudoCodeRegisterDataType
+          Rt1: PseudoCodeRegisterDataType
+          Rt2: PseudoCodeRegisterDataType
 
 
       - name: arm_ldr_reg
@@ -1198,7 +1227,7 @@ instructions:
                         or ( ((P == 0) or (W == 1)) )
     extras:
       clocks: 10
-      pseudo_code: arm_ldr_imm
+      pseudo_code: arm_ldrh_imm
 
   - name: arm_ldrd_imm_a1
     format: xxxx:cond|000|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1101|xxxx:imm8[3:0]
@@ -1235,17 +1264,31 @@ instructions:
       clocks: 10
       pseudo_code: arm_ldr_reg
 
+
+  - name: arm_ldrsh_imm_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1111|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or ( (P == 0) and (W == 1) ) 
+                        or (Rt == 15) 
+                        or ( ((P == 0) or (W == 1)) and ( Rn == Rt ) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrsh_imm
+
+
   - name: arm_ldrh_reg_a1
     format: xxxx:cond|000|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|0000|1011|xxxx:Rm
     unmatch_condition: >
                         (cond == 0b1111) 
-                        or ( (P == 0) and (W == 1) ) 
                         or (Rm == 0b1111) 
                         or (Rt == 0b1111) 
-                        or ( ((P == 0) or (W == 1)) and (Rn == 15) )
+                        or ( ((P == 0) or (W == 1)) and ( (Rn == 15) or (Rn == Rt) ) )
     extras:
       clocks: 10
       pseudo_code: arm_ldr_reg
+
 
 
   - name: arm_pop_a1

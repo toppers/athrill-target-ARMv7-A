@@ -1366,14 +1366,12 @@ int arm_op_exec_arm_ldrh_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldrh_imm_a1 *op = &core->decoded_code->code.arm_ldrh_imm_a1;
 
-	arm_ldr_imm_input_type in;
-	arm_ldr_imm_output_type out;
+	arm_ldrh_imm_input_type in;
+	arm_ldrh_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	//TODO arguments setting..
 	in.instrName = "ARM_LDRH_IMM_A1";
-
-	in.size = op->size;
 
 	in.cond = op->cond;
 
@@ -1393,12 +1391,14 @@ int arm_op_exec_arm_ldrh_imm_a1(struct TargetCore *core)
 	out.passed = FALSE;
 
 	
+	out.Rn = -1;
+	
 	out.Rt = -1;
 	
 
 	
-	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
-	DBG_ARM_LDR_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_ldrh_imm(core, &in, &out);
+	DBG_ARM_LDRH_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -1437,6 +1437,10 @@ int arm_op_exec_arm_ldrd_imm_a1(struct TargetCore *core)
 
 	
 	out.Rn = -1;
+	
+	out.Rt1 = -1;
+	
+	out.Rt2 = -1;
 	
 
 	
@@ -1540,6 +1544,49 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
 	DBG_ARM_LDR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_ldrsh_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldrsh_imm_a1 *op = &core->decoded_code->code.arm_ldrsh_imm_a1;
+
+	arm_ldrsh_imm_input_type in;
+	arm_ldrsh_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_LDRSH_IMM_A1";
+
+	in.cond = op->cond;
+
+	in.imm32 = op->imm32;
+
+	in.add = op->add;
+
+	in.index = op->index;
+
+	in.wback = op->wback;
+
+	in.Rn = op->Rn;
+
+	in.Rt = op->Rt;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rn = -1;
+	
+	out.Rt = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_ldrsh_imm(core, &in, &out);
+	DBG_ARM_LDRSH_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

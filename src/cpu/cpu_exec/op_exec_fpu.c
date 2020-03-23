@@ -234,6 +234,45 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vneg_a2 *op = &core->decoded_code->code.arm_vneg_a2;
+
+	arm_vneg_input_type in;
+	arm_vneg_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.instrName = "VNEG";
+	in.cond = op->cond;
+	in.advsimd = FALSE;
+	in.dp_operation = (op->sz == 1);
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (op->sz == 1) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		op->Vm = ( (op->Vm) | (op->M << 4) );
+	}
+	else {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		op->Vm = ( (op->Vm << 1) | op->M );
+	}
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	in.regs = 1;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+
+	int ret = arm_op_exec_arm_vneg(core, &in, &out);
+	DBG_ARM_VNEG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 {
@@ -328,7 +367,7 @@ int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 
 	arm_vdiv_freg_input_type in;
 	arm_vdiv_freg_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VDIV";
 	in.cond = op->cond;
@@ -766,6 +805,45 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmov_reg_a2 *op = &core->decoded_code->code.arm_vmov_reg_a2;
+
+	arm_vmov_reg_input_type in;
+	arm_vmov_reg_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	//if FPSCR.Len != ‘000’ || FPSCR.Stride != ‘00’ then SEE “VFP vectors”;
+	in.instrName = "VMOV";
+	in.cond = op->cond;
+	in.single_reg = (op->sz == 0);
+	in.advsimd = FALSE;
+
+	if (in.single_reg) {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+		op->Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		in.regs = 1;
+	}
+	else {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+		op->Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+		in.regs = 1;
+	}
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_vmov_reg(core, &in, &out);
+	DBG_ARM_VMOV_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 {
@@ -773,7 +851,7 @@ int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 
 	arm_vmov_sreg_input_type in;
 	arm_vmov_sreg_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VMOV";
 
@@ -795,7 +873,6 @@ int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
-
 
 
 int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
@@ -883,7 +960,7 @@ int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
 
 	arm_vpop_input_type in;
 	arm_vpop_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VPOP";
 
@@ -922,7 +999,7 @@ int arm_op_exec_arm_vpop_a2(struct TargetCore *core)
 
 	arm_vpop_input_type in;
 	arm_vpop_output_type out;
-	out.status = *cpu_get_status(core);
+	out.status = *fpu_get_status(&core->coproc.cp11);
 
 	in.instrName = "VPOP";
 	in.cond = op->cond;

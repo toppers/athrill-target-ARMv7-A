@@ -201,11 +201,15 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_vmov_imm_a2,
 	
+		arm_OP_CODE_FORMAT_arm_vmov_reg_a2,
+	
 		arm_OP_CODE_FORMAT_arm_vmov_sreg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_vsub_freg_a2,
 	
 		arm_OP_CODE_FORMAT_arm_vmul_freg_a2,
+	
+		arm_OP_CODE_FORMAT_arm_vneg_a2,
 	
 		arm_OP_CODE_FORMAT_arm_vdiv_freg_a2,
 	
@@ -412,11 +416,15 @@ typedef enum {
 	
 		arm_OpCodeId_arm_vmov_imm_a2,
 	
+		arm_OpCodeId_arm_vmov_reg_a2,
+	
 		arm_OpCodeId_arm_vmov_sreg_a1,
 	
 		arm_OpCodeId_arm_vsub_freg_a2,
 	
 		arm_OpCodeId_arm_vmul_freg_a2,
+	
+		arm_OpCodeId_arm_vneg_a2,
 	
 		arm_OpCodeId_arm_vdiv_freg_a2,
 	
@@ -1780,6 +1788,22 @@ typedef struct {
 	
 		arm_uint8 cond;	/* 31-28 */
 	
+		arm_uint8 D;	/* 22-22 */
+	
+		arm_uint8 Vd;	/* 15-12 */
+	
+		arm_uint8 sz;	/* 8-8 */
+	
+		arm_uint8 M;	/* 5-5 */
+	
+		arm_uint8 Vm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_vmov_reg_a2;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
 		arm_uint8 op;	/* 20-20 */
 	
 		arm_uint8 Vn;	/* 19-16 */
@@ -1829,6 +1853,22 @@ typedef struct {
 		arm_uint8 Vm;	/* 3-0 */
 	
 } arm_OpCodeFormatType_arm_vmul_freg_a2;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 D;	/* 22-22 */
+	
+		arm_uint8 Vd;	/* 15-12 */
+	
+		arm_uint8 sz;	/* 8-8 */
+	
+		arm_uint8 M;	/* 5-5 */
+	
+		arm_uint8 Vm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_vneg_a2;
 
 typedef struct {
 	
@@ -2093,11 +2133,15 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_vmov_imm_a2 arm_vmov_imm_a2;
 		
+        	arm_OpCodeFormatType_arm_vmov_reg_a2 arm_vmov_reg_a2;
+		
         	arm_OpCodeFormatType_arm_vmov_sreg_a1 arm_vmov_sreg_a1;
 		
         	arm_OpCodeFormatType_arm_vsub_freg_a2 arm_vsub_freg_a2;
 		
         	arm_OpCodeFormatType_arm_vmul_freg_a2 arm_vmul_freg_a2;
+		
+        	arm_OpCodeFormatType_arm_vneg_a2 arm_vneg_a2;
 		
         	arm_OpCodeFormatType_arm_vdiv_freg_a2 arm_vdiv_freg_a2;
 		
@@ -2218,9 +2262,11 @@ extern int arm_op_exec_arm_vcmp_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vmrs_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core);
+extern int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core);
+extern int arm_op_exec_arm_vneg_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_vpush_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_vpush_a2(struct TargetCore *core);

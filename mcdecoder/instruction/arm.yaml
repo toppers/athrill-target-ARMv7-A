@@ -874,6 +874,31 @@ machine:
           Vd2: PseudoCodeFloatRegisterDataType
           status_flag: PseudoCodeFloatStatusFlagType
 
+      - name: arm_vmov_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          single_reg: PseudoCodeSingleRegType
+          advsimd: PseudoCodeBoolWbackType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+          regs: PseudoCodeRegNumType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+          status_flag: PseudoCodeFloatStatusFlagType
+
+
+      - name: arm_vneg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          dp_operation: PseudoCodeBoolIncrementType
+          advsimd: PseudoCodeBoolWbackType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+          regs: PseudoCodeRegNumType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+          status_flag: PseudoCodeFloatStatusFlagType
+
 
       - name: arm_vmov_sreg
         inputs:
@@ -1712,13 +1737,21 @@ instructions:
       clocks: 10
       pseudo_code: arm_vmov_imm
 
+
+  - name: arm_vmov_reg_a2
+    format: xxxx:cond|11101|x:D|11|0000|xxxx:Vd|101|x:sz|0|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmov_reg
+
+
   - name: arm_vmov_sreg_a1
     format: xxxx:cond|1110|000|x:op|xxxx:Vn|xxxx:Rt|1010|x:N|00|1|0000
     unmatch_condition: (cond == 0b1111)
     extras:
       clocks: 10
       pseudo_code: arm_vmov_sreg
-
 
   - name: arm_vsub_freg_a2
     format: xxxx:cond|11100|x:D|11|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|1|x:M|0|xxxx:Vm
@@ -1734,6 +1767,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vmul_freg
+
+  - name: arm_vneg_a2
+    format: xxxx:cond|11101|x:D|11|0001|xxxx:Vd|101|x:sz|0|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vneg
+
 
   - name: arm_vdiv_freg_a2
     format: xxxx:cond|11101|x:D|00|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|0|x:M|0|xxxx:Vm

@@ -1927,6 +1927,60 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeSingleRegType	single_reg;
+
+	PseudoCodeBoolWbackType	advsimd;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeRegNumType	regs;
+} arm_vmov_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmov_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolIncrementType	dp_operation;
+
+	PseudoCodeBoolWbackType	advsimd;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeRegNumType	regs;
+} arm_vneg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vneg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeToArmRegisterType	to_arm_register;
 
 	PseudoCodeFloatRegisterDataType	Vn;

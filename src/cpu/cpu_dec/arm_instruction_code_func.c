@@ -3676,6 +3676,47 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmov_reg_a2 *op = &core->decoded_code->code.arm_vmov_reg_a2;
+
+	arm_vmov_reg_input_type in;
+	arm_vmov_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VMOV_REG_A2";
+
+	in.cond = op->cond;
+
+	in.single_reg = op->single_reg;
+
+	in.advsimd = op->advsimd;
+
+	in.Vd = op->Vd;
+
+	in.Vm = op->Vm;
+
+	in.regs = op->regs;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vmov_reg(core, &in, &out);
+	DBG_ARM_VMOV_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;
@@ -3785,6 +3826,47 @@ int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_vmul_freg(core, &in, &out);
 	DBG_ARM_VMUL_FREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vneg_a2 *op = &core->decoded_code->code.arm_vneg_a2;
+
+	arm_vneg_input_type in;
+	arm_vneg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VNEG_A2";
+
+	in.cond = op->cond;
+
+	in.dp_operation = op->dp_operation;
+
+	in.advsimd = op->advsimd;
+
+	in.Vd = op->Vd;
+
+	in.Vm = op->Vm;
+
+	in.regs = op->regs;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vneg(core, &in, &out);
+	DBG_ARM_VNEG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

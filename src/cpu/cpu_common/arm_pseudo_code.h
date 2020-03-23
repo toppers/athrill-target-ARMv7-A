@@ -256,6 +256,21 @@ static inline uint32 ROR(uint32 bits_N, uint32 x, uint32 shift)
 	return result;
 }
 
+static inline SRType DecodeRegShift(uint8 type)
+{
+	switch (type) {
+	case 0b00:
+		return SRType_LSL;
+	case 0b01:
+		return SRType_LSR;
+	case 0b10:
+		return SRType_ASR;
+	case 0b11:
+	default:
+		return SRType_ROR;
+	}
+}
+
 static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 amount, bool carry_in, bool *carry_out)
 {
 	if (amount == 0) {

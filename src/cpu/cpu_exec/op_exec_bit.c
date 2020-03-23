@@ -30,6 +30,35 @@ int arm_op_exec_arm_bic_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_bic_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_bic_reg_a1 *op = &core->decoded_code->code.arm_bic_reg_a1;
+
+	arm_bic_reg_input_type in;
+	arm_bic_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "BIC";
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_bic_reg(core, &in, &out);
+	DBG_ARM_BIC_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_orr_imm_a1 *op = &core->decoded_code->code.arm_orr_imm_a1;
@@ -86,6 +115,37 @@ int arm_op_exec_arm_orr_reg_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_orr_shift_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_orr_shift_reg_a1 *op = &core->decoded_code->code.arm_orr_shift_reg_a1;
+
+	arm_orr_reg_input_type in;
+	arm_orr_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "ORR";
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	//shift_t = DecodeRegShift(type);
+	in.shift_t = DecodeRegShift(op->type);
+	//shift_n = UInt(R[s]<7:0>);
+	in.shift_n =(uint8)cpu_get_reg(core, op->Rs);
+
+	OP_SET_REG(core, &out, op, Rd);
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_orr_reg(core, &in, &out);
+	DBG_ARM_ORR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+
+	return ret;
+}
 
 int arm_op_exec_arm_bfc_a1(struct TargetCore *core)
 {

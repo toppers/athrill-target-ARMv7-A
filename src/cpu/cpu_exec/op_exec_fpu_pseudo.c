@@ -685,6 +685,9 @@ int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_
 				//Little-endian operation
 				out->Vd.freg.reg.raw32_array[0] = word1;
 				out->Vd.freg.reg.raw32_array[1] = word2;
+				//printf("VLDR[0]: addr=0x%x data=0x%x\n", address, out->Vd.freg.reg.raw32_array[0]);
+				//printf("VLDR[1]: addr=0x%x data=0x%x\n", address + 4, out->Vd.freg.reg.raw32_array[1]);
+				//printf("VLDR: reg value=%lf\n", out->Vd.freg.reg.Data64);
 			}
 		}
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
@@ -731,10 +734,13 @@ int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_
 				if (ret < 0) {
 					goto done;
 				}
+				//printf("VSTR[0]: addr=0x%x data=0x%x\n", address, in->Vd.freg.reg.raw32_array[0]);
 				ret = MemA_W(core, address + 4, 4, (uint8*)&in->Vd.freg.reg.raw32_array[1]);
 				if (ret < 0) {
 					goto done;
 				}
+				//printf("VSTR[1]: addr=0x%x data=0x%x\n", address + 4, in->Vd.freg.reg.raw32_array[1]);
+				//printf("VSTR: size=%d reg value=%lf\n", in->Vd.freg.size, in->Vd.freg.reg.Data64);
 			}
 		}
 	}

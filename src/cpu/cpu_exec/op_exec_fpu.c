@@ -581,8 +581,8 @@ int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
 	in.imm32 = (((uint32)op->imm8) << 2);
 	OP_SET_REG(core, &in, op, Rn);
 	op->Vd = ( (op->Vd) | (op->D << 4) );
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;

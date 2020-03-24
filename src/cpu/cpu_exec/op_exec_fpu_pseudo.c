@@ -800,11 +800,13 @@ int arm_op_exec_arm_vcvt_fi(struct TargetCore *core,  arm_vcvt_fi_input_type *in
 		else {
 			if (in->dp_operation) {
 				//D[d] = FixedToFP(S[m], 64, 0, unsigned, round_nearest, TRUE);
+				//printf("vcvt vm[0]=%d\n", in->Vm.freg.reg.raw32_array[0]);
+				//printf("vcvt vm[1]=%d\n", in->Vm.freg.reg.raw32_array[1]);
 				if (in->unsigned_cvt) {
-					out->Vd.freg.reg.Data64 = (float64)in->Vm.freg.reg.raw32;
+					out->Vd.freg.reg.Data64 = (float64)in->Vm.freg.reg.raw64;
 				}
 				else {
-					out->Vd.freg.reg.Data64 = (float64)((sint32)in->Vm.freg.reg.raw32);
+					out->Vd.freg.reg.Data64 = (float64)((sint32)in->Vm.freg.reg.raw64);
 				}
 			}
 			else {

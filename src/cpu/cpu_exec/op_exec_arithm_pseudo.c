@@ -40,7 +40,9 @@ int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in
 		result = AddWithCarry(32, in->Rn.regData, shifted, FALSE, &out->status_flag);
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
-			cpu_update_status_flag(status, result, &out->status_flag);		
+			if (in->S != 0) {
+				cpu_update_status_flag(status, result, &out->status_flag);
+			}
 			out->Rd.regData = result;
 		}
 		else {
@@ -67,7 +69,9 @@ int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in
 		result = AddWithCarry(32, in->Rn.regData, shifted, CPU_ISSET_CY(status), &out->status_flag);
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
-			cpu_update_status_flag(status, result, &out->status_flag);		
+			if (in->S != 0) {
+				cpu_update_status_flag(status, result, &out->status_flag);
+			}
 			out->Rd.regData = result;
 		}
 		else {
@@ -292,7 +296,9 @@ int arm_op_exec_arm_sub_reg(struct TargetCore *core,  arm_sub_reg_input_type *in
 		result = AddWithCarry(32, in->Rn.regData, ~shifted, TRUE, &out->status_flag);
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
-			cpu_update_status_flag(status, result, &out->status_flag);
+			if (in->S != 0) {
+				cpu_update_status_flag(status, result, &out->status_flag);
+			}
 			out->Rd.regData = result;
 		}
 		else {

@@ -188,7 +188,6 @@ int arm_op_exec_arm_cmp_imm_a1(struct TargetCore *core)
 	in.instrName = "CMP";
 
 	in.cond = op->cond;
-	in.sign = FALSE;
 	OP_SET_REG(core, &in, op, Rn);
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);

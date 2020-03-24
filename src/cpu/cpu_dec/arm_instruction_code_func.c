@@ -266,8 +266,6 @@ int arm_op_exec_arm_cmp_imm_a1(struct TargetCore *core)
 
 	in.cond = op->cond;
 
-	in.sign = op->sign;
-
 	in.Rn = op->Rn;
 
 	in.imm32 = op->imm32;

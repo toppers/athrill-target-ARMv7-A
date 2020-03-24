@@ -68,7 +68,6 @@ machine:
       - name: arm_cmp_imm
         inputs:
           cond: PseudoCodeConditionDataType
-          sign: PseudoCodeSignType
           Rn: PseudoCodeRegisterDataType
           imm32: PseudoCodeImmediateData32Type
         outputs:

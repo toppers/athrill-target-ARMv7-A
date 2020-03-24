@@ -145,8 +145,6 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
-	PseudoCodeSignType	sign;
-
 	PseudoCodeRegisterDataType	Rn;
 
 	PseudoCodeImmediateData32Type	imm32;

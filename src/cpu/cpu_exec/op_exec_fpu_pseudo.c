@@ -579,7 +579,7 @@ int arm_op_exec_arm_vadd_freg(struct TargetCore *core,  arm_vadd_freg_input_type
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		FPAdd(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
@@ -592,7 +592,7 @@ int arm_op_exec_arm_vneg(struct TargetCore *core,  arm_vneg_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->dp_operation) {
 			out->Vd.freg.reg.Data64 = -in->Vm.freg.reg.Data64;
@@ -611,7 +611,7 @@ int arm_op_exec_arm_vsub_freg(struct TargetCore *core,  arm_vsub_freg_input_type
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		FPSub(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
@@ -626,7 +626,7 @@ int arm_op_exec_arm_vmul_freg(struct TargetCore *core,  arm_vmul_freg_input_type
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
@@ -640,7 +640,7 @@ int arm_op_exec_arm_vdiv_freg(struct TargetCore *core,  arm_vdiv_freg_input_type
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		FPDiv(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
 		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
@@ -654,7 +654,7 @@ int arm_op_exec_arm_vldr(struct TargetCore *core,  arm_vldr_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		uint32 base = (in->Rn.regId == CpuRegId_PC) ? Align(in->Rn.regData, 4) : in->Rn.regData;
 		uint32 address = (in->add) ? (base + in->imm32) : (base - in->imm32);
@@ -702,7 +702,7 @@ int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		//address = if add then (R[n] + imm32) else (R[n] - imm32);
 		uint32 address = (in->add) ? (in->Rn.regData + in->imm32) : (in->Rn.regData - in->imm32);
@@ -755,7 +755,7 @@ int arm_op_exec_arm_vcvt_df(struct TargetCore *core,  arm_vcvt_df_input_type *in
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->double_to_single) {
 			FPDoubleToSingle(cpu_get_fpscr(core), &in->Vm.freg, TRUE, &out->Vd.freg);
@@ -775,7 +775,7 @@ int arm_op_exec_arm_vcvt_fi(struct TargetCore *core,  arm_vcvt_fi_input_type *in
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->to_integer) {
 			if (in->dp_operation) {
@@ -828,7 +828,7 @@ int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->dp_operation) {
 			//op64 = if with_zero then FPZero(‘0’,64) else D[m];
@@ -857,7 +857,7 @@ int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->Rt.regId != CpuRegId_PC) {
 			in->Rt.regData = *status;
@@ -884,7 +884,7 @@ int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		//if single_register then
 		if (in->single_reg) {
@@ -912,7 +912,7 @@ int arm_op_exec_arm_vmov_reg(struct TargetCore *core,  arm_vmov_reg_input_type *
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->single_reg) {
 			out->Vd.freg.reg.Data32 = in->Vm.freg.reg.Data32;
@@ -930,7 +930,7 @@ int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		if (in->to_arm_register) {
 			out->Rt.regData = in->Vn.freg.reg.raw32;
@@ -951,7 +951,7 @@ int arm_op_exec_arm_vpush(struct TargetCore *core,  arm_vpush_input_type *in, ar
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		int i;
 		//address = SP - imm32;
@@ -1014,7 +1014,7 @@ int arm_op_exec_arm_vpop(struct TargetCore *core,  arm_vpop_input_type *in, arm_
 	int ret = 0;
 	uint32 *status = fpu_get_status(&core->coproc.cp11);
 	out->next_address = core->pc + INST_ARM_SIZE;
-	out->passed = ConditionPassed(in->cond, *status);
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
 		int i;
 		//address = SP;

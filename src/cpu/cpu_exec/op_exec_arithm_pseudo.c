@@ -55,6 +55,36 @@ int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in
 	return ret;
 }
 
+
+int arm_op_exec_arm_mla(struct TargetCore *core,  arm_mla_input_type *in, arm_mla_output_type *out)
+{
+	sint64 result;
+	uint32 result32;
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//operand1 = SInt(R[n]);
+		sint64 operand1 = SInt(in->Rn.regData);
+		//operand2 = SInt(R[m]);
+		sint64 operand2 = SInt(in->Rm.regData);
+		//addend = SInt(R[a]);
+		sint64 addend = SInt(in->Ra.regData);
+
+		result = operand1 * operand2 + addend;
+		result32 =  (uint32)result;
+		out->Rd.regData = result32;
+		cpu_set_reg(core, out->Rd.regId, result32);
+		if (in->S != 0) {
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result32 == 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result32 & (1U << 31U)) != 0));
+		}
+	}
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in, arm_adc_reg_output_type *out)
 {
 	int ret = 0;

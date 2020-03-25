@@ -89,6 +89,47 @@ int arm_op_exec_arm_add_reg_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_mla_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mla_a1 *op = &core->decoded_code->code.arm_mla_a1;
+
+	arm_mla_input_type in;
+	arm_mla_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_MLA_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.Ra = op->Ra;
+
+	in.Rn = op->Rn;
+
+	in.Rm = op->Rm;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_mla(core, &in, &out);
+	DBG_ARM_MLA(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_adc_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_adc_reg_a1 *op = &core->decoded_code->code.arm_adc_reg_a1;
@@ -2202,6 +2243,49 @@ int arm_op_exec_arm_eor_imm_a1(struct TargetCore *core)
 	
 	int ret = arm_op_exec_arm_eor_imm(core, &in, &out);
 	DBG_ARM_EOR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+int arm_op_exec_arm_eor_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_eor_reg_a1 *op = &core->decoded_code->code.arm_eor_reg_a1;
+
+	arm_eor_reg_input_type in;
+	arm_eor_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_EOR_REG_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.Rm = op->Rm;
+
+	in.shift_t = op->shift_t;
+
+	in.shift_n = op->shift_n;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_eor_reg(core, &in, &out);
+	DBG_ARM_EOR_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

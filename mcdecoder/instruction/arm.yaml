@@ -27,6 +27,19 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_mla
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Ra: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_adc_reg
         inputs:
           cond: PseudoCodeConditionDataType
@@ -495,6 +508,20 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
+
+      - name: arm_eor_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
 
       - name: arm_movt
         inputs:
@@ -971,6 +998,19 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_add_reg
+
+  - name: arm_mla_a1
+    format: xxxx:cond|0000|001|x:S|xxxx:Rd|xxxx:Ra|xxxx:Rm|1001|xxxx:Rn
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rd == 15)
+                        or (Ra == 15)
+                        or (Rm == 15)
+                        or (Rn == 15)
+    extras:
+      clocks: 10
+      pseudo_code: arm_mla
+
 
   - name: arm_adc_reg_a1
     format: xxxx:cond|00|0|0101|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
@@ -1462,6 +1502,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_eor_imm
+
+
+  - name: arm_eor_reg_a1
+    format: xxxx:cond|00|0|0001|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 0b1111) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_eor_reg
 
 
   - name: arm_orr_reg_a1

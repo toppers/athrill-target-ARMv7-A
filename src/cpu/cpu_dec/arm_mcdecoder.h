@@ -15,6 +15,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_add_reg_a1,
 	
+		arm_OP_CODE_FORMAT_arm_mla_a1,
+	
 		arm_OP_CODE_FORMAT_arm_adc_reg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_add_spimm_a1,
@@ -125,6 +127,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_eor_imm_a1,
 	
+		arm_OP_CODE_FORMAT_arm_eor_reg_a1,
+	
 		arm_OP_CODE_FORMAT_arm_orr_reg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_orr_shift_reg_a1,
@@ -231,6 +235,8 @@ typedef enum {
 		arm_OpCodeId_arm_add_imm_a1,
 	
 		arm_OpCodeId_arm_add_reg_a1,
+	
+		arm_OpCodeId_arm_mla_a1,
 	
 		arm_OpCodeId_arm_adc_reg_a1,
 	
@@ -341,6 +347,8 @@ typedef enum {
 		arm_OpCodeId_arm_orr_imm_a1,
 	
 		arm_OpCodeId_arm_eor_imm_a1,
+	
+		arm_OpCodeId_arm_eor_reg_a1,
 	
 		arm_OpCodeId_arm_orr_reg_a1,
 	
@@ -481,6 +489,22 @@ typedef struct {
 		arm_uint8 Rm;	/* 3-0 */
 	
 } arm_OpCodeFormatType_arm_add_reg_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rd;	/* 19-16 */
+	
+		arm_uint8 Ra;	/* 15-12 */
+	
+		arm_uint8 Rm;	/* 11-8 */
+	
+		arm_uint8 Rn;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_mla_a1;
 
 typedef struct {
 	
@@ -1260,6 +1284,24 @@ typedef struct {
 	
 		arm_uint8 Rm;	/* 3-0 */
 	
+} arm_OpCodeFormatType_arm_eor_reg_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
+		arm_uint8 imm5;	/* 11-7 */
+	
+		arm_uint8 type;	/* 6-5 */
+	
+		arm_uint8 Rm;	/* 3-0 */
+	
 } arm_OpCodeFormatType_arm_orr_reg_a1;
 
 typedef struct {
@@ -1965,6 +2007,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_add_reg_a1 arm_add_reg_a1;
 		
+        	arm_OpCodeFormatType_arm_mla_a1 arm_mla_a1;
+		
         	arm_OpCodeFormatType_arm_adc_reg_a1 arm_adc_reg_a1;
 		
         	arm_OpCodeFormatType_arm_add_spimm_a1 arm_add_spimm_a1;
@@ -2074,6 +2118,8 @@ typedef struct {
         	arm_OpCodeFormatType_arm_orr_imm_a1 arm_orr_imm_a1;
 		
         	arm_OpCodeFormatType_arm_eor_imm_a1 arm_eor_imm_a1;
+		
+        	arm_OpCodeFormatType_arm_eor_reg_a1 arm_eor_reg_a1;
 		
         	arm_OpCodeFormatType_arm_orr_reg_a1 arm_orr_reg_a1;
 		
@@ -2189,6 +2235,7 @@ extern arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num];
 
 extern int arm_op_exec_arm_add_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_add_reg_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_mla_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_adc_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_add_spimm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_adr_a1(struct TargetCore *core);
@@ -2244,6 +2291,7 @@ extern int arm_op_exec_arm_bic_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_bic_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_eor_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_eor_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_shift_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_movt_a1(struct TargetCore *core);

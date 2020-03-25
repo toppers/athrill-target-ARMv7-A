@@ -1054,6 +1054,31 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rn;
 
+	PseudoCodeImmediateData32Type	imm32;
+} arm_eor_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_eor_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rn;
+
 	PseudoCodeRegisterDataType	Rm;
 
 	PseudoCodeSRType	shift_t;

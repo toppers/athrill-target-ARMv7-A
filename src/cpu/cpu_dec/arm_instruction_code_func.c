@@ -2169,6 +2169,45 @@ int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_eor_imm_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_eor_imm_a1 *op = &core->decoded_code->code.arm_eor_imm_a1;
+
+	arm_eor_imm_input_type in;
+	arm_eor_imm_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_EOR_IMM_A1";
+
+	in.cond = op->cond;
+
+	in.S = op->S;
+
+	in.Rd = op->Rd;
+
+	in.Rn = op->Rn;
+
+	in.imm32 = op->imm32;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_eor_imm(core, &in, &out);
+	DBG_ARM_EOR_IMM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_orr_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_orr_reg_a1 *op = &core->decoded_code->code.arm_orr_reg_a1;

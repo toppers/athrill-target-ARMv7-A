@@ -123,6 +123,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_orr_imm_a1,
 	
+		arm_OP_CODE_FORMAT_arm_eor_imm_a1,
+	
 		arm_OP_CODE_FORMAT_arm_orr_reg_a1,
 	
 		arm_OP_CODE_FORMAT_arm_orr_shift_reg_a1,
@@ -337,6 +339,8 @@ typedef enum {
 		arm_OpCodeId_arm_bic_reg_a1,
 	
 		arm_OpCodeId_arm_orr_imm_a1,
+	
+		arm_OpCodeId_arm_eor_imm_a1,
 	
 		arm_OpCodeId_arm_orr_reg_a1,
 	
@@ -1236,6 +1240,20 @@ typedef struct {
 	
 		arm_uint8 Rd;	/* 15-12 */
 	
+		arm_uint16 imm12;	/* 11-0 */
+	
+} arm_OpCodeFormatType_arm_eor_imm_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 S;	/* 20-20 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rd;	/* 15-12 */
+	
 		arm_uint8 imm5;	/* 11-7 */
 	
 		arm_uint8 type;	/* 6-5 */
@@ -2055,6 +2073,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_orr_imm_a1 arm_orr_imm_a1;
 		
+        	arm_OpCodeFormatType_arm_eor_imm_a1 arm_eor_imm_a1;
+		
         	arm_OpCodeFormatType_arm_orr_reg_a1 arm_orr_reg_a1;
 		
         	arm_OpCodeFormatType_arm_orr_shift_reg_a1 arm_orr_shift_reg_a1;
@@ -2223,6 +2243,7 @@ extern int arm_op_exec_arm_mrc2_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_bic_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_bic_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_eor_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_orr_shift_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_movt_a1(struct TargetCore *core);

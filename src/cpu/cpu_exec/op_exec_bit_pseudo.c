@@ -384,3 +384,22 @@ int arm_op_exec_arm_clz(struct TargetCore *core,  arm_clz_input_type *in, arm_cl
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_ubfx(struct TargetCore *core,  arm_ubfx_input_type *in, arm_ubfx_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		int i;
+		uint32 mask = 0x0;
+		for (i = in->lsb; i <= in->msb; i++) {
+			mask |= (1U << i);
+		}
+
+		out->Rd.regData = ( (in->Rn.regData & mask) >> in->lsb );
+	}
+	out->status = *status;
+	return ret;
+}

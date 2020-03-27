@@ -501,3 +501,38 @@ int arm_op_exec_arm_clz_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+int arm_op_exec_arm_ubfx_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ubfx_a1 *op = &core->decoded_code->code.arm_ubfx_a1;
+
+	arm_ubfx_input_type in;
+	arm_ubfx_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "UBFX";
+
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+
+	in.lsb = (uint8)op->lsb;
+	in.msb = ((uint8)op->widthm1) + in.lsb;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	if (in.msb > 31) {
+		//UNPREDICTABLE
+		return -1;
+	}
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_ubfx(core, &in, &out);
+	DBG_ARM_UBFX(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

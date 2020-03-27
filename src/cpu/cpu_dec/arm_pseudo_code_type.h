@@ -1104,6 +1104,31 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeLsbType	lsb;
+
+	PseudoCodeMsbType	msb;
+} arm_ubfx_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ubfx_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeUpdateStatusFlagType	S;
 
 	PseudoCodeRegisterDataType	Rd;

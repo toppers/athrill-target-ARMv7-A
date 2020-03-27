@@ -497,6 +497,16 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_ubfx
+        inputs:
+          cond: PseudoCodeConditionDataType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          lsb: PseudoCodeLsbType
+          msb: PseudoCodeMsbType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
 
       - name: arm_orr_imm
@@ -1667,6 +1677,13 @@ instructions:
       clocks: 10
       pseudo_code: arm_sbc_reg
 
+
+  - name: arm_ubfx_a1
+    format: xxxx:cond|0111 1|1|1|xxxx x:widthm1|xxxx:Rd|xxxx x:lsb|101|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) and (Rn == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ubfx
 
   - name: arm_mul_a1
     format: xxxx:cond|0000000|x:S|xxxx:Rd|0000|xxxx:Rm|1001|xxxx:Rn

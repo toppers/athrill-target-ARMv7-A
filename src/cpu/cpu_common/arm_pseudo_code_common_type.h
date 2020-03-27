@@ -180,6 +180,14 @@ typedef uint8 PseudoCodeBitCountType;
 #define DBG_FMT_PseudoCodeBitCountType		"bitcount(%u) "
 #define DBG_ARG_PseudoCodeBitCountType(arg)	(*(arg))
 
+typedef uint8 PseudoCodeLsbType;
+#define DBG_FMT_PseudoCodeLsbType		"lsb(%u) "
+#define DBG_ARG_PseudoCodeLsbType(arg)	(*(arg))
+
+typedef uint8 PseudoCodeMsbType;
+#define DBG_FMT_PseudoCodeMsbType		"msb(%u) "
+#define DBG_ARG_PseudoCodeMsbType(arg)	(*(arg))
+
 typedef uint8 PseudoCodeUnalignedAllowedType;
 #define DBG_FMT_PseudoCodeUnalignedAllowedType		"UnalignedAllowd(%s) "
 #define DBG_ARG_PseudoCodeUnalignedAllowedType(arg)	DbgBoolFlag(*(arg))

@@ -1,6 +1,6 @@
 #include "arm_pseudo_code_func.h"
 
-static inline int reg_to_mem(TargetCoreType *core, uint32 address, uint32 size, uint32 regdata)
+static inline int reg_to_mem(TargetCoreType *core, uint32 address, uint32 size, uint32 regdata, bool aligned)
 {
 	struct {
 		uint8 array[4];
@@ -22,7 +22,12 @@ static inline int reg_to_mem(TargetCoreType *core, uint32 address, uint32 size, 
 		default:
 			return -1;
 	}
-	return MemA_W(core, address, size, (uint8*)&data);
+	if (aligned) {
+		return MemA_W(core, address, size, (uint8*)&data);
+	}
+	else {
+		return MemU_W(core, address, size, (uint8*)&data);
+	}
 }
 
 int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out)
@@ -41,7 +46,7 @@ int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in
 		else {
 			regdata = in->Rt.regData;
 		}
-		ret = reg_to_mem(core, address, in->size, regdata);
+		ret = reg_to_mem(core, address, in->size, regdata, FALSE);
 		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
         	out->Rn.regData = offset_addr;
@@ -64,11 +69,11 @@ int arm_op_exec_arm_strd_imm(struct TargetCore *core,  arm_strd_imm_input_type *
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
-		ret = reg_to_mem(core, address, 4, in->Rt1.regData);
+		ret = reg_to_mem(core, address, 4, in->Rt1.regData, TRUE);
 		if (ret != 0) {
 			goto done;
 		}
-		ret = reg_to_mem(core, address + 4, 4, in->Rt2.regData);
+		ret = reg_to_mem(core, address + 4, 4, in->Rt2.regData, TRUE);
 		if (ret != 0) {
 			goto done;
 		}
@@ -103,7 +108,7 @@ int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in
 		else {
 			regdata = cpu_get_reg(core, in->Rt.regId);
 		}
-		ret = reg_to_mem(core, address, in->size, regdata);
+		ret = reg_to_mem(core, address, in->size, regdata, FALSE);
 		if ((ret == 0) && in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
 		}
@@ -181,6 +186,41 @@ done:
 	return ret;
 }
 
+int arm_op_exec_arm_stmib(struct TargetCore *core,  arm_stmib_input_type *in, arm_stmib_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//address = R[n] + 4;
+		uint32 address = in->Rn.regData + 4;
+		int i;
+		for (i = 0; i <= CpuRegId_PC; i++) {
+			if ( ((1U << i) & in->registers) != 0 ) {
+				uint32 data;
+				if (i != CpuRegId_PC) {
+					data = cpu_get_reg(core, i);
+				}
+				else {
+					data = PCStoreValue(core);
+				}
+				ret = MemA_W(core, address, 4, (uint8*)&data);
+				if (ret < 0) {
+					goto done;
+				}
+				address = address + 4;
+			}
+		}
+		if (in->wback) {
+			//if wback then R[n] = R[n] + 4*BitCount(registers);
+			out->Rn.regData = (in->Rn.regData + (4 * (in->bitcount)));
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_stm_output_type *out)
 {
 	int ret = 0;

@@ -321,6 +321,16 @@ machine:
         outputs:
           Rn: PseudoCodeRegisterDataType
 
+      - name: arm_stmib
+        inputs:
+          cond: PseudoCodeConditionDataType
+          bitcount: PseudoCodeBitCountType
+          wback: PseudoCodeBoolWbackType
+          registers: PseudoCodeRegisterListType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
       - name: arm_stm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1279,6 +1289,18 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_stmfd
+
+
+  - name: arm_stmib_a1
+    format: xxxx:cond|1001 10|x:W|0|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
+    unmatch_condition: >
+                         (cond == 0b1111) 
+                         or (Rn == 15)
+                         or (setbit_count(register_list) < 1)
+    extras:
+      clocks: 10
+      pseudo_code: arm_stmib
+
 
 
   - name: arm_stm_a1

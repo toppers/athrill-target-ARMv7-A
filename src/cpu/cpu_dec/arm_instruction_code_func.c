@@ -1241,6 +1241,43 @@ int arm_op_exec_arm_stmfd_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_stmib_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_stmib_a1 *op = &core->decoded_code->code.arm_stmib_a1;
+
+	arm_stmib_input_type in;
+	arm_stmib_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_STMIB_A1";
+
+	in.cond = op->cond;
+
+	in.bitcount = op->bitcount;
+
+	in.wback = op->wback;
+
+	in.registers = op->registers;
+
+	in.Rn = op->Rn;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rn = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_stmib(core, &in, &out);
+	DBG_ARM_STMIB(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_stm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_stm_a1 *op = &core->decoded_code->code.arm_stm_a1;

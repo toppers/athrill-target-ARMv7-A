@@ -783,6 +783,8 @@ static inline int MemA_with_priv_W(uint32 status, uint32 address, uint32 size, b
 {
 	int ret;
 	uint8 p[4];
+	ASSERT(size <= 4);
+
 	if (address != Align(address, size)) {
 		return -1;
 	}
@@ -807,6 +809,8 @@ static inline int MemA_with_priv_R(uint32 status, uint32 address, uint32 size, b
 {
 	int ret;
 	uint8 p[4];
+	ASSERT(size <= 4);
+
 	if (address != Align(address, size)) {
 		return -1;
 	}
@@ -826,12 +830,57 @@ static inline int MemA_with_priv_R(uint32 status, uint32 address, uint32 size, b
 	return 0;
 }
 
+// Assignment form
+//MemU_with_priv[bits(32) address, integer size, boolean privileged] = bits(8*size) value
+static inline int MemU_with_priv_W(uint32 status, uint32 address, uint32 size, bool privileged, uint8 *value)
+{
+	int ret;
+	uint8 p[4];
+	ASSERT(size <= 4);
+
+	if (address == Align(address, size)) {
+		return MemA_with_priv_W(status, address, size, privileged, TRUE, value);
+	}
+	// Permitted unaligned access. For ARMv7 this is either:
+
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {
+		//if CPSR.E == '1' then
+		//value = BigEndianReverse(value, size);
+		BigEndianReverse(size, value, p);
+	}
+	else {
+		int i;
+		for (i = 0; i < size; i++) {
+			p[i] = value[i];
+		}
+	}
+	//for i = 0 to size-1
+	//MemA_with_priv[address+i, 1, privileged, FALSE] = value<8*i+7:8*i>;
+	int i;
+	for (i = 0; i < size; i++) {
+		ret = MemA_with_priv_W(status, address + i, 1, privileged, TRUE, &p[i]);
+		if (ret != 0) {
+			return ret;
+		}
+	}
+	return 0;
+}
+
+
 //MemA[bits(32) address, integer size] = bits(8*size) value
 static inline int MemA_W(TargetCoreType *core, uint32 address, uint32 size, uint8* value)
 {
 	uint32 *status = cpu_get_status(core);
 	//MemA_with_priv[address, size, CurrentModeIsNotUser(), TRUE] = value;
 	return MemA_with_priv_W(*status, address, size, CurrentModeIsNotUser(*status), TRUE, value);
+}
+
+//MemU[bits(32) address, integer size] = bits(8*size) value
+static inline int MemU_W(TargetCoreType *core, uint32 address, uint32 size, uint8* value)
+{
+	uint32 *status = cpu_get_status(core);
+	//MemU_with_priv[address, size, CurrentModeIsNotUser()] = value;
+	return MemU_with_priv_W(*status, address, size, CurrentModeIsNotUser(*status), value);
 }
 
 //bits(8*size) MemA[bits(32) address, integer size]

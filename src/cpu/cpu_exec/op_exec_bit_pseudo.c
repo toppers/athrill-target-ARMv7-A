@@ -278,6 +278,35 @@ int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bf
 }
 
 
+int arm_op_exec_arm_bfi(struct TargetCore *core,  arm_bfi_input_type *in, arm_bfi_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		if (in->msbit >= in->lsbit) {
+			uint32 mask_right = 0x0;
+			int i;
+			for (i = 0; i <= (in->msbit - in->lsbit + 1); i++) {
+				mask_right |= (1U << i);
+			}
+			uint32 mask_left = (mask_right << in->lsbit);
+
+			//R[d]<msbit:lsbit> = R[n]<(msbit-lsbit):0>;
+			out->Rd.regData = (out->Rd.regData & ~mask_left)
+							| (in->Rn.regData & mask_right);
+		}
+		else {
+			// Other bits of R[d] are unchanged
+			//UNPREDICTABLE;
+			ret = -1;
+		}
+	}
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_uxt(struct TargetCore *core,  arm_uxt_input_type *in, arm_uxt_output_type *out)
 {
 	uint32 *status = cpu_get_status(core);

@@ -2680,6 +2680,51 @@ static inline void DBG_ARM_BFC(TargetCoreType *core, arm_bfc_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_BFI(TargetCoreType *core, arm_bfi_input_type *in, arm_bfi_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeMsbitType
+
+		DBG_FMT_PseudoCodeLsbitType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeMsbitType(&in->msbit),
+
+		DBG_ARG_PseudoCodeLsbitType(&in->lsbit),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rd),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_AND_IMM(TargetCoreType *core, arm_and_imm_input_type *in, arm_and_imm_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

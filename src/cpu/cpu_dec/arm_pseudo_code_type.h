@@ -1383,6 +1383,29 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeMsbitType	msbit;
+
+	PseudoCodeLsbitType	lsbit;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rn;
+} arm_bfi_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_bfi_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeUpdateStatusFlagType	S;
 
 	PseudoCodeRegisterDataType	Rd;

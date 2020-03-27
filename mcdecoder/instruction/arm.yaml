@@ -626,6 +626,18 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
 
+
+      - name: arm_bfi
+        inputs:
+          cond: PseudoCodeConditionDataType
+          msbit: PseudoCodeMsbitType
+          lsbit: PseudoCodeLsbitType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+
+
       - name: arm_and_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1627,6 +1639,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_bfc
+
+  - name: arm_bfi_a1
+    format: xxxx:cond|0111 110|xxxx x:msb|xxxx:Rd|xxxx x:lsb|001|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (Rn == 15) or (Rd == 15) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_bfi
+
  
   - name: arm_and_imm_a1
     format: xxxx:cond|00|1|0000|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12

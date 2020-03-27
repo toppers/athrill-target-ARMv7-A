@@ -262,6 +262,33 @@ int arm_op_exec_arm_bfc_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_bfi_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_bfi_a1 *op = &core->decoded_code->code.arm_bfi_a1;
+
+	arm_bfi_input_type in;
+	arm_bfi_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "BFI";
+
+	in.cond = op->cond;
+	in.msbit = op->msb;
+	in.lsbit = op->lsb;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rd);
+
+	int ret = arm_op_exec_arm_bfi(core, &in, &out);
+	DBG_ARM_BFI(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 
 int arm_op_exec_arm_uxtb_a1(struct TargetCore *core)
 {

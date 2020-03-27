@@ -59,6 +59,7 @@ extern int arm_op_exec_arm_lsl_reg(struct TargetCore *core,  arm_lsl_reg_input_t
 extern int arm_op_exec_arm_lsr_imm(struct TargetCore *core,  arm_lsr_imm_input_type *in, arm_lsr_imm_output_type *out);
 extern int arm_op_exec_arm_lsr_reg(struct TargetCore *core,  arm_lsr_reg_input_type *in, arm_lsr_reg_output_type *out);
 extern int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bfc_output_type *out);
+extern int arm_op_exec_arm_bfi(struct TargetCore *core,  arm_bfi_input_type *in, arm_bfi_output_type *out);
 extern int arm_op_exec_arm_and_imm(struct TargetCore *core,  arm_and_imm_input_type *in, arm_and_imm_output_type *out);
 extern int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_type *in, arm_and_reg_output_type *out);
 extern int arm_op_exec_arm_uxt(struct TargetCore *core,  arm_uxt_input_type *in, arm_uxt_output_type *out);

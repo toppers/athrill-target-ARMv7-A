@@ -606,6 +606,43 @@ int arm_op_exec_arm_vneg(struct TargetCore *core,  arm_vneg_input_type *in, arm_
 	return ret;
 }
 
+int arm_op_exec_arm_vmla(struct TargetCore *core,  arm_vmla_input_type *in, arm_vmla_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
+	if (out->passed != FALSE) {
+		if (in->dp_operation) {
+			//addend64 = if add then FPMul(D[n], D[m], TRUE) else FPNeg(FPMul(D[n], D[m], TRUE));
+			if (in->add) {
+				FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+			}
+			else {
+				FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+				out->Vd.freg.reg.Data64 = -(out->Vd.freg.reg.Data64);
+			}
+			//D[d] = FPAdd(D[d], addend64, TRUE);
+			FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+		}
+		else {
+			//addend32 = if add then FPMul(S[n], S[m], TRUE) else FPNeg(FPMul(S[n], S[m], TRUE));
+			if (in->add) {
+				FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+			}
+			else {
+				FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+				out->Vd.freg.reg.Data32 = -(out->Vd.freg.reg.Data32);
+			}
+			//S[d] = FPAdd(S[d], addend32, TRUE);
+			FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+		}
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_vsub_freg(struct TargetCore *core,  arm_vsub_freg_input_type *in, arm_vsub_freg_output_type *out)
 {
 	int ret = 0;

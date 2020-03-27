@@ -1848,6 +1848,27 @@ int arm_op_exec_arm_vneg(struct TargetCore *core,  arm_vneg_input_type *in, arm_
 	out->status = *status;
 	return ret;
 }
+int arm_op_exec_arm_vmla(struct TargetCore *core,  arm_vmla_input_type *in, arm_vmla_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+        result = in->Rm.regData;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->Rd.regId != CpuRegId_PC) {
+            ret = 0;
+		}
+		else {
+			ret = ALUWritePC(&out->next_address, status, result);
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type *in, arm_vmov_sreg_output_type *out)
 {
 	int ret = 0;

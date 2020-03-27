@@ -2162,6 +2162,37 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeBoolIncrementType	dp_operation;
+
+	PseudoCodeBoolWbackType	advsimd;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatRegisterDataType	Vn;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeRegNumType	regs;
+} arm_vmla_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vd;
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmla_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeToArmRegisterType	to_arm_register;
 
 	PseudoCodeFloatRegisterDataType	Vn;

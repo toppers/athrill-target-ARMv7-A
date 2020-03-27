@@ -4152,6 +4152,51 @@ int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmla_a2 *op = &core->decoded_code->code.arm_vmla_a2;
+
+	arm_vmla_input_type in;
+	arm_vmla_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_VMLA_A2";
+
+	in.cond = op->cond;
+
+	in.dp_operation = op->dp_operation;
+
+	in.advsimd = op->advsimd;
+
+	in.add = op->add;
+
+	in.Vd = op->Vd;
+
+	in.Vn = op->Vn;
+
+	in.Vm = op->Vm;
+
+	in.regs = op->regs;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Vd = -1;
+	
+	out.status_flag = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_vmla(core, &in, &out);
+	DBG_ARM_VMLA(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vdiv_freg_a2 *op = &core->decoded_code->code.arm_vdiv_freg_a2;

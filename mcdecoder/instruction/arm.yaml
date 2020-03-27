@@ -986,6 +986,21 @@ machine:
           status_flag: PseudoCodeFloatStatusFlagType
 
 
+      - name: arm_vmla
+        inputs:
+          cond: PseudoCodeConditionDataType
+          dp_operation: PseudoCodeBoolIncrementType
+          advsimd: PseudoCodeBoolWbackType
+          add: PseudoCodeBoolAddType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vn: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+          regs: PseudoCodeRegNumType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+          status_flag: PseudoCodeFloatStatusFlagType
+
+
       - name: arm_vmov_sreg
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1923,6 +1938,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vneg
+
+  - name: arm_vmla_a2
+    format: xxxx:cond|1110 0|x:D|00|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|x:op|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmla
+
 
 
   - name: arm_vdiv_freg_a2

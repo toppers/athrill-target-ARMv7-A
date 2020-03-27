@@ -845,6 +845,52 @@ int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmla_a2 *op = &core->decoded_code->code.arm_vmla_a2;
+
+	arm_vmla_input_type in;
+	arm_vmla_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.instrName = "VMLA";
+	in.cond = op->cond;
+	in.dp_operation = (op->sz == 1);
+	in.add = (op->op == 0);
+	in.advsimd = FALSE;
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (in.dp_operation) {
+		op->Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+		op->Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+		in.regs = 1;
+	}
+	else {
+		op->Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+		op->Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		in.regs = 1;
+	}
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	int ret = arm_op_exec_arm_vmla(core, &in, &out);
+	DBG_ARM_VMLA(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;

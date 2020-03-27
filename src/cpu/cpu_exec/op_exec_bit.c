@@ -59,6 +59,39 @@ int arm_op_exec_arm_bic_reg_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_bic_shift_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_bic_shift_reg_a1 *op = &core->decoded_code->code.arm_bic_shift_reg_a1;
+
+	arm_bic_shift_reg_input_type in;
+	arm_bic_shift_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "BIC";
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rs);
+	OP_SET_REG(core, &in, op, Rm);
+
+	in.shift_t = DecodeRegShift(op->type);
+	in.shift_n =(uint8)cpu_get_reg(core, op->Rs);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_bic_shift_reg(core, &in, &out);
+	DBG_ARM_BIC_SHIFT_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_orr_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_orr_imm_a1 *op = &core->decoded_code->code.arm_orr_imm_a1;

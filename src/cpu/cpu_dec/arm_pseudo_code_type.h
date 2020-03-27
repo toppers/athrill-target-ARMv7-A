@@ -1056,6 +1056,37 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rn;
 
+	PseudoCodeRegisterDataType	Rs;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+} arm_bic_shift_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_bic_shift_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rn;
+
 	PseudoCodeImmediateData32Type	imm32;
 } arm_orr_imm_input_type;
 

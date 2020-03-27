@@ -473,6 +473,22 @@ machine:
           status_flag: PseudoCodeStatusFlagType
 
 
+      - name: arm_bic_shift_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rs: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
+
       - name: arm_orr_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1488,6 +1504,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_bic_reg
+
+  - name: arm_bic_shift_reg_a1
+    format: xxxx:cond|00|0|1110|x:S|xxxx:Rn|xxxx:Rd|xxxx:Rs|0|xx:type|1|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) or (Rn == 15) or (Rm == 15) or (Rs == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_bic_shift_reg
  
   - name: arm_orr_imm_a1
     format: xxxx:cond|00|1|1100|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12

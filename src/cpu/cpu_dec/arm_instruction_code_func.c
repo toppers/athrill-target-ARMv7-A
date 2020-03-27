@@ -1829,6 +1829,43 @@ int arm_op_exec_arm_ldm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_ldmib_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldmib_a1 *op = &core->decoded_code->code.arm_ldmib_a1;
+
+	arm_ldmib_input_type in;
+	arm_ldmib_output_type out;
+	out.status = *cpu_get_status(core);
+
+	//TODO arguments setting..
+	in.instrName = "ARM_LDMIB_A1";
+
+	in.cond = op->cond;
+
+	in.wback = op->wback;
+
+	in.bitcount = op->bitcount;
+
+	in.Rn = op->Rn;
+
+	in.registers = op->registers;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	
+	out.Rn = -1;
+	
+
+	
+	int ret = arm_op_exec_arm_ldmib(core, &in, &out);
+	DBG_ARM_LDMIB(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_nop_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_nop_a1 *op = &core->decoded_code->code.arm_nop_a1;

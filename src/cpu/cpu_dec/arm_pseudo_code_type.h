@@ -796,6 +796,29 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeBitCountType	bitcount;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterListType	registers;
+} arm_ldmib_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldmib_output_type;
+
+typedef struct {
+	char* instrName;
+
 	PseudoCodeSizeType	size;
 
 	PseudoCodeConditionDataType	cond;

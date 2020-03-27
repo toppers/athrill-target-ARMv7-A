@@ -35,6 +35,7 @@ extern int arm_op_exec_arm_stmib(struct TargetCore *core,  arm_stmib_input_type 
 extern int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_stm_output_type *out);
 extern int arm_op_exec_arm_pop(struct TargetCore *core,  arm_pop_input_type *in, arm_pop_output_type *out);
 extern int arm_op_exec_arm_ldm(struct TargetCore *core,  arm_ldm_input_type *in, arm_ldm_output_type *out);
+extern int arm_op_exec_arm_ldmib(struct TargetCore *core,  arm_ldmib_input_type *in, arm_ldmib_output_type *out);
 extern int arm_op_exec_arm_str_imm(struct TargetCore *core,  arm_str_imm_input_type *in, arm_str_imm_output_type *out);
 extern int arm_op_exec_arm_strd_imm(struct TargetCore *core,  arm_strd_imm_input_type *in, arm_strd_imm_output_type *out);
 extern int arm_op_exec_arm_str_reg(struct TargetCore *core,  arm_str_reg_input_type *in, arm_str_reg_output_type *out);

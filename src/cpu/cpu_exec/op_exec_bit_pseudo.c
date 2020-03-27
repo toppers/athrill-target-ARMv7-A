@@ -296,6 +296,7 @@ int arm_op_exec_arm_bfi(struct TargetCore *core,  arm_bfi_input_type *in, arm_bf
 			//R[d]<msbit:lsbit> = R[n]<(msbit-lsbit):0>;
 			out->Rd.regData = (out->Rd.regData & ~mask_left)
 							| (in->Rn.regData & mask_right);
+			cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 		}
 		else {
 			// Other bits of R[d] are unchanged
@@ -428,6 +429,7 @@ int arm_op_exec_arm_ubfx(struct TargetCore *core,  arm_ubfx_input_type *in, arm_
 		}
 
 		out->Rd.regData = ( (in->Rn.regData & mask) >> in->lsb );
+		cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 	}
 	out->status = *status;
 	return ret;

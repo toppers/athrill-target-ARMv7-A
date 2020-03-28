@@ -189,10 +189,16 @@ static uint64 AdvSIMDExpandImm(uint8 op, uint8 cmode, uint32 imm8)
 	return data.imm64;
 }
 
+typedef struct {
+	arm_uint8 Vd;
+	arm_uint8 Vn;
+	arm_uint8 Vm;
+} ArmOpExecFregArgsType;
 
 int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vadd_freg_a2 *op = &core->decoded_code->code.arm_vadd_freg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vadd_freg_input_type in;
 	arm_vadd_freg_output_type out;
@@ -205,19 +211,19 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vn) | (op->N << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		op->Vn = ( (op->Vn << 1) | op->N );
-		op->Vm = ( (op->Vm << 1) | op->M );
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
 	}
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, &op_freg_args, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, &op_freg_args, Vm);
 
 	in.advsimd = FALSE;
 	in.dp_operation = (op->sz == 1);
@@ -225,7 +231,7 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vadd_freg(core, &in, &out);
 	DBG_ARM_VADD_FREG(core, &in, &out);
@@ -237,6 +243,7 @@ int arm_op_exec_arm_vadd_freg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vneg_a2 *op = &core->decoded_code->code.arm_vneg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vneg_input_type in;
 	arm_vneg_output_type out;
@@ -250,22 +257,22 @@ int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
 	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		op->Vm = ( (op->Vm << 1) | op->M );
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
 	}
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, &op_freg_args, Vm);
 	in.regs = 1;
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vneg(core, &in, &out);
 	DBG_ARM_VNEG(core, &in, &out);
@@ -277,6 +284,7 @@ int arm_op_exec_arm_vneg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vsub_freg_a2 *op = &core->decoded_code->code.arm_vsub_freg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vsub_freg_input_type in;
 	arm_vsub_freg_output_type out;
@@ -289,26 +297,26 @@ int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vn) | (op->N << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		op->Vn = ( (op->Vn << 1) | op->N );
-		op->Vm = ( (op->Vm << 1) | op->M );
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
 	}
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, &op_freg_args, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, &op_freg_args, Vm);
 
 	in.advsimd = FALSE;
 	in.dp_operation = (op->sz == 1);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vsub_freg(core, &in, &out);
 	DBG_ARM_VSUB_FREG(core, &in, &out);
@@ -321,6 +329,7 @@ int arm_op_exec_arm_vsub_freg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmul_freg_a2 *op = &core->decoded_code->code.arm_vmul_freg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmul_freg_input_type in;
 	arm_vmul_freg_output_type out;
@@ -332,26 +341,26 @@ int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vn) | (op->N << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		op->Vn = ( (op->Vn << 1) | op->N );
-		op->Vm = ( (op->Vm << 1) | op->M );
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
 	}
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, &op_freg_args, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, &op_freg_args, Vm);
 
 	in.advsimd = FALSE;
 	in.dp_operation = (op->sz == 1);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vmul_freg(core, &in, &out);
 	DBG_ARM_VMUL_FREG(core, &in, &out);
@@ -364,6 +373,7 @@ int arm_op_exec_arm_vmul_freg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vdiv_freg_a2 *op = &core->decoded_code->code.arm_vdiv_freg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vdiv_freg_input_type in;
 	arm_vdiv_freg_output_type out;
@@ -375,26 +385,26 @@ int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (op->sz == 1) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vn = ( (op->Vn) | (op->N << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		op->Vn = ( (op->Vn << 1) | op->N );
-		op->Vm = ( (op->Vm << 1) | op->M );
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
 	}
 
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, op, Vn);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, op, Vm);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vn, &op_freg_args, Vn);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1), &in.Vm, &op_freg_args, Vm);
 
 	in.advsimd = FALSE;
 	in.dp_operation = (op->sz == 1);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, (op->sz == 1),&out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vdiv_freg(core, &in, &out);
 	DBG_ARM_VDIV_FREG(core, &in, &out);
@@ -407,6 +417,7 @@ int arm_op_exec_arm_vdiv_freg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vldr_a1 *op = &core->decoded_code->code.arm_vldr_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vldr_input_type in;
 	arm_vldr_output_type out;
@@ -417,14 +428,14 @@ int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 	in.cond = op->cond;
 	in.add = (op->U == 1);
 	//d = UInt(D:Vd)
-	op->Vd = ((op->Vd) | (op->D << 4));
+	op_freg_args.Vd = ((op->Vd) | (op->D << 4));
 	OP_SET_REG(core, &in, op, Rn);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ((uint32)op->imm8) << 2U;
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vldr(core, &in, &out);
 	DBG_ARM_VLDR(core, &in, &out);
@@ -437,6 +448,7 @@ int arm_op_exec_arm_vldr_a1(struct TargetCore *core)
 int arm_op_exec_arm_vldr_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vldr_a2 *op = &core->decoded_code->code.arm_vldr_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vldr_input_type in;
 	arm_vldr_output_type out;
@@ -447,14 +459,14 @@ int arm_op_exec_arm_vldr_a2(struct TargetCore *core)
 	in.cond = op->cond;
 	in.add = (op->U == 1);
 	//d = UInt(Vd:D)
-	op->Vd = ((op->Vd << 1) | op->D);
+	op_freg_args.Vd = ((op->Vd << 1) | op->D);
 	OP_SET_REG(core, &in, op, Rn);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ((uint32)op->imm8) << 2U;
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 
 	int ret = arm_op_exec_arm_vldr(core, &in, &out);
 	DBG_ARM_VLDR(core, &in, &out);
@@ -467,6 +479,7 @@ int arm_op_exec_arm_vldr_a2(struct TargetCore *core)
 int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vcvt_df_a1 *op = &core->decoded_code->code.arm_vcvt_df_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vcvt_df_input_type in;
 	arm_vcvt_df_output_type out;
@@ -480,18 +493,18 @@ int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core)
 	//d = if double_to_single then UInt(Vd:D) else UInt(D:Vd);
 	//m = if double_to_single then UInt(M:Vm) else UInt(Vm:M);
 	if (in.double_to_single) {
-		op->Vd = ( ((op->Vd) << 1) | op->D );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+		op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 	}
 	else {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vm = ( ((op->Vm) << 1) | op->M );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vm = ( ((op->Vm) << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 	}
 
 	out.next_address = core->pc;
@@ -508,6 +521,7 @@ int arm_op_exec_arm_vcvt_df_a1(struct TargetCore *core)
 int arm_op_exec_arm_vcvt_fi_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vcvt_fi_a1 *op = &core->decoded_code->code.arm_vcvt_fi_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vcvt_fi_input_type in;
 	arm_vcvt_fi_output_type out;
@@ -524,16 +538,16 @@ int arm_op_exec_arm_vcvt_fi_a1(struct TargetCore *core)
 		in.unsigned_cvt = ((op->opc2 & 0x1) == 0);
 		in.round_zero = (op->op == 1);
 		//d = UInt(Vd:D); m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
-		op->Vd = ( ((op->Vd) << 1) | op->D );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+		op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 		if (in.dp_operation) {
-			op->Vm = ( (op->Vm) | (op->M << 4) );
-			OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+			op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+			OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
 		}
 		else {
-			op->Vm = ( ((op->Vm) << 1) | op->M );
-			OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+			op_freg_args.Vm = ( ((op->Vm) << 1) | op->M );
+			OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
 		}
 	}
 	else {
@@ -541,17 +555,17 @@ int arm_op_exec_arm_vcvt_fi_a1(struct TargetCore *core)
 		in.unsigned_cvt = (op->op == 0);
 		in.round_nearest = FALSE;
 		//m = UInt(Vm:M); d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
-		op->Vm = ( ((op->Vm) << 1) | op->M );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		op_freg_args.Vm = ( ((op->Vm) << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
 		if (in.dp_operation) {
-			op->Vd = ( (op->Vd) | (op->D << 4) );
-			OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-			OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+			op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+			OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+			OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 		}
 		else {
-			op->Vd = ( ((op->Vd) << 1) | op->D );
-			OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-			OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+			op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+			OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+			OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 		}
 	}
 
@@ -568,6 +582,7 @@ int arm_op_exec_arm_vcvt_fi_a1(struct TargetCore *core)
 int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vstr_a1 *op = &core->decoded_code->code.arm_vstr_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vstr_input_type in;
 	arm_vstr_output_type out;
@@ -580,9 +595,9 @@ int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
 
 	in.imm32 = (((uint32)op->imm8) << 2);
 	OP_SET_REG(core, &in, op, Rn);
-	op->Vd = ( (op->Vd) | (op->D << 4) );
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+	op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
@@ -598,6 +613,7 @@ int arm_op_exec_arm_vstr_a1(struct TargetCore *core)
 int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vstr_a2 *op = &core->decoded_code->code.arm_vstr_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vstr_input_type in;
 	arm_vstr_output_type out;
@@ -609,9 +625,9 @@ int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 	in.add = (op->U == 1);
 	in.imm32 = (((uint32)op->imm8) << 2);
 	OP_SET_REG(core, &in, op, Rn);
-	op->Vd = ( ((op->Vd) << 1) | op->D );
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
@@ -627,6 +643,7 @@ int arm_op_exec_arm_vstr_a2(struct TargetCore *core)
 int arm_op_exec_arm_vcmp_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vcmp_a1 *op = &core->decoded_code->code.arm_vcmp_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vcmp_input_type in;
 	arm_vcmp_output_type out;
@@ -641,16 +658,16 @@ int arm_op_exec_arm_vcmp_a1(struct TargetCore *core)
 	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (in.dp_operation) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		op->Vm = ( (op->Vm) | (op->M << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
 	}
 	else {
-		op->Vd = ( ((op->Vd) << 1) | op->D );
-		op->Vm = ( ((op->Vm) << 1) | op->M );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+		op_freg_args.Vm = ( ((op->Vm) << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
 	}
 	out.next_address = core->pc;
 	out.passed = FALSE;
@@ -667,6 +684,7 @@ int arm_op_exec_arm_vcmp_a1(struct TargetCore *core)
 int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vcmp_a2 *op = &core->decoded_code->code.arm_vcmp_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vcmp_input_type in;
 	arm_vcmp_output_type out;
@@ -681,12 +699,12 @@ int arm_op_exec_arm_vcmp_a2(struct TargetCore *core)
 	in.with_zero = TRUE;
 	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
 	if (in.dp_operation) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
 	}
 	else {
-		op->Vd = ( ((op->Vd) << 1) | op->D );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+		op_freg_args.Vd = ( ((op->Vd) << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
 	}
 	out.next_address = core->pc;
 	out.passed = FALSE;
@@ -725,6 +743,7 @@ int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
 int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_imm_a1 *op = &core->decoded_code->code.arm_vmov_imm_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmov_imm_input_type in;
 	arm_vmov_imm_output_type out;
@@ -737,8 +756,8 @@ int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core)
 	in.imm64 = AdvSIMDExpandImm(op->op, op->cmode, ( (op->i << 7) | op->imm7 ));
 	in.advsimd = TRUE;
 	in.single_reg = FALSE;
-	op->Vd = ( (op->Vd) | (op->D << 4) );
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd1, op, Vd);
+	op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd1, &op_freg_args, Vd);
 	in.regs = (op->Q == 0) ? 1 : 2;
 	if (in.regs == 2) {
 		in.Vd2 = in.Vd1;
@@ -761,6 +780,7 @@ int arm_op_exec_arm_vmov_imm_a1(struct TargetCore *core)
 int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_imm_a2 *op = &core->decoded_code->code.arm_vmov_imm_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmov_imm_input_type in;
 	arm_vmov_imm_output_type out;
@@ -774,8 +794,8 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 	in.single_reg = (op->sz == 0);
 	if (in.single_reg) {
 		CoprocFpuRegisterType imm;
-		op->Vd = ( (op->Vd << 1) | op->D );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd1, op, Vd);
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd1, &op_freg_args, Vd);
 		imm.size = CoprocFpuDataSize_32;
 		VFPExpandImm(op->imm8, &imm);
 		in.imm32 = imm.reg.raw32;
@@ -783,8 +803,8 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 	}
 	else {
 		CoprocFpuRegisterType imm;
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd1, op, Vd);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd1, &op_freg_args, Vd);
 		in.imm32 = 0;
 		imm.size = CoprocFpuDataSize_64;
 		VFPExpandImm(op->imm8, &imm);
@@ -808,6 +828,7 @@ int arm_op_exec_arm_vmov_imm_a2(struct TargetCore *core)
 int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_reg_a2 *op = &core->decoded_code->code.arm_vmov_reg_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmov_reg_input_type in;
 	arm_vmov_reg_output_type out;
@@ -820,19 +841,19 @@ int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
 	in.advsimd = FALSE;
 
 	if (in.single_reg) {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
-		op->Vm = ( (op->Vm << 1) | op->M );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
 		in.regs = 1;
 	}
 	else {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
-		op->Vm = ( (op->Vm) | (op->M << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
 		in.regs = 1;
 	}
 	out.next_address = core->pc;
@@ -849,6 +870,7 @@ int arm_op_exec_arm_vmov_reg_a2(struct TargetCore *core)
 int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmla_a2 *op = &core->decoded_code->code.arm_vmla_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmla_input_type in;
 	arm_vmla_output_type out;
@@ -864,19 +886,23 @@ int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
 	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
 	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
 	if (in.dp_operation) {
-		op->Vd = ( (op->Vd) | (op->D << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
-		op->Vm = ( (op->Vm) | (op->M << 4) );
-		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vn, &op_freg_args, Vn);
 		in.regs = 1;
 	}
 	else {
-		op->Vd = ( (op->Vd << 1) | op->D );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
-		op->Vm = ( (op->Vm << 1) | op->M );
-		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, op, Vm);
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, &op_freg_args, Vn);
 		in.regs = 1;
 	}
 
@@ -894,6 +920,7 @@ int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
 int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vmov_sreg_input_type in;
 	arm_vmov_sreg_output_type out;
@@ -903,14 +930,14 @@ int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 
 	in.cond = op->cond;
 	in.to_arm_register = (op->op == 1);
-	op->Vn = ( (op->Vn << 1) | op->N );
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, op, Vn);
+	op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, &op_freg_args, Vn);
 	OP_SET_REG(core, &in, op, Rt);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vn, op, Vn);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vn, &op_freg_args, Vn);
 	OP_SET_REG(core, &out, op, Rt);
 
 	int ret = arm_op_exec_arm_vmov_sreg(core, &in, &out);
@@ -924,6 +951,7 @@ int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vpush_a1 *op = &core->decoded_code->code.arm_vpush_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vpush_input_type in;
 	arm_vpush_output_type out;
@@ -934,15 +962,15 @@ int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
 	in.single_reg = FALSE;
 	in.regs = (op->imm8 / 2);
 
-	op->Vd = ( (op->Vd) | (op->D << 4) );
+	op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 
 	if ((in.regs == 0) || (in.regs > 16) || ((in.Vd.freg.regId + in.regs) > 32)) {
 		//UNPREDICTABLE;
@@ -963,6 +991,7 @@ int arm_op_exec_arm_vpush_a1(struct TargetCore *core)
 int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vpush_a2 *op = &core->decoded_code->code.arm_vpush_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vpush_input_type in;
 	arm_vpush_output_type out;
@@ -973,15 +1002,15 @@ int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 	in.single_reg = TRUE;
 	in.regs = op->imm8;
 
-	op->Vd = ( (op->Vd << 1) | op->D );
+	op_freg_args.Vd = ( (op->Vd << 1) | op->D );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 
 	if ((in.regs == 0) || ((in.Vd.freg.regId + in.regs) > 32)) {
 		//UNPREDICTABLE;
@@ -1003,6 +1032,7 @@ int arm_op_exec_arm_vpush_a2(struct TargetCore *core)
 int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vpop_a1 *op = &core->decoded_code->code.arm_vpop_a1;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vpop_input_type in;
 	arm_vpop_output_type out;
@@ -1014,15 +1044,15 @@ int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
 	in.single_reg = FALSE;
 	in.regs = (op->imm8 / 2);
 
-	op->Vd = ( (op->Vd) | (op->D << 4) );
+	op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
 
 	if ((in.regs == 0) || (in.regs > 16) || ((in.Vd.freg.regId + in.regs) > 32)) {
 		//UNPREDICTABLE;
@@ -1042,6 +1072,7 @@ int arm_op_exec_arm_vpop_a1(struct TargetCore *core)
 int arm_op_exec_arm_vpop_a2(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vpop_a2 *op = &core->decoded_code->code.arm_vpop_a2;
+	ArmOpExecFregArgsType op_freg_args;
 
 	arm_vpop_input_type in;
 	arm_vpop_output_type out;
@@ -1053,15 +1084,15 @@ int arm_op_exec_arm_vpop_a2(struct TargetCore *core)
 	in.single_reg = TRUE;
 	in.regs = op->imm8;
 
-	op->Vd = ( (op->Vd << 1) | op->D );
+	op_freg_args.Vd = ( (op->Vd << 1) | op->D );
 	OP_SET_REGID(core, &in, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
 	in.imm32 = ( ((uint32)op->imm8) << 2 );
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REGID(core, &out, CpuRegId_SP, SP);
-	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, op, Vd);
+	OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
 	if ((in.regs == 0) || ((in.Vd.freg.regId + in.regs) > 32)) {
 		//UNPREDICTABLE;
 		return -1;

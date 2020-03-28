@@ -3,7 +3,9 @@
 #include "device_ex_serial_ops.h"
 #include "concrete_executor/target/dbg_target_serial.h"
 #include <stdio.h>
+#include <string.h>
 #include "std_device_ops.h"
+#include "vdev/vdev_private.h"
 
 #ifdef CONFIG_STAT_PERF
 ProfStatType cpuemu_dev_timer_prof;
@@ -39,6 +41,7 @@ static void device_init_clock(MpuAddressRegionType *region)
 }
 
 static uint32 enable_vdev = 0;
+static void (*device_supply_clock_vdev_func) (DeviceClockType *) = NULL;
 
 void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 {
@@ -55,7 +58,21 @@ void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 	device_ex_serial_register_ops(2U, &device_ex_serial_op);
 	cpuemu_get_devcfg_value("DEBUG_FUNC_ENABLE_VDEV", &enable_vdev);
 	if (enable_vdev != 0) {
-		device_init_vdev(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_VDEV]);
+		char *sync_type;
+		VdevIoOperationType op_type = VdevIoOperation_UDP;
+		if (cpuemu_get_devcfg_string("DEBUG_FUNC_VDEV_SIMSYNC_TYPE", &sync_type) == STD_E_OK) {
+			if (strncmp(sync_type, "MMAP", 4) == 0) {
+				op_type = VdevIoOperation_MMAP;
+				device_supply_clock_vdev_func = device_supply_clock_vdev_mmap;
+			}
+			else {
+				device_supply_clock_vdev_func = device_supply_clock_vdev_udp;
+			}
+		}
+		else {
+			device_supply_clock_vdev_func = device_supply_clock_vdev_udp;
+		}
+		device_init_vdev(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_VDEV], op_type);
 	}
 
 	return;
@@ -76,7 +93,7 @@ void device_supply_clock(DeviceClockType *dev_clock)
 
 	if (enable_vdev == TRUE) {
 		CPUEMU_DEV_INTR_PROF_START();
-		device_supply_clock_vdev(dev_clock);
+		device_supply_clock_vdev_func(dev_clock);
 		CPUEMU_DEV_INTR_PROF_END();
 	}
 

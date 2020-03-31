@@ -47,6 +47,10 @@ void device_init_vdev_udp(MpuAddressRegionType *region)
 		printf("ERROR: can not load param DEBUG_FUNC_VDEV_TX_PORTNO\n");
 		ASSERT(err == STD_E_OK);
 	}
+	printf("VDEV:TX PORTNO=%d\n", portno);
+	vdev_control.local_ipaddr = "127.0.0.1";
+	(void)cpuemu_get_devcfg_string("DEBUG_FUNC_VDEV_RX_IPADDR", &vdev_control.remote_ipaddr);
+	printf("VDEV:RX IPADDR=%s\n", vdev_control.remote_ipaddr);
 	vdev_control.config.client_port = (uint16)portno;
 	err = cpuemu_get_devcfg_value("DEBUG_FUNC_VDEV_RX_PORTNO", &portno);
 	if (err != STD_E_OK) {
@@ -54,8 +58,9 @@ void device_init_vdev_udp(MpuAddressRegionType *region)
 		ASSERT(err == STD_E_OK);
 	}
 	vdev_control.config.server_port = (uint16)portno;
+	printf("VDEV:RX PORTNO=%d\n", portno);
 
-	err = udp_comm_create(&vdev_control.config, &vdev_control.comm);
+	err = udp_comm_create_ipaddr(&vdev_control.config, &vdev_control.comm, vdev_control.local_ipaddr);
 	ASSERT(err == STD_E_OK);
 
 	mpthread_init();

@@ -21,6 +21,7 @@ typedef struct {
 	 */
 	UdpCommType comm;
 	char *remote_ipaddr;
+	char *local_ipaddr;
 
 	/*
 	 * for MMAP ONLY

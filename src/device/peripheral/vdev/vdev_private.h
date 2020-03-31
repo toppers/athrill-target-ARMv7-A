@@ -20,7 +20,7 @@ typedef struct {
 	 * for UDP ONLY
 	 */
 	UdpCommType comm;
-	const char *remote_ipaddr;
+	char *remote_ipaddr;
 
 	/*
 	 * for MMAP ONLY

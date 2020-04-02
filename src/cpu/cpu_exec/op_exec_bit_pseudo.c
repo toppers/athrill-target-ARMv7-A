@@ -250,6 +250,28 @@ int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_type *in
 	return ret;
 }
 
+int arm_op_exec_arm_and_shift_reg(struct TargetCore *core,  arm_and_shift_reg_input_type *in, arm_and_shift_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		uint32 shifted = Shift_C(32, in->Rm.regData, in->shift_t, in->shift_n, out->status_flag.carry, &out->status_flag.carry);
+		result = (in->Rn.regData & shifted);
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->S != 0) {
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, out->status_flag.carry);
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+		}
+		out->Rd.regData = result;
+	}
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_bfc(struct TargetCore *core,  arm_bfc_input_type *in, arm_bfc_output_type *out)
 {
 	int ret = 0;

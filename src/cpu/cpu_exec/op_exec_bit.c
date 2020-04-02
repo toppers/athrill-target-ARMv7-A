@@ -452,6 +452,39 @@ int arm_op_exec_arm_and_reg_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_and_shift_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_and_shift_reg_a1 *op = &core->decoded_code->code.arm_and_shift_reg_a1;
+
+	arm_and_shift_reg_input_type in;
+	arm_and_shift_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "AND";
+
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	OP_SET_REG(core, &in, op, Rs);
+
+	in.shift_t = DecodeRegShift(op->type);
+	in.shift_n = (uint8)in.Rs.regData;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_and_shift_reg(core, &in, &out);
+	DBG_ARM_AND_SHIFT_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_tst_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_tst_imm_a1 *op = &core->decoded_code->code.arm_tst_imm_a1;

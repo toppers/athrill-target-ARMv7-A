@@ -671,6 +671,20 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_and_shift_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          Rs: PseudoCodeRegisterDataType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
 
       - name: arm_uxt
         inputs:
@@ -1696,6 +1710,14 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_and_reg
+
+  - name: arm_and_shift_reg_a1
+    format: xxxx:cond|00|0|0000|x:S|xxxx:Rn|xxxx:Rd|xxxx:Rs|0|xx:type|1|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) or (Rn == 15) or (Rm == 15) or (Rs == 15) ) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_and_shift_reg
+
  
   - name: arm_uxtb_a1
     format: xxxx:cond|01101110|1111|xxxx:Rd|xx:rotate|00|0111|xxxx:Rm

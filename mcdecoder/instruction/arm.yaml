@@ -773,6 +773,18 @@ machine:
           RdLo: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_umull
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          RdHi: PseudoCodeRegisterDataType
+          RdLo: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+        outputs:
+          RdHi: PseudoCodeRegisterDataType
+          RdLo: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
 
 
       - name: arm_tst_imm
@@ -1783,6 +1795,12 @@ instructions:
       clocks: 10
       pseudo_code: arm_smull
 
+  - name: arm_umull_a1
+    format: xxxx:cond|0000 100|x:S|xxxx:RdHi|xxxx:RdLo|xxxx:Rm|1001|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or (RdHi == 15) or (RdLo == 15) or (Rm == 15) or (Rn == 15) or (RdHi == RdLo)
+    extras:
+      clocks: 10
+      pseudo_code: arm_umull
 
 
   - name: arm_tst_imm_a1

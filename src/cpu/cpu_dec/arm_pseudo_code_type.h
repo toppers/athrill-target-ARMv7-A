@@ -1699,6 +1699,35 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	RdHi;
+
+	PseudoCodeRegisterDataType	RdLo;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	PseudoCodeRegisterDataType	Rn;
+} arm_umull_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	RdHi;
+
+	PseudoCodeRegisterDataType	RdLo;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_umull_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeRegisterDataType	Rn;
 
 	PseudoCodeImmediateData32Type	imm32;

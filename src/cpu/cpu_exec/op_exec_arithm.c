@@ -546,3 +546,35 @@ int arm_op_exec_arm_smull_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+int arm_op_exec_arm_umull_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_umull_a1 *op = &core->decoded_code->code.arm_umull_a1;
+
+	arm_umull_input_type in;
+	arm_umull_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "UMULL";
+
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, RdHi);
+	OP_SET_REG(core, &in, op, RdLo);
+	OP_SET_REG(core, &in, op, Rm);
+	OP_SET_REG(core, &in, op, Rn);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+
+	OP_SET_REG(core, &out, op, RdHi);
+	OP_SET_REG(core, &out, op, RdLo);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_umull(core, &in, &out);
+	DBG_ARM_UMULL(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}

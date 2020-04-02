@@ -503,3 +503,38 @@ int arm_op_exec_arm_smull(struct TargetCore *core,  arm_smull_input_type *in, ar
 	out->status = *status;
 	return ret;
 }
+
+int arm_op_exec_arm_umull(struct TargetCore *core,  arm_umull_input_type *in, arm_umull_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	union {
+		sint64 data;
+		sint32 array[2];
+	} result;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//result = SInt(R[n]) * SInt(R[m]);
+		result.data = ( (uint64)in->Rn.regData ) * ( (uint64)in->Rm.regData );
+		//R[dHi] = result<63:32>;
+		//R[dLo] = result<31:0>;
+		out->RdHi.regData = result.array[1];
+		out->RdLo.regData = result.array[0];
+		//if setflags then
+		//APSR.N = result<63>;
+		//APSR.Z = IsZeroBit(result<63:0>);
+		//if ArchVersion() == 4 then
+		//APSR.C = bit UNKNOWN;
+		//APSR.V = bit UNKNOWN;
+		// else APSR.C, APSR.V unchanged
+		if (in->S) {
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result.array[1] & (1U << 31U)) != 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result.data == 0));
+		}
+		cpu_set_reg(core, out->RdHi.regId, out->RdHi.regData);
+		cpu_set_reg(core, out->RdLo.regId, out->RdLo.regData);
+	}
+	out->status = *status;
+	return ret;
+}

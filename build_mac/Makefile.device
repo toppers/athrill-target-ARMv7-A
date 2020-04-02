@@ -30,7 +30,6 @@ VPATH	+=	$(TARGET_DIR)/device/intc/register
 VPATH	+=	$(TARGET_DIR)/device/peripheral
 VPATH	+=	$(TARGET_DIR)/device/peripheral/timer
 VPATH	+=	$(TARGET_DIR)/device/peripheral/serial
-#VPATH	+=	$(TARGET_DIR)/device/peripheral/can
 VPATH	+=	$(TARGET_DIR)/device/peripheral/vdev
 VPATH	+=	$(TARGET_DIR)/debugger/executor/concrete_executor
 
@@ -42,6 +41,8 @@ OBJS	:=	device.o
 OBJS	+=	timer.o
 #OBJS	+=	can.o
 OBJS	+=	vdev.o
+OBJS	+=	vdev_mmap.o
+OBJS	+=	vdev_udp.o
 OBJS	+=	serial.o
 OBJS	+=	dbg_target_serial.o
 OBJS	+=	dbg_target_cpu.o

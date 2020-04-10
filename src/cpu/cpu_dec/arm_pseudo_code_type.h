@@ -223,6 +223,31 @@ typedef struct {
 	PseudoCodeSRType	shift_t;
 
 	PseudoCodeShiftNType	shift_n;
+} arm_cmn_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeCmpResultType	result;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_cmn_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
 } arm_cmp_reg_input_type;
 
 typedef struct {

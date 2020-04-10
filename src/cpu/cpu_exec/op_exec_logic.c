@@ -179,6 +179,7 @@ int arm_op_exec_arm_lsl_reg_a1(struct TargetCore *core)
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "LSL";
+	in.S = op->S;
 	in.cond = op->cond;
 	OP_SET_REG(core, &in, op, Rd);
 	OP_SET_REG(core, &in, op, Rm);

@@ -412,6 +412,55 @@ static inline void DBG_ARM_CMN_IMM(TargetCoreType *core, arm_cmn_imm_input_type 
 	));
 }
 
+static inline void DBG_ARM_CMN_REG(TargetCoreType *core, arm_cmn_reg_input_type *in, arm_cmn_reg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeSRType
+
+		DBG_FMT_PseudoCodeShiftNType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeCmpResultType
+
+		DBG_FMT_PseudoCodeStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
+
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
+
+
+
+		DBG_ARG_PseudoCodeCmpResultType(&out->result),
+
+		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_CMP_REG(TargetCoreType *core, arm_cmp_reg_input_type *in, arm_cmp_reg_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

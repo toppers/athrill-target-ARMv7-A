@@ -248,6 +248,7 @@ int arm_op_exec_arm_cmn_imm_a1(struct TargetCore *core)
 	cpu_conv_status_flag(out.status, &out.status_flag);
 	in.imm32 = ARMExpandImm(op->imm12, out.status_flag.carry);
 
+	out.result = FALSE;
 	out.next_address = core->pc;
 	out.passed = FALSE;
 
@@ -258,6 +259,32 @@ int arm_op_exec_arm_cmn_imm_a1(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_cmn_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_cmn_reg_a1 *op = &core->decoded_code->code.arm_cmn_reg_a1;
+
+	arm_cmn_reg_input_type in;
+	arm_cmn_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "CMN";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	out.result = FALSE;
+
+	int ret = arm_op_exec_arm_cmn_reg(core, &in, &out);
+	DBG_ARM_CMN_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_cmp_reg_a1(struct TargetCore *core)
 {

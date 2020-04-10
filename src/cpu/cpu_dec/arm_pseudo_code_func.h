@@ -11,6 +11,7 @@ extern int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_t
 extern int arm_op_exec_arm_sub_reg(struct TargetCore *core,  arm_sub_reg_input_type *in, arm_sub_reg_output_type *out);
 extern int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in, arm_cmp_imm_output_type *out);
 extern int arm_op_exec_arm_cmn_imm(struct TargetCore *core,  arm_cmn_imm_input_type *in, arm_cmn_imm_output_type *out);
+extern int arm_op_exec_arm_cmn_reg(struct TargetCore *core,  arm_cmn_reg_input_type *in, arm_cmn_reg_output_type *out);
 extern int arm_op_exec_arm_cmp_reg(struct TargetCore *core,  arm_cmp_reg_input_type *in, arm_cmp_reg_output_type *out);
 extern int arm_op_exec_arm_adr_imm(struct TargetCore *core,  arm_adr_imm_input_type *in, arm_adr_imm_output_type *out);
 extern int arm_op_exec_arm_add_spimm(struct TargetCore *core,  arm_add_spimm_input_type *in, arm_add_spimm_output_type *out);

@@ -125,6 +125,31 @@ typedef struct {
 	PseudoCodeRegisterDataType	Rn;
 
 	PseudoCodeImmediateData32Type	imm32;
+} arm_adc_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_adc_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeImmediateData32Type	imm32;
 } arm_sub_imm_input_type;
 
 typedef struct {
@@ -611,6 +636,39 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldrsh_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeBoolIndexType	index;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_ldrsh_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldrsh_reg_output_type;
 
 typedef struct {
 	char* instrName;
@@ -1556,6 +1614,29 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_uxt_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_rrx_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_rrx_output_type;
 
 typedef struct {
 	char* instrName;

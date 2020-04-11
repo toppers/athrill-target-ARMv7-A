@@ -7,6 +7,7 @@ extern int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_t
 extern int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in, arm_add_reg_output_type *out);
 extern int arm_op_exec_arm_mla(struct TargetCore *core,  arm_mla_input_type *in, arm_mla_output_type *out);
 extern int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in, arm_adc_reg_output_type *out);
+extern int arm_op_exec_arm_adc_imm(struct TargetCore *core,  arm_adc_imm_input_type *in, arm_adc_imm_output_type *out);
 extern int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_type *in, arm_sub_imm_output_type *out);
 extern int arm_op_exec_arm_sub_reg(struct TargetCore *core,  arm_sub_reg_input_type *in, arm_sub_reg_output_type *out);
 extern int arm_op_exec_arm_cmp_imm(struct TargetCore *core,  arm_cmp_imm_input_type *in, arm_cmp_imm_output_type *out);
@@ -28,6 +29,7 @@ extern int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_t
 extern int arm_op_exec_arm_ldr_literal(struct TargetCore *core,  arm_ldr_literal_input_type *in, arm_ldr_literal_output_type *out);
 extern int arm_op_exec_arm_ldrh_imm(struct TargetCore *core,  arm_ldrh_imm_input_type *in, arm_ldrh_imm_output_type *out);
 extern int arm_op_exec_arm_ldrsh_imm(struct TargetCore *core,  arm_ldrsh_imm_input_type *in, arm_ldrsh_imm_output_type *out);
+extern int arm_op_exec_arm_ldrsh_reg(struct TargetCore *core,  arm_ldrsh_reg_input_type *in, arm_ldrsh_reg_output_type *out);
 extern int arm_op_exec_arm_ldrd_imm(struct TargetCore *core,  arm_ldrd_imm_input_type *in, arm_ldrd_imm_output_type *out);
 extern int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out);
 extern int arm_op_exec_arm_push(struct TargetCore *core,  arm_push_input_type *in, arm_push_output_type *out);
@@ -66,6 +68,7 @@ extern int arm_op_exec_arm_and_imm(struct TargetCore *core,  arm_and_imm_input_t
 extern int arm_op_exec_arm_and_reg(struct TargetCore *core,  arm_and_reg_input_type *in, arm_and_reg_output_type *out);
 extern int arm_op_exec_arm_and_shift_reg(struct TargetCore *core,  arm_and_shift_reg_input_type *in, arm_and_shift_reg_output_type *out);
 extern int arm_op_exec_arm_uxt(struct TargetCore *core,  arm_uxt_input_type *in, arm_uxt_output_type *out);
+extern int arm_op_exec_arm_rrx(struct TargetCore *core,  arm_rrx_input_type *in, arm_rrx_output_type *out);
 extern int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_type *in, arm_rsb_reg_output_type *out);
 extern int arm_op_exec_arm_rsb_imm(struct TargetCore *core,  arm_rsb_imm_input_type *in, arm_rsb_imm_output_type *out);
 extern int arm_op_exec_arm_sbc_reg(struct TargetCore *core,  arm_sbc_reg_input_type *in, arm_sbc_reg_output_type *out);

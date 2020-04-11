@@ -197,6 +197,32 @@ int arm_op_exec_arm_lsl_reg_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_rrx_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_rrx_a1 *op = &core->decoded_code->code.arm_rrx_a1;
+
+	arm_rrx_input_type in;
+	arm_rrx_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "RRX";
+
+	in.cond = op->cond;
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+	OP_SET_REG(core, &out, op, Rd);
+
+	int ret = arm_op_exec_arm_rrx(core, &in, &out);
+	DBG_ARM_RRX(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_mov_imm_a2(struct TargetCore *core)
 {

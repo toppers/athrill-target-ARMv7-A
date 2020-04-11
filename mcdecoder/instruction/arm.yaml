@@ -53,6 +53,17 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+      - name: arm_adc_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          imm32: PseudoCodeImmediateData32Type
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
       - name: arm_sub_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -272,6 +283,21 @@ machine:
           wback: PseudoCodeBoolWbackType
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_ldrsh_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
         outputs:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
@@ -706,6 +732,17 @@ machine:
         outputs:
           Rd: PseudoCodeRegisterDataType
 
+      - name: arm_rrx
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_rsb_reg
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1120,6 +1157,16 @@ instructions:
       pseudo_code: arm_mla
 
 
+  - name: arm_adc_imm_a1
+    format: xxxx:cond|00|1|0101|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rd == 0b1111) and (S == 1) ) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_adc_imm
+
+
   - name: arm_adc_reg_a1
     format: xxxx:cond|00|0|0101|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
     unmatch_condition: >
@@ -1508,6 +1555,18 @@ instructions:
       pseudo_code: arm_ldr_reg
 
 
+  - name: arm_ldrsh_reg_a1
+    format: xxxx:cond|000|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|0000|1111|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rm == 0b1111) 
+                        or (Rt == 0b1111) 
+                        or ( ((P == 0) or (W == 1)) and ( (Rn == 15) or (Rn == Rt) ) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrsh_reg
+
+
 
   - name: arm_pop_a1
     format: xxxx:cond|1000 10|1|1|1101|xxxx xxxx xxxx xxxx:register_list
@@ -1762,6 +1821,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_uxt
+
+  - name: arm_rrx_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|0000 0|110|xxxx:Rm
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_rrx
 
   - name: arm_rsb_reg_a1
     format: xxxx:cond|00|0|0011|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm

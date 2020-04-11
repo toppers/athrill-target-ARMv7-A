@@ -85,6 +85,32 @@ int arm_op_exec_arm_mla(struct TargetCore *core,  arm_mla_input_type *in, arm_ml
 	return ret;
 }
 
+int arm_op_exec_arm_adc_imm(struct TargetCore *core,  arm_adc_imm_input_type *in, arm_adc_imm_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//(result, carry, overflow) = AddWithCarry(R[n], imm32, APSR.C);
+		result = AddWithCarry(32, in->Rn.regData, in->imm32, CPU_ISSET_CY(status), &out->status_flag);
+		if (in->Rd.regId != CpuRegId_PC) {
+			cpu_set_reg(core, in->Rd.regId, result);
+			if (in->S != 0) {
+				cpu_update_status_flag(status, result, &out->status_flag);
+			}
+			out->Rd.regData = result;
+		}
+		else {
+			//ALUWritePC(result); // setflags is always FALSE here
+			ret = ALUWritePC(&out->next_address, status, result);
+			out->Rd.regData = out->next_address;
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in, arm_adc_reg_output_type *out)
 {
 	int ret = 0;
@@ -95,6 +121,7 @@ int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in
 	if (out->passed != FALSE) {
 		//shifted = Shift(R[m], shift_t, shift_n, APSR.C);
 		uint32 shifted = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+		//printf("Rm=%u shifted=%u\n", in->Rm.regData, shifted);
 		//(result, carry, overflow) = AddWithCarry(R[n], shifted, APSR.C);
 		result = AddWithCarry(32, in->Rn.regData, shifted, CPU_ISSET_CY(status), &out->status_flag);
 		if (in->Rd.regId != CpuRegId_PC) {
@@ -273,7 +300,6 @@ int arm_op_exec_arm_cmn_imm(struct TargetCore *core,  arm_cmn_imm_input_type *in
 int arm_op_exec_arm_cmn_reg(struct TargetCore *core,  arm_cmn_reg_input_type *in, arm_cmn_reg_output_type *out)
 {
 	int ret = 0;
-	uint32 result;
 	uint32 *status = cpu_get_status(core);
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *status);

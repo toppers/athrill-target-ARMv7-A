@@ -271,6 +271,23 @@ static inline SRType DecodeRegShift(uint8 type)
 	}
 }
 
+static inline uint32 RRX_C(uint32 bits_N, uint32 x, bool carry_in, bool *carry_out)
+{
+	//result = carry_in : x<N-1:1>;
+	uint32 result = x >> 1U;
+	if (carry_in) {
+		result |= (1U << 31U);
+	}
+	//carry_out = x<0>;
+	if ((x & 0x1) != 0) {
+		*carry_out = TRUE;
+	}
+	else {
+		*carry_out = FALSE;
+	}
+	//return (result, carry_out);
+	return result;
+}
 static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 amount, bool carry_in, bool *carry_out)
 {
 	if (amount == 0) {
@@ -288,6 +305,8 @@ static inline uint32 Shift_C(uint32 bits_N, uint32 value, SRType type, uint32 am
 		return LSR_C(bits_N, value, amount, carry_out);
 	case SRType_ASR:
 		return ASR_C(bits_N, value, amount, carry_out);
+	case SRType_RRX:
+		return RRX_C(bits_N, value, carry_in, carry_out);
 	default:
 		//TOOD ERROR
 		return -1;

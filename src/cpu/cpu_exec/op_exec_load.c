@@ -350,6 +350,39 @@ int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_ldrsh_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_ldrsh_reg_a1 *op = &core->decoded_code->code.arm_ldrsh_reg_a1;
+
+	arm_ldrsh_reg_input_type in;
+	arm_ldrsh_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "LDRSH";
+
+	in.cond = op->cond;
+	in.add = (op->U != 0);
+	in.index = (op->P != 0);
+	in.wback = ((op->P == 0) || (op->W != 0));
+	in.shift_t = SRType_LSL;
+	in.shift_n = 0;
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, Rn);
+	OP_SET_REG(core, &out, op, Rt);
+
+	int ret = arm_op_exec_arm_ldrsh_reg(core, &in, &out);
+	DBG_ARM_LDRSH_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_pop_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_pop_a1 *op = &core->decoded_code->code.arm_pop_a1;

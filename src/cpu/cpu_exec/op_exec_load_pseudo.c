@@ -241,6 +241,34 @@ done:
 }
 
 
+int arm_op_exec_arm_ldrsh_reg(struct TargetCore *core,  arm_ldrsh_reg_input_type *in, arm_ldrsh_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	uint32 offset = Shift(32, in->Rm.regData, in->shift_t, in->shift_n, CPU_ISSET_CY(status));
+	uint32 offset_addr = (in->add) ? (in->Rn.regData + offset) : (in->Rn.regData - offset);
+	uint32 address = (in->index) ? offset_addr : in->Rn.regData;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		ret = mem_to_reg(core, address, 2, &result);
+		if (ret != 0) {
+			goto done;
+		}
+		//R[t] = SignExtend(data, 32);
+    	out->Rt.regData = (sint32)((sint16)result);
+		cpu_set_reg(core, in->Rt.regId, out->Rt.regData);
+		if ((ret == 0) && in->wback) {
+			cpu_set_reg(core, in->Rn.regId, offset_addr);
+        	out->Rn.regData = offset_addr;
+		}
+	}
+done:
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_ldr_reg(struct TargetCore *core,  arm_ldr_reg_input_type *in, arm_ldr_reg_output_type *out)
 {
 	int ret = 0;

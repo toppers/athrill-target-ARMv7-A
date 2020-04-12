@@ -239,7 +239,6 @@ machine:
 
       - name: arm_ldr_imm
         inputs:
-          size: PseudoCodeSizeType
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
           add: PseudoCodeBoolAddType
@@ -248,6 +247,21 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
         outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+
+      - name: arm_ldrb_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
       - name: arm_ldr_literal
@@ -321,7 +335,6 @@ machine:
 
       - name: arm_ldr_reg
         inputs:
-          size: PseudoCodeSizeType
           sign: PseudoCodeSignType
           cond: PseudoCodeConditionDataType
           add: PseudoCodeBoolAddType
@@ -333,6 +346,39 @@ machine:
           Rt: PseudoCodeRegisterDataType
           Rm: PseudoCodeRegisterDataType
         outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_ldrb_reg
+        inputs:
+          sign: PseudoCodeSignType
+          cond: PseudoCodeConditionDataType
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+      - name: arm_ldrh_reg
+        inputs:
+          sign: PseudoCodeSignType
+          cond: PseudoCodeConditionDataType
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
 
@@ -1480,7 +1526,7 @@ instructions:
                         or ( ((P == 0) or (W == 1)) and (Rn == Rt) )
     extras:
       clocks: 10
-      pseudo_code: arm_ldr_imm
+      pseudo_code: arm_ldrb_imm
 
   - name: arm_ldrh_imm_a1
     format: xxxx:cond|000|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1011|xxxx:imm8[3:0]
@@ -1527,7 +1573,7 @@ instructions:
                         or ( ((P == 0) or (W == 1)) and (Rn == 15) )
     extras:
       clocks: 10
-      pseudo_code: arm_ldr_reg
+      pseudo_code: arm_ldrb_reg
 
 
   - name: arm_ldrsh_imm_a1
@@ -1552,7 +1598,7 @@ instructions:
                         or ( ((P == 0) or (W == 1)) and ( (Rn == 15) or (Rn == Rt) ) )
     extras:
       clocks: 10
-      pseudo_code: arm_ldr_reg
+      pseudo_code: arm_ldrh_reg
 
 
   - name: arm_ldrsh_reg_a1

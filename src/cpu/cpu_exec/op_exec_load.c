@@ -17,7 +17,6 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 	in.index = (op->P != 0);
 	in.add = (op->U != 0);
 	in.wback = ((op->P == 0) || (op->W != 0));
-	in.size = 4;
 
 	if (in.wback && (op->Rn == op->Rt)) {
 		//if wback && n == t then UNPREDICTABLE;
@@ -29,6 +28,7 @@ int arm_op_exec_arm_ldr_imm_a1(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rn);
 	OP_SET_REG(core, &out, op, Rt);
 	
 	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
@@ -75,8 +75,8 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldrb_imm_a1 *op = &core->decoded_code->code.arm_ldrb_imm_a1;
 
-	arm_ldr_imm_input_type in;
-	arm_ldr_imm_output_type out;
+	arm_ldrb_imm_input_type in;
+	arm_ldrb_imm_output_type out;
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "LDRB";
@@ -85,13 +85,6 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 	in.index = (op->P != 0);
 	in.add = (op->U != 0);
 	in.wback = ((op->P == 0) || (op->W != 0));
-	in.size = 1;
-
-	if ((op->Rt == CpuRegId_PC) || (in.wback && (op->Rn == op->Rt))) {
-		//if t == 15 || (wback && n == t) then UNPREDICTABLE;
-		//TODO
-		return -1;
-	}
 
 	OP_SET_REG(core, &in, op, Rn);
 	OP_SET_REG(core, &in, op, Rt);
@@ -99,9 +92,10 @@ int arm_op_exec_arm_ldrb_imm_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rt);
+	OP_SET_REG(core, &out, op, Rn);
 	
-	int ret = arm_op_exec_arm_ldr_imm(core, &in, &out);
-	DBG_ARM_LDR_IMM(core, &in, &out);
+	int ret = arm_op_exec_arm_ldrb_imm(core, &in, &out);
+	DBG_ARM_LDRB_IMM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -233,7 +227,6 @@ int arm_op_exec_arm_ldr_reg_a1(struct TargetCore *core)
 	arm_ldr_reg_output_type out;
 	out.status = *cpu_get_status(core);
 
-	//TODO arguments setting..
 	in.instrName = "LDR";
 	in.cond = op->cond;
 	in.index = (op->P != 0);
@@ -241,7 +234,6 @@ int arm_op_exec_arm_ldr_reg_a1(struct TargetCore *core)
 	in.wback = ((op->P == 0) || (op->W != 0));
 	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
 
-	in.size = 4U;
 	in.sign = FALSE;
 	OP_SET_REG(core, &in, op, Rn);
 	OP_SET_REG(core, &in, op, Rt);
@@ -256,6 +248,7 @@ int arm_op_exec_arm_ldr_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rt);
+	OP_SET_REG(core, &out, op, Rn);
 
 	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
 	DBG_ARM_LDR_REG(core, &in, &out);
@@ -268,8 +261,8 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldrb_reg_a1 *op = &core->decoded_code->code.arm_ldrb_reg_a1;
 
-	arm_ldr_reg_input_type in;
-	arm_ldr_reg_output_type out;
+	arm_ldrb_reg_input_type in;
+	arm_ldrb_reg_output_type out;
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "LDRB";
@@ -279,7 +272,6 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	in.wback = ((op->P == 0) || (op->W != 0));
 	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
 
-	in.size = 1U;
 	in.sign = FALSE;
 	OP_SET_REG(core, &in, op, Rn);
 	OP_SET_REG(core, &in, op, Rt);
@@ -298,9 +290,10 @@ int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rt);
+	OP_SET_REG(core, &out, op, Rn);
 
-	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
-	DBG_ARM_LDR_REG(core, &in, &out);
+	int ret = arm_op_exec_arm_ldrb_reg(core, &in, &out);
+	DBG_ARM_LDRB_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;
@@ -311,8 +304,8 @@ int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_ldrh_reg_a1 *op = &core->decoded_code->code.arm_ldrh_reg_a1;
 
-	arm_ldr_reg_input_type in;
-	arm_ldr_reg_output_type out;
+	arm_ldrh_reg_input_type in;
+	arm_ldrh_reg_output_type out;
 	out.status = *cpu_get_status(core);
 
 	in.instrName = "LDRH";
@@ -323,7 +316,6 @@ int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core)
 	in.shift_t = SRType_LSL;
 	in.shift_n = 0;
 
-	in.size = 2U;
 	in.sign = FALSE;
 	OP_SET_REG(core, &in, op, Rn);
 	OP_SET_REG(core, &in, op, Rt);
@@ -342,9 +334,10 @@ int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	OP_SET_REG(core, &out, op, Rt);
+	OP_SET_REG(core, &out, op, Rn);
 
-	int ret = arm_op_exec_arm_ldr_reg(core, &in, &out);
-	DBG_ARM_LDR_REG(core, &in, &out);
+	int ret = arm_op_exec_arm_ldrh_reg(core, &in, &out);
+	DBG_ARM_LDRH_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

@@ -559,7 +559,7 @@ int arm_op_exec_arm_umull(struct TargetCore *core,  arm_umull_input_type *in, ar
 	out->passed = ConditionPassed(in->cond, *status);
 	if (out->passed != FALSE) {
 		//result = SInt(R[n]) * SInt(R[m]);
-		result.data = ( (uint64)in->Rn.regData ) * ( (uint64)in->Rm.regData );
+		result.data = ( (uint64)((uint32)in->Rn.regData) ) * ( (uint64)((uint32)in->Rm.regData) );
 		//R[dHi] = result<63:32>;
 		//R[dLo] = result<31:0>;
 		out->RdHi.regData = result.array[1];

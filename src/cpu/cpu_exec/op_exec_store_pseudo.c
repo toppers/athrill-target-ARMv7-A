@@ -179,6 +179,7 @@ int arm_op_exec_arm_stmfd(struct TargetCore *core,  arm_stmfd_input_type *in, ar
 		if (in->wback) {
 			//if wback then R[n] = R[n] - 4*BitCount(registers);
 			out->Rn.regData = (in->Rn.regData - (4 * (in->bitcount)));
+			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);
 		}
 	}
 done:
@@ -215,6 +216,7 @@ int arm_op_exec_arm_stmib(struct TargetCore *core,  arm_stmib_input_type *in, ar
 		if (in->wback) {
 			//if wback then R[n] = R[n] + 4*BitCount(registers);
 			out->Rn.regData = (in->Rn.regData + (4 * (in->bitcount)));
+			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);
 		}
 	}
 done:

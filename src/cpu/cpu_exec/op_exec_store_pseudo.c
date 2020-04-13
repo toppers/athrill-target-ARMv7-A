@@ -253,7 +253,7 @@ int arm_op_exec_arm_stm(struct TargetCore *core,  arm_stm_input_type *in, arm_st
 			}
 		}
 		//if wback then R[n] = R[n] + 4*BitCount(registers);
-		if (in->wback && ((in->registers & (1U << in->Rn.regId)) != 0 )) {
+		if (in->wback) {
 			//R[n] = R[n] + 4*BitCount(registers);
 			out->Rn.regData += 4 * in->bitcount;
 			cpu_set_reg(core, out->Rn.regId, out->Rn.regData);

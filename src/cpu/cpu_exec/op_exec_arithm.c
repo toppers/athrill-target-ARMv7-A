@@ -331,9 +331,36 @@ int arm_op_exec_arm_cmp_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	cpu_conv_status_flag(out.status, &out.status_flag);
-	
+	out.result = -1;
+
 	int ret = arm_op_exec_arm_cmp_reg(core, &in, &out);
 	DBG_ARM_CMP_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+int arm_op_exec_arm_teq_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_teq_reg_a1 *op = &core->decoded_code->code.arm_teq_reg_a1;
+
+	arm_teq_reg_input_type in;
+	arm_teq_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "TEQ";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+	out.result = -1;
+
+	int ret = arm_op_exec_arm_teq_reg(core, &in, &out);
+	DBG_ARM_TEQ_REG(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

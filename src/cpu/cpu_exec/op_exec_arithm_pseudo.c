@@ -152,6 +152,7 @@ int arm_op_exec_arm_adr_imm(struct TargetCore *core,  arm_adr_imm_input_type *in
 		result = (in->add != 0) ? Align(pc, 4) + in->imm32 : Align(pc, 4) - in->imm32;
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
+			out->Rd.regData = result;
 		}
 		else {
 			ret = ALUWritePC(&out->next_address, status, result);
@@ -413,6 +414,7 @@ int arm_op_exec_arm_rsb_reg(struct TargetCore *core,  arm_rsb_reg_input_type *in
 	if (out->passed != FALSE) {
 		uint32 shifted = Shift_C(32, in->Rm.regData, in->shift_t, in->shift_n, out->status_flag.carry, &out->status_flag.carry);
 		result = AddWithCarry(32, ~(in->Rn.regData), shifted, TRUE, &out->status_flag);
+		//printf("RSB:NOT(Rn)=%d shifted=%d result=%d\n", ~(in->Rn.regData), shifted, result);
 		if (in->Rd.regId != CpuRegId_PC) {
 			cpu_set_reg(core, in->Rd.regId, result);
 			if (in->S != 0) {

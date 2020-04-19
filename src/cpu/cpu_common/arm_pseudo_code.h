@@ -158,7 +158,11 @@ static inline bool BadMode(uint8 mode, TargetCoreType *core)
 static inline uint32 LSL_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
 {
 	ASSERT(shift > 0);
-	uint32 result = x << shift;
+	ASSERT(bits_N ==32);
+	uint32 result = 0;
+	if (shift < 32) {
+		result = x << shift;
+	}
 	if (carry_out != NULL) {
 		if ((x & (1U << (bits_N - 1))) != 0) {
 			*carry_out = TRUE;
@@ -183,8 +187,13 @@ static inline uint32 LSL(uint32 bits_N, uint32 x, uint32 shift)
 static inline uint32 LSR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
 {
 	ASSERT(shift > 0);
-	uint32 result = x >> shift;
+	ASSERT(bits_N ==32);
+	uint32 result = 0;
+	if (shift < 32) {
+		result = x >> shift;
+	}
 	if (carry_out != NULL) {
+		//carry_out = extended_x<shift-1>;
 		if ((x & 0x1) != 0) {
 			*carry_out = TRUE;
 		}
@@ -197,12 +206,22 @@ static inline uint32 LSR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_ou
 static inline uint32 ASR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_out)
 {
 	ASSERT(shift > 0);
+	ASSERT(bits_N ==32);
 	sint32 extended_x = OpSignExtend(bits_N, x, shift + bits_N);
 	//result = extended_x<shift+N-1:shift>;
-	sint32 result = extended_x >> shift;
+	sint32 result = 0;
+
+	if (shift < 32) {
+		result = extended_x >> shift;
+	}
+	else {
+		if ((extended_x & (1U << 31)) != 0) {
+			result = -1;
+		}
+	}
 	if (carry_out != NULL) {
 		//carry_out = extended_x<shift-1>;
-		if ((extended_x & (1U << (shift -1))) != 0) {
+		if ((extended_x & 0x1) != 0) {
 			*carry_out = TRUE;
 		}
 		else {
@@ -230,6 +249,7 @@ static inline uint32 ROR_C(uint32 bits_N, uint32 x, uint32 shift, bool *carry_ou
 	uint32 result;
 
 	ASSERT(shift != 0);
+	ASSERT(shift < 32);
 	m = shift % bits_N;
 	result = LSR(bits_N, x, m) | LSL(bits_N, x, bits_N - m);
 	if (carry_out != NULL) {

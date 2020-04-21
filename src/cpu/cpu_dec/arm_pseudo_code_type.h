@@ -1856,6 +1856,31 @@ typedef struct {
 
 	PseudoCodeRegisterDataType	Rd;
 
+	PseudoCodeImmediateData32Type	imm32;
+} arm_sbc_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_sbc_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rd;
+
 	PseudoCodeRegisterDataType	Rm;
 } arm_mul_input_type;
 

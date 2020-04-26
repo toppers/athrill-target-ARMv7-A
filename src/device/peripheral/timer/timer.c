@@ -119,7 +119,7 @@ static void device_timer_do_calc_min_interval(DeviceClockType *device, int ch)
 
 	if ((interval > 0) && (interval < device->min_intr_interval)) {
 		device->min_intr_interval = interval;
-		//printf("TIMER clock=%I64u min=%I64u\n", device->clock, device->min_intr_interval);
+		//printf("TIMER clock=%llu min=%llu\n", device->clock, device->min_intr_interval);
 	}
 	return;
 }

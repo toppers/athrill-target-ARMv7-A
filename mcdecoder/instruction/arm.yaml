@@ -954,6 +954,19 @@ machine:
           Rd: PseudoCodeRegisterDataType
           status_flag: PseudoCodeStatusFlagType
 
+
+      - name: arm_asr_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          S: PseudoCodeUpdateStatusFlagType
+          Rd: PseudoCodeRegisterDataType
+          Rn: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rd: PseudoCodeRegisterDataType
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_srs
         inputs:
           mode: PseudoCodeModeType
@@ -2008,6 +2021,15 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_asr_imm
+
+  - name: arm_asr_reg_a1
+    format: xxxx:cond|00|0|1101|x:S|0000|xxxx:Rd|xxxx:Rm|0101|xxxx:Rn
+    unmatch_condition: (cond == 0b1111) or ( (Rd == 15) or (Rn == 15) or (Rm == 15) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_asr_reg
+
+
 
   - name: arm_srs_a1
     format: 1111|100|x:P|x:U|1|x:W|0|1101|0000|0101|000|xxxx x:mode

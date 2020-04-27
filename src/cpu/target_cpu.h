@@ -6,6 +6,15 @@
 #include "object_container.h"
 #include "coproc/arm_coproc.h"
 
+#define ATHRILL_TARGET_ARCH	"ARMv7-A"
+/*
+ * version: X.Y.Z
+ *  X: generation
+ *  Y: function
+ *  Z: bug fix, small changes
+ */
+#define ATHRILL_TARGET_VERSION "1.0.0"
+
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL
 #define CPU_REG_PLUS_MAX	2147483647LL
 #define CPU_REG_MINUS_MAX	-2147483648LL

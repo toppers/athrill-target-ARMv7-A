@@ -178,15 +178,25 @@ Std_ReturnType cpu_supply_clock(CoreIdType core_id)
 			return STD_E_SEGV;
 		}
 #endif /* DISABLE_MEMPROTECT */
+#if 0 /* for debug */
+		if (cpu_get_pc(&virtual_cpu.cores[core_id].core) == 0x1800c838) {
+			printf("Exec code[0]=0x%x code[1]=0x%x type_id=0x%x inx=%d func=%p, pc=0x%x\n",
+					virtual_cpu.cores[core_id].core.current_code[0],
+					virtual_cpu.cores[core_id].core.current_code[1],
+					virtual_cpu.cores[core_id].core.decoded_code->type_id, inx, cached_code->codes[inx].op_exec,
+					cpu_get_pc(&virtual_cpu.cores[core_id].core));
+		}
+#endif
 		ret = cached_code->codes[inx].op_exec(&virtual_cpu.cores[core_id].core);
 #ifdef CONFIG_STAT_PERF
 		PROFSTAT_END(&op_exec_stat_table[code_id]);
 #endif /* CONFIG_STAT_PERF */
 		if (ret < 0) {
-			printf("Exec Error code[0]=0x%x code[1]=0x%x type_id=0x%x\n",
+			printf("Exec cached_code Error code[0]=0x%x code[1]=0x%x type_id=0x%x, inx=%d func=%p, pc=0x%x\n",
 					virtual_cpu.cores[core_id].core.current_code[0],
 					virtual_cpu.cores[core_id].core.current_code[1],
-					virtual_cpu.cores[core_id].core.decoded_code->type_id);
+					virtual_cpu.cores[core_id].core.decoded_code->type_id, inx, cached_code->codes[inx].op_exec,
+					cpu_get_pc(&virtual_cpu.cores[core_id].core));
 			return STD_E_EXEC;
 		}
 	}

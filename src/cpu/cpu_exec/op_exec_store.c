@@ -22,7 +22,7 @@ int arm_op_exec_arm_str_imm_a1(struct TargetCore *core)
 
 	if (in.wback && ((op->Rn == CpuRegId_PC) || (op->Rn == op->Rt))) {
 		//if wback && (n == 15 || n == t) then UNPREDICTABLE;
-		//TODO
+		printf("ERROR: in.wback=%d op->Rn=%d op->Rt=%d\n", in.wback, op->Rn, op->Rt);
 		return -1;
 	}
 

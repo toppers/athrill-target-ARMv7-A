@@ -904,6 +904,36 @@ static inline int MemU_with_priv_W(uint32 status, uint32 address, uint32 size, b
 	}
 	return 0;
 }
+static inline int MemU_with_priv_R(uint32 status, uint32 address, uint32 size, bool privileged, uint8 *out)
+{
+	int ret;
+	uint8 p[4];
+	ASSERT(size <= 4);
+
+	if (address == Align(address, size)) {
+		return MemA_with_priv_R(status, address, size, privileged, TRUE, out);
+	}
+	// // Permitted unaligned access. For ARMv7 this is either:
+
+	//for i = 0 to size-1
+	//value<8*i+7:8*i> = MemA_with_priv[address+i, 1, privileged, FALSE];
+	int i;
+	for (i = 0; i < size; i++) {
+		ret = MemA_with_priv_R(status, address + i, 1, privileged, FALSE, &out[i]);
+		if (ret != 0) {
+			return ret;
+		}
+	}
+	if (CPU_STATUS_BIT_IS_SET(status, CPU_STATUS_BITPOS_E)) {
+		//if CPSR.E == '1' then
+		//value = BigEndianReverse(value, size);
+		for (i = 0; i < size; i++) {
+			p[i] = out[i];
+		}
+		BigEndianReverse(size, p, out);
+	}
+	return 0;
+}
 
 
 //MemA[bits(32) address, integer size] = bits(8*size) value
@@ -928,6 +958,13 @@ static inline int MemA_R(TargetCoreType *core, uint32 address, uint32 size, uint
 	uint32 *status = cpu_get_status(core);
 	//return MemA_with_priv[address, size, CurrentModeIsNotUser(), TRUE];
 	return MemA_with_priv_R(*status, address, size, CurrentModeIsNotUser(*status), TRUE, out);
+}
+//bits(8*size) MemU[bits(32) address, integer size]
+static inline int MemU_R(TargetCoreType *core, uint32 address, uint32 size, uint8* out)
+{
+	uint32 *status = cpu_get_status(core);
+	//return MemU_with_priv[address, size, CurrentModeIsNotUser()];
+	return MemU_with_priv_R(*status, address, size, CurrentModeIsNotUser(*status), out);
 }
 
 static inline void DecodeImmShift(uint8 type, uint32 imm5, SRType *shift_t, uint32 *shift_n)

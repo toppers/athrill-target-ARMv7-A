@@ -4,7 +4,7 @@ static inline int mem_to_reg(TargetCoreType *core, uint32 address, uint32 size, 
 {
 	int ret = 0;
 	uint8 data[4];
-	ret = MemA_R(core, address, size, data);
+	ret = MemU_R(core, address, size, data);
 	if (ret != 0) {
 		return -1;
 	}
@@ -43,6 +43,8 @@ int arm_op_exec_arm_ldr_imm(struct TargetCore *core,  arm_ldr_imm_input_type *in
 		uint32 address = (in->index) ? offset_addr : in->Rn.regData;
 		ret = mem_to_reg(core, address, 4, &result);
 		if (ret != 0) {
+			printf("ERROR:arm_op_exec_arm_ldr_imm():ret=%d size=%d addr=0x%x\n",
+					ret, 4, address);
 			goto done;
 		}
 		if (in->Rt.regId == CpuRegId_PC) {

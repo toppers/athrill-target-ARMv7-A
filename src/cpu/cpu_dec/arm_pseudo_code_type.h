@@ -491,6 +491,33 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeUpdateStatusFlagType	S;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeRegisterDataType	Rm;
+
+	PseudoCodeRegisterDataType	Rs;
+} arm_mvn_shift_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rd;
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_mvn_shift_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeImmediateData32Type	imm32;
 
 	PseudoCodeInstrSetType	type;

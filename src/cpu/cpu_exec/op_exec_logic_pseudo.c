@@ -105,6 +105,33 @@ int arm_op_exec_arm_mvn_reg(struct TargetCore *core,  arm_mvn_reg_input_type *in
 	return ret;
 }
 
+int arm_op_exec_arm_mvn_shift_reg(struct TargetCore *core,  arm_mvn_shift_reg_input_type *in, arm_mvn_shift_reg_output_type *out)
+{
+	int ret = 0;
+	uint32 result;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//shift_n = UInt(R[s]<7:0>);
+		uint32 shift_n = (uint8)in->Rs.regData;
+		//(shifted, carry) = Shift_C(R[m], shift_t, shift_n, APSR.C);
+		result = Shift_C(32, in->Rm.regData, in->shift_t, shift_n, out->status_flag.carry, &out->status_flag.carry);
+
+		//result = NOT(shifted);
+		result = ~result;
+		//R[d] = result;
+		out->Rd.regData = result;
+		cpu_set_reg(core, in->Rd.regId, result);
+		if (in->S != 0) {
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_C, out->status_flag.carry);
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_Z, (result == 0));
+			CPU_STATUS_BIT_UPDATE(status, CPU_STATUS_BITPOS_N, ((result & (1U << 31U)) != 0));
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_movt(struct TargetCore *core,  arm_movt_input_type *in, arm_movt_output_type *out)
 {
 	uint32 *status = cpu_get_status(core);

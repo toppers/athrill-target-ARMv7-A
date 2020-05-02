@@ -79,6 +79,47 @@ int arm_op_exec_arm_msr2_reg(struct TargetCore *core,  arm_msr2_reg_input_type *
 	out->status = *status;
 	return ret;
 }
+
+#define BIT_POS_AIF_A	2U
+#define BIT_POS_AIF_I	1U
+#define BIT_POS_AIF_F	0U
+
+int arm_op_exec_arm_cps(struct TargetCore *core,  arm_cps_input_type *in, arm_cps_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = cpu_get_status(core);
+	uint32 cpsr_val = *status;
+	out->next_address = core->pc + INST_ARM_SIZE;
+	if (in->enable) {
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_A)) {
+			CPU_STATUS_BIT_CLR(&cpsr_val, 8);
+		}
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_I)) {
+			CPU_STATUS_BIT_CLR(&cpsr_val, 7);
+		}
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_F)) {
+			CPU_STATUS_BIT_CLR(&cpsr_val, 6);
+		}
+	}
+	if (in->disable) {
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_A)) {
+			CPU_STATUS_BIT_SET(&cpsr_val, 8);
+		}
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_I)) {
+			CPU_STATUS_BIT_SET(&cpsr_val, 7);
+		}
+		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_F)) {
+			CPU_STATUS_BIT_SET(&cpsr_val, 6);
+		}
+	}
+	if (in->changemode) {
+		cpsr_val = ( (cpsr_val & (~0x1F)) | in->mode );
+	}
+	CPSRWriteByInstr(core, cpsr_val, 0b1111, FALSE);
+	out->status = *status;
+	return ret;
+}
+
 int arm_op_exec_arm_mrs(struct TargetCore *core,  arm_mrs_input_type *in, arm_mrs_output_type *out)
 {
 	uint32 *status = cpu_get_status(core);

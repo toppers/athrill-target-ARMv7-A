@@ -573,6 +573,18 @@ machine:
           op2: PseudoCodeCoprocOp2Type
           Rt: PseudoCodeRegisterDataType
 
+
+      - name: arm_cps
+        inputs:
+          enable: PseudoCodeEnableType
+          disable: PseudoCodeDisableType
+          changemode: PseudoCodeChangeModeType
+          mode: PseudoCodeCpsModeType
+          affect: PseudoCodeCpsAffectType
+        outputs:
+          status_flag: PseudoCodeStatusFlagType
+
+
       - name: arm_bic_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -1786,6 +1798,19 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_mrc
+ 
+  - name: arm_cps_a1
+    format: 1111|0001 0000|xx:imod|x:M|0|0000 000|xxx:AIF|0|xxxx x:mode
+    unmatch_condition: > 
+                         ((mode != 0) and (M == 0)) or 
+                         ( (imod[1] == 0b1) and (AIF == 0b000) ) or
+                         ( (imod[1] == 0b0) and (AIF != 0b000) ) or
+                         ( (imod == 0b00) and (M == 0) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_cps
+ 
+ 
  
   - name: arm_bic_imm_a1
     format: xxxx:cond|00|1|1110|x:S|xxxx:Rn|xxxx:Rd|xxxx xxxx xxxx:imm12

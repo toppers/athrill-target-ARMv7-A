@@ -1274,6 +1274,29 @@ PseudoCodeStatusType		status;
 typedef struct {
 	char* instrName;
 
+	PseudoCodeEnableType	enable;
+
+	PseudoCodeDisableType	disable;
+
+	PseudoCodeChangeModeType	changemode;
+
+	PseudoCodeCpsModeType	mode;
+
+	PseudoCodeCpsAffectType	affect;
+} arm_cps_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_cps_output_type;
+
+typedef struct {
+	char* instrName;
+
 	PseudoCodeConditionDataType	cond;
 
 	PseudoCodeUpdateStatusFlagType	S;

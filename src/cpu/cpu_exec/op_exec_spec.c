@@ -238,6 +238,31 @@ int arm_op_exec_arm_mrc2_a2(struct TargetCore *core)
 	return ret;
 }
 
+int arm_op_exec_arm_cps_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_cps_a1 *op = &core->decoded_code->code.arm_cps_a1;
+
+	arm_cps_input_type in;
+	arm_cps_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "CPS";
+	in.enable = (op->imod == 0b10);
+	in.disable = (op->imod == 0b11);
+	in.changemode = (op->M == 0b1);
+	in.affect = op->AIF;
+	in.mode = op->mode;
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_cps(core, &in, &out);
+	DBG_ARM_CPS(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
 
 int arm_op_exec_arm_rfe_a1(struct TargetCore *core)
 {

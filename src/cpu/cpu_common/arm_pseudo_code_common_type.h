@@ -352,6 +352,27 @@ typedef bool PseudoCodeWithZeroType;
 #define DBG_FMT_PseudoCodeWithZeroType		"with_zero(%s) "
 #define DBG_ARG_PseudoCodeWithZeroType(arg)	DbgBoolFlag(*(arg))
 
+typedef bool PseudoCodeEnableType;
+#define DBG_FMT_PseudoCodeEnableType		"enable(%s) "
+#define DBG_ARG_PseudoCodeEnableType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeDisableType;
+#define DBG_FMT_PseudoCodeDisableType		"disable(%s) "
+#define DBG_ARG_PseudoCodeDisableType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeChangeModeType;
+#define DBG_FMT_PseudoCodeChangeModeType		"changemode(%s) "
+#define DBG_ARG_PseudoCodeChangeModeType(arg)	DbgBoolFlag(*(arg))
+
+typedef bool PseudoCodeCpsModeType;
+#define DBG_FMT_PseudoCodeCpsModeType		"mode(0x%x) "
+#define DBG_ARG_PseudoCodeCpsModeType(arg)	(*(arg))
+
+typedef bool PseudoCodeCpsAffectType;
+#define DBG_FMT_PseudoCodeCpsAffectType		"affect(0x%x) "
+#define DBG_ARG_PseudoCodeCpsAffectType(arg)	(*(arg))
+
+
 typedef struct {
 	bool	overflow;
 	bool	carry;

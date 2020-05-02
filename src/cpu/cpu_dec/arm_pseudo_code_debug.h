@@ -2471,6 +2471,51 @@ static inline void DBG_ARM_MRC(TargetCoreType *core, arm_mrc_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_CPS(TargetCoreType *core, arm_cps_input_type *in, arm_cps_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeEnableType
+
+		DBG_FMT_PseudoCodeDisableType
+
+		DBG_FMT_PseudoCodeChangeModeType
+
+		DBG_FMT_PseudoCodeCpsModeType
+
+		DBG_FMT_PseudoCodeCpsAffectType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeEnableType(&in->enable),
+
+		DBG_ARG_PseudoCodeDisableType(&in->disable),
+
+		DBG_ARG_PseudoCodeChangeModeType(&in->changemode),
+
+		DBG_ARG_PseudoCodeCpsModeType(&in->mode),
+
+		DBG_ARG_PseudoCodeCpsAffectType(&in->affect),
+
+
+
+		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_BIC_IMM(TargetCoreType *core, arm_bic_imm_input_type *in, arm_bic_imm_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

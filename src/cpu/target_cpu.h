@@ -13,7 +13,7 @@
  *  Y: function
  *  Z: bug fix, small changes
  */
-#define ATHRILL_TARGET_VERSION "1.0.4"
+#define ATHRILL_TARGET_VERSION "1.0.5"
 
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL
 #define CPU_REG_PLUS_MAX	2147483647LL
@@ -476,9 +476,10 @@ static inline void BranchTo(uint32 *pc, uint32 address)
 	*pc = address;
 	return;
 }
+extern uint32 arm_exc_vector_base_addr;
 static inline uint32 ExcVectorBase(void)
 {
-	return 0x18004400;//TODO
+	return arm_exc_vector_base_addr;
 }
 extern bool TakePhysicalIRQException(uint32 coreId);
 

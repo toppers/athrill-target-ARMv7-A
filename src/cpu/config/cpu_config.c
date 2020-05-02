@@ -218,9 +218,12 @@ CoreIdType cpu_get_core_id(const TargetCoreType *core)
 {
 	return core->core_id;
 }
+
+uint32 arm_exc_vector_base_addr = 0x18004400;
 void cpu_set_core_pc(CoreIdType core_id, uint32 pc)
 {
 	virtual_cpu.cores[core_id].core.pc = pc;
+	arm_exc_vector_base_addr = pc;
 	return;
 }
 uint32 cpu_get_return_addr(const TargetCoreType *core)

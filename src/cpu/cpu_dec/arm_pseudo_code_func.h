@@ -6,6 +6,7 @@
 extern int arm_op_exec_arm_add_imm(struct TargetCore *core,  arm_add_imm_input_type *in, arm_add_imm_output_type *out);
 extern int arm_op_exec_arm_add_reg(struct TargetCore *core,  arm_add_reg_input_type *in, arm_add_reg_output_type *out);
 extern int arm_op_exec_arm_mla(struct TargetCore *core,  arm_mla_input_type *in, arm_mla_output_type *out);
+extern int arm_op_exec_arm_mls(struct TargetCore *core,  arm_mls_input_type *in, arm_mls_output_type *out);
 extern int arm_op_exec_arm_adc_reg(struct TargetCore *core,  arm_adc_reg_input_type *in, arm_adc_reg_output_type *out);
 extern int arm_op_exec_arm_adc_imm(struct TargetCore *core,  arm_adc_imm_input_type *in, arm_adc_imm_output_type *out);
 extern int arm_op_exec_arm_sub_imm(struct TargetCore *core,  arm_sub_imm_input_type *in, arm_sub_imm_output_type *out);

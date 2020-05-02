@@ -85,6 +85,31 @@ int arm_op_exec_arm_mla(struct TargetCore *core,  arm_mla_input_type *in, arm_ml
 	return ret;
 }
 
+int arm_op_exec_arm_mls(struct TargetCore *core,  arm_mls_input_type *in, arm_mls_output_type *out)
+{
+	int ret = 0;
+	sint64 result;
+	uint32 result32;
+	uint32 *status = cpu_get_status(core);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *status);
+	if (out->passed != FALSE) {
+		//operand1 = SInt(R[n]); // operand1 = UInt(R[n]) produces the same final results
+		sint64 operand1 = SInt(in->Rn.regData);
+		//operand2 = SInt(R[m]); // operand2 = UInt(R[m]) produces the same final results
+		sint64 operand2 = SInt(in->Rm.regData);
+		//addend = SInt(R[a]); // addend = UInt(R[a]) produces the same final results
+		sint64 addend = SInt(in->Ra.regData);
+
+		//result = addend - operand1 * operand2;
+		result = addend - (operand1 * operand2);
+		result32 =  (uint32)result;
+		out->Rd.regData = result32;
+		cpu_set_reg(core, out->Rd.regId, result32);
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_adc_imm(struct TargetCore *core,  arm_adc_imm_input_type *in, arm_adc_imm_output_type *out)
 {
 	int ret = 0;

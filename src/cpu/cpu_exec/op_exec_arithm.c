@@ -88,6 +88,36 @@ int arm_op_exec_arm_mla_a1(struct TargetCore *core)
 	return ret;
 }
 
+
+int arm_op_exec_arm_mls_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_mls_a1 *op = &core->decoded_code->code.arm_mls_a1;
+
+	arm_mls_input_type in;
+	arm_mls_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "MLS";
+	in.cond = op->cond;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Ra);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_mls(core, &in, &out);
+	DBG_ARM_MLS(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
 int arm_op_exec_arm_adc_imm_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_adc_imm_a1 *op = &core->decoded_code->code.arm_adc_imm_a1;

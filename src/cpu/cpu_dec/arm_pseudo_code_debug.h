@@ -163,6 +163,55 @@ static inline void DBG_ARM_MLA(TargetCoreType *core, arm_mla_input_type *in, arm
 	));
 }
 
+static inline void DBG_ARM_MLS(TargetCoreType *core, arm_mls_input_type *in, arm_mls_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeStatusFlagType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rd),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Ra),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rd),
+
+		DBG_ARG_PseudoCodeStatusFlagType(&out->status_flag),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_ADC_REG(TargetCoreType *core, arm_adc_reg_input_type *in, arm_adc_reg_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),

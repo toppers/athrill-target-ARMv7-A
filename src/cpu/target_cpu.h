@@ -13,7 +13,7 @@
  *  Y: function
  *  Z: bug fix, small changes
  */
-#define ATHRILL_TARGET_VERSION "1.0.8"
+#define ATHRILL_TARGET_VERSION "1.0.9"
 
 #define CPU_REG_UINT_MAX	0xFFFFFFFFULL
 #define CPU_REG_PLUS_MAX	2147483647LL

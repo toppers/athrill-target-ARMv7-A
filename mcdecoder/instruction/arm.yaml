@@ -1405,6 +1405,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_sub_reg
 
+  - name: arm_add_spreg_a1
+    format: xxxx:cond|00|0|0100|x:S|xxxx:Rn|xxxx:Rd|xxxx x:imm5|xx:type|0|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (Rn != 0b1101) )
+                        or ( (Rd == 0b1111) and (S == 1) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_add_reg
+
+
 
   - name: arm_cmp_reg_a1
     format: xxxx:cond|00|0|1010|1|xxxx:Rn|0000|xxxx x:imm5|xx:type|0|xxxx:Rm

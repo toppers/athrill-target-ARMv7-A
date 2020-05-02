@@ -482,6 +482,35 @@ int arm_op_exec_arm_sub_spimm_a1(struct TargetCore *core)
 }
 
 
+int arm_op_exec_arm_sub_spreg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_sub_spreg_a1 *op = &core->decoded_code->code.arm_sub_spreg_a1;
+
+	arm_sub_reg_input_type in;
+	arm_sub_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "SUB";
+	in.cond = op->cond;
+
+	in.S = op->S;
+	OP_SET_REG(core, &in, op, Rd);
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rm);
+	DecodeImmShift(op->type, op->imm5, &in.shift_t, &in.shift_n);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	OP_SET_REG(core, &out, op, Rd);
+	cpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_sub_reg(core, &in, &out);
+	DBG_ARM_SUB_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 int arm_op_exec_arm_rsb_reg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_rsb_reg_a1 *op = &core->decoded_code->code.arm_rsb_reg_a1;

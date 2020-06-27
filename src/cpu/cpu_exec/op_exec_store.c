@@ -221,7 +221,6 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 	arm_str_reg_output_type out;
 	out.status = *cpu_get_status(core);
 
-	//TODO arguments setting..
 	in.instrName = "STRB";
 	in.cond = op->cond;
 	in.index = (op->P != 0);
@@ -247,6 +246,38 @@ int arm_op_exec_arm_strb_reg_a1(struct TargetCore *core)
 	out.next_address = core->pc;
 	out.passed = FALSE;
 	
+	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
+	DBG_ARM_STR_REG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+int arm_op_exec_arm_strh_reg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_strh_reg_a1 *op = &core->decoded_code->code.arm_strh_reg_a1;
+
+	arm_str_reg_input_type in;
+	arm_str_reg_output_type out;
+	out.status = *cpu_get_status(core);
+
+	in.instrName = "STRH";
+	in.cond = op->cond;
+	in.size = 2U;
+	in.sign = FALSE;
+	in.index = (op->P != 0);
+	in.add = (op->U != 0);
+	in.wback = ((op->P == 0) || (op->W != 0));
+
+	in.shift_t = SRType_LSL;
+	in.shift_n = 0U;
+	OP_SET_REG(core, &in, op, Rn);
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REG(core, &in, op, Rm);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
 	int ret = arm_op_exec_arm_str_reg(core, &in, &out);
 	DBG_ARM_STR_REG(core, &in, &out);
 

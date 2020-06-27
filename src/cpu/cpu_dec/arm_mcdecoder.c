@@ -1303,6 +1303,60 @@ typedef struct {
         
     
 
+    /* arm_strh_reg_a1 */
+    #define OP_FB_MASK_arm_strh_reg_a1 (0x0e500ff0l) /* fixed bits mask */
+    #define OP_FB_arm_strh_reg_a1 (0x000000b0l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_strh_reg_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'P' */
+            #define OP_SF_MASK_arm_strh_reg_a1_P_0 (0x01000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_P_0 (24) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_P_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'U' */
+            #define OP_SF_MASK_arm_strh_reg_a1_U_0 (0x00800000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_U_0 (23) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_U_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'W' */
+            #define OP_SF_MASK_arm_strh_reg_a1_W_0 (0x00200000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_W_0 (21) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_W_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rn' */
+            #define OP_SF_MASK_arm_strh_reg_a1_Rn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_Rn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_Rn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rt' */
+            #define OP_SF_MASK_arm_strh_reg_a1_Rt_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_Rt_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_Rt_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Rm' */
+            #define OP_SF_MASK_arm_strh_reg_a1_Rm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_strh_reg_a1_Rm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_strh_reg_a1_Rm_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_strd_imm_a1 */
     #define OP_FB_MASK_arm_strd_imm_a1 (0x0e5000f0l) /* fixed bits mask */
     #define OP_FB_arm_strd_imm_a1 (0x004000f0l) /* fixed bits */
@@ -5585,6 +5639,8 @@ static arm_uint32 setbit_count(arm_uint32 value);
         static int decision_node_code32x1_192(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_193(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_194(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_195(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_196(OpDecodeContext *context, arm_uint32 code);
 
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
@@ -5620,6 +5676,7 @@ static arm_uint32 setbit_count(arm_uint32 value);
     static int op_parse_arm_str_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_strb_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_strh_imm_a1(OpDecodeContext *context);
+    static int op_parse_arm_strh_reg_a1(OpDecodeContext *context);
     static int op_parse_arm_strd_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_str_reg_a1(OpDecodeContext *context);
     static int op_parse_arm_strb_reg_a1(OpDecodeContext *context);
@@ -7327,6 +7384,76 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                 (context->decoded_code->code.arm_strh_imm_a1.cond == 15)
          || ((context->decoded_code->code.arm_strh_imm_a1.P == 0)
          && (context->decoded_code->code.arm_strh_imm_a1.W == 1)
+        )
+        
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_strh_reg_a1 */
+    static int op_parse_arm_strh_reg_a1(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_strh_reg_a1) != OP_FB_arm_strh_reg_a1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_strh_reg_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_strh_reg_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_strh_reg_a1;
+        
+            context->decoded_code->code.arm_strh_reg_a1.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_cond_0) >> OP_SF_EBII_arm_strh_reg_a1_cond_0) << OP_SF_EBIF_arm_strh_reg_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.P =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_P_0) >> OP_SF_EBII_arm_strh_reg_a1_P_0) << OP_SF_EBIF_arm_strh_reg_a1_P_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.U =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_U_0) >> OP_SF_EBII_arm_strh_reg_a1_U_0) << OP_SF_EBIF_arm_strh_reg_a1_U_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.W =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_W_0) >> OP_SF_EBII_arm_strh_reg_a1_W_0) << OP_SF_EBIF_arm_strh_reg_a1_W_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.Rn =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_Rn_0) >> OP_SF_EBII_arm_strh_reg_a1_Rn_0) << OP_SF_EBIF_arm_strh_reg_a1_Rn_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.Rt =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_Rt_0) >> OP_SF_EBII_arm_strh_reg_a1_Rt_0) << OP_SF_EBIF_arm_strh_reg_a1_Rt_0);
+            
+        
+            context->decoded_code->code.arm_strh_reg_a1.Rm =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_strh_reg_a1_Rm_0) >> OP_SF_EBII_arm_strh_reg_a1_Rm_0) << OP_SF_EBIF_arm_strh_reg_a1_Rm_0);
+            
+        
+        
+        
+            if (
+                (context->decoded_code->code.arm_strh_reg_a1.cond == 15)
+         || ((context->decoded_code->code.arm_strh_reg_a1.P == 0)
+         && (context->decoded_code->code.arm_strh_reg_a1.W == 1)
+        )
+         || ((context->decoded_code->code.arm_strh_reg_a1.Rt == 15)
+         || (context->decoded_code->code.arm_strh_reg_a1.Rm == 15)
+        )
+         || (((context->decoded_code->code.arm_strh_reg_a1.P == 0)
+         || (context->decoded_code->code.arm_strh_reg_a1.W == 1)
+        )
+         && ((context->decoded_code->code.arm_strh_reg_a1.Rn == 15)
+         || (context->decoded_code->code.arm_strh_reg_a1.Rn == context->decoded_code->code.arm_strh_reg_a1.Rt)
+        )
         )
         
             ) {
@@ -12232,37 +12359,37 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             }
                             break;
                         case 0x02000000:
-                            if (decision_node_code32x1_70(context, code) == 0) {
+                            if (decision_node_code32x1_72(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x04000000:
-                            if (decision_node_code32x1_110(context, code) == 0) {
+                            if (decision_node_code32x1_112(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x06000000:
-                            if (decision_node_code32x1_120(context, code) == 0) {
+                            if (decision_node_code32x1_122(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x08000000:
-                            if (decision_node_code32x1_140(context, code) == 0) {
+                            if (decision_node_code32x1_142(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x0a000000:
-                            if (decision_node_code32x1_154(context, code) == 0) {
+                            if (decision_node_code32x1_156(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x0c000000:
-                            if (decision_node_code32x1_158(context, code) == 0) {
+                            if (decision_node_code32x1_160(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x0e000000:
-                            if (decision_node_code32x1_167(context, code) == 0) {
+                            if (decision_node_code32x1_169(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -12286,7 +12413,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             break;
                 }
             
-                if (decision_node_code32x1_69(context, code) == 0) {
+                if (decision_node_code32x1_71(context, code) == 0) {
                     return 0;
                 }
             return 1;
@@ -12737,12 +12864,12 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             }
                             break;
                         case 0x00400000:
-                            if (decision_node_code32x1_54(context, code) == 0) {
+                            if (decision_node_code32x1_56(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00400080:
-                            if (decision_node_code32x1_58(context, code) == 0) {
+                            if (decision_node_code32x1_60(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -12890,7 +13017,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             }
                             break;
                         case 0x00000060:
-                            if (decision_node_code32x1_53(context, code) == 0) {
+                            if (decision_node_code32x1_55(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -12947,15 +13074,25 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_52(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_ldrh_reg_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00100f00) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_53(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_54(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_53(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_ldrsh_reg_a1(context) == 0) {
+                if (op_parse_arm_strh_reg_a1(context) == 0) {
                     return 0;
                 }
             
@@ -12963,30 +13100,15 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_54(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x01a00000) {
-                    
-                        case 0x01200000:
-                            if (decision_node_code32x1_55(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01800000:
-                            if (decision_node_code32x1_56(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01a00000:
-                            if (decision_node_code32x1_57(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_ldrh_reg_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_55(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_clz_a1(context) == 0) {
+                if (op_parse_arm_ldrsh_reg_a1(context) == 0) {
                     return 0;
                 }
             
@@ -12994,15 +13116,30 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_56(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_bic_shift_reg_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x01a00000) {
+                    
+                        case 0x01200000:
+                            if (decision_node_code32x1_57(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_58(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01a00000:
+                            if (decision_node_code32x1_59(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_57(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_mvn_shift_reg_a1(context) == 0) {
+                if (op_parse_arm_clz_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13010,118 +13147,40 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_58(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00000060) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_59(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000020:
-                            if (decision_node_code32x1_62(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000040:
-                            if (decision_node_code32x1_65(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000060:
-                            if (decision_node_code32x1_66(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_bic_shift_reg_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_59(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x01a00000) {
-                    
-                        case 0x00200000:
-                            if (decision_node_code32x1_60(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00800000:
-                            if (decision_node_code32x1_61(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_mvn_shift_reg_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_60(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_mls_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_61(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_smull_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_62(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00100000) {
+            switch (code & 0x00000060) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_63(context, code) == 0) {
+                            if (decision_node_code32x1_61(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00100000:
+                        case 0x00000020:
                             if (decision_node_code32x1_64(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_63(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_strh_imm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_64(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_ldrh_imm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_65(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_ldrd_imm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_66(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00100000) {
-                    
-                        case 0x00000000:
+                        case 0x00000040:
                             if (decision_node_code32x1_67(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00100000:
+                        case 0x00000060:
                             if (decision_node_code32x1_68(context, code) == 0) {
                                 return 0;
                             }
@@ -13130,9 +13189,77 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
+        static int decision_node_code32x1_61(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01a00000) {
+                    
+                        case 0x00200000:
+                            if (decision_node_code32x1_62(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00800000:
+                            if (decision_node_code32x1_63(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_62(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mls_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_63(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_smull_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_64(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_65(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_66(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_65(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_strh_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_66(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_ldrh_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
         static int decision_node_code32x1_67(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_strd_imm_a1(context) == 0) {
+                if (op_parse_arm_ldrd_imm_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13140,15 +13267,25 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_68(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_ldrsh_imm_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_69(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_70(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_69(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_cps_a1(context) == 0) {
+                if (op_parse_arm_strd_imm_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13156,147 +13293,71 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_70(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00a00000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_71(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00200000:
-                            if (decision_node_code32x1_82(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00800000:
-                            if (decision_node_code32x1_96(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00a00000:
-                            if (decision_node_code32x1_105(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_109(context, code) == 0) {
+                if (op_parse_arm_ldrsh_imm_a1(context) == 0) {
                     return 0;
                 }
+            
             return 1;
         }
         static int decision_node_code32x1_71(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x01400000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_72(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_73(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000000:
-                            if (decision_node_code32x1_76(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01400000:
-                            if (decision_node_code32x1_79(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_cps_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_72(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_and_imm_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00a00000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_73(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00200000:
+                            if (decision_node_code32x1_84(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00800000:
+                            if (decision_node_code32x1_98(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00a00000:
+                            if (decision_node_code32x1_107(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
+                if (decision_node_code32x1_111(context, code) == 0) {
+                    return 0;
+                }
             return 1;
         }
         static int decision_node_code32x1_73(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x000f0000) {
+            switch (code & 0x01400000) {
                     
-                        case 0x000d0000:
+                        case 0x00000000:
                             if (decision_node_code32x1_74(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                }
-            
-                if (decision_node_code32x1_75(context, code) == 0) {
-                    return 0;
-                }
-            return 1;
-        }
-        static int decision_node_code32x1_74(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_sub_spimm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_75(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_sub_imm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_76(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00100000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_77(context, code) == 0) {
+                        case 0x00400000:
+                            if (decision_node_code32x1_75(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00100000:
+                        case 0x01000000:
                             if (decision_node_code32x1_78(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_77(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_mov_imm_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_78(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_tst_imm_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_79(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00100000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_80(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00100000:
+                        case 0x01400000:
                             if (decision_node_code32x1_81(context, code) == 0) {
                                 return 0;
                             }
@@ -13305,9 +13366,75 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
+        static int decision_node_code32x1_74(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_and_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_75(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000f0000) {
+                    
+                        case 0x000d0000:
+                            if (decision_node_code32x1_76(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_77(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_76(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sub_spimm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_77(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_sub_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_78(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_79(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_80(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_79(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mov_imm_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
         static int decision_node_code32x1_80(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_movt_a1(context) == 0) {
+                if (op_parse_arm_tst_imm_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13315,41 +13442,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_81(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_cmp_imm_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_82(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_83(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_82(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x01000000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_83(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000000:
-                            if (decision_node_code32x1_86(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_movt_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_83(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00400000) {
+                if (op_parse_arm_cmp_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_84(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01000000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_84(context, code) == 0) {
+                            if (decision_node_code32x1_85(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_85(context, code) == 0) {
+                        case 0x01000000:
+                            if (decision_node_code32x1_88(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13357,7 +13492,25 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_84(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_85(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_86(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_87(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_86(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_eor_imm_a1(context) == 0) {
                     return 0;
@@ -13365,7 +13518,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_85(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_87(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_rsb_imm_a1(context) == 0) {
                     return 0;
@@ -13373,66 +13526,34 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_86(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_88(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x0010f000) {
                     
                         case 0x0000f000:
-                            if (decision_node_code32x1_87(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00100000:
-                            if (decision_node_code32x1_93(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_87(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x000c0fff) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_88(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000003:
                             if (decision_node_code32x1_89(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                }
-            
-                if (decision_node_code32x1_90(context, code) == 0) {
-                    return 0;
-                }
-            return 1;
-        }
-        static int decision_node_code32x1_88(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_nop_a1(context) == 0) {
-                    return 0;
+                        case 0x00100000:
+                            if (decision_node_code32x1_95(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_89(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_wfi_a1(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_90(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00430000) {
+            switch (code & 0x000c0fff) {
                     
                         case 0x00000000:
+                            if (decision_node_code32x1_90(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000003:
                             if (decision_node_code32x1_91(context, code) == 0) {
                                 return 0;
                             }
@@ -13444,9 +13565,17 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                 }
             return 1;
         }
+        static int decision_node_code32x1_90(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_nop_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
         static int decision_node_code32x1_91(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_msr_imm_a1(context) == 0) {
+                if (op_parse_arm_wfi_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13454,33 +13583,31 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_92(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_msr2_imm_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00430000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_93(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
+                if (decision_node_code32x1_94(context, code) == 0) {
+                    return 0;
+                }
             return 1;
         }
         static int decision_node_code32x1_93(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00400000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_94(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_95(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_msr_imm_a1(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_94(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_teq_imm_a1(context) == 0) {
+                if (op_parse_arm_msr2_imm_a1(context) == 0) {
                     return 0;
                 }
             
@@ -13488,65 +13615,91 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_95(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_cmn_imm_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00400000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_96(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_97(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_96(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x01400000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_97(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_101(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000000:
-                            if (decision_node_code32x1_102(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01400000:
-                            if (decision_node_code32x1_103(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_104(context, code) == 0) {
+                if (op_parse_arm_teq_imm_a1(context) == 0) {
                     return 0;
                 }
+            
             return 1;
         }
         static int decision_node_code32x1_97(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x000f0000) {
+                if (op_parse_arm_cmn_imm_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_98(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01400000) {
                     
-                        case 0x000d0000:
-                            if (decision_node_code32x1_98(context, code) == 0) {
+                        case 0x00000000:
+                            if (decision_node_code32x1_99(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x000f0000:
-                            if (decision_node_code32x1_99(context, code) == 0) {
+                        case 0x00400000:
+                            if (decision_node_code32x1_103(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_104(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01400000:
+                            if (decision_node_code32x1_105(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_100(context, code) == 0) {
+                if (decision_node_code32x1_106(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_98(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_99(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x000f0000) {
+                    
+                        case 0x000d0000:
+                            if (decision_node_code32x1_100(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x000f0000:
+                            if (decision_node_code32x1_101(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_102(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_100(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_add_spimm_a1(context) == 0) {
                     return 0;
@@ -13554,7 +13707,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_99(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_101(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_adr_a1(context) == 0) {
                     return 0;
@@ -13562,7 +13715,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_100(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_102(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_add_imm_a1(context) == 0) {
                     return 0;
@@ -13570,7 +13723,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_101(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_103(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_sbc_imm_a1(context) == 0) {
                     return 0;
@@ -13578,7 +13731,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_102(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_104(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_orr_imm_a1(context) == 0) {
                     return 0;
@@ -13586,7 +13739,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_103(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_105(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_bic_imm_a1(context) == 0) {
                     return 0;
@@ -13594,7 +13747,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_104(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_106(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vmov_imm_a1(context) == 0) {
                     return 0;
@@ -13602,22 +13755,22 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_105(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_107(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01400000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_106(context, code) == 0) {
+                            if (decision_node_code32x1_108(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x01000000:
-                            if (decision_node_code32x1_107(context, code) == 0) {
+                            if (decision_node_code32x1_109(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x01400000:
-                            if (decision_node_code32x1_108(context, code) == 0) {
+                            if (decision_node_code32x1_110(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13625,7 +13778,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_106(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_108(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_adc_imm_a1(context) == 0) {
                     return 0;
@@ -13633,7 +13786,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_107(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_109(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mov_imm_a1(context) == 0) {
                     return 0;
@@ -13641,7 +13794,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_108(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mvn_imm_a1(context) == 0) {
                     return 0;
@@ -13649,7 +13802,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_109(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_subs_pclr_a1(context) == 0) {
                     return 0;
@@ -13657,27 +13810,27 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_110(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00500000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_111(context, code) == 0) {
+                            if (decision_node_code32x1_113(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00100000:
-                            if (decision_node_code32x1_114(context, code) == 0) {
+                            if (decision_node_code32x1_116(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00400000:
-                            if (decision_node_code32x1_118(context, code) == 0) {
+                            if (decision_node_code32x1_120(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00500000:
-                            if (decision_node_code32x1_119(context, code) == 0) {
+                            if (decision_node_code32x1_121(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13685,23 +13838,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_111(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_113(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01af0fff) {
                     
                         case 0x012d0004:
-                            if (decision_node_code32x1_112(context, code) == 0) {
+                            if (decision_node_code32x1_114(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_113(context, code) == 0) {
+                if (decision_node_code32x1_115(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_112(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_114(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_push_a2(context) == 0) {
                     return 0;
@@ -13709,7 +13862,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_113(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_115(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_str_imm_a1(context) == 0) {
                     return 0;
@@ -13717,28 +13870,28 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_114(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_116(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x000f0000) {
                     
                         case 0x000d0000:
-                            if (decision_node_code32x1_115(context, code) == 0) {
+                            if (decision_node_code32x1_117(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x000f0000:
-                            if (decision_node_code32x1_116(context, code) == 0) {
+                            if (decision_node_code32x1_118(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_117(context, code) == 0) {
+                if (decision_node_code32x1_119(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_115(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_117(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_pop_a2(context) == 0) {
                     return 0;
@@ -13746,7 +13899,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_116(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_118(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldr_literal_a1(context) == 0) {
                     return 0;
@@ -13754,7 +13907,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_117(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_119(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldr_imm_a1(context) == 0) {
                     return 0;
@@ -13762,7 +13915,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_118(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_120(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_strb_imm_a1(context) == 0) {
                     return 0;
@@ -13770,7 +13923,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_119(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_121(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldrb_imm_a1(context) == 0) {
                     return 0;
@@ -13778,53 +13931,53 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_120(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_122(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00400010) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_121(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000010:
-                            if (decision_node_code32x1_124(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_127(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400010:
-                            if (decision_node_code32x1_130(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_121(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00100000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_122(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00100000:
                             if (decision_node_code32x1_123(context, code) == 0) {
                                 return 0;
                             }
                             break;
+                        case 0x00000010:
+                            if (decision_node_code32x1_126(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_129(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400010:
+                            if (decision_node_code32x1_132(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
-        static int decision_node_code32x1_122(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_123(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00100000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_124(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_125(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_124(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_str_reg_a1(context) == 0) {
                     return 0;
@@ -13832,7 +13985,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_123(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_125(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldr_reg_a1(context) == 0) {
                     return 0;
@@ -13840,17 +13993,17 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_124(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_126(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01bf03e0) {
                     
                         case 0x00af0060:
-                            if (decision_node_code32x1_125(context, code) == 0) {
+                            if (decision_node_code32x1_127(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00bf0060:
-                            if (decision_node_code32x1_126(context, code) == 0) {
+                            if (decision_node_code32x1_128(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13858,7 +14011,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_125(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_127(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_sxtb_a1(context) == 0) {
                     return 0;
@@ -13866,7 +14019,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_126(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_128(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_sxth_a1(context) == 0) {
                     return 0;
@@ -13874,17 +14027,17 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_127(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_129(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00100000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_128(context, code) == 0) {
+                            if (decision_node_code32x1_130(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00100000:
-                            if (decision_node_code32x1_129(context, code) == 0) {
+                            if (decision_node_code32x1_131(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13892,7 +14045,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_128(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_130(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_strb_reg_a1(context) == 0) {
                     return 0;
@@ -13900,7 +14053,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_129(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_131(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldrb_reg_a1(context) == 0) {
                     return 0;
@@ -13908,53 +14061,53 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_130(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_132(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01a00040) {
                     
                         case 0x00a00040:
-                            if (decision_node_code32x1_131(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000000:
-                            if (decision_node_code32x1_134(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01800000:
-                            if (decision_node_code32x1_135(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01a00040:
-                            if (decision_node_code32x1_139(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_131(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x001f03a0) {
-                    
-                        case 0x000f0020:
-                            if (decision_node_code32x1_132(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x001f0020:
                             if (decision_node_code32x1_133(context, code) == 0) {
                                 return 0;
                             }
                             break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_136(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_137(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01a00040:
+                            if (decision_node_code32x1_141(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
-        static int decision_node_code32x1_132(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_133(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x001f03a0) {
+                    
+                        case 0x000f0020:
+                            if (decision_node_code32x1_134(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x001f0020:
+                            if (decision_node_code32x1_135(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_134(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_uxtb_a1(context) == 0) {
                     return 0;
@@ -13962,7 +14115,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_133(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_135(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_uxth_a1(context) == 0) {
                     return 0;
@@ -13970,7 +14123,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_134(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_136(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_smmul_a1(context) == 0) {
                     return 0;
@@ -13978,12 +14131,12 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_135(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_137(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00000020) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_136(context, code) == 0) {
+                            if (decision_node_code32x1_138(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -13991,23 +14144,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_136(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_138(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x0000000f) {
                     
                         case 0x0000000f:
-                            if (decision_node_code32x1_137(context, code) == 0) {
+                            if (decision_node_code32x1_139(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_138(context, code) == 0) {
+                if (decision_node_code32x1_140(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_137(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_139(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_bfc_a1(context) == 0) {
                     return 0;
@@ -14015,7 +14168,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_138(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_140(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_bfi_a1(context) == 0) {
                     return 0;
@@ -14023,7 +14176,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_139(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_141(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ubfx_a1(context) == 0) {
                     return 0;
@@ -14031,45 +14184,22 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_140(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_142(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00500000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_141(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00100000:
-                            if (decision_node_code32x1_147(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00400000:
-                            if (decision_node_code32x1_153(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_141(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x01800000) {
-                    
-                        case 0x00800000:
-                            if (decision_node_code32x1_142(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000000:
                             if (decision_node_code32x1_143(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01800000:
-                            if (decision_node_code32x1_146(context, code) == 0) {
+                        case 0x00100000:
+                            if (decision_node_code32x1_149(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00400000:
+                            if (decision_node_code32x1_155(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -14077,7 +14207,30 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_142(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_143(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x01800000) {
+                    
+                        case 0x00800000:
+                            if (decision_node_code32x1_144(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01000000:
+                            if (decision_node_code32x1_145(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01800000:
+                            if (decision_node_code32x1_148(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_144(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_stm_a1(context) == 0) {
                     return 0;
@@ -14085,23 +14238,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_143(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_145(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x002f0000) {
                     
                         case 0x002d0000:
-                            if (decision_node_code32x1_144(context, code) == 0) {
+                            if (decision_node_code32x1_146(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_145(context, code) == 0) {
+                if (decision_node_code32x1_147(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_144(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_146(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_push_a1(context) == 0) {
                     return 0;
@@ -14109,7 +14262,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_145(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_147(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_stmfd_a1(context) == 0) {
                     return 0;
@@ -14117,7 +14270,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_146(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_148(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_stmib_a1(context) == 0) {
                     return 0;
@@ -14125,16 +14278,32 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_147(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_149(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01800000) {
                     
                         case 0x00800000:
-                            if (decision_node_code32x1_148(context, code) == 0) {
+                            if (decision_node_code32x1_150(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x01800000:
+                            if (decision_node_code32x1_153(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_154(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_150(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x002f0000) {
+                    
+                        case 0x002d0000:
                             if (decision_node_code32x1_151(context, code) == 0) {
                                 return 0;
                             }
@@ -14146,23 +14315,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                 }
             return 1;
         }
-        static int decision_node_code32x1_148(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x002f0000) {
-                    
-                        case 0x002d0000:
-                            if (decision_node_code32x1_149(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_150(context, code) == 0) {
-                    return 0;
-                }
-            return 1;
-        }
-        static int decision_node_code32x1_149(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_151(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_pop_a1(context) == 0) {
                     return 0;
@@ -14170,7 +14323,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_150(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_152(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldm_a1(context) == 0) {
                     return 0;
@@ -14178,7 +14331,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_151(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_153(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_ldmib_a1(context) == 0) {
                     return 0;
@@ -14186,7 +14339,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_152(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_154(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_rfe_a1(context) == 0) {
                     return 0;
@@ -14194,7 +14347,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_153(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_155(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_srs_a1(context) == 0) {
                     return 0;
@@ -14202,28 +14355,28 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_154(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_156(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01000000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_155(context, code) == 0) {
+                            if (decision_node_code32x1_157(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x01000000:
-                            if (decision_node_code32x1_156(context, code) == 0) {
+                            if (decision_node_code32x1_158(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_157(context, code) == 0) {
+                if (decision_node_code32x1_159(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_155(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_157(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_b_a1(context) == 0) {
                     return 0;
@@ -14231,7 +14384,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_156(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_158(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_bl_a1(context) == 0) {
                     return 0;
@@ -14239,7 +14392,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_157(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_159(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_blx_a2(context) == 0) {
                     return 0;
@@ -14247,47 +14400,47 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_158(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_160(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01300f00) {
                     
                         case 0x00300a00:
-                            if (decision_node_code32x1_159(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00300b00:
-                            if (decision_node_code32x1_160(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x01000a00:
                             if (decision_node_code32x1_161(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01000b00:
+                        case 0x00300b00:
                             if (decision_node_code32x1_162(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01100a00:
+                        case 0x01000a00:
                             if (decision_node_code32x1_163(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01100b00:
+                        case 0x01000b00:
                             if (decision_node_code32x1_164(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01200a00:
+                        case 0x01100a00:
                             if (decision_node_code32x1_165(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x01200b00:
+                        case 0x01100b00:
                             if (decision_node_code32x1_166(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01200a00:
+                            if (decision_node_code32x1_167(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x01200b00:
+                            if (decision_node_code32x1_168(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -14295,7 +14448,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_159(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_161(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vpop_a2(context) == 0) {
                     return 0;
@@ -14303,7 +14456,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_160(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_162(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vpop_a1(context) == 0) {
                     return 0;
@@ -14311,7 +14464,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_161(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_163(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vstr_a2(context) == 0) {
                     return 0;
@@ -14319,7 +14472,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_162(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_164(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vstr_a1(context) == 0) {
                     return 0;
@@ -14327,7 +14480,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_163(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_165(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vldr_a2(context) == 0) {
                     return 0;
@@ -14335,7 +14488,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_164(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_166(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vldr_a1(context) == 0) {
                     return 0;
@@ -14343,7 +14496,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_165(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_167(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vpush_a2(context) == 0) {
                     return 0;
@@ -14351,7 +14504,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_166(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_168(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vpush_a1(context) == 0) {
                     return 0;
@@ -14359,125 +14512,49 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_167(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_169(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x01000010) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_168(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000010:
-                            if (decision_node_code32x1_185(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_168(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00b00e00) {
-                    
-                        case 0x00000a00:
-                            if (decision_node_code32x1_169(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00200a00:
                             if (decision_node_code32x1_170(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00300a00:
-                            if (decision_node_code32x1_171(context, code) == 0) {
+                        case 0x00000010:
+                            if (decision_node_code32x1_187(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00800a00:
-                            if (decision_node_code32x1_174(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00b00a00:
-                            if (decision_node_code32x1_175(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_169(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_vmla_a2(context) == 0) {
-                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_170(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmul_freg_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_171(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00000040) {
+            switch (code & 0x00b00e00) {
                     
-                        case 0x00000000:
+                        case 0x00000a00:
+                            if (decision_node_code32x1_171(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00200a00:
                             if (decision_node_code32x1_172(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00000040:
+                        case 0x00300a00:
                             if (decision_node_code32x1_173(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_172(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_vadd_freg_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_173(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_vsub_freg_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_174(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_vdiv_freg_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_175(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00000040) {
-                    
-                        case 0x00000000:
+                        case 0x00800a00:
                             if (decision_node_code32x1_176(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00000040:
+                        case 0x00b00a00:
                             if (decision_node_code32x1_177(context, code) == 0) {
                                 return 0;
                             }
@@ -14486,9 +14563,59 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
+        static int decision_node_code32x1_171(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vmla_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_172(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vmul_freg_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_173(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00000040) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_174(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000040:
+                            if (decision_node_code32x1_175(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_174(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vadd_freg_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_175(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vsub_freg_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
         static int decision_node_code32x1_176(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmov_imm_a2(context) == 0) {
+                if (op_parse_arm_vdiv_freg_a2(context) == 0) {
                     return 0;
                 }
             
@@ -14496,15 +14623,15 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_177(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00080000) {
+            switch (code & 0x00000040) {
                     
                         case 0x00000000:
                             if (decision_node_code32x1_178(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00080000:
-                            if (decision_node_code32x1_184(context, code) == 0) {
+                        case 0x00000040:
+                            if (decision_node_code32x1_179(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -14514,30 +14641,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_178(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00070000) {
+                if (op_parse_arm_vmov_imm_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_179(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00080000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_179(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00010000:
                             if (decision_node_code32x1_180(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00040000:
-                            if (decision_node_code32x1_181(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00050000:
-                            if (decision_node_code32x1_182(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00070000:
-                            if (decision_node_code32x1_183(context, code) == 0) {
+                        case 0x00080000:
+                            if (decision_node_code32x1_186(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -14545,7 +14665,40 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_179(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_180(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00070000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_181(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00010000:
+                            if (decision_node_code32x1_182(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00040000:
+                            if (decision_node_code32x1_183(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00050000:
+                            if (decision_node_code32x1_184(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00070000:
+                            if (decision_node_code32x1_185(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_181(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vmov_reg_a2(context) == 0) {
                     return 0;
@@ -14553,7 +14706,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_180(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_182(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vneg_a2(context) == 0) {
                     return 0;
@@ -14561,7 +14714,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_181(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_183(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vcmp_a1(context) == 0) {
                     return 0;
@@ -14569,7 +14722,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_182(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_184(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vcmp_a2(context) == 0) {
                     return 0;
@@ -14577,7 +14730,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_183(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_185(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vcvt_df_a1(context) == 0) {
                     return 0;
@@ -14585,7 +14738,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_184(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_186(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vcvt_fi_a1(context) == 0) {
                     return 0;
@@ -14593,44 +14746,44 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_185(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_187(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0x00100000) {
                     
                         case 0x00000000:
-                            if (decision_node_code32x1_186(context, code) == 0) {
+                            if (decision_node_code32x1_188(context, code) == 0) {
                                 return 0;
                             }
                             break;
                         case 0x00100000:
+                            if (decision_node_code32x1_191(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_196(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_188(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0xf0000000) {
+                    
+                        case 0xf0000000:
                             if (decision_node_code32x1_189(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_194(context, code) == 0) {
+                if (decision_node_code32x1_190(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_186(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0xf0000000) {
-                    
-                        case 0xf0000000:
-                            if (decision_node_code32x1_187(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_188(context, code) == 0) {
-                    return 0;
-                }
-            return 1;
-        }
-        static int decision_node_code32x1_187(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_189(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mcr2_a2(context) == 0) {
                     return 0;
@@ -14638,7 +14791,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_188(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_190(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mcr_a1(context) == 0) {
                     return 0;
@@ -14646,35 +14799,11 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_189(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_191(OpDecodeContext *context, arm_uint32 code) {
             
             switch (code & 0xf0000000) {
                     
                         case 0xf0000000:
-                            if (decision_node_code32x1_190(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_191(context, code) == 0) {
-                    return 0;
-                }
-            return 1;
-        }
-        static int decision_node_code32x1_190(OpDecodeContext *context, arm_uint32 code) {
-            
-                if (op_parse_arm_mrc2_a2(context) == 0) {
-                    return 0;
-                }
-            
-            return 1;
-        }
-        static int decision_node_code32x1_191(OpDecodeContext *context, arm_uint32 code) {
-            
-            switch (code & 0x00ef0fef) {
-                    
-                        case 0x00e10a00:
                             if (decision_node_code32x1_192(context, code) == 0) {
                                 return 0;
                             }
@@ -14688,7 +14817,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_192(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmrs_a1(context) == 0) {
+                if (op_parse_arm_mrc2_a2(context) == 0) {
                     return 0;
                 }
             
@@ -14696,13 +14825,37 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_193(OpDecodeContext *context, arm_uint32 code) {
             
+            switch (code & 0x00ef0fef) {
+                    
+                        case 0x00e10a00:
+                            if (decision_node_code32x1_194(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_195(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_194(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_vmrs_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_195(OpDecodeContext *context, arm_uint32 code) {
+            
                 if (op_parse_arm_mrc_a1(context) == 0) {
                     return 0;
                 }
             
             return 1;
         }
-        static int decision_node_code32x1_194(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_196(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vmov_sreg_a1(context) == 0) {
                     return 0;
@@ -14800,6 +14953,8 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_strb_imm_a1 },		/* arm_strb_imm_a1 */
     
 	{ 1, arm_op_exec_arm_strh_imm_a1 },		/* arm_strh_imm_a1 */
+    
+	{ 1, arm_op_exec_arm_strh_reg_a1 },		/* arm_strh_reg_a1 */
     
 	{ 1, arm_op_exec_arm_strd_imm_a1 },		/* arm_strd_imm_a1 */
     

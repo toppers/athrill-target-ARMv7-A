@@ -1557,6 +1557,17 @@ instructions:
       clocks: 10
       pseudo_code: arm_str_imm
 
+  - name: arm_strh_reg_a1
+    format: xxxx:cond|000|x:P|x:U|0|x:W|0|xxxx:Rn|xxxx:Rt|0000|1011|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
+                        or ( (Rt == 15) or (Rm == 15) )
+                        or ( ((P == 0) or (W == 1)) and ((Rn == 15) or (Rn == Rt)) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_str_reg
+
 
   - name: arm_strd_imm_a1
     format: xxxx:cond|000|x:P|x:U|1|x:W|0|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1111|xxxx:imm8[3:0]

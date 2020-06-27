@@ -4798,14 +4798,21 @@ typedef struct {
     
 
     /* arm_vmrs_a1 */
-    #define OP_FB_MASK_arm_vmrs_a1 (0x0fff0fffl) /* fixed bits mask */
-    #define OP_FB_arm_vmrs_a1 (0x0ef10a10l) /* fixed bits */
+    #define OP_FB_MASK_arm_vmrs_a1 (0x0ff00fffl) /* fixed bits mask */
+    #define OP_FB_arm_vmrs_a1 (0x0ef00a10l) /* fixed bits */
     
         
             /* 0th subfield of the field 'cond' */
             #define OP_SF_MASK_arm_vmrs_a1_cond_0 (0xf0000000l) /* subfield mask */
             #define OP_SF_EBII_arm_vmrs_a1_cond_0 (28) /* subfield end bit position in instruction */
             #define OP_SF_EBIF_arm_vmrs_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'freg' */
+            #define OP_SF_MASK_arm_vmrs_a1_freg_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vmrs_a1_freg_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vmrs_a1_freg_0 (0) /* subfield end bit position in field */
         
     
         
@@ -11651,6 +11658,11 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                 (((context->code32x1 & OP_SF_MASK_arm_vmrs_a1_cond_0) >> OP_SF_EBII_arm_vmrs_a1_cond_0) << OP_SF_EBIF_arm_vmrs_a1_cond_0);
             
         
+            context->decoded_code->code.arm_vmrs_a1.freg =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vmrs_a1_freg_0) >> OP_SF_EBII_arm_vmrs_a1_freg_0) << OP_SF_EBIF_arm_vmrs_a1_freg_0);
+            
+        
             context->decoded_code->code.arm_vmrs_a1.Rt =
             
                 (((context->code32x1 & OP_SF_MASK_arm_vmrs_a1_Rt_0) >> OP_SF_EBII_arm_vmrs_a1_Rt_0) << OP_SF_EBIF_arm_vmrs_a1_Rt_0);
@@ -11659,7 +11671,11 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
         
             if (
-                context->decoded_code->code.arm_vmrs_a1.cond == 15
+                (context->decoded_code->code.arm_vmrs_a1.cond == 15)
+         || ((context->decoded_code->code.arm_vmrs_a1.freg != 1)
+         && (context->decoded_code->code.arm_vmrs_a1.freg != 8)
+        )
+        
             ) {
                 return 1;
             }
@@ -14825,9 +14841,9 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_193(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00ef0fef) {
+            switch (code & 0x00e00fef) {
                     
-                        case 0x00e10a00:
+                        case 0x00e00a00:
                             if (decision_node_code32x1_194(context, code) == 0) {
                                 return 0;
                             }

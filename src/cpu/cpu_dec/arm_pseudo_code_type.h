@@ -2517,12 +2517,16 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeFregType	freg;
+
 	PseudoCodeRegisterDataType	Rt;
 } arm_vmrs_input_type;
 
 typedef struct {
 	uint32	next_address;
 
+
+	PseudoCodeRegisterDataType	Rt;
 
 	PseudoCodeFloatStatusFlagType	status_flag;
 PseudoCodeStatusType		status;

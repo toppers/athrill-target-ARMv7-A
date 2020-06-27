@@ -25,11 +25,16 @@ typedef struct {
 		CoprocFpuDoubleFloatRegisterType	d;
 	} vfp;
 	uint32 fpscr;
+	uint32 fpexc;
 } CoprocCP11RegisterType;
 
 static inline uint32 *fpu_get_status(CoprocCP11RegisterType *cp11)
 {
 	return &cp11->fpscr;
+}
+static inline uint32 *fpu_get_exception(CoprocCP11RegisterType *cp11)
+{
+	return &cp11->fpexc;
 }
 /*
  * RMode, bits[23:22]

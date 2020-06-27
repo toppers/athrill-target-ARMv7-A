@@ -898,19 +898,29 @@ int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_
 	out->next_address = core->pc + INST_ARM_SIZE;
 	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
 	if (out->passed != FALSE) {
-		if (in->Rt.regId != CpuRegId_PC) {
-			in->Rt.regData = *status;
+		if (in->freg == 1) {
+			if (in->Rt.regId != CpuRegId_PC) {
+				out->Rt.regData = *status;
+				cpu_set_reg(core, out->Rt.regId, out->Rt.regData);
+			}
+			else {
+				uint32 *cpsr = cpu_get_status(core);
+				//APSR.N = FPSCR.N;
+				//APSR.Z = FPSCR.Z;
+				//APSR.C = FPSCR.C;
+				//APSR.V = FPSCR.V;
+				CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_C, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_C));
+				CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_V, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_V));
+				CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_Z, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_Z));
+				CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_N, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_N));
+			}
 		}
 		else {
-			uint32 *cpsr = cpu_get_status(core);
-			//APSR.N = FPSCR.N;
-			//APSR.Z = FPSCR.Z;
-			//APSR.C = FPSCR.C;
-			//APSR.V = FPSCR.V;
-			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_C, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_C));
-			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_V, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_V));
-			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_Z, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_Z));
-			CPU_STATUS_BIT_UPDATE(cpsr, CPU_STATUS_BITPOS_N, CPU_STATUS_BIT_IS_SET(*status, FPU_STATUS_BITPOS_N));
+			if (in->Rt.regId != CpuRegId_PC) {
+				uint32 *fexp = fpu_get_exception(&core->coproc.cp11);
+				out->Rt.regData = *fexp;
+				cpu_set_reg(core, out->Rt.regId, out->Rt.regData);
+			}
 		}
 	}
 	out->status = *status;

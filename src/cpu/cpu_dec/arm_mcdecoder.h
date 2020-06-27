@@ -2206,6 +2206,8 @@ typedef struct {
 	
 		arm_uint8 cond;	/* 31-28 */
 	
+		arm_uint8 freg;	/* 19-16 */
+	
 		arm_uint8 Rt;	/* 15-12 */
 	
 } arm_OpCodeFormatType_arm_vmrs_a1;

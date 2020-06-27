@@ -368,6 +368,10 @@ typedef bool PseudoCodeCpsModeType;
 #define DBG_FMT_PseudoCodeCpsModeType		"mode(0x%x) "
 #define DBG_ARG_PseudoCodeCpsModeType(arg)	(*(arg))
 
+typedef bool PseudoCodeFregType;
+#define DBG_FMT_PseudoCodeFregType		"freg(0x%x) "
+#define DBG_ARG_PseudoCodeFregType(arg)	(*(arg))
+
 typedef bool PseudoCodeCpsAffectType;
 #define DBG_FMT_PseudoCodeCpsAffectType		"affect(0x%x) "
 #define DBG_ARG_PseudoCodeCpsAffectType(arg)	(*(arg))

@@ -4908,10 +4908,14 @@ static inline void DBG_ARM_VMRS(TargetCoreType *core, arm_vmrs_input_type *in, a
 
 		DBG_FMT_PseudoCodeConditionDataType
 
+		DBG_FMT_PseudoCodeFregType
+
 		DBG_FMT_PseudoCodeRegisterDataType
 
 		": "
 
+
+		DBG_FMT_PseudoCodeRegisterDataType
 
 		DBG_FMT_PseudoCodeFloatStatusFlagType
 
@@ -4922,9 +4926,13 @@ static inline void DBG_ARM_VMRS(TargetCoreType *core, arm_vmrs_input_type *in, a
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 
+		DBG_ARG_PseudoCodeFregType(&in->freg),
+
 		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
 
 
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
 
 		DBG_ARG_PseudoCodeFloatStatusFlagType(&out->status_flag),
 

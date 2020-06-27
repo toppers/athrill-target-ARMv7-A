@@ -727,8 +727,10 @@ int arm_op_exec_arm_vmrs_a1(struct TargetCore *core)
 
 	in.instrName = "VMRS";
 	in.cond = op->cond;
+	in.freg = op->freg;
 	OP_SET_REG(core, &in, op, Rt);
 	fpu_conv_status_flag(out.status, &out.status_flag);
+	OP_SET_REG(core, &out, op, Rt);
 
 	out.next_address = core->pc;
 	out.passed = FALSE;

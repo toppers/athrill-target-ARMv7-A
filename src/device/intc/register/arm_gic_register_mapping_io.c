@@ -162,6 +162,7 @@ static void arm_gicd_set_connection(uint32 data, uint32 n, uint32 bytes)
 	}
 	uint32 cpus = ((data >> (8 * bytes)) & 0xFF);
 	uint32 coreId;
+	//printf("data=0x%x n=%d bytes=%d cpus=0x%x\n", data, n, bytes, cpus);
 	for (coreId = 0; coreId < 8U; coreId++) {
 		if ( (cpus & (1U << coreId)) != 0) {
 			//printf("ON:intno=%d:cpus=0x%x cpu=%d\n", intno, cpus, coreId);
@@ -183,6 +184,7 @@ void arm_gicd_register_mapping_io_ICDIPTRn(DevRegisterIoType io_type, DevRegiste
 	uint32 bytes;
 	if (io_type == DevRegisterIo_Write) {
 		device_io_read32(arm_gic_region, arg->coreId, addr, &data);
+		//printf("DBG:%s: Write data=0x%x\n", __FUNCTION__, data);
 		for (bytes = 0; bytes < 4; bytes++) {
 			arm_gicd_set_connection(data, n, bytes);
 		}

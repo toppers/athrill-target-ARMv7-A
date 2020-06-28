@@ -80,14 +80,18 @@ static GicIntrCpuConnectorType *arm_gic_get_highest_priority_connector(uint32 co
 			continue;
 		}
 		if (arm_gic_distributor.connector[i].cpu_inf->enable == FALSE) {
+			//printf("arm_gic_get_highest_priority_connector:%d:cpu_inf not enable\n", i);
 			continue;
 		}
 		if (arm_gic_distributor.connector[i].intr->enable == FALSE) {
+			//printf("arm_gic_get_highest_priority_connector:%d:not enable\n", i);
 			continue;
 		}
 		if ((arm_gic_distributor.connector[i].state & GicIntrHandlingStateType_Pending) == 0) {
+			//printf("arm_gic_get_highest_priority_connector:%d:not pending\n", i);
 			continue;
 		}
+		//printf("arm_gic_get_highest_priority_connector:found\n");
 		if (connector != NULL) {
 			if (PriorityIsHigher(arm_gic_distributor.connector[i].intr->priority, connector->intr->priority)) {
 				connector = &arm_gic_distributor.connector[i];

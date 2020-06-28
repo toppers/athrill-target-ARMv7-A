@@ -14,15 +14,43 @@ typedef enum {
 } TimerModeType;
 
 typedef struct {
-	uint16 				cnt;
+	uint32 				cnt;
 	TimerStateType 		state;
 	TimerModeType 		mode;
 	bool				enable;
-	uint16 				compare0;
-	uint16 				compare0_intno;
+	uint32 				compare0;
+	uint32 				compare0_intno;
 	uint64 				start_clock;
-	uint16 				fd;
+	uint32 				fd;
 } TimerDeviceType;
+
+typedef struct {
+	uint32 OSTMnCMP;
+	uint32 OSTMnCNT;
+	uint32 OSTMnTE;
+	uint32 OSTMnTS;
+	uint32 OSTMnTT;
+	uint32 OSTMnCTL;
+} TimerRegType;
+
+static TimerRegType timer_reg[ARM_TIMER_NUM] = {
+		{
+				.OSTMnCMP	= ARM_REG_OSTM0CMP,
+				.OSTMnCNT	= ARM_REG_OSTM0CMP,
+				.OSTMnTE	= ARM_REG_OSTM0CNT,
+				.OSTMnTS	= ARM_REG_OSTM0TS,
+				.OSTMnTT	= ARM_REG_OSTM0TT,
+				.OSTMnCTL	= ARM_REG_OSTM0CTL,
+		},
+		{
+				.OSTMnCMP	= ARM_REG_OSTM1CMP,
+				.OSTMnCNT	= ARM_REG_OSTM1CMP,
+				.OSTMnTE	= ARM_REG_OSTM1CNT,
+				.OSTMnTS	= ARM_REG_OSTM1TS,
+				.OSTMnTT	= ARM_REG_OSTM1TT,
+				.OSTMnCTL	= ARM_REG_OSTM1CTL,
+		}
+};
 
 static Std_ReturnType timer_get_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 *data);
 static Std_ReturnType timer_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data);
@@ -65,8 +93,8 @@ void device_init_timer(MpuAddressRegionType *region)
 		TimerDevice[i].fd = value;
 		TimerDevice[i].start_clock = 0;
 	}
-	TimerDevice[ARM_TIMER_CH0].mode = TIMER_MODE_INTERVAL;
 	TimerDevice[ARM_TIMER_CH0].compare0_intno = ARM_TIMER_INTNO_CMP_CH0;
+	TimerDevice[ARM_TIMER_CH1].compare0_intno = ARM_TIMER_INTNO_CMP_CH1;
 	return;
 }
 
@@ -75,28 +103,22 @@ static void device_timer_do_update(DeviceClockType *device, int ch)
 	TimerDeviceType *timer = &(TimerDevice[ch]);
 
 	if (timer->state == TIMER_STATE_STOP) {
-		 if (timer->mode == TIMER_MODE_FREERUN) {
-			if (timer->start_clock != 0U) {
-				timer->start_clock += (uint64)timer->fd;
-			}
+		if (timer->start_clock != 0U) {
+			timer->start_clock += (uint64)timer->fd;
 		}
 	}
 	else if (timer->state == TIMER_STATE_READY) {
 		timer->state = TIMER_STATE_RUNNING;
-		if ((timer->start_clock == 0U) || (timer->mode == TIMER_MODE_INTERVAL)) {
-			timer->start_clock = device->clock;
-		}
+		timer->start_clock = device->clock;
 		//printf("device_timer_do_update:ch=%d compare=%d\n", ch, timer->compare0);
 	}
 
-	timer->cnt = (uint16)((device->clock - timer->start_clock) / (uint64)timer->fd);
-	if (timer->mode == TIMER_MODE_INTERVAL) {
-		if (timer->enable == TRUE) {
-			if (timer->cnt == timer->compare0) {
-				//printf("raise INT:ch=%d cnt=%d\n", ch, timer->cnt);
-				device_raise_int(timer->compare0_intno);
-				timer->state = TIMER_STATE_READY;
-			}
+	timer->cnt = (uint32)((device->clock - timer->start_clock) / (uint64)timer->fd);
+	if (timer->enable == TRUE) {
+		if (timer->cnt == timer->compare0) {
+			//printf("raise INT:ch=%d cnt=%d\n", ch, timer->cnt);
+			device_raise_int(timer->compare0_intno);
+			timer->state = TIMER_STATE_READY;
 		}
 	}
 	return;
@@ -138,14 +160,20 @@ do {	\
 void device_supply_clock_timer(DeviceClockType *dev_clock)
 {
 	INLINE_device_supply_clock_timer(dev_clock, ARM_TIMER_CH0);
+	INLINE_device_supply_clock_timer(dev_clock, ARM_TIMER_CH1);
 	return;
 }
 
 
 static Std_ReturnType timer_get_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 *data)
 {
-	uint32 off = (addr - region->start);
-	*data = *((uint8*)(&region->data[off]));
+	uint8 ch;
+	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
+		if (addr == timer_reg[ch].OSTMnTE) {
+			*data = (TimerDevice[ch].state == TIMER_STATE_STOP) ? 1U : 0U;
+			return STD_E_OK;
+		}
+	}
 	return STD_E_OK;
 }
 static Std_ReturnType timer_get_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 *data)
@@ -156,50 +184,54 @@ static Std_ReturnType timer_get_data16(MpuAddressRegionType *region, CoreIdType 
 }
 static Std_ReturnType timer_get_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 *data)
 {
-	uint32 off = (addr - region->start);
-	uint32 *datap = ((uint32*)(&region->data[off]));
-
-	if (addr == ARM_REG_OSTM0CNT) {
-		*datap = TimerDevice[ARM_TIMER_CH0].cnt;
+	uint8 ch;
+	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
+		if (addr == timer_reg[ch].OSTMnCNT) {
+			*data = TimerDevice[ch].cnt;
+			return STD_E_OK;
+		}
 	}
-	*data = *datap;
-
 	return STD_E_OK;
 }
 static Std_ReturnType timer_put_data8(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 data)
 {
+	uint8 ch;
 	uint32 off = (addr - region->start);
+	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
+		if (addr == timer_reg[ch].OSTMnCTL) {
+			if ((data & ARM_BIT_OSTMMD1) == 0) {
+				TimerDevice[ch].mode = TIMER_MODE_INTERVAL;
+				//printf("timer[%d]:mode=interval\n", ch);
+			}
+			else {
+				TimerDevice[ch].mode = TIMER_MODE_FREERUN;
+				//printf("timer[%d]:mode=freerun\n", ch);
+			}
+			if ((data & ARM_BIT_OSTMMD0) == 0) {
+				TimerDevice[ch].enable = TRUE;
+				//printf("timer[%d]:timer:enable=true\n", ch);
+			}
+			else {
+				TimerDevice[ch].enable = FALSE;
+				//printf("timer[%d]:timer:enable=false\n", ch);
+			}
+		}
+		else if (addr == timer_reg[ch].OSTMnTS) {
+			if ((data & ARM_BIT_OSTMTS) != 0) {
+				TimerDevice[ch].state = TIMER_STATE_READY;
+				//printf("timer[%d]:timer:timer:READY\n", ch);
+			}
+		}
+		else if (addr == timer_reg[ch].OSTMnTT) {
+			if ((data & ARM_BIT_OSTMTT) != 0) {
+				TimerDevice[ch].state = TIMER_STATE_STOP;
+				//printf("timer[%d]:timer:timer:STOP\n", ch);
+			}
+		}
+		*((uint8*)(&region->data[off])) = data;
+	}
 
 	//printf("timer_put_data8 core=%d addr=0x%x data=0x%x\n", core_id, addr, data);
-
-	if (addr == ARM_REG_OSTM0CTL) {
-		if ((data & ARM_BIT_OSTMMD1) == 0) {
-			TimerDevice[ARM_TIMER_CH0].mode = TIMER_MODE_INTERVAL;
-			//printf("timer:mode=interval\n");
-		}
-		if ((data & ARM_BIT_OSTMMD0) == 0) {
-			TimerDevice[ARM_TIMER_CH0].enable = TRUE;
-			//printf("timer:enable=true\n");
-		}
-		else {
-			TimerDevice[ARM_TIMER_CH0].enable = FALSE;
-		}
-	}
-	else if (addr == ARM_REG_OSTM0TS) {
-		if ((data & ARM_BIT_OSTMTS) != 0) {
-			//printf("timer:READY\n");
-			TimerDevice[ARM_TIMER_CH0].state = TIMER_STATE_READY;
-		}
-	}
-	else if (addr == ARM_REG_OSTM0TT) {
-		if ((data & ARM_BIT_OSTMTT) != 0) {
-			//printf("timer:STOP\n");
-			TimerDevice[ARM_TIMER_CH0].state = TIMER_STATE_STOP;
-		}
-	}
-	*((uint8*)(&region->data[off])) = data;
-
-
 	return STD_E_OK;
 }
 static Std_ReturnType timer_put_data16(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint16 data)
@@ -211,10 +243,15 @@ static Std_ReturnType timer_put_data16(MpuAddressRegionType *region, CoreIdType 
 static Std_ReturnType timer_put_data32(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint32 data)
 {
 	uint32 off = (addr - region->start);
-	if (addr == ARM_REG_OSTM0CMP) {
-		TimerDevice[ARM_TIMER_CH0].compare0 = data;
-	}
 	*((uint32*)(&region->data[off])) = data;
+	uint8 ch;
+	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
+		if (addr == timer_reg[ch].OSTMnCMP) {
+			TimerDevice[ch].compare0 = data;
+			//printf("addr=0x%x compare[%d]=%u\n", addr, ch, TimerDevice[ch].compare0);
+			break;
+		}
+	}
 	return STD_E_OK;
 }
 static Std_ReturnType timer_get_pointer(MpuAddressRegionType *region, CoreIdType core_id, uint32 addr, uint8 **data)
@@ -224,7 +261,7 @@ static Std_ReturnType timer_get_pointer(MpuAddressRegionType *region, CoreIdType
 	uint32 *cntp;
 
 	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
-		if (addr == (ARM_REG_OSTM0CNT)) {
+		if (addr == timer_reg[ch].OSTMnCNT) {
 			cntp = (uint32*)&region->data[off];
 			*cntp = TimerDevice[ch].cnt;
 			break;

@@ -170,7 +170,7 @@ static Std_ReturnType timer_get_data8(MpuAddressRegionType *region, CoreIdType c
 	uint8 ch;
 	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
 		if (addr == timer_reg[ch].OSTMnTE) {
-			*data = (TimerDevice[ch].state == TIMER_STATE_STOP) ? 1U : 0U;
+			*data = (TimerDevice[ch].state == TIMER_STATE_STOP) ? 0U : 1U;
 			return STD_E_OK;
 		}
 	}

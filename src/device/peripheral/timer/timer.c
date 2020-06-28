@@ -36,16 +36,16 @@ typedef struct {
 static TimerRegType timer_reg[ARM_TIMER_NUM] = {
 		{
 				.OSTMnCMP	= ARM_REG_OSTM0CMP,
-				.OSTMnCNT	= ARM_REG_OSTM0CMP,
-				.OSTMnTE	= ARM_REG_OSTM0CNT,
+				.OSTMnCNT	= ARM_REG_OSTM0CNT,
+				.OSTMnTE	= ARM_REG_OSTM0TE,
 				.OSTMnTS	= ARM_REG_OSTM0TS,
 				.OSTMnTT	= ARM_REG_OSTM0TT,
 				.OSTMnCTL	= ARM_REG_OSTM0CTL,
 		},
 		{
 				.OSTMnCMP	= ARM_REG_OSTM1CMP,
-				.OSTMnCNT	= ARM_REG_OSTM1CMP,
-				.OSTMnTE	= ARM_REG_OSTM1CNT,
+				.OSTMnCNT	= ARM_REG_OSTM1CNT,
+				.OSTMnTE	= ARM_REG_OSTM1TE,
 				.OSTMnTS	= ARM_REG_OSTM1TS,
 				.OSTMnTT	= ARM_REG_OSTM1TT,
 				.OSTMnCTL	= ARM_REG_OSTM1CTL,
@@ -188,6 +188,7 @@ static Std_ReturnType timer_get_data32(MpuAddressRegionType *region, CoreIdType 
 	for (ch = 0; ch < ARM_TIMER_NUM; ch++) {
 		if (addr == timer_reg[ch].OSTMnCNT) {
 			*data = TimerDevice[ch].cnt;
+			//printf("cnt[%d]=%u\n", ch, *data);
 			return STD_E_OK;
 		}
 	}

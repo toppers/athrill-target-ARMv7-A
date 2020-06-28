@@ -310,14 +310,15 @@ int arm_op_exec_arm_bfi(struct TargetCore *core,  arm_bfi_input_type *in, arm_bf
 		if (in->msbit >= in->lsbit) {
 			uint32 mask_right = 0x0;
 			int i;
-			for (i = 0; i <= (in->msbit - in->lsbit + 1); i++) {
-				mask_right |= (1U << i);
+			for (i = 0; i <= (in->msbit - in->lsbit); i++) {
+				if ((in->Rn.regData & (1U << i))) {
+					mask_right |= (1U << i);
+				}
 			}
 			uint32 mask_left = (mask_right << in->lsbit);
 
 			//R[d]<msbit:lsbit> = R[n]<(msbit-lsbit):0>;
-			out->Rd.regData = (out->Rd.regData & ~mask_left)
-							| (in->Rn.regData & mask_right);
+			out->Rd.regData = ( mask_left | mask_right );
 			cpu_set_reg(core, out->Rd.regId, out->Rd.regData);
 		}
 		else {

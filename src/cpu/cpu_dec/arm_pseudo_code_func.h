@@ -105,6 +105,7 @@ extern int arm_op_exec_arm_vcvt_fi(struct TargetCore *core,  arm_vcvt_fi_input_t
 extern int arm_op_exec_arm_vstr(struct TargetCore *core,  arm_vstr_input_type *in, arm_vstr_output_type *out);
 extern int arm_op_exec_arm_vcmp(struct TargetCore *core,  arm_vcmp_input_type *in, arm_vcmp_output_type *out);
 extern int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_vmrs_output_type *out);
+extern int arm_op_exec_arm_vmsr(struct TargetCore *core,  arm_vmsr_input_type *in, arm_vmsr_output_type *out);
 extern int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out);
 extern int arm_op_exec_arm_vmov_reg(struct TargetCore *core,  arm_vmov_reg_input_type *in, arm_vmov_reg_output_type *out);
 extern int arm_op_exec_arm_vneg(struct TargetCore *core,  arm_vneg_input_type *in, arm_vneg_output_type *out);

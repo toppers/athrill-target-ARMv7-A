@@ -2538,6 +2538,25 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeFregType	freg;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_vmsr_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatStatusFlagType	status_flag;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmsr_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeImmediateData32Type	imm32;
 
 	PseudoCodeImmediateData64Type	imm64;

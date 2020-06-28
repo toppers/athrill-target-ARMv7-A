@@ -927,6 +927,24 @@ int arm_op_exec_arm_vmrs(struct TargetCore *core,  arm_vmrs_input_type *in, arm_
 	return ret;
 }
 
+int arm_op_exec_arm_vmsr(struct TargetCore *core,  arm_vmsr_input_type *in, arm_vmsr_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
+	if (out->passed != FALSE) {
+		if (in->freg == 1) {
+			*status = in->Rt.regData;
+		}
+		else {
+			uint32 *fexp = fpu_get_exception(&core->coproc.cp11);
+			*fexp = in->Rt.regData;
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_vmov_imm(struct TargetCore *core,  arm_vmov_imm_input_type *in, arm_vmov_imm_output_type *out)
 {

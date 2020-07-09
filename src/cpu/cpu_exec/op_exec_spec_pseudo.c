@@ -89,26 +89,27 @@ int arm_op_exec_arm_cps(struct TargetCore *core,  arm_cps_input_type *in, arm_cp
 	int ret = 0;
 	uint32 *status = cpu_get_status(core);
 	uint32 cpsr_val = *status;
+	out->passed = TRUE;
 	out->next_address = core->pc + INST_ARM_SIZE;
 	if (in->enable) {
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_A)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_A)) {
 			CPU_STATUS_BIT_CLR(&cpsr_val, 8);
 		}
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_I)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_I)) {
 			CPU_STATUS_BIT_CLR(&cpsr_val, 7);
 		}
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_F)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_F)) {
 			CPU_STATUS_BIT_CLR(&cpsr_val, 6);
 		}
 	}
 	if (in->disable) {
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_A)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_A)) {
 			CPU_STATUS_BIT_SET(&cpsr_val, 8);
 		}
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_I)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_I)) {
 			CPU_STATUS_BIT_SET(&cpsr_val, 7);
 		}
-		if (CPU_STATUS_BIT_IS_SET(cpsr_val, BIT_POS_AIF_F)) {
+		if (CPU_STATUS_BIT_IS_SET(in->affect, BIT_POS_AIF_F)) {
 			CPU_STATUS_BIT_SET(&cpsr_val, 6);
 		}
 	}
@@ -215,12 +216,14 @@ int arm_op_exec_arm_rfe(struct TargetCore *core,  arm_rfe_input_type *in, arm_rf
 		uint32 new_pc_value;
 		ret = MemA_R(core, address, 4, (uint8*)&new_pc_value);
 		if (ret != 0) {
+			printf("ERROR:%s %s() %d ret=%d addr=0x%x\n", __FILE__, __FUNCTION__, __LINE__, ret, address);
 			goto done;
 		}
 		//spsr_value = MemA[address+4,4];
 		uint32 spsr_value;
 		ret = MemA_R(core, address + 4, 4, (uint8*)&spsr_value);
 		if (ret != 0) {
+			printf("ERROR:%s %s() %d ret=%d addr=0x%x\n", __FILE__, __FUNCTION__, __LINE__, ret, address);
 			goto done;
 		}
 		//if wback then R[n] = if increment then R[n]+8 else R[n]-8;
@@ -230,11 +233,13 @@ int arm_op_exec_arm_rfe(struct TargetCore *core,  arm_rfe_input_type *in, arm_rf
 		//CPSRWriteByInstr(spsr_value, '1111', TRUE);
 		ret = CPSRWriteByInstr(core, spsr_value, 0b1111, TRUE);
 		if (ret != 0) {
+			printf("ERROR:%s %s() %d ret=%d addr=0x%x\n", __FILE__, __FUNCTION__, __LINE__, ret, address);
 			goto done;
 		}
 		//BranchWritePC(new_pc_value);
 		ret = BranchWritePC(&out->next_address, status, new_pc_value);
 		if (ret != 0) {
+			printf("ERROR:%s %s() %d ret=%d addr=0x%x\n", __FILE__, __FUNCTION__, __LINE__, ret, address);
 			goto done;
 		}
 	}

@@ -1157,6 +1157,14 @@ machine:
           Rt: PseudoCodeRegisterDataType
           status_flag: PseudoCodeFloatStatusFlagType
 
+      - name: arm_vmsr
+        inputs:
+          cond: PseudoCodeConditionDataType
+          freg: PseudoCodeFregType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          status_flag: PseudoCodeFloatStatusFlagType
+
       - name: arm_vmov_imm
         inputs:
           cond: PseudoCodeConditionDataType
@@ -2259,6 +2267,13 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vmrs
+
+  - name: arm_vmsr_a1
+    format: xxxx:cond|11101110|xxxx:freg|xxxx:Rt|1010|000|1|0000
+    unmatch_condition: (cond == 0b1111) or (Rt == 15) or ((freg != 1) and (freg != 8) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmsr
 
   - name: arm_vmov_imm_a1
     format: 1111|001|x:i|1|x:D|000|xxx:imm7[6:4]|xxxx:Vd|xxxx:cmode|0|x:Q|x:op|1|xxxx:imm7[3:0]

@@ -5489,6 +5489,135 @@ typedef struct {
         
     
 
+    /* arm_vnmls_a1 */
+    #define OP_FB_MASK_arm_vnmls_a1 (0x0fb00e10l) /* fixed bits mask */
+    #define OP_FB_arm_vnmls_a1 (0x0e100a00l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_vnmls_a1_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'D' */
+            #define OP_SF_MASK_arm_vnmls_a1_D_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_D_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_D_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vn' */
+            #define OP_SF_MASK_arm_vnmls_a1_Vn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_Vn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_Vn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vd' */
+            #define OP_SF_MASK_arm_vnmls_a1_Vd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_Vd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_Vd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'sz' */
+            #define OP_SF_MASK_arm_vnmls_a1_sz_0 (0x00000100l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_sz_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_sz_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'N' */
+            #define OP_SF_MASK_arm_vnmls_a1_N_0 (0x00000080l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_N_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_N_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'op' */
+            #define OP_SF_MASK_arm_vnmls_a1_op_0 (0x00000040l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_op_0 (6) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_op_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'M' */
+            #define OP_SF_MASK_arm_vnmls_a1_M_0 (0x00000020l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_M_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_M_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vm' */
+            #define OP_SF_MASK_arm_vnmls_a1_Vm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a1_Vm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a1_Vm_0 (0) /* subfield end bit position in field */
+        
+    
+
+    /* arm_vnmls_a2 */
+    #define OP_FB_MASK_arm_vnmls_a2 (0x0fb00e50l) /* fixed bits mask */
+    #define OP_FB_arm_vnmls_a2 (0x0e200a40l) /* fixed bits */
+    
+        
+            /* 0th subfield of the field 'cond' */
+            #define OP_SF_MASK_arm_vnmls_a2_cond_0 (0xf0000000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_cond_0 (28) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_cond_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'D' */
+            #define OP_SF_MASK_arm_vnmls_a2_D_0 (0x00400000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_D_0 (22) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_D_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vn' */
+            #define OP_SF_MASK_arm_vnmls_a2_Vn_0 (0x000f0000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_Vn_0 (16) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_Vn_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vd' */
+            #define OP_SF_MASK_arm_vnmls_a2_Vd_0 (0x0000f000l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_Vd_0 (12) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_Vd_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'sz' */
+            #define OP_SF_MASK_arm_vnmls_a2_sz_0 (0x00000100l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_sz_0 (8) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_sz_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'N' */
+            #define OP_SF_MASK_arm_vnmls_a2_N_0 (0x00000080l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_N_0 (7) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_N_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'M' */
+            #define OP_SF_MASK_arm_vnmls_a2_M_0 (0x00000020l) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_M_0 (5) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_M_0 (0) /* subfield end bit position in field */
+        
+    
+        
+            /* 0th subfield of the field 'Vm' */
+            #define OP_SF_MASK_arm_vnmls_a2_Vm_0 (0x0000000fl) /* subfield mask */
+            #define OP_SF_EBII_arm_vnmls_a2_Vm_0 (0) /* subfield end bit position in instruction */
+            #define OP_SF_EBIF_arm_vnmls_a2_Vm_0 (0) /* subfield end bit position in field */
+        
+    
+
     /* arm_vdiv_freg_a2 */
     #define OP_FB_MASK_arm_vdiv_freg_a2 (0x0fb00e50l) /* fixed bits mask */
     #define OP_FB_arm_vdiv_freg_a2 (0x0e800a00l) /* fixed bits */
@@ -5896,6 +6025,9 @@ static arm_uint32 setbit_count(arm_uint32 value);
         static int decision_node_code32x1_204(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_205(OpDecodeContext *context, arm_uint32 code);
         static int decision_node_code32x1_206(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_207(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_208(OpDecodeContext *context, arm_uint32 code);
+        static int decision_node_code32x1_209(OpDecodeContext *context, arm_uint32 code);
 
     static int op_parse_arm_add_imm_a1(OpDecodeContext *context);
     static int op_parse_arm_add_reg_a1(OpDecodeContext *context);
@@ -6027,6 +6159,8 @@ static arm_uint32 setbit_count(arm_uint32 value);
     static int op_parse_arm_vmul_freg_a2(OpDecodeContext *context);
     static int op_parse_arm_vneg_a2(OpDecodeContext *context);
     static int op_parse_arm_vmla_a2(OpDecodeContext *context);
+    static int op_parse_arm_vnmls_a1(OpDecodeContext *context);
+    static int op_parse_arm_vnmls_a2(OpDecodeContext *context);
     static int op_parse_arm_vdiv_freg_a2(OpDecodeContext *context);
     static int op_parse_arm_vpush_a1(OpDecodeContext *context);
     static int op_parse_arm_vpush_a2(OpDecodeContext *context);
@@ -8777,6 +8911,9 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         
             if (
                 (context->decoded_code->code.arm_ldrsb_reg_a1.cond == 15)
+         || ((context->decoded_code->code.arm_ldrsb_reg_a1.P == 0)
+         && (context->decoded_code->code.arm_ldrsb_reg_a1.W == 1)
+        )
          || (context->decoded_code->code.arm_ldrsb_reg_a1.Rm == 15)
          || (context->decoded_code->code.arm_ldrsb_reg_a1.Rt == 15)
          || (((context->decoded_code->code.arm_ldrsb_reg_a1.P == 0)
@@ -12682,6 +12819,133 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         return 0;
     }
 
+    /* arm_vnmls_a1 */
+    static int op_parse_arm_vnmls_a1(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_vnmls_a1) != OP_FB_arm_vnmls_a1) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_vnmls_a1;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_vnmls_a1;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_vnmls_a1;
+        
+            context->decoded_code->code.arm_vnmls_a1.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_cond_0) >> OP_SF_EBII_arm_vnmls_a1_cond_0) << OP_SF_EBIF_arm_vnmls_a1_cond_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.D =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_D_0) >> OP_SF_EBII_arm_vnmls_a1_D_0) << OP_SF_EBIF_arm_vnmls_a1_D_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.Vn =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_Vn_0) >> OP_SF_EBII_arm_vnmls_a1_Vn_0) << OP_SF_EBIF_arm_vnmls_a1_Vn_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.Vd =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_Vd_0) >> OP_SF_EBII_arm_vnmls_a1_Vd_0) << OP_SF_EBIF_arm_vnmls_a1_Vd_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.sz =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_sz_0) >> OP_SF_EBII_arm_vnmls_a1_sz_0) << OP_SF_EBIF_arm_vnmls_a1_sz_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.N =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_N_0) >> OP_SF_EBII_arm_vnmls_a1_N_0) << OP_SF_EBIF_arm_vnmls_a1_N_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.op =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_op_0) >> OP_SF_EBII_arm_vnmls_a1_op_0) << OP_SF_EBIF_arm_vnmls_a1_op_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.M =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_M_0) >> OP_SF_EBII_arm_vnmls_a1_M_0) << OP_SF_EBIF_arm_vnmls_a1_M_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a1.Vm =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a1_Vm_0) >> OP_SF_EBII_arm_vnmls_a1_Vm_0) << OP_SF_EBIF_arm_vnmls_a1_Vm_0);
+            
+        
+        
+        
+            if (
+                context->decoded_code->code.arm_vnmls_a1.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
+    /* arm_vnmls_a2 */
+    static int op_parse_arm_vnmls_a2(OpDecodeContext *context) {
+        if ((context->code32x1 & OP_FB_MASK_arm_vnmls_a2) != OP_FB_arm_vnmls_a2) {
+            return 1;
+        }
+
+        context->optype->code_id = arm_OpCodeId_arm_vnmls_a2;
+        context->optype->format_id = arm_OP_CODE_FORMAT_arm_vnmls_a2;
+        context->decoded_code->type_id = arm_OP_CODE_FORMAT_arm_vnmls_a2;
+        
+            context->decoded_code->code.arm_vnmls_a2.cond =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_cond_0) >> OP_SF_EBII_arm_vnmls_a2_cond_0) << OP_SF_EBIF_arm_vnmls_a2_cond_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.D =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_D_0) >> OP_SF_EBII_arm_vnmls_a2_D_0) << OP_SF_EBIF_arm_vnmls_a2_D_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.Vn =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_Vn_0) >> OP_SF_EBII_arm_vnmls_a2_Vn_0) << OP_SF_EBIF_arm_vnmls_a2_Vn_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.Vd =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_Vd_0) >> OP_SF_EBII_arm_vnmls_a2_Vd_0) << OP_SF_EBIF_arm_vnmls_a2_Vd_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.sz =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_sz_0) >> OP_SF_EBII_arm_vnmls_a2_sz_0) << OP_SF_EBIF_arm_vnmls_a2_sz_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.N =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_N_0) >> OP_SF_EBII_arm_vnmls_a2_N_0) << OP_SF_EBIF_arm_vnmls_a2_N_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.M =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_M_0) >> OP_SF_EBII_arm_vnmls_a2_M_0) << OP_SF_EBIF_arm_vnmls_a2_M_0);
+            
+        
+            context->decoded_code->code.arm_vnmls_a2.Vm =
+            
+                (((context->code32x1 & OP_SF_MASK_arm_vnmls_a2_Vm_0) >> OP_SF_EBII_arm_vnmls_a2_Vm_0) << OP_SF_EBIF_arm_vnmls_a2_Vm_0);
+            
+        
+        
+        
+            if (
+                context->decoded_code->code.arm_vnmls_a2.cond == 15
+            ) {
+                return 1;
+            }
+        
+        return 0;
+    }
+
     /* arm_vdiv_freg_a2 */
     static int op_parse_arm_vdiv_freg_a2(OpDecodeContext *context) {
         if ((context->code32x1 & OP_FB_MASK_arm_vdiv_freg_a2) != OP_FB_arm_vdiv_freg_a2) {
@@ -15185,7 +15449,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                             }
                             break;
                         case 0x00000010:
-                            if (decision_node_code32x1_195(context, code) == 0) {
+                            if (decision_node_code32x1_198(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -15202,23 +15466,28 @@ static arm_uint32 setbit_count(arm_uint32 value) {
                                 return 0;
                             }
                             break;
-                        case 0x00200a00:
+                        case 0x00100a00:
                             if (decision_node_code32x1_180(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00300a00:
+                        case 0x00200a00:
                             if (decision_node_code32x1_181(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00800a00:
+                        case 0x00300a00:
                             if (decision_node_code32x1_184(context, code) == 0) {
                                 return 0;
                             }
                             break;
+                        case 0x00800a00:
+                            if (decision_node_code32x1_187(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                         case 0x00b00a00:
-                            if (decision_node_code32x1_185(context, code) == 0) {
+                            if (decision_node_code32x1_188(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -15236,7 +15505,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_180(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmul_freg_a2(context) == 0) {
+                if (op_parse_arm_vnmls_a1(context) == 0) {
                     return 0;
                 }
             
@@ -15262,7 +15531,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_182(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vadd_freg_a2(context) == 0) {
+                if (op_parse_arm_vmul_freg_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15270,7 +15539,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_183(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vsub_freg_a2(context) == 0) {
+                if (op_parse_arm_vnmls_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15278,33 +15547,33 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_184(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vdiv_freg_a2(context) == 0) {
-                    return 0;
+            switch (code & 0x00000040) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_185(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00000040:
+                            if (decision_node_code32x1_186(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_185(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00000040) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_186(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00000040:
-                            if (decision_node_code32x1_187(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_vadd_freg_a2(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_186(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmov_imm_a2(context) == 0) {
+                if (op_parse_arm_vsub_freg_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15312,48 +15581,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_187(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00080000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_188(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00080000:
-                            if (decision_node_code32x1_194(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
+                if (op_parse_arm_vdiv_freg_a2(context) == 0) {
+                    return 0;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_188(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00070000) {
+            switch (code & 0x00000040) {
                     
                         case 0x00000000:
                             if (decision_node_code32x1_189(context, code) == 0) {
                                 return 0;
                             }
                             break;
-                        case 0x00010000:
+                        case 0x00000040:
                             if (decision_node_code32x1_190(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00040000:
-                            if (decision_node_code32x1_191(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00050000:
-                            if (decision_node_code32x1_192(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00070000:
-                            if (decision_node_code32x1_193(context, code) == 0) {
                                 return 0;
                             }
                             break;
@@ -15363,7 +15607,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_189(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmov_reg_a2(context) == 0) {
+                if (op_parse_arm_vmov_imm_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15371,23 +15615,58 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_190(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vneg_a2(context) == 0) {
-                    return 0;
+            switch (code & 0x00080000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_191(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00080000:
+                            if (decision_node_code32x1_197(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_191(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vcmp_a1(context) == 0) {
-                    return 0;
+            switch (code & 0x00070000) {
+                    
+                        case 0x00000000:
+                            if (decision_node_code32x1_192(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00010000:
+                            if (decision_node_code32x1_193(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00040000:
+                            if (decision_node_code32x1_194(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00050000:
+                            if (decision_node_code32x1_195(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00070000:
+                            if (decision_node_code32x1_196(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
             return 1;
         }
         static int decision_node_code32x1_192(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vcmp_a2(context) == 0) {
+                if (op_parse_arm_vmov_reg_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15395,7 +15674,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_193(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vcvt_df_a1(context) == 0) {
+                if (op_parse_arm_vneg_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15403,7 +15682,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_194(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vcvt_fi_a1(context) == 0) {
+                if (op_parse_arm_vcmp_a1(context) == 0) {
                     return 0;
                 }
             
@@ -15411,44 +15690,23 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_195(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00100000) {
-                    
-                        case 0x00000000:
-                            if (decision_node_code32x1_196(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                        case 0x00100000:
-                            if (decision_node_code32x1_201(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_206(context, code) == 0) {
+                if (op_parse_arm_vcmp_a2(context) == 0) {
                     return 0;
                 }
+            
             return 1;
         }
         static int decision_node_code32x1_196(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0xf0000000) {
-                    
-                        case 0xf0000000:
-                            if (decision_node_code32x1_197(context, code) == 0) {
-                                return 0;
-                            }
-                            break;
-                }
-            
-                if (decision_node_code32x1_198(context, code) == 0) {
+                if (op_parse_arm_vcvt_df_a1(context) == 0) {
                     return 0;
                 }
+            
             return 1;
         }
         static int decision_node_code32x1_197(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_mcr2_a2(context) == 0) {
+                if (op_parse_arm_vcvt_fi_a1(context) == 0) {
                     return 0;
                 }
             
@@ -15456,31 +15714,44 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_198(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00e00fef) {
+            switch (code & 0x00100000) {
                     
-                        case 0x00e00a00:
+                        case 0x00000000:
                             if (decision_node_code32x1_199(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                        case 0x00100000:
+                            if (decision_node_code32x1_204(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_200(context, code) == 0) {
+                if (decision_node_code32x1_209(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
         static int decision_node_code32x1_199(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_vmsr_a1(context) == 0) {
-                    return 0;
+            switch (code & 0xf0000000) {
+                    
+                        case 0xf0000000:
+                            if (decision_node_code32x1_200(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
                 }
             
+                if (decision_node_code32x1_201(context, code) == 0) {
+                    return 0;
+                }
             return 1;
         }
         static int decision_node_code32x1_200(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_mcr_a1(context) == 0) {
+                if (op_parse_arm_mcr2_a2(context) == 0) {
                     return 0;
                 }
             
@@ -15488,9 +15759,9 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_201(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0xf0000000) {
+            switch (code & 0x00e00fef) {
                     
-                        case 0xf0000000:
+                        case 0x00e00a00:
                             if (decision_node_code32x1_202(context, code) == 0) {
                                 return 0;
                             }
@@ -15504,7 +15775,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_202(OpDecodeContext *context, arm_uint32 code) {
             
-                if (op_parse_arm_mrc2_a2(context) == 0) {
+                if (op_parse_arm_vmsr_a1(context) == 0) {
                     return 0;
                 }
             
@@ -15512,21 +15783,53 @@ static arm_uint32 setbit_count(arm_uint32 value) {
         }
         static int decision_node_code32x1_203(OpDecodeContext *context, arm_uint32 code) {
             
-            switch (code & 0x00e00fef) {
+                if (op_parse_arm_mcr_a1(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_204(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0xf0000000) {
                     
-                        case 0x00e00a00:
-                            if (decision_node_code32x1_204(context, code) == 0) {
+                        case 0xf0000000:
+                            if (decision_node_code32x1_205(context, code) == 0) {
                                 return 0;
                             }
                             break;
                 }
             
-                if (decision_node_code32x1_205(context, code) == 0) {
+                if (decision_node_code32x1_206(context, code) == 0) {
                     return 0;
                 }
             return 1;
         }
-        static int decision_node_code32x1_204(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_205(OpDecodeContext *context, arm_uint32 code) {
+            
+                if (op_parse_arm_mrc2_a2(context) == 0) {
+                    return 0;
+                }
+            
+            return 1;
+        }
+        static int decision_node_code32x1_206(OpDecodeContext *context, arm_uint32 code) {
+            
+            switch (code & 0x00e00fef) {
+                    
+                        case 0x00e00a00:
+                            if (decision_node_code32x1_207(context, code) == 0) {
+                                return 0;
+                            }
+                            break;
+                }
+            
+                if (decision_node_code32x1_208(context, code) == 0) {
+                    return 0;
+                }
+            return 1;
+        }
+        static int decision_node_code32x1_207(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vmrs_a1(context) == 0) {
                     return 0;
@@ -15534,7 +15837,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_205(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_208(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_mrc_a1(context) == 0) {
                     return 0;
@@ -15542,7 +15845,7 @@ static arm_uint32 setbit_count(arm_uint32 value) {
             
             return 1;
         }
-        static int decision_node_code32x1_206(OpDecodeContext *context, arm_uint32 code) {
+        static int decision_node_code32x1_209(OpDecodeContext *context, arm_uint32 code) {
             
                 if (op_parse_arm_vmov_sreg_a1(context) == 0) {
                     return 0;
@@ -15832,6 +16135,10 @@ arm_OpExecType arm_op_exec_table[arm_OpCodeId_Num] = {
 	{ 1, arm_op_exec_arm_vneg_a2 },		/* arm_vneg_a2 */
     
 	{ 1, arm_op_exec_arm_vmla_a2 },		/* arm_vmla_a2 */
+    
+	{ 1, arm_op_exec_arm_vnmls_a1 },		/* arm_vnmls_a1 */
+    
+	{ 1, arm_op_exec_arm_vnmls_a2 },		/* arm_vnmls_a2 */
     
 	{ 1, arm_op_exec_arm_vdiv_freg_a2 },		/* arm_vdiv_freg_a2 */
     

@@ -1264,6 +1264,18 @@ machine:
           Vd: PseudoCodeFloatRegisterDataType
           status_flag: PseudoCodeFloatStatusFlagType
 
+      - name: arm_vnm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          dp_operation: PseudoCodeBoolIncrementType
+          type: PseudoCodeVnmOpType
+          Vd: PseudoCodeFloatRegisterDataType
+          Vn: PseudoCodeFloatRegisterDataType
+          Vm: PseudoCodeFloatRegisterDataType
+        outputs:
+          Vd: PseudoCodeFloatRegisterDataType
+          status_flag: PseudoCodeFloatStatusFlagType
+
 
       - name: arm_vmov_sreg
         inputs:
@@ -2443,6 +2455,20 @@ instructions:
       clocks: 10
       pseudo_code: arm_vmla
 
+
+  - name: arm_vnmls_a1
+    format: xxxx:cond|1110 0|x:D|01|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|x:op|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vnm
+
+  - name: arm_vnmls_a2
+    format: xxxx:cond|1110 0|x:D|10|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|1|x:M|0|xxxx:Vm
+    unmatch_condition: (cond == 0b1111)
+    extras:
+      clocks: 10
+      pseudo_code: arm_vnm
 
 
   - name: arm_vdiv_freg_a2

@@ -284,6 +284,23 @@ typedef uint32 PseudoCodeShiftNType;
 #define DBG_FMT_PseudoCodeShiftNType		"shift_n(%d) "
 #define DBG_ARG_PseudoCodeShiftNType(arg)	(*(arg))
 
+typedef enum {
+	VFPNegMul_VNMLA = 0,
+	VFPNegMul_VNMLS,
+	VFPNegMul_VNMUL
+} PseudoCodeVnmOpType;
+static inline const char *PseudoCodeVnmOpTypeString(PseudoCodeVnmOpType type)
+{
+	static const char *values[3] = {
+			"VFPNegMul_VNMLA", //0
+			"VFPNegMul_VNMLS", //1
+			"VFPNegMul_VNMUL", //2
+	};
+	return values[type];
+}
+#define DBG_FMT_PseudoCodeVnmOpType		"VnmOpType(%s) "
+#define DBG_ARG_PseudoCodeVnmOpType(arg)	PseudoCodeVnmOpTypeString(*(arg))
+
 static inline const char *CpuModeString(uint32 mode)
 {
 	switch (mode) {

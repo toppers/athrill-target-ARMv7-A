@@ -642,7 +642,68 @@ int arm_op_exec_arm_vmla(struct TargetCore *core,  arm_vmla_input_type *in, arm_
 	out->status = *status;
 	return ret;
 }
-
+int arm_op_exec_arm_vnm(struct TargetCore *core,  arm_vnm_input_type *in, arm_vnm_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
+	if (out->passed != FALSE) {
+		if (in->dp_operation) {
+			//product64 = FPMul(D[n], D[m], TRUE);
+			FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+			switch (in->type) {
+			case  VFPNegMul_VNMLA:
+				//FPAdd(FPNeg(D[d]), FPNeg(product64), TRUE);
+				in->Vd.freg.reg.Data64  = -(in->Vd.freg.reg.Data64);
+				out->Vd.freg.reg.Data64 = -(out->Vd.freg.reg.Data64);
+				FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+				break;
+			case  VFPNegMul_VNMLS:
+				//FPAdd(FPNeg(D[d]), product64, TRUE);
+				in->Vd.freg.reg.Data64  = -(in->Vd.freg.reg.Data64);
+				FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+				break;
+			case  VFPNegMul_VNMUL:
+				//FPNeg(product64);
+				out->Vd.freg.reg.Data64 = -(out->Vd.freg.reg.Data64);
+				break;
+			default:
+				// not reached
+				ASSERT(0);
+				break;
+			}
+		}
+		else {
+			//product32 = FPMul(S[n], S[m], TRUE);
+			FPMul(cpu_get_fpscr(core), &in->Vn.freg, &in->Vm.freg, TRUE, &out->Vd.freg);
+			switch (in->type) {
+			case  VFPNegMul_VNMLA:
+				//FPAdd(FPNeg(S[d]), FPNeg(product32), TRUE);
+				in->Vd.freg.reg.Data32 = -(in->Vd.freg.reg.Data32);
+				out->Vd.freg.reg.Data32 = -(out->Vd.freg.reg.Data32);
+				FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+				break;
+			case  VFPNegMul_VNMLS:
+				//FPAdd(FPNeg(S[d]), product32, TRUE);
+				in->Vd.freg.reg.Data32 = -(in->Vd.freg.reg.Data32);
+				FPAdd(cpu_get_fpscr(core), &in->Vd.freg, &out->Vd.freg, TRUE, &out->Vd.freg);
+				break;
+			case  VFPNegMul_VNMUL:
+				//FPNeg(product32);
+				out->Vd.freg.reg.Data32 = -(out->Vd.freg.reg.Data32);
+				break;
+			default:
+				// not reached
+				ASSERT(0);
+				break;
+			}
+		}
+		cpu_set_freg(&core->coproc.cp11, &out->Vd.freg);
+	}
+	out->status = *status;
+	return ret;
+}
 int arm_op_exec_arm_vsub_freg(struct TargetCore *core,  arm_vsub_freg_input_type *in, arm_vsub_freg_output_type *out)
 {
 	int ret = 0;

@@ -935,9 +935,115 @@ int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
 
 	out.next_address = core->pc;
 	out.passed = FALSE;
+	fpu_conv_status_flag(out.status, &out.status_flag);
 
 	int ret = arm_op_exec_arm_vmla(core, &in, &out);
 	DBG_ARM_VMLA(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+/*
+ * A8.8.356 VNMLA, VNMLS, VNMUL
+ */
+int arm_op_exec_arm_vnmls_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vnmls_a1 *op = &core->decoded_code->code.arm_vnmls_a1;
+	ArmOpExecFregArgsType op_freg_args;
+
+	arm_vnm_input_type in;
+	arm_vnm_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.cond = op->cond;
+	in.dp_operation = (op->sz == 1);
+	if (op->op == 1) {
+		in.instrName = "VNMLA";
+		in.type = VFPNegMul_VNMLA;
+	}
+	else {
+		in.instrName = "VNMLS";
+		in.type = VFPNegMul_VNMLS;
+	}
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (in.dp_operation) {
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vn, &op_freg_args, Vn);
+	}
+	else {
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, &op_freg_args, Vn);
+	}
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	fpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_vnm(core, &in, &out);
+	DBG_ARM_VNM(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
+
+/*
+ * A8.8.356 VNMLA, VNMLS, VNMUL
+ */
+int arm_op_exec_arm_vnmls_a2(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vnmls_a2 *op = &core->decoded_code->code.arm_vnmls_a2;
+	ArmOpExecFregArgsType op_freg_args;
+
+	arm_vnm_input_type in;
+	arm_vnm_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.instrName = "VNMUL";
+	in.cond = op->cond;
+	in.dp_operation = (op->sz == 1);
+	in.type = VFPNegMul_VNMUL;
+
+	//d = if dp_operation then UInt(D:Vd) else UInt(Vd:D);
+	//n = if dp_operation then UInt(N:Vn) else UInt(Vn:N);
+	//m = if dp_operation then UInt(M:Vm) else UInt(Vm:M);
+	if (in.dp_operation) {
+		op_freg_args.Vd = ( (op->Vd) | (op->D << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn) | (op->N << 4) );
+		OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vn, &op_freg_args, Vn);
+	}
+	else {
+		op_freg_args.Vd = ( (op->Vd << 1) | op->D );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vd, &op_freg_args, Vd);
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &out.Vd, &op_freg_args, Vd);
+		op_freg_args.Vm = ( (op->Vm << 1) | op->M );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vm, &op_freg_args, Vm);
+		op_freg_args.Vn = ( (op->Vn << 1) | op->N );
+		OP_SET_FREG(&core->coproc.cp11, FALSE, &in.Vn, &op_freg_args, Vn);
+	}
+	out.next_address = core->pc;
+	out.passed = FALSE;
+	fpu_conv_status_flag(out.status, &out.status_flag);
+
+	int ret = arm_op_exec_arm_vnm(core, &in, &out);
+	DBG_ARM_VNM(core, &in, &out);
 
 	core->pc = out.next_address;
 	return ret;

@@ -1012,6 +1012,28 @@ int arm_op_exec_arm_vmov_sreg(struct TargetCore *core,  arm_vmov_sreg_input_type
 	return ret;
 }
 
+int arm_op_exec_arm_vmov_dreg(struct TargetCore *core,  arm_vmov_dreg_input_type *in, arm_vmov_dreg_output_type *out)
+{
+	int ret = 0;
+	uint32 *status = fpu_get_status(&core->coproc.cp11);
+	out->next_address = core->pc + INST_ARM_SIZE;
+	out->passed = ConditionPassed(in->cond, *cpu_get_status(core));
+	if (out->passed != FALSE) {
+		if (in->to_arm_register) {
+			out->Rt.regData = in->Vm.freg.reg.raw32_array[0];
+			out->Rt2.regData = in->Vm.freg.reg.raw32_array[1];
+			cpu_set_reg(core, out->Rt.regId, out->Rt.regData);
+			cpu_set_reg(core, out->Rt2.regId, out->Rt2.regData);
+		}
+		else {
+			out->Vm.freg.reg.raw32_array[0] = in->Rt.regData;
+			out->Vm.freg.reg.raw32_array[1] = in->Rt2.regData;
+			cpu_set_freg(&core->coproc.cp11, &out->Vm.freg);
+		}
+	}
+	out->status = *status;
+	return ret;
+}
 
 int arm_op_exec_arm_vpush(struct TargetCore *core,  arm_vpush_input_type *in, arm_vpush_output_type *out)
 {

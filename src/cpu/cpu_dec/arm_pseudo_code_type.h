@@ -2698,6 +2698,33 @@ typedef struct {
 
 	PseudoCodeConditionDataType	cond;
 
+	PseudoCodeToArmRegisterType	to_arm_register;
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rt2;
+} arm_vmov_dreg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeFloatRegisterDataType	Vm;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rt2;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_vmov_dreg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
 	PseudoCodeSingleRegType	single_reg;
 
 	PseudoCodeRegNumType	regs;

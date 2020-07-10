@@ -944,6 +944,9 @@ int arm_op_exec_arm_vmla_a2(struct TargetCore *core)
 }
 
 
+/*
+ * A8.8.343 VMOV (between ARM core register and single-precision register)
+ */
 int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 {
 	arm_OpCodeFormatType_arm_vmov_sreg_a1 *op = &core->decoded_code->code.arm_vmov_sreg_a1;
@@ -973,6 +976,44 @@ int arm_op_exec_arm_vmov_sreg_a1(struct TargetCore *core)
 	core->pc = out.next_address;
 	return ret;
 }
+
+
+
+/*
+ * A8.8.345 VMOV (between two ARM core registers and a doubleword extension register)
+ */
+int arm_op_exec_arm_vmov_dreg_a1(struct TargetCore *core)
+{
+	arm_OpCodeFormatType_arm_vmov_dreg_a1 *op = &core->decoded_code->code.arm_vmov_dreg_a1;
+	ArmOpExecFregArgsType op_freg_args;
+
+	arm_vmov_dreg_input_type in;
+	arm_vmov_dreg_output_type out;
+	out.status = *fpu_get_status(&core->coproc.cp11);
+
+	in.instrName = "VMOV";
+	in.cond = op->cond;
+	in.to_arm_register = (op->op == 1);
+	op_freg_args.Vm = ( (op->Vm) | (op->M << 4) );
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &in.Vm, &op_freg_args, Vm);
+	OP_SET_REG(core, &in, op, Rt);
+	OP_SET_REG(core, &in, op, Rt2);
+
+	out.next_address = core->pc;
+	out.passed = FALSE;
+
+
+	OP_SET_FREG(&core->coproc.cp11, TRUE, &out.Vm, &op_freg_args, Vm);
+	OP_SET_REG(core, &out, op, Rt);
+	OP_SET_REG(core, &out, op, Rt2);
+
+	int ret = arm_op_exec_arm_vmov_dreg(core, &in, &out);
+	DBG_ARM_VMOV_DREG(core, &in, &out);
+
+	core->pc = out.next_address;
+	return ret;
+}
+
 
 
 int arm_op_exec_arm_vpush_a1(struct TargetCore *core)

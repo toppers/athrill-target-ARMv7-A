@@ -1231,6 +1231,20 @@ machine:
           Vn: PseudoCodeFloatRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
+      - name: arm_vmov_dreg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          to_arm_register: PseudoCodeToArmRegisterType
+          Vm: PseudoCodeFloatRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rt2: PseudoCodeRegisterDataType
+        outputs:
+          Vm: PseudoCodeFloatRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rt2: PseudoCodeRegisterDataType
+
+
+
       - name: arm_vpush
         inputs:
           cond: PseudoCodeConditionDataType
@@ -2308,6 +2322,15 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_vmov_sreg
+
+  - name: arm_vmov_dreg_a1
+    format: xxxx:cond|1100|010|x:op|xxxx:Rt2|xxxx:Rt|1011|00|x:M|1|xxxx:Vm
+    unmatch_condition: (cond == 0b1111) or (Rt == 15) or (Rt2 == 15) or ((op == 1) and (Rt == Rt2))
+    extras:
+      clocks: 10
+      pseudo_code: arm_vmov_dreg
+
+
 
   - name: arm_vsub_freg_a2
     format: xxxx:cond|11100|x:D|11|xxxx:Vn|xxxx:Vd|101|x:sz|x:N|1|x:M|0|xxxx:Vm

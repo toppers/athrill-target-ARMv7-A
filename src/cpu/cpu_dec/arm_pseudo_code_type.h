@@ -692,6 +692,35 @@ typedef struct {
 
 	PseudoCodeBoolAddType	add;
 
+	PseudoCodeBoolIndexType	index;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_ldrsb_imm_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldrsb_imm_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	PseudoCodeBoolAddType	add;
+
 	PseudoCodeRegisterDataType	PC;
 
 	PseudoCodeRegisterDataType	Rt;
@@ -705,6 +734,29 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldr_literal_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeImmediateData32Type	imm32;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeRegisterDataType	PC;
+
+	PseudoCodeRegisterDataType	Rt;
+} arm_ldrsb_literal_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldrsb_literal_output_type;
 
 typedef struct {
 	char* instrName;
@@ -899,6 +951,39 @@ typedef struct {
 PseudoCodeStatusType		status;
 	PseudoCodeCondPassedType	passed;
 } arm_ldrb_reg_output_type;
+
+typedef struct {
+	char* instrName;
+
+	PseudoCodeConditionDataType	cond;
+
+	PseudoCodeBoolAddType	add;
+
+	PseudoCodeBoolIndexType	index;
+
+	PseudoCodeBoolWbackType	wback;
+
+	PseudoCodeSRType	shift_t;
+
+	PseudoCodeShiftNType	shift_n;
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+
+	PseudoCodeRegisterDataType	Rm;
+} arm_ldrsb_reg_input_type;
+
+typedef struct {
+	uint32	next_address;
+
+
+	PseudoCodeRegisterDataType	Rn;
+
+	PseudoCodeRegisterDataType	Rt;
+PseudoCodeStatusType		status;
+	PseudoCodeCondPassedType	passed;
+} arm_ldrsb_reg_output_type;
 
 typedef struct {
 	char* instrName;

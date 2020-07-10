@@ -1332,7 +1332,109 @@ static inline void DBG_ARM_LDRB_IMM(TargetCoreType *core, arm_ldrb_imm_input_typ
 	));
 }
 
+static inline void DBG_ARM_LDRSB_IMM(TargetCoreType *core, arm_ldrsb_imm_input_type *in, arm_ldrsb_imm_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeImmediateData32Type
+
+		DBG_FMT_PseudoCodeBoolAddType
+
+		DBG_FMT_PseudoCodeBoolIndexType
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
+
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
+
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
 static inline void DBG_ARM_LDR_LITERAL(TargetCoreType *core, arm_ldr_literal_input_type *in, arm_ldr_literal_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeImmediateData32Type
+
+		DBG_FMT_PseudoCodeBoolAddType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeImmediateData32Type(&in->imm32),
+
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->PC),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_LDRSB_LITERAL(TargetCoreType *core, arm_ldrsb_literal_input_type *in, arm_ldrsb_literal_output_type *out)
 {
 	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
 		DBG_FMT_STR
@@ -1728,6 +1830,71 @@ static inline void DBG_ARM_LDRB_REG(TargetCoreType *core, arm_ldrb_reg_input_typ
 		in->instrName,
 
 		DBG_ARG_PseudoCodeSignType(&in->sign),
+
+		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
+
+		DBG_ARG_PseudoCodeBoolAddType(&in->add),
+
+		DBG_ARG_PseudoCodeBoolIndexType(&in->index),
+
+		DBG_ARG_PseudoCodeBoolWbackType(&in->wback),
+
+		DBG_ARG_PseudoCodeSRType(&in->shift_t),
+
+		DBG_ARG_PseudoCodeShiftNType(&in->shift_n),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rt),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&in->Rm),
+
+
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rn),
+
+		DBG_ARG_PseudoCodeRegisterDataType(&out->Rt),
+
+
+		DBG_ARG_PseudoCodeStatusType(&out->status),
+		DBG_ARG_PseudoCodeCondPassedType(&out->passed)
+	));
+}
+
+static inline void DBG_ARM_LDRSB_REG(TargetCoreType *core, arm_ldrsb_reg_input_type *in, arm_ldrsb_reg_output_type *out)
+{
+	DBG_PRINT((DBG_EXEC_OP_BUF(), DBG_EXEC_OP_BUF_LEN(),
+		DBG_FMT_STR
+
+		DBG_FMT_PseudoCodeConditionDataType
+
+		DBG_FMT_PseudoCodeBoolAddType
+
+		DBG_FMT_PseudoCodeBoolIndexType
+
+		DBG_FMT_PseudoCodeBoolWbackType
+
+		DBG_FMT_PseudoCodeSRType
+
+		DBG_FMT_PseudoCodeShiftNType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		": "
+
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+		DBG_FMT_PseudoCodeRegisterDataType
+
+
+		DBG_FMT_PseudoCodeStatusType 
+		DBG_FMT_PseudoCodeCondPassedType "\n",
+		in->instrName,
 
 		DBG_ARG_PseudoCodeConditionDataType(&in->cond),
 

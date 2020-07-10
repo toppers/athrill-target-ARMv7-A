@@ -309,7 +309,34 @@ machine:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
 
+      - name: arm_ldrsb_imm
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
+
+
       - name: arm_ldr_literal
+        inputs:
+          cond: PseudoCodeConditionDataType
+          imm32: PseudoCodeImmediateData32Type
+          add: PseudoCodeBoolAddType
+          PC: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+        outputs:
+          Rt: PseudoCodeRegisterDataType
+
+
+
+      - name: arm_ldrsb_literal
         inputs:
           cond: PseudoCodeConditionDataType
           imm32: PseudoCodeImmediateData32Type
@@ -409,6 +436,23 @@ machine:
         outputs:
           Rn: PseudoCodeRegisterDataType
           Rt: PseudoCodeRegisterDataType
+
+
+      - name: arm_ldrsb_reg
+        inputs:
+          cond: PseudoCodeConditionDataType
+          add: PseudoCodeBoolAddType
+          index: PseudoCodeBoolIndexType
+          wback: PseudoCodeBoolWbackType
+          shift_t: PseudoCodeSRType
+          shift_n: PseudoCodeShiftNType
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+          Rm: PseudoCodeRegisterDataType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+          Rt: PseudoCodeRegisterDataType
+
 
       - name: arm_ldrh_reg
         inputs:
@@ -1753,6 +1797,44 @@ instructions:
     extras:
       clocks: 10
       pseudo_code: arm_ldrb_reg
+
+
+  - name: arm_ldrsb_imm_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|1|xxxx:Rn|xxxx:Rt|xxxx:imm8[7:4]|1101|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or (Rn == 0b1111) 
+                        or (Rt == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
+                        or ( ((P == 0) or (W == 1)) and ((Rn == Rt)) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrsb_imm
+
+  - name: arm_ldrsb_literal_a1
+    format: xxxx:cond|000|x:P|x:U|1|x:W|1|1111|xxxx:Rt|xxxx:imm8[7:4]|1101|xxxx:imm8[3:0]
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
+                        or (P == W) 
+                        or (Rt == 15) 
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrsb_literal
+
+
+  - name: arm_ldrsb_reg_a1
+    format: xxxx:cond|000|x:P|x:U|0|x:W|1|xxxx:Rn|xxxx:Rt|0000|1101|xxxx:Rm
+    unmatch_condition: >
+                        (cond == 0b1111) 
+                        or ( (P == 0) and (W == 1) )
+                        or (Rm == 0b1111) 
+                        or (Rt == 0b1111) 
+                        or ( ((P == 0) or (W == 1)) and ((Rn == 15) or (Rn == Rt)) )
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldrsb_reg
+
 
 
   - name: arm_ldrsh_imm_a1

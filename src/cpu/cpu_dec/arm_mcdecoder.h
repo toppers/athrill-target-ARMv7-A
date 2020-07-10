@@ -111,6 +111,12 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_ldrb_reg_a1,
 	
+		arm_OP_CODE_FORMAT_arm_ldrsb_imm_a1,
+	
+		arm_OP_CODE_FORMAT_arm_ldrsb_literal_a1,
+	
+		arm_OP_CODE_FORMAT_arm_ldrsb_reg_a1,
+	
 		arm_OP_CODE_FORMAT_arm_ldrsh_imm_a1,
 	
 		arm_OP_CODE_FORMAT_arm_ldrh_reg_a1,
@@ -379,6 +385,12 @@ typedef enum {
 		arm_OpCodeId_arm_ldr_reg_a1,
 	
 		arm_OpCodeId_arm_ldrb_reg_a1,
+	
+		arm_OpCodeId_arm_ldrsb_imm_a1,
+	
+		arm_OpCodeId_arm_ldrsb_literal_a1,
+	
+		arm_OpCodeId_arm_ldrsb_reg_a1,
 	
 		arm_OpCodeId_arm_ldrsh_imm_a1,
 	
@@ -1271,6 +1283,58 @@ typedef struct {
 		arm_uint8 Rm;	/* 3-0 */
 	
 } arm_OpCodeFormatType_arm_ldrb_reg_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 P;	/* 24-24 */
+	
+		arm_uint8 U;	/* 23-23 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rt;	/* 15-12 */
+	
+		arm_uint8 imm8;	/* 11-8, 3-0 */
+	
+} arm_OpCodeFormatType_arm_ldrsb_imm_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 P;	/* 24-24 */
+	
+		arm_uint8 U;	/* 23-23 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rt;	/* 15-12 */
+	
+		arm_uint8 imm8;	/* 11-8, 3-0 */
+	
+} arm_OpCodeFormatType_arm_ldrsb_literal_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 P;	/* 24-24 */
+	
+		arm_uint8 U;	/* 23-23 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint8 Rt;	/* 15-12 */
+	
+		arm_uint8 Rm;	/* 3-0 */
+	
+} arm_OpCodeFormatType_arm_ldrsb_reg_a1;
 
 typedef struct {
 	
@@ -2559,6 +2623,12 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_ldrb_reg_a1 arm_ldrb_reg_a1;
 		
+        	arm_OpCodeFormatType_arm_ldrsb_imm_a1 arm_ldrsb_imm_a1;
+		
+        	arm_OpCodeFormatType_arm_ldrsb_literal_a1 arm_ldrsb_literal_a1;
+		
+        	arm_OpCodeFormatType_arm_ldrsb_reg_a1 arm_ldrsb_reg_a1;
+		
         	arm_OpCodeFormatType_arm_ldrsh_imm_a1 arm_ldrsh_imm_a1;
 		
         	arm_OpCodeFormatType_arm_ldrh_reg_a1 arm_ldrh_reg_a1;
@@ -2787,6 +2857,9 @@ extern int arm_op_exec_arm_ldrh_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrd_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldr_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrb_reg_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_ldrsb_imm_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_ldrsb_literal_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_ldrsb_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrsh_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrh_reg_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldrsh_reg_a1(struct TargetCore *core);

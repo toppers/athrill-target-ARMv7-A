@@ -392,7 +392,7 @@ int arm_op_exec_arm_ldrsb_imm(struct TargetCore *core,  arm_ldrsb_imm_input_type
 			goto done;
 		}
 		//R[t] = SignExtend(MemU[address,1], 32);
-    	out->Rt.regData = (sint32)((uint8)result);
+    	out->Rt.regData = (sint32)((sint8)result);
 		cpu_set_reg(core, in->Rt.regId, out->Rt.regData);
 		if (in->wback) {
 			cpu_set_reg(core, in->Rn.regId, offset_addr);
@@ -418,7 +418,7 @@ int arm_op_exec_arm_ldrsb_literal(struct TargetCore *core,  arm_ldrsb_literal_in
 			goto done;
 		}
 		//R[t] = SignExtend(MemU[address,1], 32);
-    	out->Rt.regData = (sint32)((uint8)result);
+    	out->Rt.regData = (sint32)((sint8)result);
 		cpu_set_reg(core, in->Rt.regId, out->Rt.regData);
 	}
 done:

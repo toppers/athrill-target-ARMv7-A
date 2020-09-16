@@ -544,6 +544,18 @@ machine:
           Rn: PseudoCodeRegisterDataType
 
 
+      - name: arm_ldmdb
+        inputs:
+          cond: PseudoCodeConditionDataType
+          wback: PseudoCodeBoolWbackType
+          bitcount: PseudoCodeBitCountType
+          Rn: PseudoCodeRegisterDataType
+          registers: PseudoCodeRegisterListType
+        outputs:
+          Rn: PseudoCodeRegisterDataType
+
+
+
       - name: arm_str_imm
         inputs:
           size: PseudoCodeSizeType
@@ -1924,6 +1936,16 @@ instructions:
       clocks: 10
       pseudo_code: arm_ldmib
 
+
+  - name: arm_ldmdb_a1
+    format: xxxx:cond|1001 00|x:W|1|xxxx:Rn|xxxx xxxx xxxx xxxx:register_list
+    unmatch_condition: >
+                         (cond == 0b1111)
+                         or (Rn == 15)
+                         or (setbit_count(register_list) < 1)
+    extras:
+      clocks: 10
+      pseudo_code: arm_ldmdb
 
 
   - name: arm_nop_a1

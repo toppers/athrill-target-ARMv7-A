@@ -131,6 +131,8 @@ typedef enum {
 	
 		arm_OP_CODE_FORMAT_arm_ldmib_a1,
 	
+		arm_OP_CODE_FORMAT_arm_ldmdb_a1,
+	
 		arm_OP_CODE_FORMAT_arm_nop_a1,
 	
 		arm_OP_CODE_FORMAT_arm_msr_imm_a1,
@@ -409,6 +411,8 @@ typedef enum {
 		arm_OpCodeId_arm_ldm_a1,
 	
 		arm_OpCodeId_arm_ldmib_a1,
+	
+		arm_OpCodeId_arm_ldmdb_a1,
 	
 		arm_OpCodeId_arm_nop_a1,
 	
@@ -1437,6 +1441,18 @@ typedef struct {
 		arm_uint16 register_list;	/* 15-0 */
 	
 } arm_OpCodeFormatType_arm_ldmib_a1;
+
+typedef struct {
+	
+		arm_uint8 cond;	/* 31-28 */
+	
+		arm_uint8 W;	/* 21-21 */
+	
+		arm_uint8 Rn;	/* 19-16 */
+	
+		arm_uint16 register_list;	/* 15-0 */
+	
+} arm_OpCodeFormatType_arm_ldmdb_a1;
 
 typedef struct {
 	
@@ -2693,6 +2709,8 @@ typedef struct {
 		
         	arm_OpCodeFormatType_arm_ldmib_a1 arm_ldmib_a1;
 		
+        	arm_OpCodeFormatType_arm_ldmdb_a1 arm_ldmdb_a1;
+		
         	arm_OpCodeFormatType_arm_nop_a1 arm_nop_a1;
 		
         	arm_OpCodeFormatType_arm_msr_imm_a1 arm_msr_imm_a1;
@@ -2921,6 +2939,7 @@ extern int arm_op_exec_arm_pop_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_pop_a2(struct TargetCore *core);
 extern int arm_op_exec_arm_ldm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_ldmib_a1(struct TargetCore *core);
+extern int arm_op_exec_arm_ldmdb_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_nop_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_msr_imm_a1(struct TargetCore *core);
 extern int arm_op_exec_arm_msr2_imm_a1(struct TargetCore *core);

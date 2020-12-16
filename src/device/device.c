@@ -6,6 +6,10 @@
 #include <string.h>
 #include "std_device_ops.h"
 #include "vdev/vdev_private.h"
+#include "athrill_device.h"
+#ifdef SERIAL_FIFO_ENABLE
+#include "serial_fifo.h"
+#endif /* SERIAL_FIFO_ENABLE */
 
 #ifdef CONFIG_STAT_PERF
 ProfStatType cpuemu_dev_timer_prof;
@@ -75,6 +79,13 @@ void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 		device_init_vdev(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_VDEV], op_type);
 	}
 
+#ifdef SERIAL_FIFO_ENABLE
+	athrill_device_init_serial_fifo();
+#endif /* SERIAL_FIFO_ENABLE */
+
+#ifdef EXDEV_ENABLE
+	device_init_athrill_exdev();
+#endif /* EXDEV_ENABLE */
 	return;
 }
 
@@ -96,6 +107,16 @@ void device_supply_clock(DeviceClockType *dev_clock)
 		device_supply_clock_vdev_func(dev_clock);
 		CPUEMU_DEV_INTR_PROF_END();
 	}
+
+#ifdef SERIAL_FIFO_ENABLE
+	CPUEMU_DEV_INTR_PROF_START();
+	athrill_device_supply_clock_serial_fifo(dev_clock);
+	CPUEMU_DEV_INTR_PROF_END();
+#endif /* SERIAL_FIFO_ENABLE */
+
+#ifdef EXDEV_ENABLE
+	device_supply_clock_exdev(dev_clock);
+#endif /* EXDEV_ENABLE */
 
 	CPUEMU_DEV_INTR_PROF_START();
 	device_supply_clock_intc(dev_clock);

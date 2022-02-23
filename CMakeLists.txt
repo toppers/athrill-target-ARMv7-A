@@ -7,7 +7,14 @@ set(APLDIR "athrill/apl")
 set(TARGET_DIR "src")
 
 include_directories("${CORE_DIR}/inc" "${CORE_DIR}/lib" )
-add_definitions(-DOS_LINUX -DSUPRESS_DETECT_WARNING_MESSAGE)
+
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    add_definitions(-DOS_LINUX -DSUPRESS_DETECT_WARNING_MESSAGE)
+elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
+    add_definitions(-DOS_LINUX -DOS_MAC -DSUPRESS_DETECT_WARNING_MESSAGE)
+else()
+endif()
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -g -Wall -Wunknown-pragmas -Wimplicit-int -Wtrigraphs -std=gnu99 -O3")
 
 

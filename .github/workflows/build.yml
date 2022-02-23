@@ -5,8 +5,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
     steps:
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
@@ -15,7 +22,7 @@ jobs:
 
       - name: Build athrill
         run: |
-          cd build_linux
+          cmake . -B build
+          cd build
           make
-          make list
-          ../athrill/bin/linux/athrill2
+          ./athrill2

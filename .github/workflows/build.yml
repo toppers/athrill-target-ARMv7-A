@@ -41,5 +41,6 @@ jobs:
         run: |
           cmake . -B build
           cd build
-          make
-          athrill2.exe
+          make  VERBOSE=1
+          ls
+

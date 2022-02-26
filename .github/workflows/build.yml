@@ -20,19 +20,12 @@ jobs:
           submodules: true  # Fetch athrill repo
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
-      - name: Build athrill for Linux
-        if:  matrix.os == 'ubuntu-latest'
+      - name: Build athrill for Linux or Mac
+        if:  " (matrix.os == 'ubuntu-latest') || (matrix.os == 'macos-latest') " 
         run: |
-          cmake . -B build
+          mkdir build
           cd build
-          make
-          ./athrill2
-
-      - name: Build athrill for Mac
-        if:  matrix.os == 'macos-latest'
-        run: |
-          cmake . -B build
-          cd build
+          cmake -H.. 
           make
           ./athrill2
 
@@ -40,7 +33,7 @@ jobs:
         if:  matrix.os == 'windows-latest'
         uses: egor-tensin/setup-mingw@v2
 
-        - name: Build athrill for Windows
+      - name: Build athrill for Windows
         if:  matrix.os == 'windows-latest'
         run: |
           cmake -G"MinGW Makefiles" -H. -B build

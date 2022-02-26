@@ -36,8 +36,9 @@ jobs:
       - name: Build athrill for Windows
         if:  matrix.os == 'windows-latest'
         run: |
-          cmake -G"MinGW Makefiles" -H. -B build
+          mkdir build
           cd build
-          make  VERBOSE=1
+          cmake -G"MinGW Makefiles" ..
+          make
           athrill2.exe
 

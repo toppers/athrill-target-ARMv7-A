@@ -36,9 +36,12 @@ jobs:
           make
           ./athrill2
 
-      - name: Build athrill for Windows
+      - name: Setup MinGW for Windows
         if:  matrix.os == 'windows-latest'
         uses: egor-tensin/setup-mingw@v2
+
+        - name: Build athrill for Windows
+        if:  matrix.os == 'windows-latest'
         run: |
           cmake -G"MinGW Makefiles" -H. -B build
           cd build

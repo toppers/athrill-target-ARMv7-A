@@ -25,7 +25,9 @@ extern MpuAddressRegionOperationType	serial_memory_operation;
 extern MpuAddressRegionOperationType	timer_memory_operation;
 extern MpuAddressRegionOperationType	intc_memory_operation;
 extern MpuAddressRegionOperationType	cpu_register_operation;
+#ifdef	OS_LINUX	/* Windows not support */
 extern MpuAddressRegionOperationType	vdev_memory_operation;
+#endif	/* OS_LINUX */
 
 MpuAddressMapType mpu_address_map = {
 		.dynamic_map_num = 0,
@@ -74,6 +76,7 @@ MpuAddressMapType mpu_address_map = {
 				/*
 				 * INDEX :sensor/motorレジスタ(仮想用)
 				 */
+#ifdef	OS_LINUX	/* Windows not support*/
 				{
 						.type		= DEVICE,
 						.is_malloc	= FALSE,
@@ -84,7 +87,7 @@ MpuAddressMapType mpu_address_map = {
 						.data		= memory_data_VDEV,
 						.ops		= &vdev_memory_operation
 				},
-
+#endif
 				/*
 				 * INDEX :DEVICE(その他内蔵周辺I/O領域)
 				 */

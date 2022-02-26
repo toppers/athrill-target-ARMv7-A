@@ -38,9 +38,10 @@ jobs:
 
       - name: Build athrill for Windows
         if:  matrix.os == 'windows-latest'
+        uses: egor-tensin/setup-mingw@v2
         run: |
-          cmake . -B build
+          cmake -G"MinGW Makefiles" -H. -B build
           cd build
           make  VERBOSE=1
-          ls
+          athrill2.exe
 

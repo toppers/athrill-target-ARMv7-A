@@ -14,8 +14,9 @@ make
 Use CMake
 ```
 git clone --recursive https://github.com/toppers/athrill-target-ARMv7-A
-cmake . -B build
+mkdir build
 cd build
+cmake ..
 make
 ```
 

@@ -13,6 +13,7 @@ if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
 elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     add_definitions(-DOS_LINUX -DOS_MAC -DSUPRESS_DETECT_WARNING_MESSAGE)
 else()
+    add_definitions()
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -g -Wall -Wunknown-pragmas -Wimplicit-int -Wtrigraphs -std=gnu99 -O3")
@@ -127,9 +128,6 @@ target_include_directories(device PRIVATE
     "${TARGET_DIR}/device/peripheral/inc"
 )
 target_sources(device PRIVATE
-    "${CORE_DIR}/device/peripheral/athrill_device.c" 
-    "${CORE_DIR}/device/peripheral/athrill_syscall_device.c" 
-    "${CORE_DIR}/device/peripheral/athrill_mpthread.c" 
     "${CORE_DIR}/device/peripheral/serial/fifo/serial_fifo.c"
     "${TARGET_DIR}/device/device.c"
     "${TARGET_DIR}/device/intc/intc.c"
@@ -139,13 +137,20 @@ target_sources(device PRIVATE
     "${TARGET_DIR}/device/intc/register/arm_gic_register_mapping_io_table.c"
     "${TARGET_DIR}/device/peripheral/timer/timer.c"
     "${TARGET_DIR}/device/peripheral/serial/serial.c"
-    "${TARGET_DIR}/device/peripheral/vdev/vdev.c"
-    "${TARGET_DIR}/device/peripheral/vdev/vdev_mmap.c"
-    "${TARGET_DIR}/device/peripheral/vdev/vdev_udp.c"
     "${TARGET_DIR}/debugger/executor/concrete_executor/dbg_target_serial.c"
     "${TARGET_DIR}/debugger/executor/concrete_executor/dbg_target_cpu.c"
 )
-
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+else()
+target_sources(device PRIVATE
+    "${CORE_DIR}/device/peripheral/athrill_device.c" 
+    "${CORE_DIR}/device/peripheral/athrill_syscall_device.c" 
+    "${CORE_DIR}/device/peripheral/athrill_mpthread.c" 
+    "${TARGET_DIR}/device/peripheral/vdev/vdev.c"
+    "${TARGET_DIR}/device/peripheral/vdev/vdev_mmap.c"
+    "${TARGET_DIR}/device/peripheral/vdev/vdev_udp.c"
+)
+endif()
 
 add_library(bus)
 target_include_directories(bus PRIVATE  
@@ -208,16 +213,22 @@ target_sources(std PRIVATE
     "${CORE_DIR}/lib/hash.c" 
     "${CORE_DIR}/lib/token.c" 
     "${CORE_DIR}/lib/file.c" 
-    "${CORE_DIR}/lib/comm_buffer.c" 
     "${CORE_DIR}/lib/winsock_wrapper/winsock_wrapper.c"
     "${CORE_DIR}/lib/udp/udp_comm.c" 
+)
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+else()
+target_sources(std PRIVATE
+    "${CORE_DIR}/lib/comm_buffer.c" 
     "${CORE_DIR}/lib/tcp/tcp_socket.c"
     "${CORE_DIR}/lib/tcp/tcp_client.c"
     "${CORE_DIR}/lib/tcp/tcp_connection.c"
     "${CORE_DIR}/lib/tcp/tcp_server.c"
 )
+endif()
 
-
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+else()
 set(MROS_SRC "${CORE_DIR}/device/peripheral/mros-dev/mros-src")
 set(MROS_DEV "${CORE_DIR}/device/peripheral/mros-dev/mros-athrill")
 set(ROS_VERSION	"kinetic")
@@ -284,13 +295,17 @@ target_sources(mros PRIVATE
     "${MROS_DEV}/target/os/mros_exclusive_ops_linux.c"
     "${MROS_DEV}/target/lwip/lwip_linux.c"
     )
+endif()
 
 # add_subdirectory(${CORE_DIR}/device/peripheral/mros-dev)
 
 add_executable(athrill2 "${CORE_DIR}/main/main.c")
 target_include_directories(athrill2 INTERFACE main)
+if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+target_link_libraries(athrill2 main cui cpu device bus loader mpu std pthread wsock32)
+else()
 target_link_libraries(athrill2 main cui cpu device bus loader mpu std mros pthread m dl)
-
+endif()
 
 # install(TARGETS main)
 

@@ -39,6 +39,6 @@ jobs:
           mkdir build
           cd build
           cmake -G"MinGW Makefiles" ..
-          make VERBOSE=1
-          athrill2.exe
+          make
+          .\athrill2.exe
 

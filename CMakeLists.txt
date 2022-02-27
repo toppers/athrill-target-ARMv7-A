@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.10)
 
 project(athrill2)
 
@@ -10,10 +10,13 @@ include_directories("${CORE_DIR}/inc" "${CORE_DIR}/lib" )
 
 if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
     add_definitions(-DOS_LINUX -DSUPRESS_DETECT_WARNING_MESSAGE)
+    message(STATUS "CMAKE_HOST_SYSTEM_NAME is Linux")
 elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     add_definitions(-DOS_LINUX -DOS_MAC -DSUPRESS_DETECT_WARNING_MESSAGE)
+    message(STATUS "CMAKE_HOST_SYSTEM_NAME is Darwin")
 else()
     add_definitions()
+    message(STATUS "CMAKE_HOST_SYSTEM_NAME is others")
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -g -Wall -Wunknown-pragmas -Wimplicit-int -Wtrigraphs -std=gnu99 -O3")

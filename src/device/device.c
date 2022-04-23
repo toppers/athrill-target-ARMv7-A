@@ -60,6 +60,7 @@ void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 
 	device_init_serial(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_SERIAL]);
 	device_ex_serial_register_ops(2U, &device_ex_serial_op);
+#ifdef OS_LINUX  /* Windows not support*/
 	cpuemu_get_devcfg_value("DEBUG_FUNC_ENABLE_VDEV", &enable_vdev);
 	if (enable_vdev != 0) {
 		char *sync_type;
@@ -78,6 +79,7 @@ void device_init(CpuType *cpu, DeviceClockType *dev_clock)
 		}
 		device_init_vdev(&mpu_address_map.map[MPU_ADDRESS_REGION_INX_VDEV], op_type);
 	}
+#endif	/* OS_LINUX */
 
 #ifdef SERIAL_FIFO_ENABLE
 	athrill_device_init_serial_fifo();

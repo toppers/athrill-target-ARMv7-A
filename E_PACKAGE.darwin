@@ -1,4 +1,4 @@
-E_PACKAGE athrill-target-ARMv7-A-x86_64-linux
+E_PACKAGE athrill-target-ARMv7-A-x86_64-darwin
 VERSION %date
 
 INCLUDE MANIFEST

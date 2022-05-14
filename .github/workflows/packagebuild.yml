@@ -111,6 +111,6 @@ jobs:
           draft: true
           prerelease: true
           files: |
-            *.tar.gz
+            ./athrill-targets/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

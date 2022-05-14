@@ -1,0 +1,7 @@
+E_PACKAGE athrill-target-ARMv7-A-x86_64-darwin
+VERSION %date
+
+INCLUDE MANIFEST
+INCLUDE ../athrill/MANIFEST
+
+build_mac/athrill2

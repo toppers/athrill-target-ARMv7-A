@@ -64,7 +64,6 @@ src/cpu/cpu_exec/op_exec_load.c
 src/cpu/cpu_exec/op_exec_load_pseudo.c
 src/cpu/cpu_exec/op_exec_logic.c
 src/cpu/cpu_exec/op_exec_logic_pseudo.c
-src/cpu/cpu_exec/op_exec_sat.c
 src/cpu/cpu_exec/op_exec_spec.c
 src/cpu/cpu_exec/op_exec_spec_pseudo.c
 src/cpu/cpu_exec/op_exec_store.c

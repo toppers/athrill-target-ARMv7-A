@@ -70,7 +70,6 @@ jobs:
       - name: Archive package
         id: get_archive
         run: |
-          ls -la RELEASE/
           FILE_NAME="$(ls -1 RELEASE/ | sed -n 1p)"
           echo ::set-output name=FILE_NAME::${FILE_NAME}
 

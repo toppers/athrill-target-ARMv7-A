@@ -1,7 +1,10 @@
 PACKAGE athrill-target-ARMv7-A
-VERSION 1.0.10
+VERSION 1.0.11
 
+CMakeLists.txt
 E_PACKAGE
+E_PACKAGE.darwin
+E_PACKAGE.win
 LICENSE.md
 MANIFEST
 README.md
@@ -40,8 +43,8 @@ src/cpu/coproc/cp11/arm_coproc_fpu.h
 src/cpu/coproc/cp11/arm_pseudo_fpu_code.h
 src/cpu/coproc/cp15/arm_coproc_cp15.c
 src/cpu/coproc/cp15/arm_coproc_cp15.h
-src/cpu/cpu_common/arm_pseudo_code_common_type.h
 src/cpu/cpu_common/arm_pseudo_code.h
+src/cpu/cpu_common/arm_pseudo_code_common_type.h
 src/cpu/cpu_dec/arm_mcdecoder.c
 src/cpu/cpu_dec/arm_mcdecoder.h
 src/cpu/cpu_dec/arm_pseudo_code_debug.h
@@ -75,9 +78,9 @@ src/debugger/interaction/inc/dbg_interaction_target_ids.h
 src/device/device.c
 src/device/device.h
 src/device/intc/gic/arm_gic.c
+src/device/intc/gic/arm_gic.h
 src/device/intc/gic/arm_gic_config.c
 src/device/intc/gic/arm_gic_config.h
-src/device/intc/gic/arm_gic.h
 src/device/intc/gic/arm_gic_register_mapping_io.h
 src/device/intc/intc.c
 src/device/intc/intc.h
